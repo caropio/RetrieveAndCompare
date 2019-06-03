@@ -2,7 +2,8 @@ $(document).ready(function () {
 
     // Initial Experiment Parameters
     // -------------------------------------------------------------------------------------------------- //
-    var expName = 'Positivity';
+    var offline = 1;
+    var expName = 'RetrieveAndCompare';
     //var language = "en"; // only en is available at the moment
     var compLink = 1;
     var nSessions = 3;
@@ -20,16 +21,17 @@ $(document).ready(function () {
     //var totalReward = 0;
 
     // Training
-    var nCondTraining = 3;
-    var nTrialTrainingPerCond = 5;
+    var nCondTraining = 4;
+    var nTrialTrainingPerCond = 1;
     var nTrainingTrials = nTrialTrainingPerCond * nCondTraining;//1;
     var maxTrainingSessions = 2;
     var nTrainingImg = nCondTraining * 2;
     nCondTraining--; // because of range function
 
     // Lotteries
-    var nTrialsPerConditionLot = 2;
-    var nTrialsLotteries = (nCond + 1) * nTrialsPerConditionLot;
+    var nTrialPerElicitation = 10;
+    // var nTrialsPerConditionLot = 2;
+    // var nTrialsLotteries = (nCond + 1) * nTrialsPerConditionLot;
 
     var initTime = (new Date()).getTime();
 
@@ -53,111 +55,67 @@ $(document).ready(function () {
     var pointsToPounds = points => penceToPounds(pointsToPence(points));
 
     // if offline is 1 do not call database
-    var offline = 0;
+    var offline = 1;
 
     // Define conditions
     // -------------------------------------------------------------------------------------------------- //
     var probs = [];
     var rewards = [];
 
-    rewards['neutral'] = [
-        // opt 1  // opt2
-        [[0, 0], [-1, 1]], //cond1
-        [[0, 0], [-1, 1]], // cond2
-        [[0, 0], [-1, 1]], //cond3
-    ];
+    rewards[0] = [[-1, 1], [-1, 1]];
+    probs[0] = [[0.2, 0.8], [0.8, 0.2]];
 
-    probs['neutral'] = [
-        // opt 1  // opt2
-        [[1, 1], [.25, .75]], //cond1
-        [[1, 1], [.5, .5]],   // cond2
-        [[1, 1], [.75, .25]], //cond3
-    ];
+    rewards[1] = [[-1, 1], [-1, 1]];
+    probs[1] = [[0.3, 0.7], [0.7, 0.3]];
 
-    rewards['punishment'] = [
-        // opt 1  // opt2
-        [[-1, -1], [-2, 0]], //cond 4
-        [[-1, -1], [-2, 0]], // cond 5
-        [[-1, -1], [-2, 0]], //cond 6
-    ];
+    rewards[2] = [[-1, 1], [-1, 1]];
+    probs[2] = [[0.4, 0.6], [0.6, 0.4]];
 
-    probs['punishment'] = [
-        // opt 1  // opt2
-        [[1, 1], [.25, .75]], //cond4
-        [[1, 1], [.5, .5]],  //cond5
-        [[1, 1], [.75, .25]], //cond6
-    ];
-
-    rewards['reward'] = [
-        // opt 1  // opt2
-        [[1, 1], [0, 2]], //cond 7
-        [[1, 1], [0, 2]], // cond 8
-        [[1, 1], [0, 2]], //cond 9
-    ];
-
-    probs['reward'] = [
-        // opt 1  // opt2
-        [[1, 1], [.25, .75]],//cond7
-        [[1, 1], [.5, .5]],//cond8
-        [[1, 1], [.75, .25]],//cond9
-    ];
-
-    var cond = [];
-    cond['neutral'] = [0, 1, 2];
-    cond['punishment'] = [3, 4, 5];
-    cond['reward'] = [6, 7, 8];
+    rewards[3] = [[-1, 1], [-1, 1]];
+    probs[3] = [[0.5, 0.5], [0.5, 0.5]];
+    // -------------------------------------------------------------------------------------------------- //
 
     var expCondition = [];
     var conditions = [];
 
-    for (let i = 0; i < nSessions; i++) {
+    var cond = [range(0, 3), range(4, 7)];
 
-        let idxNeutral = randint(
-            0,
-            cond['neutral'].length - 1
-        );
-
-        let idxPunish = randint(
-            0,
-            cond['punishment'].length - 1
-        );
-
-        let idxReward = randint(
-            0,
-            cond['reward'].length - 1
-        );
-
-        // pop cond number
-        let condN = cond['neutral'].splice(idxNeutral, 1)[0];
-        let condP = cond['punishment'].splice(idxPunish, 1)[0];
-        let condR = cond['reward'].splice(idxReward, 1)[0];
-
+    for (let i = 0; i < nSessions; i++)
         expCondition[i] = shuffle(
-            Array(nTrialsPerSession / nCondPerSession).fill([condN, condP, condR]).flat()
+            Array(nTrialsPerSession / nCondPerSession).fill(cond[i]).flat()
         );
-    }
 
-    let framing = ['neutral', 'punishment', 'reward'];
-    let nFraming = framing.length;
+    var map = [range(0, 3), range(0, 3)].flat();
 
-    for (let i = 0; i < nFraming; i++)
-        for (let j = 0; j < nSessions; j++)
+    for (let i = 0; i < nCond; i++)
             conditions.push({
-                reward: rewards[framing[i]][j],
-                prob: probs[framing[i]][j]
+                reward: rewards[map[i]],
+                prob: probs[map[i]]
             });
 
     var trainingCondition = shuffle(
-        Array(nTrialTrainingPerCond).fill([1, 4, 7]).flat()
-    );
-
-    var lotteriesCondition = shuffle(
-        Array(nTrialsPerConditionLot).fill(range(0, nCond)).flat()
+        Array(nTrialTrainingPerCond).fill([0, 1, 2, 3]).flat()
     );
 
 
     // Elicitations
     // ------------------------------------------------------------------------------------------------------- //
+    var elicitationType = 2;
+    var elicitationTrainingCond = shuffle(
+        Array(nTrialTrainingPerCond).fill([0, 1, 2, 3]).flat()
+    );
+
+    var nTrialPerElicitationCond = 2;
+
+    var elicitationCond = [];
+    for (let i = 0; i < nSessions; i++) {
+        elicitationCond.push(
+            Array(nTrialPerElicitationCond).fill([0, 1, 2, 3]).flat()
+        )
+    }
+
+    var elicitationsStim = Array(nSessions).fill(range(0, 18)).flat();
+    var elicitationsStimTraining = range(0, nTrainingImg);
 
 
     // Get stims, feedbacks, resources
@@ -205,12 +163,15 @@ $(document).ready(function () {
     }
 
     // Training stims
+    var imgExt = 'jpg';
     var trainingImg = [];
     var trainingOptions = [];
-    for (let i = nImg + 1; i <= nTrainingImg + nImg; i++) {
+    var letters = shuffle(['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L',
+        'M', 'N', 'O', 'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z']);
+    for (let i = 0; i < letters.length; i++) {
         trainingOptions.push(i);
         trainingImg[i] = new Image();
-        trainingImg[i].src = imgPath + 'stim_old/' + i + '.' + imgExt;
+        trainingImg[i].src = imgPath + 'stim/' + letters[i] + '.' + imgExt;
         trainingImg[i].className = "img-responsive center-block";
         trainingImg[i].style.border = "5px solid " + borderColor;
         trainingImg[i].style.position = "relative";
@@ -244,7 +205,8 @@ $(document).ready(function () {
 
     // Run the experiment
     // ------------------------------------------------------------------------------------------------ //
-    getUserID();
+    playElicitation(-1, 0);
+    // getUserID();
 
 
     // function send(call, url, data) {
@@ -288,7 +250,7 @@ $(document).ready(function () {
 
         if ($('#TextBoxDiv').length === 0) {
             createDiv('Stage', 'TextBoxDiv');
-            /*document.getElementById("TextBoxDiv").style.backgroundColor = "white";*/
+            /*document.getElementById("TextBoxDiv").style.backgroundColor = "white";*/;
         }
 
         var conditionIdx = trainingCondition[trialNum];
@@ -611,6 +573,7 @@ $(document).ready(function () {
                         $('#Stage').empty();
                         $('#Bottom').empty();
                         clickDisabled = false;
+                        playElicitation(-1, 0);
                         endTrainingStartSessions();
                     }, 500);
                 }, feedbackDuration);
@@ -713,12 +676,17 @@ $(document).ready(function () {
             createDiv('Stage', 'TextBoxDiv');
         }
 
-        var elicitationType = elicitations[trialNum];
 
         if ([0, 1].includes(elicitationType)) {
-            var conditionIdx = elicitationCond[trialNum];
+            if (sessionNum === -1)
+                var conditionIdx = elicitationTrainingCond[trialNum];
+            else
+                var conditionIdx = elicitationCond[sessionNum][trialNum];
+
             var option1ImgIdx = contexts[conditionIdx][0];
             var option2ImgIdx = contexts[conditionIdx][1];
+
+            var stimIdx = option2ImgIdx;
 
             var option1 = images[option1ImgIdx];
             option1.id = "option1";
@@ -737,19 +705,16 @@ $(document).ready(function () {
             feedback2 = feedback2.outerHTML;
 
         } else {
-            var stimIdx = elicitationStim[trialNum];
+            if (sessionNum === -1) {
+                var stimIdx = elicitationsStimTraining[trialNum];
+                var option1 = trainingImg[stimIdx];
+            } else {
+                var stimIdx = elicitationsStim[sessionNum][trialNum];
+                var option1 = images[stimIdx];
+            }
 
-            var option1 = images[stimIdx];
             option1.id = "option1";
             option1 = option1.outerHTML;
-
-            // var feedback1 = feedbackImg["empty"];
-            // feedback1.id = "feedback1";
-            // feedback1 = feedback1.outerHTML;
-            //
-            // var feedback2 = feedbackImg["empty"];
-            // feedback2.id = "feedback2";
-            // feedback2 = feedback2.outerHTML;
 
         }
 
@@ -768,7 +733,99 @@ $(document).ready(function () {
             ' style="border: 5px solid transparent; position: relative; top: 0px;">';
                /* Create canevas for the slot machine effect, of the size of the images */
 
+        var myCanvas = '<div id = "cvrow" class="row" style= "transform: translate(0%, -200%);position:relative">' +
+                '    <div class="col-xs-1 col-md-1"></div>  <div class="col-xs-3 col-md-3">'
+                + canvas1 + '</div><div id = "Middle" class="col-xs-4 col-md-4"></div><div class="col-xs-3 col-md-3">'
+                + canvas2 + '</div><div class="col-xs-1 col-md-1"></div></div>';
+        //
 
+        if ([0, 1].includes(elicitationType)) {
+            var Images = '<div id = "stimrow" class="row" style= "transform: translate(0%, -100%);position:relative"> ' +
+                '<div class="col-xs-1 col-md-1"></div>  <div class="col-xs-3 col-md-3">'
+                + option1 + '</div><div id = "Middle" class="col-xs-4 col-md-4"></div>' +
+                '<div class="col-xs-3 col-md-3">' + option2 + '</div><div class="col-xs-1 col-md-1"></div></div>';
+
+            var Feedback = '<div id = "fbrow" class="row" style= "transform: translate(0%, 0%);position:relative"> ' +
+            '<div class="col-xs-1 col-md-1"></div>  <div class="col-xs-3 col-md-3">' + feedback1 + '' +
+            '</div><div id = "Middle" class="col-xs-4 col-md-4"></div><div class="col-xs-3 col-md-3">'
+            + feedback2 + '</div><div class="col-xs-1 col-md-1"></div></div>';
+
+            var myCanvas = '<div id = "cvrow" class="row" style= "transform: translate(0%, -200%);position:relative">' +
+                '    <div class="col-xs-1 col-md-1"></div>  <div class="col-xs-3 col-md-3">'
+                + canvas1 + '</div><div id = "Middle" class="col-xs-4 col-md-4"></div><div class="col-xs-3 col-md-3">'
+                + canvas2 + '</div><div class="col-xs-1 col-md-1"></div></div>';
+
+            $('#TextBoxDiv').html(Title + Feedback + Images + myCanvas);
+            var targetElement = document.body;
+
+            $('#canvas1').click(function () {
+                if (clickDisabled)
+                    return;
+                clickDisabled = true;
+                var choice = 1;
+                document.getElementById("canvas1").style.borderColor = "black";
+                next();
+            });
+
+            $('#canvas2').click(function () {
+                var choice = 1;
+                document.getElementById("canvas2").style.borderColor = "black";
+                next();
+            });
+        } else {
+            var Images = '<div id = "stimrow" style="transform: translate(0%, -100%);position:relative"> ' +
+            '<div class="col-xs-1 col-md-1"></div>  <div class="col-xs-3 col-md-3">'
+             + '</div><div id = "Middle" class="col-xs-4 col-md-4">' + option1 + '</div></div>';
+
+            var Slider = '<div class="slidecontainer">' +
+                '<input type="range" min="-10" max="10" value="0" class="slider" id="myRange">' +
+                '</div><br><div align="center"><span style="font-size: 400%" id="displayValue"></span><br><br><button id="ok" class="btn btn-default btn-lg">Ok</button></div><br><br><br><br><br><br>';
+
+            $('#TextBoxDiv').html(Title + Images + myCanvas + Slider);
+
+            var slider = document.getElementById("myRange");
+            var output = document.getElementById("displayValue");
+            var ok = document.getElementById("ok");
+            output.innerHTML = slider.value / 10; // Display the default slider value
+
+            // Update the current slider value (each time you drag the slider handle)
+            slider.oninput = function() {
+                output.innerHTML = this.value / 10;
+            };
+
+            ok.onclick = function () {
+                var choice = slider.value;
+                next();
+            };
+        }
+
+        function next() {
+            trialNum++;
+            if (trialNum < nTrialPerElicitation) {
+                setTimeout(function () {
+                    $('#stimrow').fadeOut(500);
+                    $('#fbrow').fadeOut(500);
+                    $('#cvrow').fadeOut(500);
+                    setTimeout(function () {
+                        clickDisabled = false;
+                        playElicitation(sessionNum, trialNum);
+                    }, 500);
+                }, feedbackDuration);
+
+            } else {
+                trialNum = 0;
+                sessionNum++;
+                setTimeout(function () {
+                    $('#TextBoxDiv').fadeOut(500);
+                    setTimeout(function () {
+                        $('#Stage').empty();
+                        $('#Bottom').empty();
+                        clickDisabled = false;
+                        nextSession(sessionNum, trialNum);
+                    }, 500);
+                }, feedbackDuration);
+            }
+        }
     }
 
     function playSessions(sessionNum, trialNum) {
@@ -1286,352 +1343,13 @@ $(document).ready(function () {
                         $('#Stage').html('<H1 align = "center">Go!</H1>');
                         setTimeout(function () {
                             $('#Stage').empty();
-                            playLotteries(0);
+                            //playLotteries(0);
                         }, 1000);
                     }, 1000);
                 }, 1000);
             }, 10);
         });
     }
-
-    function playLotteries(trialNum) {
-
-        if ($('#TextBoxDiv').length === 0) {
-            createDiv('Stage', 'TextBoxDiv');
-            /*document.getElementById("TextBoxDiv").style.backgroundColor = "white";*/
-        }
-
-        /*Choisir une condition*/
-        var conditionIdx = lotteriesCondition[trialNum];
-
-        var option1 = lotteriesImg[(conditionIdx + 1) + '_' + 1];
-        option1.id = "option1";
-        option1 = option1.outerHTML;
-
-        var option2 = lotteriesImg[(conditionIdx + 1) + '_' + 2];
-        option2.id = "option2";
-        option2 = option2.outerHTML;
-
-        var feedback1 = feedbackImg["empty"];
-        feedback1.id = "feedback1";
-        feedback1 = feedback1.outerHTML;
-
-        var feedback2 = feedbackImg["empty"];
-        feedback2.id = "feedback2";
-        feedback2 = feedback2.outerHTML;
-
-        var Title = '<div id = "Title"><H2 align = "center"> <br><br><br><br></H2></div>';
-
-        //var Count = '<div id = "Count"><H3 align = "center">Your current amount: ' + parseInt(sumReward) + ' points<br><br><br><br></H3><div>';
-
-        // Create canevas for the slot machine effect, of the size of the images
-        var canvas1 = '<canvas id="canvas1" height="620" width="620" class="img-responsive center-block"' +
-            ' style="border: 5px solid transparent; position: relative; top: 0px;">';
-        var canvas2 = '<canvas id="canvas2" height="620" width="620" class="img-responsive center-block"' +
-            ' style="border: 5px solid transparent; position: relative; top: 0px;">';
-
-        var Images = '<div id = "stimrow" class="row" style= "transform: translate(0%, -100%);position:relative">' +
-            '<div class="col-xs-1 col-md-1"></div><div class="col-xs-3 col-md-3">' +
-            option1 + '</div><div id = "Middle" class="col-xs-4 col-md-4"></div>' +
-            '<div class="col-xs-3 col-md-3">' + option2 + '</div><div class="col-xs-1 col-md-1"></div></div>';
-
-        var Feedback = '<div id = "fbrow" class="row" style= "transform: translate(0%, 0%);position:relative">' +
-            '<div class="col-xs-1 col-md-1"></div>  <div class="col-xs-3 col-md-3">' + feedback1 + '</div>'  +
-            '<div id = "Middle" class="col-xs-4 col-md-4"></div><div class="col-xs-3 col-md-3">' + feedback2 +
-            '</div><div class="col-xs-1 col-md-1"></div></div>';
-
-        var myCanvas = '<div id = "cvrow" class="row" style= "transform: translate(0%, -200%);position:relative">' +
-            '<div class="col-xs-1 col-md-1"></div>  <div class="col-xs-3 col-md-3">' + canvas1 + '</div>' +
-            '<div id = "Middle" class="col-xs-4 col-md-4"></div><div class="col-xs-3 col-md-3">' + canvas2 +
-            '</div><div class="col-xs-1 col-md-1"></div></div>';
-
-        var invertedPosition = +(Math.random() < 0.5);
-        var symbols = [-1, -1];
-
-        if (invertedPosition) {
-            var Images = '<div id = "stimrow" class="row" style= "transform: translate(0%, -100%);position:relative">' +
-                '<div class="col-xs-1 col-md-1"></div><div class="col-xs-3 col-md-3">' +
-                option2 + '</div><div id = "Middle" class="col-xs-4 col-md-4"></div>' +
-                '<div class="col-xs-3 col-md-3">' + option1 + '</div><div class="col-xs-1 col-md-1"></div></div>';
-
-            var Feedback = '<div id = "fbrow" class="row" style= "transform: translate(0%, 0%);position:relative">' +
-                '<div class="col-xs-1 col-md-1"></div>  <div class="col-xs-3 col-md-3">' + feedback2 + '</div>'  +
-                '<div id = "Middle" class="col-xs-4 col-md-4"></div><div class="col-xs-3 col-md-3">' + feedback1 +
-                '</div><div class="col-xs-1 col-md-1"></div></div>';
-
-            var myCanvas = '<div id = "cvrow" class="row" style= "transform: translate(0%, -200%);position:relative">' +
-                '<div class="col-xs-1 col-md-1"></div>  <div class="col-xs-3 col-md-3">' + canvas2 + '</div>' +
-                '<div id = "Middle" class="col-xs-4 col-md-4"></div><div class="col-xs-3 col-md-3">' + canvas1 +
-                '</div><div class="col-xs-1 col-md-1"></div></div>';
-
-            var symbols = [-1, -1];
-        }
-
-        $('#TextBoxDiv').html(Title + Feedback + Images + myCanvas);
-
-        var choiceTime = (new Date()).getTime();
-
-        var myEventHandler = function (e) {
-
-            var key = getKeyCode(e);
-
-            if ((key === 101 && !invertedPosition) || (key === 112 && invertedPosition)) {
-                if (clickDisabled)
-                    return;
-                clickDisabled = true;
-
-                fb = getReward(1);
-                color = getColor(fb);
-                document.getElementById("option1").style.borderColor = "black";
-                targetElement.removeEventListener('keypress', myEventHandler);
-
-            } else if ((key === 112 && !invertedPosition) || (key === 101 && invertedPosition)) {
-
-                if (clickDisabled)
-                    return;
-                clickDisabled = true;
-
-                fb = getReward(2);
-                color = getColor(fb);
-                document.getElementById("option2").style.borderColor = "black";
-                targetElement.removeEventListener('keypress', myEventHandler);
-
-            }
-
-        };
-
-        var targetElement = document.body;
-
-        $('#canvas1').click(function () {
-            if (clickDisabled)
-                return;
-            clickDisabled = true;
-            fb = getReward(1);
-            document.getElementById("canvas1").style.borderColor = "black";
-        });
-
-        $('#canvas2').click(function () {
-            if (clickDisabled)
-                return;
-            clickDisabled = true;
-            fb = getReward(2);
-            document.getElementById("canvas2").style.borderColor = "black";
-        });
-
-
-        function getReward(choice) {
-
-            var reactionTime = (new Date()).getTime();
-
-            // choice is left
-            var leftRight = -1;
-
-            if ((invertedPosition && (choice === 1)) || (!invertedPosition && (choice === 2))) {
-                // choice is right
-                leftRight = 1;
-            }
-
-            var P1 = conditions[conditionIdx]['prob'][0][1];
-            var P2 = conditions[conditionIdx]['prob'][1][1];
-            var Mag1 = conditions[conditionIdx]['reward'][0];
-            var Mag2 = conditions[conditionIdx]['reward'][1];
-
-            p1 = conditions[conditionIdx]['prob'][0];
-            p2 = conditions[conditionIdx]['prob'][1];
-            r1 = conditions[conditionIdx]['reward'][0];
-            r2 = conditions[conditionIdx]['reward'][1];
-
-            if (sum(p1) === 2) {
-                var ev1 = p1[0] * r1[0];
-            } else {
-                var ev1 = p1.reduce(
-                    function (r, a, i) {
-                        return r + a * r1[i]
-                    }, 0);
-            }
-
-            if (sum(p2) === 2) {
-                var ev2 = p2[0] * r2[0];
-            } else {
-                var ev2 = p2.reduce(
-                    function (r, a, i) {
-                        return r + a * r2[i]
-                    }, 0);
-            }
-
-            if (choice === 1) { /*option1*/
-                var thisReward = Mag1[+(Math.random() < P1)];
-                var otherReward = Mag2[+(Math.random() < P2)];
-                var correctChoice = +(ev1 > ev2);
-            } else { /*option2*/
-                var otherReward = Mag1[+(Math.random() < P1)];
-                var thisReward = Mag2[+(Math.random() < P2)];
-                var correctChoice = +(ev2 > ev1);
-            }
-
-            sumReward += thisReward;
-
-            var fb1 = document.getElementById("feedback1");
-            var fb2 = document.getElementById("feedback2");
-
-            var pic1 = document.getElementById("option1");
-            var pic2 = document.getElementById("option2");
-
-            var cv1 = document.getElementById("canvas1");
-            var cv2 = document.getElementById("canvas2");
-
-            if (choice === 1) {
-                fb1.src = feedbackImg['' + thisReward].src;
-                setTimeout(function () {
-                    slideCard(pic1, cv1);
-                }, 500)
-            } else {
-                fb2.src = feedbackImg['' + thisReward].src;
-                setTimeout(function () {
-                    slideCard(pic2, cv2);
-                }, 500)
-            }
-
-            if (offline === 0) sendLotteriesDataDB(0);
-
-            next();
-
-            function slideCard(pic, cv) {  /* faire défiler la carte pour decouvrir le feedback */
-
-                var img = new Image();
-                img.src = pic.src;
-                img.width = pic.width;
-                img.height = pic.height;
-
-                var speed = 3; /*plus elle est basse, plus c'est rapide*/
-                var y = 0; /*décalage vertical*/
-
-                /*Programme principal*/
-
-                var dy = 10;
-                var x = 0;
-                var ctx;
-
-                img.onload = function () {
-
-                    /*récupérer le contexte du canvas*/
-
-                    canvas = cv;
-                    ctx = cv.getContext('2d');
-
-                    canvas.width = img.width;
-                    canvas.height = img.height;
-
-                    /*définir le taux de rafraichissement*/
-                    var scroll = setInterval(draw, speed);
-
-                    setTimeout(function () {
-                        pic.style.visibility = "hidden";
-                        clearInterval(scroll);
-                        ctx.clearRect(0, 0, canvas.width, canvas.height);
-                    }, 1000);
-                }
-
-                function draw() {
-
-                    ctx.clearRect(0, 0, canvas.width, canvas.height); /* clear the canvas*/
-
-                    /*réinitialise, repart du début*/
-                    if (y > img.height) {
-                        y = -img.height + y;
-                    }
-
-                    /*dessine image1 supplémentaire*/
-                    if (y > 0) {
-                        ctx.drawImage(img, x, -img.height + y, img.width, img.height);
-                    }
-
-                    /*dessine image*/
-                    ctx.drawImage(img, x, y, img.width, img.height);
-
-                    /*quantité à déplacer*/
-                    y += dy;
-                }
-            };
-
-            function sendLotteriesDataDB(call) {
-
-                var wtest = 1; /* learning test */
-
-                $.ajax({
-                    type: 'POST',
-                    data: {
-                        exp: expName,
-                        expID: expID,
-                        id: subID,
-                        test: wtest,
-                        trial: trialNum,
-                        condition: conditionIdx,
-                        symL: symbols[0],
-                        symR: symbols[1],
-                        choice: choice,
-                        correct_choice: correctChoice,
-                        outcome: thisReward,
-                        cf_outcome: otherReward,
-                        choice_left_right: leftRight,
-                        reaction_time: reactionTime - choiceTime,
-                        reward: sumReward,
-                        session: 3,
-                        p1: P1,
-                        p2: P2,
-                        option1: (conditionIdx + 1) * 10 + 1,
-                        option2: (conditionIdx + 1) * 10 + 2,
-                        inverted: invertedPosition,
-                        choice_time: choiceTime - initTime
-                    },
-                    async: true,
-                    url: 'php/InsertLearningDataDB.php',
-                    /*dataType: 'json',*/
-                    success: function (r) {
-
-                        if (r[0].ErrorNo > 0 && call + 1 < maxDBCalls) {
-                            sendLotteriesDataDB(call + 1);
-                        }
-                    },
-                    error: function (XMLHttpRequest, textStatus, errorThrown) {
-
-                        if (call + 1 < maxDBCalls) {
-                            sendLotteriesDataDB(call + 1);
-                        }
-                    }
-                });
-            };
-
-            return thisReward;
-        };  /* function getReward(Choice) */
-
-
-        function next() {
-            trialNum++;
-            if (trialNum < nTrialsLotteries) {
-                setTimeout(function () {
-                    $('#stimrow').fadeOut(500);
-                    $('#fbrow').fadeOut(500);
-                    $('#cvrow').fadeOut(500);
-                    setTimeout(function () {
-                        clickDisabled = false;
-                        playLotteries(trialNum);
-                    }, 500);
-                }, feedbackDuration);
-
-            } else {
-                setTimeout(function () {
-                    $('#TextBoxDiv').fadeOut(500);
-                    setTimeout(function () {
-                        $('#Stage').empty();
-                        $('#Bottom').empty();
-                        clickDisabled = false;
-                        startReasoningTest();
-                    }, 500);
-                }, feedbackDuration);
-            }
-        }
-    };
 
     function startReasoningTest() {
 
@@ -1641,7 +1359,7 @@ $(document).ready(function () {
 
         var startBut;
 
-        startBut = '"Start"'
+        startBut = '"Start"';
         var Info = '<H3 align = "center">You are now about to start the third phase.<br>' +
             'You will see several items that vary in difficulty. Please answer as many as you can.</H3><br><br>';
 

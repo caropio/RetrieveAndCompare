@@ -28,15 +28,19 @@
   appearance: none;
   width: 25px;
   height: 25px;
+  /*width: 2.8%;
+  height: 190%;*/
   border-radius: 50%;
-  background: #4CAF50;
+  background: #040505; /*#4CAF50;*/
   cursor: pointer;
 }
 
 .slider::-moz-range-thumb {
   width: 25px;
   height: 25px;
+  /*width: 2.8%;
+  height: 190%;*/
   border-radius: 50%;
-  background: #4CAF50;
+  background: #040505;
   cursor: pointer;
 }
