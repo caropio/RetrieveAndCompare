@@ -29,7 +29,7 @@ $(document).ready(function () {
     nCondTraining--; // because of range function
 
     // Lotteries
-    var nTrialPerElicitation = 10;
+    var nTrialPerElicitation = 8*8;
     // var nTrialsPerConditionLot = 2;
     // var nTrialsLotteries = (nCond + 1) * nTrialsPerConditionLot;
 
@@ -100,7 +100,7 @@ $(document).ready(function () {
 
     // Elicitations
     // ------------------------------------------------------------------------------------------------------- //
-    var elicitationType = 2;
+    var elicitationType = 0;
     var elicitationTrainingCond = shuffle(
         Array(nTrialTrainingPerCond).fill([0, 1, 2, 3]).flat()
     );
@@ -114,9 +114,20 @@ $(document).ready(function () {
         )
     }
 
-    var elicitationsStim = Array(nSessions).fill(range(0, 18)).flat();
+    var expectedValue = [-0.8, -0.6, -0.4, -0.2, 0, 0.2, 0.4, 0.6, 0.8];
+    var elicitationsStim = range(0, 18);
+    var elicitationsStimEV = Array(nSessions).fill([]);
+    for (let i = 0; i < nSessions; i++) {
+        for (let j = 0; j < 18; j++) {
+            for (let k = 0; k < expectedValue.length; k++) {
+                elicitationsStimEV[i].push(
+                    [elicitationsStim[j], expectedValue[k]]
+                );
+            }
+        }
+        elicitationsStimEV[i] = shuffle(elicitationsStimEV[i]);
+    }
     var elicitationsStimTraining = range(0, nTrainingImg);
-
 
     // Get stims, feedbacks, resources
     // -------------------------------------------------------------------------------------------------------- //
@@ -135,6 +146,16 @@ $(document).ready(function () {
         images[i].style.border = "5px solid " + borderColor;
         images[i].style.position = "relative";
         images[i].style.top = "0px";
+    }
+
+    var choiceBasedOption = [];
+    for (let i = 0; i < expectedValue.length; i++) {
+        choiceBasedOption[expectedValue[i] + '_' + elicitationType] = new Image();
+        choiceBasedOption[expectedValue[i] + '_' + elicitationType].src = imgPath + 'stim/' + expectedValue[i] + '_' + elicitationType + '.jpg';
+        choiceBasedOption[expectedValue[i] + '_' + elicitationType].className = "img-responsive center-block";
+        choiceBasedOption[expectedValue[i] + '_' + elicitationType].style.border = "5px solid " + borderColor;
+        choiceBasedOption[expectedValue[i] + '_' + elicitationType].style.position = "relative";
+        choiceBasedOption[expectedValue[i] + '_' + elicitationType].style.top = "0px";
     }
 
     var feedbackNames = ["empty", "0", "1", "-1", '-2', '2'];
@@ -678,21 +699,20 @@ $(document).ready(function () {
 
 
         if ([0, 1].includes(elicitationType)) {
-            if (sessionNum === -1)
-                var conditionIdx = elicitationTrainingCond[trialNum];
-            else
-                var conditionIdx = elicitationCond[sessionNum][trialNum];
+            var stimIdx = elicitationsStimEV[sessionNum+1][trialNum][0];
+            var choiceAgainst = elicitationsStimEV[sessionNum+1][trialNum][1];
 
-            var option1ImgIdx = contexts[conditionIdx][0];
-            var option2ImgIdx = contexts[conditionIdx][1];
+            if (sessionNum === -1) {
+                var img = trainingImg;
+            } else {
+                var img = images;
+            }
 
-            var stimIdx = option2ImgIdx;
-
-            var option1 = images[option1ImgIdx];
+            var option1 = img[stimIdx];
             option1.id = "option1";
             option1 = option1.outerHTML;
 
-            var option2 = images[option2ImgIdx];
+            var option2 = choiceBasedOption[choiceAgainst + '_' + elicitationType];
             option2.id = "option2";
             option2 = option2.outerHTML;
 
@@ -757,25 +777,38 @@ $(document).ready(function () {
 
             $('#TextBoxDiv').html(Title + Feedback + Images + myCanvas);
             var targetElement = document.body;
+            var pic1 = document.getElementById("option1");
+            var pic2 = document.getElementById("option2");
 
+            var cv1 = document.getElementById("canvas1");
+            var cv2 = document.getElementById("canvas2");
             $('#canvas1').click(function () {
                 if (clickDisabled)
                     return;
                 clickDisabled = true;
                 var choice = 1;
                 document.getElementById("canvas1").style.borderColor = "black";
+                setTimeout(function () {
+                    slideCard(pic1, cv1);
+                }, 1500);
                 next();
             });
 
             $('#canvas2').click(function () {
+                if (clickDisabled)
+                    return;
+                clickDisabled = true;
                 var choice = 1;
                 document.getElementById("canvas2").style.borderColor = "black";
+                setTimeout(function () {
+                    slideCard(pic2, cv2);
+                }, 1500);
                 next();
             });
         } else {
             var Images = '<div id = "stimrow" style="transform: translate(0%, -100%);position:relative"> ' +
-            '<div class="col-xs-1 col-md-1"></div>  <div class="col-xs-3 col-md-3">'
-             + '</div><div id = "Middle" class="col-xs-4 col-md-4">' + option1 + '</div></div>';
+                '<div class="col-xs-1 col-md-1"></div>  <div class="col-xs-3 col-md-3">'
+                + '</div><div id = "Middle" class="col-xs-4 col-md-4">' + option1 + '</div></div>';
 
             var Slider = '<div class="slidecontainer">' +
                 '<input type="range" min="-10" max="10" value="0" class="slider" id="myRange">' +
@@ -789,7 +822,7 @@ $(document).ready(function () {
             output.innerHTML = slider.value / 10; // Display the default slider value
 
             // Update the current slider value (each time you drag the slider handle)
-            slider.oninput = function() {
+            slider.oninput = function () {
                 output.innerHTML = this.value / 10;
             };
 
@@ -798,6 +831,58 @@ $(document).ready(function () {
                 next();
             };
         }
+
+        function slideCard(pic, cv) {  /* faire défiler la carte pour decouvrir le feedback */
+
+            var img = new Image();
+            img.src = pic.src;
+            img.width = pic.width;
+            img.height = pic.height;
+
+            var speed = 3; /*plus elle est basse, plus c'est rapide*/
+            var y = 0; /*décalage vertical*/
+
+            /*Programme principal*/
+
+            var dy = 10;
+            var x = 0;
+            var ctx;
+
+            img.onload = function () {
+
+                canvas = cv;
+                ctx = cv.getContext('2d');
+
+                canvas.width = img.width;
+                canvas.height = img.height;
+
+                var scroll = setInterval(draw, speed);
+
+                setTimeout(function () {
+                    pic.style.visibility = "hidden";
+                    clearInterval(scroll);
+                    ctx.clearRect(0, 0, canvas.width, canvas.height);
+                }, 1000);
+            };
+
+            function draw() {
+
+                ctx.clearRect(0, 0, canvas.width, canvas.height); /* clear the canvas*/
+
+                if (y > img.height) {
+                    y = -img.height + y;
+                }
+
+                if (y > 0) {
+                    ctx.drawImage(img, x, -img.height + y, img.width, img.height);
+                }
+
+                ctx.drawImage(img, x, y, img.width, img.height);
+
+                /*quantité à déplacer*/
+                y += dy;
+            }
+        };
 
         function next() {
             trialNum++;
