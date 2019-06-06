@@ -6,14 +6,14 @@ $(document).ready(function () {
     var expName = 'RetrieveAndCompare';
     //var language = "en"; // only en is available at the moment
     var compLink = 1;
-    var nSessions = 3;
-    var questionnaire = 1;
+    var nSessions = 2;
+    var questionnaire = 0;
 
     // Main Exp
     var nCond = 8;
     nCond--; //because of range function
     var nCondPerSession = 4;
-    var nTrialsPerCondition = 12;
+    var nTrialsPerCondition = 3;
     var nTrialsPerSession = nTrialsPerCondition * ((nCond + 1) / nSessions);
 
     var feedbackDuration = 2000;
@@ -28,8 +28,8 @@ $(document).ready(function () {
     var nTrainingImg = nCondTraining * 2;
     nCondTraining--; // because of range function
 
-    // Lotteries
-    var nTrialPerElicitation = 8*8;
+    // Elicitation
+    var nTrialPerElicitation = 8;
     // var nTrialsPerConditionLot = 2;
     // var nTrialsLotteries = (nCond + 1) * nTrialsPerConditionLot;
 
@@ -87,7 +87,7 @@ $(document).ready(function () {
 
     var map = [range(0, 3), range(0, 3)].flat();
 
-    for (let i = 0; i < nCond; i++)
+    for (let i = 0; i <= nCond; i++)
             conditions.push({
                 reward: rewards[map[i]],
                 prob: probs[map[i]]
@@ -100,7 +100,7 @@ $(document).ready(function () {
 
     // Elicitations
     // ------------------------------------------------------------------------------------------------------- //
-    var elicitationType = 0;
+    var elicitationType = 2;
     var elicitationTrainingCond = shuffle(
         Array(nTrialTrainingPerCond).fill([0, 1, 2, 3]).flat()
     );
@@ -115,10 +115,12 @@ $(document).ready(function () {
     }
 
     var expectedValue = [-0.8, -0.6, -0.4, -0.2, 0, 0.2, 0.4, 0.6, 0.8];
-    var elicitationsStim = range(0, 18);
+    var elicitationsStim = [];
+    elicitationsStim[0] = range(1, 8);
+    elicitationsStim[1] = range(9, 16);
     var elicitationsStimEV = Array(nSessions).fill([]);
     for (let i = 0; i < nSessions; i++) {
-        for (let j = 0; j < 18; j++) {
+        for (let j = 0; j < 16; j++) {
             for (let k = 0; k < expectedValue.length; k++) {
                 elicitationsStimEV[i].push(
                     [elicitationsStim[j], expectedValue[k]]
@@ -132,7 +134,7 @@ $(document).ready(function () {
     // Get stims, feedbacks, resources
     // -------------------------------------------------------------------------------------------------------- //
     var imgPath = 'images/cards_gif/';
-    var nImg = 18;
+    var nImg = 16;
     var imgExt = 'gif';
     var borderColor = "transparent";
 
@@ -187,9 +189,9 @@ $(document).ready(function () {
     var imgExt = 'jpg';
     var trainingImg = [];
     var trainingOptions = [];
-    var letters = shuffle(['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L',
-        'M', 'N', 'O', 'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z']);
-    for (let i = 0; i < letters.length; i++) {
+    var letters = ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L',
+        'M', 'N', 'O', 'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z'];
+    for (let i = 0; i < nTrainingImg; i++) {
         trainingOptions.push(i);
         trainingImg[i] = new Image();
         trainingImg[i].src = imgPath + 'stim/' + letters[i] + '.' + imgExt;
@@ -224,11 +226,39 @@ $(document).ready(function () {
 
     contexts = shuffle(contexts);
 
+    var expectedValue = [-0.8, -0.6, -0.4, -0.2, 0, 0.2, 0.4, 0.6, 0.8];
+    var elicitationsStim = [];
+    elicitationsStim[0] = [];
+    elicitationsStim[1] = [];
+    var elicitationsStimEV = Array(nSessions).fill([]);
+    var idx = 0;
+    for (let i = 0; i < nSessions; i++) {
+        for (let j = 0; j < 4; j++) {
+            elicitationsStim[i].push(contexts[idx].flat()[0]);
+            elicitationsStim[i].push(contexts[idx].flat()[1]);
+            idx = idx + 1;
+
+            for (let k = 0; k < expectedValue.length; k++) {
+                elicitationsStimEV[i].push(
+                    [elicitationsStim[i][elicitationsStim[i].length - 2], expectedValue[k]]
+                );
+                elicitationsStimEV[i].push(
+                    [elicitationsStim[i][elicitationsStim[i].length - 1], expectedValue[k]]
+                );
+            }
+        }
+        elicitationsStimEV[i] = shuffle(elicitationsStimEV[i]);
+    }
+    var elicitationsStimTraining = shuffle(range(0, nTrainingImg-1));
+
+    console.log('hy');
+    console.log(elicitationsStimTraining);
+
     // Run the experiment
     // ------------------------------------------------------------------------------------------------ //
-    playElicitation(-1, 0);
-    // getUserID();
-
+    //playElicitation(-1, 0);
+    // playSessions(0, 0);
+    getUserID();
 
     // function send(call, url, data) {
     //     $.ajax({
@@ -595,7 +625,7 @@ $(document).ready(function () {
                         $('#Bottom').empty();
                         clickDisabled = false;
                         playElicitation(-1, 0);
-                        endTrainingStartSessions();
+
                     }, 500);
                 }, feedbackDuration);
             }
@@ -732,6 +762,9 @@ $(document).ready(function () {
                 var stimIdx = elicitationsStim[sessionNum][trialNum];
                 var option1 = images[stimIdx];
             }
+
+            // console.log(trialNum);
+            // console.log(sessionNum);
 
             option1.id = "option1";
             option1 = option1.outerHTML;
@@ -906,7 +939,11 @@ $(document).ready(function () {
                         $('#Stage').empty();
                         $('#Bottom').empty();
                         clickDisabled = false;
-                        nextSession(sessionNum, trialNum);
+                        if (sessionNum === 0) {
+                            endTrainingStartSessions();
+                        } else {
+                            nextSession(sessionNum, trialNum);
+                        }
                     }, 500);
                 }, feedbackDuration);
             }
@@ -926,6 +963,8 @@ $(document).ready(function () {
 
         /*Choisir une condition*/
         var conditionIdx = expCondition[sessionNum][trialNum];
+        console.log('ConditionIDx');
+        console.log(conditionIdx);
 
         var option1ImgIdx = contexts[conditionIdx][0];
         var option2ImgIdx = contexts[conditionIdx][1];
@@ -1279,14 +1318,14 @@ $(document).ready(function () {
 
             } else {
                 trialNum = 0;
-                sessionNum++;
+
                 setTimeout(function () {
                     $('#TextBoxDiv').fadeOut(500);
                     setTimeout(function () {
                         $('#Stage').empty();
                         $('#Bottom').empty();
                         clickDisabled = false;
-                        nextSession(sessionNum, trialNum);
+                        playElicitation(sessionNum, trialNum);
                     }, 500);
                 }, feedbackDuration);
             }
