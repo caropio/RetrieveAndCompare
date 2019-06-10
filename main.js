@@ -13,7 +13,7 @@ $(document).ready(function () {
     var nCond = 8;
     nCond--; //because of range function
     var nCondPerSession = 4;
-    var nTrialsPerCondition = 3;
+    var nTrialsPerCondition = 1;
     var nTrialsPerSession = nTrialsPerCondition * ((nCond + 1) / nSessions);
 
     var feedbackDuration = 2000;
@@ -29,7 +29,7 @@ $(document).ready(function () {
     nCondTraining--; // because of range function
 
     // Elicitation
-    var nTrialPerElicitation = 8;
+
     // var nTrialsPerConditionLot = 2;
     // var nTrialsLotteries = (nCond + 1) * nTrialsPerConditionLot;
 
@@ -74,7 +74,6 @@ $(document).ready(function () {
     rewards[3] = [[-1, 1], [-1, 1]];
     probs[3] = [[0.5, 0.5], [0.5, 0.5]];
     // -------------------------------------------------------------------------------------------------- //
-
     var expCondition = [];
     var conditions = [];
 
@@ -97,40 +96,6 @@ $(document).ready(function () {
         Array(nTrialTrainingPerCond).fill([0, 1, 2, 3]).flat()
     );
 
-
-    // Elicitations
-    // ------------------------------------------------------------------------------------------------------- //
-    var elicitationType = 2;
-    var elicitationTrainingCond = shuffle(
-        Array(nTrialTrainingPerCond).fill([0, 1, 2, 3]).flat()
-    );
-
-    var nTrialPerElicitationCond = 2;
-
-    var elicitationCond = [];
-    for (let i = 0; i < nSessions; i++) {
-        elicitationCond.push(
-            Array(nTrialPerElicitationCond).fill([0, 1, 2, 3]).flat()
-        )
-    }
-
-    var expectedValue = [-0.8, -0.6, -0.4, -0.2, 0, 0.2, 0.4, 0.6, 0.8];
-    var elicitationsStim = [];
-    elicitationsStim[0] = range(1, 8);
-    elicitationsStim[1] = range(9, 16);
-    var elicitationsStimEV = Array(nSessions).fill([]);
-    for (let i = 0; i < nSessions; i++) {
-        for (let j = 0; j < 16; j++) {
-            for (let k = 0; k < expectedValue.length; k++) {
-                elicitationsStimEV[i].push(
-                    [elicitationsStim[j], expectedValue[k]]
-                );
-            }
-        }
-        elicitationsStimEV[i] = shuffle(elicitationsStimEV[i]);
-    }
-    var elicitationsStimTraining = range(0, nTrainingImg);
-
     // Get stims, feedbacks, resources
     // -------------------------------------------------------------------------------------------------------- //
     var imgPath = 'images/cards_gif/';
@@ -150,15 +115,6 @@ $(document).ready(function () {
         images[i].style.top = "0px";
     }
 
-    var choiceBasedOption = [];
-    for (let i = 0; i < expectedValue.length; i++) {
-        choiceBasedOption[expectedValue[i] + '_' + elicitationType] = new Image();
-        choiceBasedOption[expectedValue[i] + '_' + elicitationType].src = imgPath + 'stim/' + expectedValue[i] + '_' + elicitationType + '.jpg';
-        choiceBasedOption[expectedValue[i] + '_' + elicitationType].className = "img-responsive center-block";
-        choiceBasedOption[expectedValue[i] + '_' + elicitationType].style.border = "5px solid " + borderColor;
-        choiceBasedOption[expectedValue[i] + '_' + elicitationType].style.position = "relative";
-        choiceBasedOption[expectedValue[i] + '_' + elicitationType].style.top = "0px";
-    }
 
     var feedbackNames = ["empty", "0", "1", "-1", '-2', '2'];
     var feedbackImg = [];
@@ -170,19 +126,6 @@ $(document).ready(function () {
         feedbackImg[fb].style.border = "5px solid " + borderColor;
         feedbackImg[fb].style.position = "relative";
         feedbackImg[fb].style.top = "0px";
-    }
-
-    var lotteriesImg = [];
-    for (let i = 1; i <= nImg / 2; i++) {
-        for (let j = 1; j <= 2; j++) {
-            lotteriesImg[i + '_' + j] = new Image();
-            lotteriesImg[i + '_' + j].src = imgPath + 'lotteries/' + i + '_' + j + '.' + imgExt;
-            lotteriesImg[i + '_' + j].className = "img-responsive center-block";
-            lotteriesImg[i + '_' + j].style.border = "5px solid " + borderColor;
-            lotteriesImg[i + '_' + j].style.position = "relative";
-            lotteriesImg[i + '_' + j].style.top = "0px";
-        }
-
     }
 
     // Training stims
@@ -202,9 +145,31 @@ $(document).ready(function () {
     }
     trainingOptions = shuffle(trainingOptions);
 
+    // Elicitations
+    // ------------------------------------------------------------------------------------------------------- //
+    var elicitationType = 0;
+    var expectedValue = [-1, -0.8, -0.6, -0.4, -0.2, 0, 0.2, 0.4, 0.6, 0.8, 1];
+
+    if ([0, 1].includes(elicitationType)) {
+        var nTrialPerElicitation = expectedValue.length * 8;
+    } else {
+        var nTrialPerElicitation = 8;
+    }
+
+    var choiceBasedOption = [];
+    for (let i = 0; i < expectedValue.length; i++) {
+        choiceBasedOption[expectedValue[i] + '_' + elicitationType] = new Image();
+        choiceBasedOption[expectedValue[i] + '_' + elicitationType].src = imgPath + 'stim/' + expectedValue[i] + '_' + elicitationType + '.jpg';
+        choiceBasedOption[expectedValue[i] + '_' + elicitationType].className = "img-responsive center-block";
+        choiceBasedOption[expectedValue[i] + '_' + elicitationType].style.border = "5px solid " + borderColor;
+        choiceBasedOption[expectedValue[i] + '_' + elicitationType].style.position = "relative";
+        choiceBasedOption[expectedValue[i] + '_' + elicitationType].style.top = "0px";
+    }
+
     // create training contexts
     var trainingContexts = [];
     var arr = [];
+    var elicitationsStimEVTraining = [];
     (new Set(trainingCondition)).forEach(x => arr.push(x));
     let j = 0;
     for (let i = 0; i < nTrainingImg; i += 2) {
@@ -212,7 +177,13 @@ $(document).ready(function () {
             trainingOptions[i], trainingOptions[i + 1]
         ];
         j++;
+        for (let k = 0; k < expectedValue.length; k++) {
+            elicitationsStimEVTraining.push([trainingOptions[i], expectedValue[k]]);
+            elicitationsStimEVTraining.push([trainingOptions[i+1], expectedValue[k]]);
+        }
     }
+
+    elicitationsStimEVTraining = shuffle(elicitationsStimEVTraining);
 
     // Randomize
     availableOptions = shuffle(availableOptions);
@@ -226,7 +197,6 @@ $(document).ready(function () {
 
     contexts = shuffle(contexts);
 
-    var expectedValue = [-0.8, -0.6, -0.4, -0.2, 0, 0.2, 0.4, 0.6, 0.8];
     var elicitationsStim = [];
     elicitationsStim[0] = [];
     elicitationsStim[1] = [];
@@ -251,14 +221,11 @@ $(document).ready(function () {
     }
     var elicitationsStimTraining = shuffle(range(0, nTrainingImg-1));
 
-    console.log('hy');
-    console.log(elicitationsStimTraining);
-
     // Run the experiment
     // ------------------------------------------------------------------------------------------------ //
-    //playElicitation(-1, 0);
     // playSessions(0, 0);
-    getUserID();
+    // getUserID();
+    playTraining(0);
 
     // function send(call, url, data) {
     //     $.ajax({
@@ -624,7 +591,7 @@ $(document).ready(function () {
                         $('#Stage').empty();
                         $('#Bottom').empty();
                         clickDisabled = false;
-                        playElicitation(-1, 0);
+                        playElicitation(trainSess, 0);
 
                     }, 500);
                 }, feedbackDuration);
@@ -729,12 +696,14 @@ $(document).ready(function () {
 
 
         if ([0, 1].includes(elicitationType)) {
-            var stimIdx = elicitationsStimEV[sessionNum+1][trialNum][0];
-            var choiceAgainst = elicitationsStimEV[sessionNum+1][trialNum][1];
 
-            if (sessionNum === -1) {
+            if ([-1, -2].includes(sessionNum)) {
+                var stimIdx = elicitationsStimEVTraining[trialNum][0];
+                var choiceAgainst = elicitationsStimEVTraining[trialNum][1];
                 var img = trainingImg;
             } else {
+                var stimIdx = elicitationsStimEV[sessionNum][trialNum][0];
+                var choiceAgainst = elicitationsStimEV[sessionNum][trialNum][1];
                 var img = images;
             }
 
@@ -755,7 +724,7 @@ $(document).ready(function () {
             feedback2 = feedback2.outerHTML;
 
         } else {
-            if (sessionNum === -1) {
+            if ([-1, -2].includes(sessionNum)) {
                 var stimIdx = elicitationsStimTraining[trialNum];
                 var option1 = trainingImg[stimIdx];
             } else {
@@ -820,50 +789,68 @@ $(document).ready(function () {
                     return;
                 clickDisabled = true;
                 var choice = 1;
+                var reactionTime = (new Date()).getTime();
                 document.getElementById("canvas1").style.borderColor = "black";
                 setTimeout(function () {
                     slideCard(pic1, cv1);
-                }, 1500);
-                next();
+                    next();
+                }, 500);
+
             });
 
             $('#canvas2').click(function () {
                 if (clickDisabled)
                     return;
                 clickDisabled = true;
-                var choice = 1;
+                var choice = 2;
+                var reactionTime = (new Date()).getTime();
                 document.getElementById("canvas2").style.borderColor = "black";
                 setTimeout(function () {
                     slideCard(pic2, cv2);
-                }, 1500);
-                next();
+                    next();
+                }, 500);
+
             });
         } else {
             var Images = '<div id = "stimrow" style="transform: translate(0%, -100%);position:relative"> ' +
                 '<div class="col-xs-1 col-md-1"></div>  <div class="col-xs-3 col-md-3">'
                 + '</div><div id = "Middle" class="col-xs-4 col-md-4">' + option1 + '</div></div>';
 
-            var Slider = '<div class="slidecontainer">' +
-                '<input type="range" min="-10" max="10" value="0" class="slider" id="myRange">' +
-                '</div><br><div align="center"><span style="font-size: 400%" id="displayValue"></span><br><br><button id="ok" class="btn btn-default btn-lg">Ok</button></div><br><br><br><br><br><br>';
+            // var Slider = '<div class="slidecontainer">' +
+            //     '<input type="range" min="-10" max="10" value="0" class="slider" id="myRange">' +
+            //     '</div><br><div align="center"><span style="font-size: 400%" id="displayValue"></span><br><br><button id="ok" class="btn btn-default btn-lg">Ok</button></div><br><br><br><br><br><br>';
 
+            var Slider = '<main>\n' +
+                '  <form oninput="output.value = range.valueAsNumber / 10">\n' +
+                '    <h2>\n' +
+                '    </h2>\n' +
+                '    <div class="range">\n' +
+                '      <input id="slider" name="range" type="range" value="0" min="-10" max="10">\n' +
+                '      <div class="range-output">\n' +
+                '        <output class="output" name="output" for="range">\n' +
+                '          0\n' +
+                '        </output>\n' +
+                '      </div>\n' +
+                '    </div>\n' +
+                '  </form>\n' +
+                '</main>\n' +
+                '<br><br><div align="center"><button id="ok" class="btn btn-default btn-lg">Ok</button></div>';
             $('#TextBoxDiv').html(Title + Images + myCanvas + Slider);
 
-            var slider = document.getElementById("myRange");
-            var output = document.getElementById("displayValue");
-            var ok = document.getElementById("ok");
-            output.innerHTML = slider.value / 10; // Display the default slider value
+            rangeInputRun();
 
-            // Update the current slider value (each time you drag the slider handle)
-            slider.oninput = function () {
-                output.innerHTML = this.value / 10;
-            };
+            var slider = document.getElementById('slider');
+            var ok = document.getElementById("ok");
 
             ok.onclick = function () {
                 var choice = slider.value;
+                var reactionTime = (new Date()).getTime();
+
                 next();
             };
         }
+
+        var choiceTime = (new Date()).getTime();
 
         function slideCard(pic, cv) {  /* faire défiler la carte pour decouvrir le feedback */
 
@@ -917,24 +904,68 @@ $(document).ready(function () {
             }
         };
 
+        // function sendLearnDataDB(call) {
+        //         wtest = 1;
+        //
+        //         $.ajax({
+        //             type: 'POST',
+        //             data: {
+        //                 exp: expName,
+        //                 expID: expID,
+        //                 id: subID,
+        //                 test: wtest,
+        //                 trial: trialNum,
+        //                 condition: conditionIdx,
+        //                 symL: symbols[0],
+        //                 symR: symbols[1],
+        //                 choice: choice,
+        //                 correct_choice: correctChoice,
+        //                 outcome: thisReward,
+        //                 cf_outcome: otherReward,
+        //                 choice_left_right: leftRight,
+        //                 reaction_time: reactionTime - choiceTime,
+        //                 reward: sumReward,
+        //                 session: sessionNum,
+        //                 p1: -1,
+        //                 p2: -1,
+        //                 option1: option1ImgIdx,
+        //                 option2: option2ImgIdx,
+        //                 inverted: invertedPosition,
+        //                 choice_time: choiceTime - initTime
+        //             },
+        //             async: true,
+        //             url: 'php/InsertLearningDataDB.php',
+        //             /*dataType: 'json',*/
+        //             success: function (r) {
+        //
+        //                 if (r[0].ErrorNo > 0 && call + 1 < maxDBCalls) {
+        //                     sendLearnDataDB(call + 1);
+        //                 }
+        //             },
+        //             error: function (XMLHttpRequest, textStatus, errorThrown) {
+        //
+        //                 if (call + 1 < maxDBCalls) {
+        //                     sendLearnDataDB(call + 1);
+        //                 }
+        //             }
+        //         });
+        //     }
+
         function next() {
             trialNum++;
             if (trialNum < nTrialPerElicitation) {
+                $('#stimrow').fadeOut(500);
+                $('#fbrow').fadeOut(500);
+                $('#cvrow').fadeOut(500);
+                $('main').fadeOut(500);
                 setTimeout(function () {
-                    $('#stimrow').fadeOut(500);
-                    $('#fbrow').fadeOut(500);
-                    $('#cvrow').fadeOut(500);
-                    setTimeout(function () {
-                        clickDisabled = false;
-                        playElicitation(sessionNum, trialNum);
+                    clickDisabled = false;
+                    playElicitation(sessionNum, trialNum);
                     }, 500);
-                }, feedbackDuration);
-
             } else {
                 trialNum = 0;
                 sessionNum++;
-                setTimeout(function () {
-                    $('#TextBoxDiv').fadeOut(500);
+                $('#TextBoxDiv').fadeOut(500);
                     setTimeout(function () {
                         $('#Stage').empty();
                         $('#Bottom').empty();
@@ -945,7 +976,6 @@ $(document).ready(function () {
                             nextSession(sessionNum, trialNum);
                         }
                     }, 500);
-                }, feedbackDuration);
             }
         }
     }
@@ -963,8 +993,6 @@ $(document).ready(function () {
 
         /*Choisir une condition*/
         var conditionIdx = expCondition[sessionNum][trialNum];
-        console.log('ConditionIDx');
-        console.log(conditionIdx);
 
         var option1ImgIdx = contexts[conditionIdx][0];
         var option2ImgIdx = contexts[conditionIdx][1];
@@ -999,45 +1027,6 @@ $(document).ready(function () {
             ' width="620" class="img-responsive center-block"' +
             ' style="border: 5px solid transparent; position: relative; top: 0px;">';
                /* Create canevas for the slot machine effect, of the size of the images */
-
-        // var P1 = conditions[conditionIdx]['prob'][0][1];
-        // var P2 = conditions[conditionIdx]['prob'][1][1];
-        // var Mag1 = conditions[conditionIdx]['reward'][0];
-        // var Mag2 = conditions[conditionIdx]['reward'][1];
-        //
-        // p1 = conditions[conditionIdx]['prob'][0];
-        // p2 = conditions[conditionIdx]['prob'][1];
-        // r1 = conditions[conditionIdx]['reward'][0];
-        // r2 = conditions[conditionIdx]['reward'][1];
-        //
-        // if (sum(p1) === 2) {
-        //     var ev1 = p1[0] * r1[0];
-        // } else {
-        //     var ev1 = p1.reduce(
-        //         function (r, a, i) {
-        //             return r + a * r1[i]
-        //         }, 0);
-        // }
-        //
-        // if (sum(p2) === 2) {
-        //     var ev2 = p2[0] * r2[0];
-        // } else {
-        //     var ev2 = p2.reduce(
-        //         function (r, a, i) {
-        //             return r + a * r2[i]
-        //         }, 0);
-        // }
-        //
-        // if (ev1 > ev2) {
-        //     canvas2 = canvas2.replace('name="best"', '');
-        // } else if (ev1 === ev2) {
-        //     if (Math.random() > 0.5)
-        //         canvas1 = canvas1.replace('name="best"', '');
-        //     else
-        //         canvas2 = canvas2.replace('name="best"', '');
-        // } else {
-        //     canvas1 = canvas1.replace('name="best"', '');
-        // }
 
         var Images = '<div id = "stimrow" class="row" style= "transform: translate(0%, -100%);position:relative"> ' +
             '<div class="col-xs-1 col-md-1"></div>  <div class="col-xs-3 col-md-3">'
