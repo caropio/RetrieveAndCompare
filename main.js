@@ -150,7 +150,8 @@ $(document).ready(function () {
     var expectedValue = [-1, -0.8, -0.6, -0.4, -0.2, 0, 0.2, 0.4, 0.6, 0.8, 1];
 
     if ([0, 1].includes(elicitationType)) {
-        var nTrialPerElicitation = expectedValue.length * 8;
+        // var nTrialPerElicitation = expectedValue.length * 8;
+        var nTrialPerElicitation = 1;
     } else {
         var nTrialPerElicitation = 8;
     }
@@ -573,7 +574,7 @@ $(document).ready(function () {
                         $('#Stage').empty();
                         $('#Bottom').empty();
                         clickDisabled = false;
-                        playElicitation(trainSess, 0);
+                        startElicitation(trainSess, 0);
 
                     }, 500);
                 }, feedbackDuration);
@@ -1337,7 +1338,7 @@ $(document).ready(function () {
 
         createDiv('Stage', 'TextBoxDiv');
 
-        var Title = '<H2 align = "center">PHASE ' + sessionNum + '</H2>';
+        var Title = '<H2 align = "center">PHASE ' + (sessionNum+1) + '</H2>';
 
         switch (elicitationType) {
             case 1:
