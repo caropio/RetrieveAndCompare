@@ -1353,7 +1353,7 @@ $(document).ready(function () {
 
         nextBut = '"Next"';
 
-        $('#TextBoxDiv').html(Info);
+        $('#TextBoxDiv').html(Title + Info);
 
         var Buttons = '<div align="center"><input align="center" type="button"  class="btn btn-default" id="Next" value=' + nextBut + ' ></div>';
 
