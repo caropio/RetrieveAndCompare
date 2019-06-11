@@ -146,7 +146,7 @@ $(document).ready(function () {
 
     // Elicitations
     // ------------------------------------------------------------------------------------------------------- //
-    var elicitationType = 1;
+    var elicitationType = 2;
     var expectedValue = [-1, -0.8, -0.6, -0.4, -0.2, 0, 0.2, 0.4, 0.6, 0.8, 1];
 
     if ([0, 1].includes(elicitationType)) {
