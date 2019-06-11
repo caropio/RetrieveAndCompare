@@ -146,7 +146,7 @@ $(document).ready(function () {
 
     // Elicitations
     // ------------------------------------------------------------------------------------------------------- //
-    var elicitationType = 2;
+    var elicitationType = 1;
     var expectedValue = [-1, -0.8, -0.6, -0.4, -0.2, 0, 0.2, 0.4, 0.6, 0.8, 1];
 
     if ([0, 1].includes(elicitationType)) {
@@ -226,22 +226,6 @@ $(document).ready(function () {
     // getUserID();
     playTraining(0);
 
-    // function send(call, url, data) {
-    //     $.ajax({
-    //         type: 'POST',
-    //         async: true,
-    //         url: url,
-    //         data: data,
-    //         success: function (r) {
-    //             if (r[0].ErrorNo > 0 && call + 1 < maxDBCalls) {
-    //                 send(call + 1, url, data);
-    //             }
-    //         },
-    //         error: function (xhr, textStatus, err) {
-    //         },
-    //     });
-    // }
-    //
     function sendExpDataDB(call) {
 
         $.ajax({
@@ -291,7 +275,6 @@ $(document).ready(function () {
         feedback2 = feedback2.outerHTML;
 
         var Title = '<div id = "Title"><H2 align = "center"> <br><br><br><br></H2></div>';
-
 
         // Create canevas for the slot machine effect, of the size of the images
         var canvas1 = '<canvas id="canvas1" height="620"' +
@@ -374,7 +357,7 @@ $(document).ready(function () {
             if (clickDisabled)
                 return;
             clickDisabled = true;
-            fb = getReward(1);
+            var fb = getReward(1);
             document.getElementById("canvas1").style.borderColor = "black";
         });
 
@@ -382,7 +365,7 @@ $(document).ready(function () {
             if (clickDisabled)
                 return;
             clickDisabled = true;
-            fb = getReward(2);
+            var fb = getReward(2);
             document.getElementById("canvas2").style.borderColor = "black";
         });
 
@@ -1305,10 +1288,10 @@ $(document).ready(function () {
                         }
                     }
                 });
-            };
+            }
 
             return thisReward;
-        };  /* function getReward(Choice) */
+        }
 
 
         function next() {
@@ -1326,33 +1309,65 @@ $(document).ready(function () {
 
             } else {
                 trialNum = 0;
-
                 setTimeout(function () {
                     $('#TextBoxDiv').fadeOut(500);
                     setTimeout(function () {
                         $('#Stage').empty();
                         $('#Bottom').empty();
                         clickDisabled = false;
-                        playElicitation(sessionNum, trialNum);
+                        startElicitation(sessionNum, trialNum);
                     }, 500);
                 }, feedbackDuration);
             }
-        } /* function next() */
-    };  /* function playOptions(sessionNum,trialNum) */
+        }
+    }
 
     function nextSession(sessionNum, trialNum) {
-        // InsertLog(0,'learn');
+
         if (sessionNum < nSessions) {
             endSession(sessionNum, trialNum);
         } else {
             if (questionnaire) {
-                startLotteries(1);
-                //startQuestionnaire();
             } else {
                 endExperiment();
             }
         }
-    } /* function nextSession(sessionNum) */
+    }
+    function startElicitation(sessionNum) {
+
+        createDiv('Stage', 'TextBoxDiv');
+
+        var Title = '<H2 align = "center">PHASE ' + sessionNum + '</H2>';
+
+        switch (elicitationType) {
+            case 1:
+                Info = '<H3 align = "center">In each round of the second phase you have to choose'
+                + 'between one of two options displayed on either side of the screen<br>'
+                + 'You can select one of the two options with a left-click'
+                + 'In each round, one of the two options will be a symbol<br> you already met during'
+                + 'the first phase of the session. The other option will be a value<br> representing how much rewarding'
+                + ' the present option is on average.<br><br>Ready?</H3>';
+
+        }
+
+        nextBut = '"Next"';
+
+        $('#TextBoxDiv').html(Info);
+
+        var Buttons = '<div align="center"><input align="center" type="button"  class="btn btn-default" id="Next" value=' + nextBut + ' ></div>';
+
+        $('#Bottom').html(Buttons);
+
+        $('#Next').click(function () {
+            $('#TextBoxDiv').remove();
+            $('#Stage').empty();
+            $('#Bottom').empty();
+
+            playElicitation(sessionNum, 0);
+
+        })
+
+    }
 
     function endSession(sessionNum, trialNum) {
 
@@ -1388,759 +1403,6 @@ $(document).ready(function () {
             playSessions(sessionNum, trialNum);
 
         })
-    } /* function endSession(sessionNum) */
-
-    function startLotteries(pageNum) { /*text to uncomment for information*/
-
-        var nPages = 2;
-        var points = sumReward;
-        var pence = pointsToPence(points);
-        var pounds = pointsToPounds(points);
-
-        createDiv('Stage', 'TextBoxDiv');
-
-        var Title = '<H3 align = "center">PHASE 2</H3>';
-
-        switch (pageNum) {
-
-            case 1:
-                var wonlost = [' won ', ' lost '][+(points < 0)];
-                var Info = '<H3 align="center"><br>You finished the first phase of the cognitive experiment.<br>'
-                    + 'So far you have ' + wonlost + points + ' points = ' + pence + ' pence = ' + pounds + 'pounds!<br></h3><br><br>';
-                break;
-
-            case 2:
-                var Info = '<H3 align="center">You will now start the second phase of the task.<br><br>' +
-                    'Once again, you have to select one of the two options by clicking on it.<br><br>' +
-                    'The only difference is that instead of pictures, the percent chance of winning (or losing) 0, 1, 2, is now directly displayed.<br><br>' +
-                    'Click when you are ready</h3>';
-                break;
-
-            default:
-                var Info;
-                break;
-        }
-
-        $('#TextBoxDiv').html(Title + Info);
-
-        var Buttons = '<div align="center"><input align="center" type="button"  class="btn btn-default" id="Back" value="Back" >\n\
-        <input align="center" type="button"  class="btn btn-default" id="Next" value="Next" >\n\
-        <input align="center" type="button"  class="btn btn-default" id="Start" value="Start!" ></div>';
-
-        $('#Bottom').html(Buttons);
-
-        if (pageNum === 1) {
-            $('#Back').hide();
-        }
-        ;
-
-        if (pageNum === nPages) {
-            $('#Next').hide();
-        }
-        ;
-
-        if (pageNum < nPages) {
-            $('#Start').hide();
-        }
-        ;
-
-        $('#Back').click(function () {
-
-            $('#TextBoxDiv').remove();
-            $('#Stage').empty();
-            $('#Bottom').empty();
-            startLotteries(pageNum - 1);
-        });
-
-        $('#Next').click(function () {
-
-            $('#TextBoxDiv').remove();
-            $('#Stage').empty();
-            $('#Bottom').empty();
-            startLotteries(pageNum + 1);
-
-        });
-
-        $('#Start').click(function () {
-
-            $('#TextBoxDiv').remove();
-            $('#Stage').empty();
-            $('#Bottom').empty();
-
-            setTimeout(function () {
-                $('#Stage').html('<H1 align = "center">Ready...</H1>');
-                setTimeout(function () {
-                    $('#Stage').html('<H1 align = "center">Steady...</H1>');
-                    setTimeout(function () {
-                        $('#Stage').html('<H1 align = "center">Go!</H1>');
-                        setTimeout(function () {
-                            $('#Stage').empty();
-                            //playLotteries(0);
-                        }, 1000);
-                    }, 1000);
-                }, 1000);
-            }, 10);
-        });
-    }
-
-    function startReasoningTest() {
-
-        createDiv('Stage', 'TextBoxDiv');
-
-        var Title = '<H3 align = "center">QUESTIONNAIRE</H3>';
-
-        var startBut;
-
-        startBut = '"Start"';
-        var Info = '<H3 align = "center">You are now about to start the third phase.<br>' +
-            'You will see several items that vary in difficulty. Please answer as many as you can.</H3><br><br>';
-
-        $('#TextBoxDiv').html(Title + Info);
-
-        var Buttons = '<div align="center"><input align="center" type="button"  class="btn btn-default" id="Start" value=' + startBut + ' ></div>';
-
-        $('#Bottom').html(Buttons);
-
-        $('#Start').click(function () {
-
-            $('#TextBoxDiv').remove();
-            $('#Stage').empty();
-            $('#Bottom').empty();
-            playQuestionnaire_CRT(1);
-        });
-    };  /* function startQuestionnaire() */
-
-    function playQuestionnaire_CRT(questNum) {
-
-        var NumQuestions = 7; /*mettre a jour le nombre de pages (questions) via le script*/
-
-        createDiv('Stage', 'TextBoxDiv');
-
-        var Title = '<H2 align = "center"></H2>';
-        var Info;
-        var questID;
-        var itemNum;
-        var answer;
-        var answer_value;
-
-        var Question_time;
-        var Reaction_time;
-
-        var nb_skip = 7;
-
-        switch (questNum) {
-
-            case 1:
-                var Info = '<div class="row"><div class="col-xs-3 col-md-3"></div><div id = "Middle" class="col-xs-7 col-md-7"><H3>' +
-                    'A bat and a ball cost £1.10 in total. The bat costs £1.00 more than the ball. How much does the ball cost?' +
-                    '</h3><br><br></div><div class="col-xs-1 col-md-1"></div></div>';
-                var contents = new Array();
-                contents[0] = '<input type= "radio" id="3" name= "answer" value= 2> <label for="3"> 5 pence </label><br>';
-                contents[1] = '<input type= "radio" id="2" name= "answer" value= 1> <label for="2"> 10 pence </label><br>';
-                contents[2] = '<input type= "radio" id="1" name= "answer" value= 0> <label for="1"> 9 pence </label><br>';
-                contents[3] = '<input type= "radio" id="0" name= "answer" value= 0> <label for="0"> 1 pence </label><br>';
-                contents = shuffle(contents);
-                var Ticks = '<div class="row"><div class="col-xs-3 col-md-3"></div><div id = "Middle" class="col-xs-7 col-md-7">' +
-                    contents[0] + contents[1] + contents[2] + contents[3] + '<br><br><br>' +
-                    '</div><div class="col-xs-1 col-md-1"></div></div>';
-                questID = "CRT-7";
-                itemNum = 1;
-
-                break;
-
-            case 2:
-                var Info = '<div class="row"><div class="col-xs-3 col-md-3"></div><div id = "Middle" class="col-xs-7 col-md-7"><H3>' +
-                    'If it takes 5 machines 5 minutes to make 5 widgets, how long would it take 100 machines to make 100 widgets?' +
-                    '</h3><br><br></div><div class="col-xs-1 col-md-1"></div></div>';
-                var contents = new Array();
-                contents[0] = '<input type= "radio" id="3" name= "answer" value= 2> <label for="3"> 5 minutes </label><br>';
-                contents[1] = '<input type= "radio" id="2" name= "answer" value= 1> <label for="2"> 100 minutes </label><br>';
-                contents[2] = '<input type= "radio" id="1" name= "answer" value= 0> <label for="1"> 20 minutes </label><br>';
-                contents[3] = '<input type= "radio" id="0" name= "answer" value= 0> <label for="0"> 500 minutes </label><br>';
-                contents = shuffle(contents);
-                var Ticks = '<div class="row"><div class="col-xs-3 col-md-3"></div><div id = "Middle" class="col-xs-7 col-md-7">' +
-                    contents[0] + contents[1] + contents[2] + contents[3] + '<br><br><br>' +
-                    '</div><div class="col-xs-1 col-md-1"></div></div>';
-                questID = "CRT-7";
-                itemNum = 2;
-
-                break;
-
-            case 3:
-                var Info = '<div class="row"><div class="col-xs-3 col-md-3"></div><div id = "Middle" class="col-xs-7 col-md-7"><H3>' +
-                    'In a lake, there is a patch of lily pads. Every day, the patch doubles in size. If it takes 48 days for the patch to cover the entire lake, how long would it take for the patch to cover half of the lake?' +
-                    '</h3><br><br></div><div class="col-xs-1 col-md-1"></div></div>';
-                var contents = new Array();
-                contents[0] = '<input type= "radio" id="3" name= "answer" value= 2> <label for="3"> 47 days </label><br>';
-                contents[1] = '<input type= "radio" id="2" name= "answer" value= 1> <label for="2"> 24 days </label><br>';
-                contents[2] = '<input type= "radio" id="1" name= "answer" value= 0> <label for="1"> 12 days </label><br>';
-                contents[3] = '<input type= "radio" id="0" name= "answer" value= 0> <label for="0"> 36 days </label><br>';
-                contents = shuffle(contents);
-                var Ticks = '<div class="row"><div class="col-xs-3 col-md-3"></div><div id = "Middle" class="col-xs-7 col-md-7">' +
-                    contents[0] + contents[1] + contents[2] + contents[3] + '<br><br><br>' +
-                    '</div><div class="col-xs-1 col-md-1"></div></div>';
-                questID = "CRT-7";
-                itemNum = 3;
-
-                break;
-
-            case 4:
-                var Info = '<div class="row"><div class="col-xs-3 col-md-3"></div><div id = "Middle" class="col-xs-7 col-md-7"><H3>' +
-                    'If John can drink one barrel of water in 6 days, and Mary can drink one barrel of water in 12 days, how long would it take them to drink one barrel of water together?' +
-                    '</h3><br><br></div><div class="col-xs-1 col-md-1"></div></div>';
-                var contents = new Array();
-                contents[0] = '<input type= "radio" id="3" name= "answer" value= 2> <label for="3"> 4 days </label><br>';
-                contents[1] = '<input type= "radio" id="2" name= "answer" value= 1> <label for="2"> 9 days </label><br>';
-                contents[2] = '<input type= "radio" id="1" name= "answer" value= 0> <label for="1"> 12 days </label><br>';
-                contents[3] = '<input type= "radio" id="0" name= "answer" value= 0> <label for="0"> 3 days </label><br>';
-                contents = shuffle(contents);
-                var Ticks = '<div class="row"><div class="col-xs-3 col-md-3"></div><div id = "Middle" class="col-xs-7 col-md-7">' +
-                    contents[0] + contents[1] + contents[2] + contents[3] + '<br><br><br>' +
-                    '</div><div class="col-xs-1 col-md-1"></div></div>';
-                questID = "CRT-7";
-                itemNum = 4;
-
-                break;
-
-            case 5:
-                var Info = '<div class="row"><div class="col-xs-3 col-md-3"></div><div id = "Middle" class="col-xs-7 col-md-7"><H3>' +
-                    'Jerry received both the 15th highest and the 15th lowest mark in the class. How many students are in the class?' +
-                    '</h3><br><br></div><div class="col-xs-1 col-md-1"></div></div>';
-                var contents = new Array();
-                contents[0] = '<input type= "radio" id="3" name= "answer" value= 2> <label for="3"> 29 students </label><br>';
-                contents[1] = '<input type= "radio" id="2" name= "answer" value= 1> <label for="2"> 30 students </label><br>';
-                contents[2] = '<input type= "radio" id="1" name= "answer" value= 0> <label for="1"> 1 student </label><br>';
-                contents[3] = '<input type= "radio" id="0" name= "answer" value= 0> <label for="0"> 15 students </label><br>';
-                contents = shuffle(contents);
-                var Ticks = '<div class="row"><div class="col-xs-3 col-md-3"></div><div id = "Middle" class="col-xs-7 col-md-7">' +
-                    contents[0] + contents[1] + contents[2] + contents[3] + '<br><br><br>' +
-                    '</div><div class="col-xs-1 col-md-1"></div></div>';
-                questID = "CRT-7";
-                itemNum = 5;
-
-                break;
-
-            case 6:
-                var Info = '<div class="row"><div class="col-xs-3 col-md-3"></div><div id = "Middle" class="col-xs-7 col-md-7"><H3>' +
-                    'A man buys a pig for £60, sells it for £70, buys it back for £80, and sells it finally for £90. How much has he made?' +
-                    '</h3><br><br></div><div class="col-xs-1 col-md-1"></div></div>';
-                var contents = new Array();
-                contents[0] = '<input type= "radio" id="3" name= "answer" value= 2> <label for="3"> 20 pounds </label><br>';
-                contents[1] = '<input type= "radio" id="2" name= "answer" value= 1> <label for="2"> 10 pounds </label><br>';
-                contents[2] = '<input type= "radio" id="1" name= "answer" value= 0> <label for="1"> 0 pounds </label><br>';
-                contents[3] = '<input type= "radio" id="0" name= "answer" value= 0> <label for="0"> 30 pounds </label><br>';
-                contents = shuffle(contents);
-                var Ticks = '<div class="row"><div class="col-xs-3 col-md-3"></div><div id = "Middle" class="col-xs-7 col-md-7">' +
-                    contents[0] + contents[1] + contents[2] + contents[3] + '<br><br><br>' +
-                    '</div><div class="col-xs-1 col-md-1"></div></div>';
-                questID = "CRT-7";
-                itemNum = 6;
-
-                break;
-
-            case 7:
-                var Info = '<div class="row"><div class="col-xs-3 col-md-3"></div><div id = "Middle" class="col-xs-7 col-md-7"><H3>' +
-                    'Simon decided to invest £8,000 in the stock market one day early in 2008.  Six months after he invested, on July 17, the stocks he had purchased were down 50%. ' +
-                    'Fortunately for Simon, from July 17 to October 17, the stocks he had purchased went up 75%. At this point, Simon:' +
-                    '</h3><br><br></div><div class="col-xs-1 col-md-1"></div></div>';
-                var contents = new Array();
-                contents[0] = '<input type= "radio" id="3" name= "answer" value= 2> <label for="3"> has lost money. </label><br>';
-                contents[1] = '<input type= "radio" id="2" name= "answer" value= 1> <label for="2"> is ahead of where he began. </label><br>';
-                contents[2] = '<input type= "radio" id="1" name= "answer" value= 0> <label for="1"> has broken even in the stock market. </label><br>';
-                contents[3] = '<input type= "radio" id="0" name= "answer" value= 0> <label for="0"> it cannot be determined. </label><br>';
-                contents = shuffle(contents);
-                var Ticks = '<div class="row"><div class="col-xs-3 col-md-3"></div><div id = "Middle" class="col-xs-7 col-md-7">' +
-                    contents[0] + contents[1] + contents[2] + contents[3] + '<br><br><br>' +
-                    '</div><div class="col-xs-1 col-md-1"></div></div>';
-                questID = "CRT-7";
-                itemNum = 7;
-
-                break;
-
-            default:
-                break;
-        }
-        var Buttons = '<div class="row"><div class="col-xs-3 col-md-3"></div><div id = "Middle" class="col-xs-7 col-md-7">'
-            + '<input type="button"  class="btn btn-default" id="Next" value="Next" > </div><div class="col-xs-1 col-md-1"></div></div>';
-
-        $('#TextBoxDiv').html(Title + Info + Ticks);
-
-        Question_time = (new Date()).getTime();
-
-        $('#Bottom').html(Buttons);
-
-
-        $('#Next').click(function () {
-
-            if ($("input:radio:checked").length < 1) {
-                alert('Please select one answer.');
-
-            } else {
-
-                Reaction_time = (new Date()).getTime();
-                answer = parseInt($("input:radio:checked").attr('value')); //console.log(answer)
-                answer_value = $("input:radio:checked").val();
-
-                if (offline == 0) sendQuestDataDB(0);
-
-                $('#TextBoxDiv').remove();
-                $('#Stage').empty();
-                $('#Bottom').empty();
-
-                if (answer == -1) {
-                    questNum += nb_skip + 1;
-                } else {
-                    questNum++;
-                }
-
-                if (questNum <= NumQuestions) {
-                    playQuestionnaire_CRT(questNum);
-                } else {
-                    startQuestionnaire();
-                }
-            }
-            ;
-        });
-
-        function sendQuestDataDB(call) {
-
-            $.ajax({
-                type: 'POST',
-                data: {
-                    exp: expName,
-                    expID: expID,
-                    id: subID,
-                    qid: questID,
-                    qnum: 1,
-                    item: itemNum,
-                    ans: answer,
-                    val: answer_value,
-                    reaction_time: Reaction_time - Question_time
-                },
-                async: true,
-                url: 'php/InsertQuestionnaireDataDB.php',
-                /*dataType: 'json',*/
-                success: function (r) {
-
-                    if (r[0].ErrorNo > 0 && call + 1 < maxDBCalls) {
-                        sendQuestDataDB(call + 1);
-                    }
-                },
-                error: function (XMLHttpRequest, textStatus, errorThrown) {
-
-                    if (call + 1 < maxDBCalls) {
-                        sendQuestDataDB(call + 1);
-                    }
-                }
-            });
-        }
-    }
-
-    function startQuestionnaire() {
-
-        createDiv('Stage', 'TextBoxDiv');
-
-        var Title = '<H3 align = "center">QUESTIONNAIRE</H3>';
-
-        var startBut;
-
-        startBut = '"Start"'
-        var Info = '<H3 align = "center">You will now have to answer a few questions.<br><br>This won\'t take more than a few more minutes.<br><br>Your answers remain anonymous and will not be disclosed.<br><br>' +
-            'Note that the experiment will be considered completed (and the payment issued) only if the questionnaires are correctly filled.<br><br>' +
-            'Please click "Start" when you are ready.</H3><br><br>';
-
-        $('#TextBoxDiv').html(Title + Info);
-
-        var Buttons = '<div align="center"><input align="center" type="button"  class="btn btn-default" id="Start" value=' + startBut + ' ></div>';
-
-        $('#Bottom').html(Buttons);
-
-        $('#Start').click(function () {
-
-            $('#TextBoxDiv').remove();
-            $('#Stage').empty();
-            $('#Bottom').empty();
-            playQuestionnaire_SES(1);
-        });
-    }
-
-    function playQuestionnaire_SES(questNum) {
-
-        var NumQuestions = 13; /*mettre a jour le nombre de pages (questions) via le script*/
-
-        createDiv('Stage', 'TextBoxDiv');
-
-        var Title = '<H2 align = "center"></H2>';
-        var Info;
-        var questID;
-        var itemNum;
-        var answer;
-        var answer_value;
-
-        var Question_time;
-        var reactionTime;
-
-        var nb_skip = 0;
-
-        var Buttons = '<div class="row"><div class="col-xs-3 col-md-3"></div><div id = "Middle" class="col-xs-7 col-md-7">'
-            + '<input type="button"  class="btn btn-default" id="Next" value="Next" > </div><div class="col-xs-1 col-md-1"></div></div>';
-
-        switch (questNum) {
-
-            case 1:
-                var Info = '<div class="row"><div class="col-xs-3 col-md-3"></div><div id = "Middle" class="col-xs-7 col-md-7"><H3>' +
-                    'The following questions measure your perception of your childhood and your current adult life. Please indicate your agreement with these statements. Please read each statement carefully, and then indicate how much you agree with the statement.' +
-                    '</h3><br><br></div><div class="col-xs-1 col-md-1"></div></div>';
-                var Ticks = '<div class="row"><div class="col-xs-3 col-md-3"></div><div id = "Middle" class="col-xs-7 col-md-7">' +
-                    '<input type= "radio" id="1" name= "answer" value= 1> <label for="1"> I am ready. </label><br><br><br><br>' +
-                    '</div><div class="col-xs-1 col-md-1"></div></div>';
-                questID = "SES-13_instruction";
-                itemNum = 1;
-
-                break;
-
-            case 2:
-                var Info = '<div class="row"><div class="col-xs-3 col-md-3"></div><div id = "Middle" class="col-xs-7 col-md-7"><H3>' +
-                    'When I was growing up, someone in my house was always yelling at someone else.' +
-                    '</h3><br><br></div><div class="col-xs-1 col-md-1"></div></div>';
-                var Ticks = '<div class="row"><div class="col-xs-3 col-md-3"></div><div id = "Middle" class="col-xs-7 col-md-7">' +
-                    '<input type= "radio" id="1" name= "answer" value= 1> <label for="1"> 1 Strongly disagree </label><br>' +
-                    '<input type= "radio" id="2" name= "answer" value= 2> <label for="2"> 2 </label><br>' +
-                    '<input type= "radio" id="3" name= "answer" value= 3> <label for="3"> 3 </label><br>' +
-                    '<input type= "radio" id="4" name= "answer" value= 4> <label for="4"> 4 </label><br>' +
-                    '<input type= "radio" id="5" name= "answer" value= 5> <label for="5"> 5 </label><br>' +
-                    '<input type= "radio" id="6" name= "answer" value= 6> <label for="6"> 6 </label><br>' +
-                    '<input type= "radio" id="7" name= "answer" value= 7> <label for="7"> 7 </label><br>' +
-                    '<input type= "radio" id="8" name= "answer" value= 8> <label for="8"> 8 </label><br>' +
-                    '<input type= "radio" id="9" name= "answer" value= 9> <label for="9"> 9 Strongly agree </label><br><br><br><br>' +
-                    '</div><div class="col-xs-1 col-md-1"></div></div>';
-                questID = "SES-13";
-                itemNum = 1;
-
-                break;
-
-            case 3:
-                var Info = '<div class="row"><div class="col-xs-3 col-md-3"></div><div id = "Middle" class="col-xs-7 col-md-7"><H3>' +
-                    'Some of the punishments I received when I was a child now seem too harsh to me.' +
-                    '</h3><br><br></div><div class="col-xs-1 col-md-1"></div></div>';
-                var Ticks = '<div class="row"><div class="col-xs-3 col-md-3"></div><div id = "Middle" class="col-xs-7 col-md-7">' +
-                    '<input type= "radio" id="1" name= "answer" value= 1> <label for="1"> 1 Strongly disagree </label><br>' +
-                    '<input type= "radio" id="2" name= "answer" value= 2> <label for="2"> 2 </label><br>' +
-                    '<input type= "radio" id="3" name= "answer" value= 3> <label for="3"> 3 </label><br>' +
-                    '<input type= "radio" id="4" name= "answer" value= 4> <label for="4"> 4 </label><br>' +
-                    '<input type= "radio" id="5" name= "answer" value= 5> <label for="5"> 5 </label><br>' +
-                    '<input type= "radio" id="6" name= "answer" value= 6> <label for="6"> 6 </label><br>' +
-                    '<input type= "radio" id="7" name= "answer" value= 7> <label for="7"> 7 </label><br>' +
-                    '<input type= "radio" id="8" name= "answer" value= 8> <label for="8"> 8 </label><br>' +
-                    '<input type= "radio" id="9" name= "answer" value= 9> <label for="9"> 9 Strongly agree </label><br><br><br><br>' +
-                    '</div><div class="col-xs-1 col-md-1"></div></div>';
-                questID = "SES-13";
-                itemNum = 2;
-
-                break;
-
-            case 4:
-                var Info = '<div class="row"><div class="col-xs-3 col-md-3"></div><div id = "Middle" class="col-xs-7 col-md-7"><H3>' +
-                    'I guess you could say that I wasn’t treated as well as I should have been at home.' +
-                    '</h3><br><br></div><div class="col-xs-1 col-md-1"></div></div>';
-                var Ticks = '<div class="row"><div class="col-xs-3 col-md-3"></div><div id = "Middle" class="col-xs-7 col-md-7">' +
-                    '<input type= "radio" id="1" name= "answer" value= 1> <label for="1"> 1 Strongly disagree </label><br>' +
-                    '<input type= "radio" id="2" name= "answer" value= 2> <label for="2"> 2 </label><br>' +
-                    '<input type= "radio" id="3" name= "answer" value= 3> <label for="3"> 3 </label><br>' +
-                    '<input type= "radio" id="4" name= "answer" value= 4> <label for="4"> 4 </label><br>' +
-                    '<input type= "radio" id="5" name= "answer" value= 5> <label for="5"> 5 </label><br>' +
-                    '<input type= "radio" id="6" name= "answer" value= 6> <label for="6"> 6 </label><br>' +
-                    '<input type= "radio" id="7" name= "answer" value= 7> <label for="7"> 7 </label><br>' +
-                    '<input type= "radio" id="8" name= "answer" value= 8> <label for="8"> 8 </label><br>' +
-                    '<input type= "radio" id="9" name= "answer" value= 9> <label for="9"> 9 Strongly agree </label><br><br><br><br>' +
-                    '</div><div class="col-xs-1 col-md-1"></div></div>';
-                questID = "SES-13";
-                itemNum = 3;
-
-                break;
-
-            case 5:
-                var Info = '<div class="row"><div class="col-xs-3 col-md-3"></div><div id = "Middle" class="col-xs-7 col-md-7"><H3>' +
-                    'When I was younger than 10, things were often chaotic in my house.' +
-                    '</h3><br><br></div><div class="col-xs-1 col-md-1"></div></div>';
-                var Ticks = '<div class="row"><div class="col-xs-3 col-md-3"></div><div id = "Middle" class="col-xs-7 col-md-7">' +
-                    '<input type= "radio" id="1" name= "answer" value= 1> <label for="1"> 1 Strongly disagree </label><br>' +
-                    '<input type= "radio" id="2" name= "answer" value= 2> <label for="2"> 2 </label><br>' +
-                    '<input type= "radio" id="3" name= "answer" value= 3> <label for="3"> 3 </label><br>' +
-                    '<input type= "radio" id="4" name= "answer" value= 4> <label for="4"> 4 </label><br>' +
-                    '<input type= "radio" id="5" name= "answer" value= 5> <label for="5"> 5 </label><br>' +
-                    '<input type= "radio" id="6" name= "answer" value= 6> <label for="6"> 6 </label><br>' +
-                    '<input type= "radio" id="7" name= "answer" value= 7> <label for="7"> 7 </label><br>' +
-                    '<input type= "radio" id="8" name= "answer" value= 8> <label for="8"> 8 </label><br>' +
-                    '<input type= "radio" id="9" name= "answer" value= 9> <label for="9"> 9 Strongly agree </label><br><br><br><br>' +
-                    '</div><div class="col-xs-1 col-md-1"></div></div>';
-                questID = "SES-13";
-                itemNum = 4;
-
-                break;
-
-            case 6:
-                var Info = '<div class="row"><div class="col-xs-3 col-md-3"></div><div id = "Middle" class="col-xs-7 col-md-7"><H3>' +
-                    'When I was younger than 10, people often moved in and out of my house on a pretty random basis.' +
-                    '</h3><br><br></div><div class="col-xs-1 col-md-1"></div></div>';
-                var Ticks = '<div class="row"><div class="col-xs-3 col-md-3"></div><div id = "Middle" class="col-xs-7 col-md-7">' +
-                    '<input type= "radio" id="1" name= "answer" value= 1> <label for="1"> 1 Strongly disagree </label><br>' +
-                    '<input type= "radio" id="2" name= "answer" value= 2> <label for="2"> 2 </label><br>' +
-                    '<input type= "radio" id="3" name= "answer" value= 3> <label for="3"> 3 </label><br>' +
-                    '<input type= "radio" id="4" name= "answer" value= 4> <label for="4"> 4 </label><br>' +
-                    '<input type= "radio" id="5" name= "answer" value= 5> <label for="5"> 5 </label><br>' +
-                    '<input type= "radio" id="6" name= "answer" value= 6> <label for="6"> 6 </label><br>' +
-                    '<input type= "radio" id="7" name= "answer" value= 7> <label for="7"> 7 </label><br>' +
-                    '<input type= "radio" id="8" name= "answer" value= 8> <label for="8"> 8 </label><br>' +
-                    '<input type= "radio" id="9" name= "answer" value= 9> <label for="9"> 9 Strongly agree </label><br><br><br><br>' +
-                    '</div><div class="col-xs-1 col-md-1"></div></div>';
-                questID = "SES-13";
-                itemNum = 5;
-
-                break;
-
-            case 7:
-                var Info = '<div class="row"><div class="col-xs-3 col-md-3"></div><div id = "Middle" class="col-xs-7 col-md-7"><H3>' +
-                    'When I was younger than 10, I had a hard time knowing what my parents or other people in my house were going to say or do from day-to-day.' +
-                    '</h3><br><br></div><div class="col-xs-1 col-md-1"></div></div>';
-                var Ticks = '<div class="row"><div class="col-xs-3 col-md-3"></div><div id = "Middle" class="col-xs-7 col-md-7">' +
-                    '<input type= "radio" id="1" name= "answer" value= 1> <label for="1"> 1 Strongly disagree </label><br>' +
-                    '<input type= "radio" id="2" name= "answer" value= 2> <label for="2"> 2 </label><br>' +
-                    '<input type= "radio" id="3" name= "answer" value= 3> <label for="3"> 3 </label><br>' +
-                    '<input type= "radio" id="4" name= "answer" value= 4> <label for="4"> 4 </label><br>' +
-                    '<input type= "radio" id="5" name= "answer" value= 5> <label for="5"> 5 </label><br>' +
-                    '<input type= "radio" id="6" name= "answer" value= 6> <label for="6"> 6 </label><br>' +
-                    '<input type= "radio" id="7" name= "answer" value= 7> <label for="7"> 7 </label><br>' +
-                    '<input type= "radio" id="8" name= "answer" value= 8> <label for="8"> 8 </label><br>' +
-                    '<input type= "radio" id="9" name= "answer" value= 9> <label for="9"> 9 Strongly agree </label><br><br><br><br>' +
-                    '</div><div class="col-xs-1 col-md-1"></div></div>';
-                questID = "SES-13";
-                itemNum = 6;
-
-                break;
-
-            case 8:
-                var Info = '<div class="row"><div class="col-xs-3 col-md-3"></div><div id = "Middle" class="col-xs-7 col-md-7"><H3>' +
-                    'When I was younger than 10, my family usually had enough money for things when I was growing up.' +
-                    '</h3><br><br></div><div class="col-xs-1 col-md-1"></div></div>';
-                var Ticks = '<div class="row"><div class="col-xs-3 col-md-3"></div><div id = "Middle" class="col-xs-7 col-md-7">' +
-                    '<input type= "radio" id="1" name= "answer" value= 1> <label for="1"> 1 Strongly disagree </label><br>' +
-                    '<input type= "radio" id="2" name= "answer" value= 2> <label for="2"> 2 </label><br>' +
-                    '<input type= "radio" id="3" name= "answer" value= 3> <label for="3"> 3 </label><br>' +
-                    '<input type= "radio" id="4" name= "answer" value= 4> <label for="4"> 4 </label><br>' +
-                    '<input type= "radio" id="5" name= "answer" value= 5> <label for="5"> 5 </label><br>' +
-                    '<input type= "radio" id="6" name= "answer" value= 6> <label for="6"> 6 </label><br>' +
-                    '<input type= "radio" id="7" name= "answer" value= 7> <label for="7"> 7 </label><br>' +
-                    '<input type= "radio" id="8" name= "answer" value= 8> <label for="8"> 8 </label><br>' +
-                    '<input type= "radio" id="9" name= "answer" value= 9> <label for="9"> 9 Strongly agree </label><br><br><br><br>' +
-                    '</div><div class="col-xs-1 col-md-1"></div></div>';
-                questID = "SES-13";
-                itemNum = 7;
-
-                break;
-
-            case 9:
-                var Info = '<div class="row"><div class="col-xs-3 col-md-3"></div><div id = "Middle" class="col-xs-7 col-md-7"><H3>' +
-                    'When I was younger than 10, I grew up in a relatively wealthy neighborhood.' +
-                    '</h3><br><br></div><div class="col-xs-1 col-md-1"></div></div>';
-                var Ticks = '<div class="row"><div class="col-xs-3 col-md-3"></div><div id = "Middle" class="col-xs-7 col-md-7">' +
-                    '<input type= "radio" id="1" name= "answer" value= 1> <label for="1"> 1 Strongly disagree </label><br>' +
-                    '<input type= "radio" id="2" name= "answer" value= 2> <label for="2"> 2 </label><br>' +
-                    '<input type= "radio" id="3" name= "answer" value= 3> <label for="3"> 3 </label><br>' +
-                    '<input type= "radio" id="4" name= "answer" value= 4> <label for="4"> 4 </label><br>' +
-                    '<input type= "radio" id="5" name= "answer" value= 5> <label for="5"> 5 </label><br>' +
-                    '<input type= "radio" id="6" name= "answer" value= 6> <label for="6"> 6 </label><br>' +
-                    '<input type= "radio" id="7" name= "answer" value= 7> <label for="7"> 7 </label><br>' +
-                    '<input type= "radio" id="8" name= "answer" value= 8> <label for="8"> 8 </label><br>' +
-                    '<input type= "radio" id="9" name= "answer" value= 9> <label for="9"> 9 Strongly agree </label><br><br><br><br>' +
-                    '</div><div class="col-xs-1 col-md-1"></div></div>';
-                questID = "SES-13";
-                itemNum = 8;
-
-                break;
-
-            case 10:
-                var Info = '<div class="row"><div class="col-xs-3 col-md-3"></div><div id = "Middle" class="col-xs-7 col-md-7"><H3>' +
-                    'When I was younger than 10, I felt relatively wealthy compared to the other kids in my school.' +
-                    '</h3><br><br></div><div class="col-xs-1 col-md-1"></div></div>';
-                var Ticks = '<div class="row"><div class="col-xs-3 col-md-3"></div><div id = "Middle" class="col-xs-7 col-md-7">' +
-                    '<input type= "radio" id="1" name= "answer" value= 1> <label for="1"> 1 Strongly disagree </label><br>' +
-                    '<input type= "radio" id="2" name= "answer" value= 2> <label for="2"> 2 </label><br>' +
-                    '<input type= "radio" id="3" name= "answer" value= 3> <label for="3"> 3 </label><br>' +
-                    '<input type= "radio" id="4" name= "answer" value= 4> <label for="4"> 4 </label><br>' +
-                    '<input type= "radio" id="5" name= "answer" value= 5> <label for="5"> 5 </label><br>' +
-                    '<input type= "radio" id="6" name= "answer" value= 6> <label for="6"> 6 </label><br>' +
-                    '<input type= "radio" id="7" name= "answer" value= 7> <label for="7"> 7 </label><br>' +
-                    '<input type= "radio" id="8" name= "answer" value= 8> <label for="8"> 8 </label><br>' +
-                    '<input type= "radio" id="9" name= "answer" value= 9> <label for="9"> 9 Strongly agree </label><br><br><br><br>' +
-                    '</div><div class="col-xs-1 col-md-1"></div></div>';
-                questID = "SES-13";
-                itemNum = 9;
-
-                break;
-
-            case 11:
-                var Info = '<div class="row"><div class="col-xs-3 col-md-3"></div><div id = "Middle" class="col-xs-7 col-md-7"><H3>' +
-                    'Now as an adult, I have enough money to buy things I want.' +
-                    '</h3><br><br></div><div class="col-xs-1 col-md-1"></div></div>';
-                var Ticks = '<div class="row"><div class="col-xs-3 col-md-3"></div><div id = "Middle" class="col-xs-7 col-md-7">' +
-                    '<input type= "radio" id="1" name= "answer" value= 1> <label for="1"> 1 Strongly disagree </label><br>' +
-                    '<input type= "radio" id="2" name= "answer" value= 2> <label for="2"> 2 </label><br>' +
-                    '<input type= "radio" id="3" name= "answer" value= 3> <label for="3"> 3 </label><br>' +
-                    '<input type= "radio" id="4" name= "answer" value= 4> <label for="4"> 4 </label><br>' +
-                    '<input type= "radio" id="5" name= "answer" value= 5> <label for="5"> 5 </label><br>' +
-                    '<input type= "radio" id="6" name= "answer" value= 6> <label for="6"> 6 </label><br>' +
-                    '<input type= "radio" id="7" name= "answer" value= 7> <label for="7"> 7 </label><br>' +
-                    '<input type= "radio" id="8" name= "answer" value= 8> <label for="8"> 8 </label><br>' +
-                    '<input type= "radio" id="9" name= "answer" value= 9> <label for="9"> 9 Strongly agree </label><br><br><br><br>' +
-                    '</div><div class="col-xs-1 col-md-1"></div></div>';
-                questID = "SES-13";
-                itemNum = 10;
-
-                break;
-
-            case 12:
-                var Info = '<div class="row"><div class="col-xs-3 col-md-3"></div><div id = "Middle" class="col-xs-7 col-md-7"><H3>' +
-                    'Now as an adult, I don\'t need to worry too much about paying my bills.' +
-                    '</h3><br><br></div><div class="col-xs-1 col-md-1"></div></div>';
-                var Ticks = '<div class="row"><div class="col-xs-3 col-md-3"></div><div id = "Middle" class="col-xs-7 col-md-7">' +
-                    '<input type= "radio" id="1" name= "answer" value= 1> <label for="1"> 1 Strongly disagree </label><br>' +
-                    '<input type= "radio" id="2" name= "answer" value= 2> <label for="2"> 2 </label><br>' +
-                    '<input type= "radio" id="3" name= "answer" value= 3> <label for="3"> 3 </label><br>' +
-                    '<input type= "radio" id="4" name= "answer" value= 4> <label for="4"> 4 </label><br>' +
-                    '<input type= "radio" id="5" name= "answer" value= 5> <label for="5"> 5 </label><br>' +
-                    '<input type= "radio" id="6" name= "answer" value= 6> <label for="6"> 6 </label><br>' +
-                    '<input type= "radio" id="7" name= "answer" value= 7> <label for="7"> 7 </label><br>' +
-                    '<input type= "radio" id="8" name= "answer" value= 8> <label for="8"> 8 </label><br>' +
-                    '<input type= "radio" id="9" name= "answer" value= 9> <label for="9"> 9 Strongly agree </label><br><br><br><br>' +
-                    '</div><div class="col-xs-1 col-md-1"></div></div>';
-                questID = "SES-13";
-                itemNum = 11;
-
-                break;
-
-            case 13:
-                var Info = '<div class="row"><div class="col-xs-3 col-md-3"></div><div id = "Middle" class="col-xs-7 col-md-7"><H3>' +
-                    'Now as an adult, I don\'t think I\'ll have to worry about money too much in the future.' +
-                    '</h3><br><br></div><div class="col-xs-1 col-md-1"></div></div>';
-                var Ticks = '<div class="row"><div class="col-xs-3 col-md-3"></div><div id = "Middle" class="col-xs-7 col-md-7">' +
-                    '<input type= "radio" id="1" name= "answer" value= 1> <label for="1"> 1 Strongly disagree </label><br>' +
-                    '<input type= "radio" id="2" name= "answer" value= 2> <label for="2"> 2 </label><br>' +
-                    '<input type= "radio" id="3" name= "answer" value= 3> <label for="3"> 3 </label><br>' +
-                    '<input type= "radio" id="4" name= "answer" value= 4> <label for="4"> 4 </label><br>' +
-                    '<input type= "radio" id="5" name= "answer" value= 5> <label for="5"> 5 </label><br>' +
-                    '<input type= "radio" id="6" name= "answer" value= 6> <label for="6"> 6 </label><br>' +
-                    '<input type= "radio" id="7" name= "answer" value= 7> <label for="7"> 7 </label><br>' +
-                    '<input type= "radio" id="8" name= "answer" value= 8> <label for="8"> 8 </label><br>' +
-                    '<input type= "radio" id="9" name= "answer" value= 9> <label for="9"> 9 Strongly agree </label><br><br><br><br>' +
-                    '</div><div class="col-xs-1 col-md-1"></div></div>';
-                questID = "SES-13";
-                itemNum = 12;
-
-                break;
-
-            case 14:
-                var Info = '<div class="row"><div class="col-xs-3 col-md-3"></div><div id = "Middle" class="col-xs-7 col-md-7"><H3>' +
-                    'Think of this ladder as representing where people stand in their communities. ' +
-                    'People define community in different ways: please define it in whatever way is most meaningful to you.<br>' +
-                    'At the top of the ladder are the people who have the highest standing in their community.' +
-                    'At the bottom are the people who have the lowest standing in their community.<br><br>' +
-                    'Where would you place yourself on this ladder?' +
-                    '</h3><br><br></div><div class="col-xs-1 col-md-1"></div></div>';
-                var Ticks = '<div class="row"><div class="col-xs-3 col-md-3"></div><div id = "Middle" class="col-xs-7 col-md-7">' +
-                    '<input type= "radio" id="10" name= "answer" value= 10> <label for="10"> 10 Top - highest standing </label><br>' +
-                    '<input type= "radio" id="9"  name= "answer" value= 9>  <label for="9"> 9 </label><br>' +
-                    '<input type= "radio" id="8"  name= "answer" value= 8>  <label for="8"> 8 </label><br>' +
-                    '<input type= "radio" id="7"  name= "answer" value= 7>  <label for="7"> 7 </label><br>' +
-                    '<input type= "radio" id="6"  name= "answer" value= 6>  <label for="6"> 6 </label><br>' +
-                    '<input type= "radio" id="5"  name= "answer" value= 5>  <label for="5"> 5 </label><br>' +
-                    '<input type= "radio" id="4"  name= "answer" value= 4>  <label for="4"> 4 </label><br>' +
-                    '<input type= "radio" id="3"  name= "answer" value= 3>  <label for="3"> 3 </label><br>' +
-                    '<input type= "radio" id="2"  name= "answer" value= 2>  <label for="2"> 2 </label><br>' +
-                    '<input type= "radio" id="1"  name= "answer" value= 1>  <label for="1"> 1 Bottom - lower standing </label><br><br><br><br>' +
-                    '</div><div class="col-xs-1 col-md-1"></div></div>';
-                questID = "SES-13";
-                itemNum = 13;
-
-                break;
-            default:
-
-                break;
-
-        }
-
-        $('#TextBoxDiv').html(Title + Info + Ticks);
-
-        Question_time = (new Date()).getTime();
-
-        $('#Bottom').html(Buttons);
-
-
-        $('#Next').click(function () {
-
-            if ($("input:radio:checked").length < 1) {
-
-                alert('Please select one answer.');
-
-            } else {
-
-                reactionTime = (new Date()).getTime();
-                answer = parseInt($("input:radio:checked").attr('id')); //console.log(answer)
-                answer_value = $("input:radio:checked").val();
-
-                if (offline === 0) sendQuestDataDB(0);
-
-                $('#TextBoxDiv').remove();
-                $('#Stage').empty();
-                $('#Bottom').empty();
-
-                if (answer === -1) {
-                    questNum += nb_skip + 1;
-                } else {
-                    questNum++;
-                }
-
-                if (questNum <= NumQuestions + 1) {
-                    playQuestionnaire_SES(questNum);
-                } else {
-                    endExperiment();
-                }
-            }
-            ;
-        });
-
-        function sendQuestDataDB(call) {
-
-            $.ajax({
-                type: 'POST',
-                data: {
-                    exp: expName,
-                    expID: expID,
-                    id: subID,
-                    qid: questID,
-                    qnum: 5,
-                    item: itemNum,
-                    ans: answer,
-                    val: answer_value,
-                    reaction_time: reactionTime - Question_time
-                },
-                async: true,
-                url: 'php/InsertQuestionnaireDataDB.php',
-                /*dataType: 'json',*/
-                success: function (r) {
-
-                    if (r[0].ErrorNo > 0 && call + 1 < maxDBCalls) {
-                        sendQuestDataDB(call + 1);
-                    }
-                },
-                error: function (XMLHttpRequest, textStatus, errorThrown) {
-
-                    if (call + 1 < maxDBCalls) {
-                        sendQuestDataDB(call + 1);
-                    }
-                }
-            });
-        }
     }
 
     function endExperiment() {
@@ -2180,7 +1442,7 @@ $(document).ready(function () {
 
         $('#toConsent').click(function () {
 
-            if (document.getElementById('textbox_id').value != '') {
+            if (document.getElementById('textbox_id').value !== '') {
 
                 subID = document.getElementById('textbox_id').value;
                 $('#TextBoxDiv').remove();
@@ -2250,7 +1512,7 @@ $(document).ready(function () {
 
     function instructions(pageNum=1) {
 
-        var nPages = 5;/*number of pages*/
+        var nPages = 5;
 
         createDiv('Stage', 'TextBoxDiv');
 
@@ -2259,40 +1521,41 @@ $(document).ready(function () {
         switch (pageNum) {
 
             case 1:
-                var Info = '<H3 align = "center">This experiment is composed of four phases.<br><br>' +
-                    'The first and the second phases consist in performing a cognitive test.<br><br>' +
-                    'The third phase is composed of questions assessing reasoning.<br><br>' +
-                    'The final phase is a questionnaire about your perceived economic status.<br><br> </H3>';
+                var Info = '<H3 align = "center">This experiment is composed of four phases.<br><br>'
+                    + 'All phases consists in a cognitive test<br><br>'
+                    + 'The first and the third phase will last approximately ? minutes and include '
+                    + nTrialsPerSession + ' rounds.<br><br>'
+                    + 'The second and the fourth phase will last approximately ? minutes and include '
+                    + nTrialPerElicitation + ' rounds.<br><br> </H3>';
                 break;
 
             case 2:
-                var Info = '<H3 align = "center">In the cognitive experiment, your final payoff will depend on your choices.<br><br>'
-                    + 'The game is divided into 3 sessions, each of which will last approximately 8 minutes and include 60 rounds.<br><br>'
-                    + 'Before the first session there will be a short training session of about 15 rounds.<br><br>'
+                var Info = '<H3 align = "center">In addition of the fixed compensation,'
+                    + ' you will receive a bonus depending on your choices.<br><br>'
+                    + 'Before the first phase there will be a short training session of about ' + nTrainingTrials + ' rounds.<br><br>'
                     + 'The word "ready" will be displayed before the game starts.<br><br>'
                 break;
 
             case 3:
-                var Info = '<H3 align = "center">In each round you have to choose between one of two symbols displayed on either side of the screen.<br><br>'
+                var Info = '<H3 align = "center">In each round of the training you have to choose between one of two symbols displayed on either side of the screen.<br><br>'
                     + 'You can select one of the two symbols with a left-click.'
                     + 'After a choice, you can win/lose the following outcomes:<br><br>'
-                    + '-1 point = -7.5 pence<br>-2 points = -15 pence<br>'
-                    + '0 point = 0 pence<br>1 point = 7.5 pence<br>2 points = 15 pence<br><br>'
-                    + 'Across the two phases of the cognitive experiment, you can win up to 33 points = 2.47 pounds.<br><br></H3>';
+                    + '-1 point = ? pence<br>-1 points = ? pence<br>'
+                    + 'Across the two phases of the cognitive experiment, you can win up to ? points = ? pounds.<br><br></H3>';
                 break;
 
             case 4:
                 var Info = '<H3 align = "center">The outcome of your choice will appear in the location of the symbol you chose.<br><br>'
                     + 'The different symbols are most of the time not equal in terms of outcome: in most trials of the experiment<br><br>'
                     + 'one is in average more advantageous (‘lucky’) compared to the other in terms of both points to be won, as well as points not to be lost.<br><br>'
-                    + 'Your task is to find out, by trial and error, which is the most advantageous stimulus and win as many points as possible,'
-                    + 'even if it’s not possible to win points on every round. '
+                    + 'Your task is to find out, by trial and error, which is the most advantageous symbol and win as many points as possible,'
+                    + 'even if it’s not possible to win points on every round.'
                 break;
 
             case 5:
                 var Info = '<H3 align = "center">At the end of the experiment you will know the total amount of points you won.<br><br>'
                     + 'The points won during the experiment will be translated into actual money, which will affect your final payment.<br><br>'
-                    + 'Since the total number of trials is fixed, your final payoff depends only your capacity to identify the advantageous stimuli and not on your rapidity.<br><br>'
+                    + 'Since the total number of trials is fixed, your final payoff depends only your capacity to identify the advantageous symbol and not on your rapidity.<br><br>'
                     + 'Let\'s begin with a training!<br><br>'
                     + '(points won during the training do not count for the final payoff)<br><br></H3>';
                 break;
