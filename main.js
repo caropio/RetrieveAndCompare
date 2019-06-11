@@ -777,13 +777,34 @@ $(document).ready(function () {
                 + canvas1 + '</div><div id = "Middle" class="col-xs-4 col-md-4"></div><div class="col-xs-3 col-md-3">'
                 + canvas2 + '</div><div class="col-xs-1 col-md-1"></div></div>';
 
+            var invertedPosition = +(Math.random() < 0.5);
+            //var symbols = [option1ImgIdx, option2ImgIdx];
+
+            if (invertedPosition) {
+
+                var Images = '<div id = "stimrow" class="row" style= "transform: translate(0%, -100%);position:relative">' +
+                    ' <div class="col-xs-1 col-md-1"></div>  <div class="col-xs-3 col-md-3">' + option2 + '</div>' +
+                    '<div id = "Middle" class="col-xs-4 col-md-4"></div><div class="col-xs-3 col-md-3">' + option1 +
+                    '</div><div class="col-xs-1 col-md-1"></div></div>';
+                var Feedback = '<div id = "fbrow" class="row" style= "transform: translate(0%, 0%);position:relative">' +
+                    ' <div class="col-xs-1 col-md-1"></div>  <div class="col-xs-3 col-md-3">' + feedback2 + '</div><div id = "Middle" class="col-xs-4 col-md-4">' +
+                    '</div><div class="col-xs-3 col-md-3">' + feedback1 + '</div><div class="col-xs-1 col-md-1"></div></div>';
+                var myCanvas = '<div id = "cvrow" class="row" style= "transform: translate(0%, -200%);position:relative">' +
+                    '    <div class="col-xs-1 col-md-1"></div>  <div class="col-xs-3 col-md-3">' + canvas2 + '</div>' +
+                    '<div id = "Middle" class="col-xs-4 col-md-4"></div><div class="col-xs-3 col-md-3">' + canvas1 + '</div>' +
+                    '<div class="col-xs-1 col-md-1"></div></div>';
+
+            var symbols = [option2ImgIdx, option1ImgIdx];
+            }
             $('#TextBoxDiv').html(Title + Feedback + Images + myCanvas);
+
             var targetElement = document.body;
             var pic1 = document.getElementById("option1");
             var pic2 = document.getElementById("option2");
 
             var cv1 = document.getElementById("canvas1");
             var cv2 = document.getElementById("canvas2");
+
             $('#canvas1').click(function () {
                 if (clickDisabled)
                     return;
