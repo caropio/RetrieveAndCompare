@@ -794,7 +794,6 @@ $(document).ready(function () {
                     '<div id = "Middle" class="col-xs-4 col-md-4"></div><div class="col-xs-3 col-md-3">' + canvas1 + '</div>' +
                     '<div class="col-xs-1 col-md-1"></div></div>';
 
-            var symbols = [option2ImgIdx, option1ImgIdx];
             }
             $('#TextBoxDiv').html(Title + Feedback + Images + myCanvas);
 
