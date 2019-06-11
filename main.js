@@ -115,7 +115,6 @@ $(document).ready(function () {
         images[i].style.top = "0px";
     }
 
-
     var feedbackNames = ["empty", "0", "1", "-1", '-2', '2'];
     var feedbackImg = [];
     for (var i = 0; i < feedbackNames.length; i++) {
@@ -147,7 +146,7 @@ $(document).ready(function () {
 
     // Elicitations
     // ------------------------------------------------------------------------------------------------------- //
-    var elicitationType = 0;
+    var elicitationType = 1;
     var expectedValue = [-1, -0.8, -0.6, -0.4, -0.2, 0, 0.2, 0.4, 0.6, 0.8, 1];
 
     if ([0, 1].includes(elicitationType)) {
