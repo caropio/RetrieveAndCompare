@@ -574,7 +574,7 @@ $(document).ready(function () {
                         $('#Stage').empty();
                         $('#Bottom').empty();
                         clickDisabled = false;
-                        startElicitation(0, 0);
+                        startElicitation(0, true);
 
                     }, 500);
                 }, feedbackDuration);
@@ -714,9 +714,6 @@ $(document).ready(function () {
                 var stimIdx = elicitationsStim[sessionNum][trialNum];
                 var option1 = images[stimIdx];
             }
-
-            // console.log(trialNum);
-            // console.log(sessionNum);
 
             option1.id = "option1";
             option1 = option1.outerHTML;
@@ -1018,10 +1015,8 @@ $(document).ready(function () {
 
         var Title = '<div id = "Title"><H2 align = "center"> <br><br><br><br></H2></div>';
 
-        // var Count = '<div id = "Count"><H3 align = "center">Your current amount: ' + parseInt(sumReward) + ' points<br><br><br><br></H3><div>';
 
         // Create canevas for the slot machine effect, of the size of the images
-
         var canvas1 = '<canvas id="canvas1" height="620"' +
             ' width="620" class="img-responsive center-block"' +
             ' style="border: 5px solid transparent; position: relative; top: 0px;">';
@@ -1334,20 +1329,35 @@ $(document).ready(function () {
             }
         }
     }
-    function startElicitation(sessionNum) {
+    function startElicitation(sessionNum, training=false) {
 
         createDiv('Stage', 'TextBoxDiv');
 
-        var Title = '<H2 align = "center">PHASE ' + (sessionNum+1) + '</H2>';
+        if (training) {
+            var Title = '<H2 align = "center">TRAINING ' + '</H2><br>';
+            sessionNum = -1;
+        } else {
+            var Title = '<H2 align = "center">PHASE ' + (sessionNum+2) + '</H2><br>';
+        }
 
         switch (elicitationType) {
             case 1:
-                Info = '<H3 align = "center">In each round of the second phase you have to choose '
-                + 'between one of two options displayed on either side of the screen<br>'
-                + 'You can select one of the two options with a left-click '
+                var p = '';
+                if (sessionNum === 0)
+                    var n = 'the second';
+                if (sessionNum === 1)
+                    var n = 'the fourth';
+                if (sessionNum === -1) {
+                    var n = 'this';
+                    var p = 'This is a training phase, the results do not count for the final payoff.';
+                }
+
+                Info = '<H3 align = "center">In each round of ' + n + ' phase you have to choose<br> '
+                + 'between one of two options displayed on either side of the screen<br><br>'
+                + 'You can select one of the two options with a left-click<br><br> '
                 + 'In each round, one of the two options will be a symbol<br> you already met during '
-                + 'the first phase of the session. The other option will be a value<br> representing how much rewarding '
-                + 'the present option is on average.<br><br>Ready?</H3>';
+                + 'the previous phase. The other option will be a value<br> representing how much rewarding '
+                + 'the present option is on average.<br><br>' + p + '<br>Ready? <br></H3>';
 
         }
 
@@ -1355,7 +1365,7 @@ $(document).ready(function () {
 
         $('#TextBoxDiv').html(Title + Info);
 
-        var Buttons = '<div align="center"><input align="center" type="button"  class="btn btn-default" id="Next" value=' + nextBut + ' ></div>';
+        var Buttons = '<div align="center"><input align="center" type="button" class="btn btn-default" id="Next" value=' + nextBut + ' ></div>';
 
         $('#Bottom').html(Buttons);
 
@@ -1363,11 +1373,8 @@ $(document).ready(function () {
             $('#TextBoxDiv').remove();
             $('#Stage').empty();
             $('#Bottom').empty();
-
             playElicitation(sessionNum, 0);
-
         })
-
     }
 
     function endSession(sessionNum, trialNum) {
@@ -1389,10 +1396,10 @@ $(document).ready(function () {
             ' pence = ' + pounds + ' pounds!<br><br> Click when you are ready to continue';
         nextBut = '"Next"';
 
-
         $('#TextBoxDiv').html(Info);
 
-        var Buttons = '<div align="center"><input align="center" type="button"  class="btn btn-default" id="Next" value=' + nextBut + ' ></div>';
+        var Buttons = '<div align="center"><input align="center" type="button"  class="btn btn-default" id="Next" value='
+            + nextBut + ' ></div>';
 
         $('#Bottom').html(Buttons);
 
