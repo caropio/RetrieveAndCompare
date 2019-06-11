@@ -966,7 +966,6 @@ $(document).ready(function () {
                     playElicitation(sessionNum, trialNum);
                     }, 500);
             } else {
-                alert('Test');
                 trialNum = 0;
                 sessionNum++;
                 $('#TextBoxDiv').fadeOut(500);
