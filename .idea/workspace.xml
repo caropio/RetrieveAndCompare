@@ -12,7 +12,7 @@
     <option name="LAST_RESOLUTION" value="IGNORE" />
   </component>
   <component name="FileEditorManager">
-    <splitter split-orientation="horizontal" split-proportion="0.6065389">
+    <splitter split-orientation="horizontal" split-proportion="0.80852777">
       <split-first>
         <leaf SIDE_TABS_SIZE_LIMIT_KEY="225">
           <file pinned="false" current-in-tab="false">
@@ -47,8 +47,8 @@
           <file pinned="false" current-in-tab="true">
             <entry file="file://$PROJECT_DIR$/main.js">
               <provider selected="true" editor-type-id="text-editor">
-                <state relative-caret-position="6022">
-                  <caret line="2558" selection-start-line="2558" selection-end-line="2558" />
+                <state relative-caret-position="172">
+                  <caret line="2233" column="41" selection-start-line="2233" selection-start-column="41" selection-end-line="2233" selection-end-column="41" />
                   <folding>
                     <element signature="n#style#0;n#canvas#0;n#!!top" expanded="true" />
                     <element signature="n#style#0;n#canvas#0;n#!!top" expanded="true" />
@@ -263,12 +263,12 @@
       <workItem from="1559499856479" duration="17823000" />
       <workItem from="1559752161417" duration="7217000" />
       <workItem from="1559833811951" duration="8793000" />
-      <workItem from="1560176209406" duration="11273000" />
+      <workItem from="1560176209406" duration="11629000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="169003000" />
+    <option name="totallyTimeSpent" value="169359000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="0" y="27" width="1346" height="1173" extended-state="4" />
@@ -466,8 +466,8 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/main.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="6022">
-          <caret line="2558" selection-start-line="2558" selection-end-line="2558" />
+        <state relative-caret-position="172">
+          <caret line="2233" column="41" selection-start-line="2233" selection-start-column="41" selection-end-line="2233" selection-end-column="41" />
           <folding>
             <element signature="n#style#0;n#canvas#0;n#!!top" expanded="true" />
             <element signature="n#style#0;n#canvas#0;n#!!top" expanded="true" />
