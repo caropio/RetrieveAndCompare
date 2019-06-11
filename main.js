@@ -24,7 +24,7 @@ $(document).ready(function () {
     var nCondTraining = 4;
     var nTrialTrainingPerCond = 1;
     var nTrainingTrials = nTrialTrainingPerCond * nCondTraining;//1;
-    var maxTrainingSessions = 2;
+    var maxTrainingSessions = 1;
     var nTrainingImg = nCondTraining * 2;
     nCondTraining--; // because of range function
 
@@ -574,7 +574,7 @@ $(document).ready(function () {
                         $('#Stage').empty();
                         $('#Bottom').empty();
                         clickDisabled = false;
-                        startElicitation(trainSess, 0);
+                        startElicitation(0, 0);
 
                     }, 500);
                 }, feedbackDuration);
@@ -1342,12 +1342,12 @@ $(document).ready(function () {
 
         switch (elicitationType) {
             case 1:
-                Info = '<H3 align = "center">In each round of the second phase you have to choose'
+                Info = '<H3 align = "center">In each round of the second phase you have to choose '
                 + 'between one of two options displayed on either side of the screen<br>'
-                + 'You can select one of the two options with a left-click'
-                + 'In each round, one of the two options will be a symbol<br> you already met during'
-                + 'the first phase of the session. The other option will be a value<br> representing how much rewarding'
-                + ' the present option is on average.<br><br>Ready?</H3>';
+                + 'You can select one of the two options with a left-click '
+                + 'In each round, one of the two options will be a symbol<br> you already met during '
+                + 'the first phase of the session. The other option will be a value<br> representing how much rewarding '
+                + 'the present option is on average.<br><br>Ready?</H3>';
 
         }
 
