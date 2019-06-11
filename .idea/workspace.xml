@@ -1,9 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="ee13ee03-398f-45ad-ac72-fc244a54d0c8" name="Default Changelist" comment="">
-      <change beforePath="$PROJECT_DIR$/main.js" beforeDir="false" afterPath="$PROJECT_DIR$/main.js" afterDir="false" />
-    </list>
+    <list default="true" id="ee13ee03-398f-45ad-ac72-fc244a54d0c8" name="Default Changelist" comment="" />
     <ignored path="$PROJECT_DIR$/.tmp/" />
     <ignored path="$PROJECT_DIR$/temp/" />
     <ignored path="$PROJECT_DIR$/tmp/" />
@@ -49,8 +47,8 @@
           <file pinned="false" current-in-tab="true">
             <entry file="file://$PROJECT_DIR$/main.js">
               <provider selected="true" editor-type-id="text-editor">
-                <state relative-caret-position="360">
-                  <caret line="761" column="43" selection-start-line="761" selection-start-column="43" selection-end-line="761" selection-end-column="43" />
+                <state relative-caret-position="-774">
+                  <caret line="762" column="43" selection-start-line="762" selection-start-column="43" selection-end-line="762" selection-end-column="43" />
                   <folding>
                     <element signature="n#style#0;n#canvas#0;n#!!top" expanded="true" />
                     <element signature="n#style#0;n#canvas#0;n#!!top" expanded="true" />
@@ -90,8 +88,8 @@
           <file pinned="false" current-in-tab="true">
             <entry file="file://$PROJECT_DIR$/main.js">
               <provider selected="true" editor-type-id="text-editor">
-                <state relative-caret-position="577">
-                  <caret line="572" column="24" selection-start-line="572" selection-start-column="24" selection-end-line="572" selection-end-column="24" />
+                <state relative-caret-position="433">
+                  <caret line="958" column="27" selection-start-line="958" selection-start-column="27" selection-end-line="958" selection-end-column="27" />
                   <folding>
                     <element signature="n#style#0;n#canvas#0;n#!!top" expanded="true" />
                     <element signature="n#style#0;n#canvas#0;n#!!top" expanded="true" />
@@ -179,7 +177,7 @@
       </list>
     </option>
   </component>
-  <component name="ProjectFrameBounds" extendedState="5">
+  <component name="ProjectFrameBounds" extendedState="4">
     <option name="y" value="27" />
     <option name="width" value="1252" />
     <option name="height" value="1173" />
@@ -296,12 +294,12 @@
       <workItem from="1559499856479" duration="17823000" />
       <workItem from="1559752161417" duration="7217000" />
       <workItem from="1559833811951" duration="8793000" />
-      <workItem from="1560176209406" duration="21726000" />
+      <workItem from="1560176209406" duration="22004000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="179456000" />
+    <option name="totallyTimeSpent" value="179734000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="0" y="27" width="1252" height="1173" extended-state="5" />
@@ -500,8 +498,8 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/main.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="577">
-          <caret line="572" column="24" selection-start-line="572" selection-start-column="24" selection-end-line="572" selection-end-column="24" />
+        <state relative-caret-position="433">
+          <caret line="958" column="27" selection-start-line="958" selection-start-column="27" selection-end-line="958" selection-end-column="27" />
           <folding>
             <element signature="n#style#0;n#canvas#0;n#!!top" expanded="true" />
             <element signature="n#style#0;n#canvas#0;n#!!top" expanded="true" />
