@@ -149,7 +149,7 @@ $(document).ready(function () {
 
     if ([0, 1].includes(elicitationType)) {
         // var nTrialPerElicitation = expectedValue.length * 8;
-        var nTrialPerElicitation = 1;
+        var nTrialPerElicitation = 4;
     } else {
         var nTrialPerElicitation = 8;
     }
