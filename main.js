@@ -83,7 +83,6 @@ $(document).ready(function () {
         expCondition[i] = shuffle(
             Array(nTrialsPerSession / nCondPerSession).fill(cond[i]).flat()
         );
-
     var map = [range(0, 3), range(0, 3)].flat();
 
     for (let i = 0; i <= nCond; i++)
@@ -142,7 +141,6 @@ $(document).ready(function () {
         trainingImg[i].style.position = "relative";
         trainingImg[i].style.top = "0px";
     }
-    trainingOptions = shuffle(trainingOptions);
 
     // Elicitations
     // ------------------------------------------------------------------------------------------------------- //
@@ -182,6 +180,7 @@ $(document).ready(function () {
             elicitationsStimEVTraining.push([trainingOptions[i+1], expectedValue[k]]);
         }
     }
+    trainingContexts = shuffle(trainingContexts);
 
     elicitationsStimEVTraining = shuffle(elicitationsStimEVTraining);
 
@@ -194,26 +193,33 @@ $(document).ready(function () {
             availableOptions[i], availableOptions[i + 1]
         ]);
     }
-
     contexts = shuffle(contexts);
 
+    var symbolValueMap = [];
+
+    for (let i = 0; i < contexts.length; i++) {
+        symbolValueMap[contexts[i][0]] = conditions[i]['prob'][0];
+        symbolValueMap[contexts[i][1]] = conditions[i]['prob'][1];
+    }
+    //console.log(symbolValueMap);
     var elicitationsStim = [];
     elicitationsStim[0] = [];
     elicitationsStim[1] = [];
-    var elicitationsStimEV = Array(nSessions).fill([]);
-    var idx = 0;
+    var elicitationsStimEV = [[], []];
     for (let i = 0; i < nSessions; i++) {
-        for (let j = 0; j < 4; j++) {
-            elicitationsStim[i].push(contexts[idx].flat()[0]);
-            elicitationsStim[i].push(contexts[idx].flat()[1]);
-            idx = idx + 1;
+        var cidx = Array.from(new Set(expCondition[i].flat()));
+        for (let j = 0; j < cidx.length; j++) {
+            var stim1 = contexts[cidx[j]].flat()[0];
+            var stim2 = contexts[cidx[j]].flat()[1];
+            elicitationsStim[i].push(stim1);
+            elicitationsStim[i].push(stim2);
 
             for (let k = 0; k < expectedValue.length; k++) {
                 elicitationsStimEV[i].push(
-                    [elicitationsStim[i][elicitationsStim[i].length - 2], expectedValue[k]]
+                    [stim1, expectedValue[k]]
                 );
                 elicitationsStimEV[i].push(
-                    [elicitationsStim[i][elicitationsStim[i].length - 1], expectedValue[k]]
+                    [stim2, expectedValue[k]]
                 );
             }
         }
@@ -224,8 +230,8 @@ $(document).ready(function () {
     // Run the experiment
     // ------------------------------------------------------------------------------------------------ //
     // playSessions(0, 0);
-    // getUserID();
-    playTraining(0);
+    getUserID();
+    //playTraining(0);
 
     function sendExpDataDB(call) {
 
@@ -258,6 +264,8 @@ $(document).ready(function () {
         var conditionIdx = trainingCondition[trialNum];
         var option1ImgIdx = trainingContexts[conditionIdx][0];
         var option2ImgIdx = trainingContexts[conditionIdx][1];
+        console.log(symbolValueMap[option1ImgIdx]);
+        console.log(symbolValueMap[option2ImgIdx]);
 
         var option1 = trainingImg[option1ImgIdx];
         option1.id = "option1";
@@ -582,15 +590,20 @@ $(document).ready(function () {
         }
     };
 
-    function endTrainingStartSessions() {
+    function endSession(sessionNum) {
 
         // InsertLog(0,'train');
 
-        var nPages = 2; /*number of pages  */
-
         createDiv('Stage', 'TextBoxDiv');
 
-        var Title = '<H2 align = "center"></H2>';
+        if (sessionNum === 0) {
+            var Title = '<H2 align = "center">PHASE 3</H2>';
+            var s = 'third';
+        }
+        if (sessionNum === 1) {
+            var Title = '<H2 align = "center">PHASE 5</H2>';
+            var s = 'fifth';
+        }
 
         var instBut;
         var trainBut;
@@ -606,13 +619,20 @@ $(document).ready(function () {
         var pence = pointsToPence(points);
         var pounds = pointsToPounds(points);
 
-        var wonlost = [' you won ', ' you lost '][+(points < 0)];
+        if (sessionNum === 0) {
+            var wonlost = [' you won ', ' you lost '][+(points < 0)];
 
-        Info += '<H3 align = "center">In this training,' + wonlost + points + ' points = ' + pence + ' pence = ' + pounds + ' pounds!</h3><br><br>';
+            Info += '<H3 align = "center">In this training,' + wonlost + points + ' points = ' + pence + ' pence = ' + pounds + ' pounds!</h3><br><br>';
+        }
 
-        sumReward = 0;
-
-        Info += '<H3 align = "center">Now, you are about to start the first phase of the test.<br>Click on start when you are ready.</h3><br><br>';
+        Info += '<H3 align="center">Now, you are about to start the ' + s + ' phase of the test.'
+            + ' The ' + s + ' phase is the same as the first phase.'
+            + 'In each round you have to choose between one of two symbols displayed on either side of the screen.<br><br>'
+            + 'You can select one of the two symbols with a left-click.'
+            + 'After a choice, you can win/lose the following outcomes:<br><br>'
+            + '-1 point = ? pence<br>1 points = ? pence<br><br>'
+            + 'This is the actual game, every point will be included in the final payoff.<br><br>'
+            + '<br>Click on start when you are ready.</h3><br><br>';
 
         instBut = '"Return to instructions"';
         trainBut = '"play the practice again"';
@@ -663,7 +683,7 @@ $(document).ready(function () {
                         $('#Stage').html('<H1 align = "center">' + go + '</H1>');
                         setTimeout(function () {
                             $('#Stage').empty();
-                            playSessions(0, 0);
+                            playSessions(sessionNum, 0);
                         }, 1000);
                     }, 1000);
                 }, 1000);
@@ -719,7 +739,6 @@ $(document).ready(function () {
             option1 = option1.outerHTML;
 
         }
-
         var Title = '<div id = "Title"><H2 align = "center"> <br><br><br><br></H2></div>';
 
         // var Count = '<div id = "Count"><H3 align = "center">Your current amount: ' + parseInt(sumReward) + ' points<br><br><br><br></H3><div>';
@@ -971,7 +990,7 @@ $(document).ready(function () {
                         $('#Bottom').empty();
                         clickDisabled = false;
                         if (sessionNum === 0) {
-                            endTrainingStartSessions();
+                            endSession(sessionNum);
                         } else {
                             nextSession(sessionNum, trialNum);
                         }
@@ -1014,7 +1033,6 @@ $(document).ready(function () {
         feedback2 = feedback2.outerHTML;
 
         var Title = '<div id = "Title"><H2 align = "center"> <br><br><br><br></H2></div>';
-
 
         // Create canevas for the slot machine effect, of the size of the images
         var canvas1 = '<canvas id="canvas1" height="620"' +
@@ -1334,84 +1352,115 @@ $(document).ready(function () {
         createDiv('Stage', 'TextBoxDiv');
 
         if (training) {
-            var Title = '<H2 align = "center">TRAINING ' + '</H2><br>';
+            var Title = '<H2 align = "center">PHASE 2</H2><br>';
             sessionNum = -1;
         } else {
-            var Title = '<H2 align = "center">PHASE ' + (sessionNum+2) + '</H2><br>';
+            if (sessionNum === 0)
+                var Title = '<H2 align = "center">PHASE 4</H2><br>';
+            if (sessionNum === 1)
+                var Title = '<H2 align = "center">PHASE 6</H2><br>';
         }
 
         switch (elicitationType) {
             case 1:
-                var p = '';
+                var p = '<br><br>Ready? <br></H3>';
                 if (sessionNum === 0)
-                    var n = 'the second';
+                    var n = 'fourth';
+                    var s = 'The ' + n + ' phase is the same as the second phase<br>';
                 if (sessionNum === 1)
-                    var n = 'the fourth';
+                    var n = 'sixth';
+                    var s = 'The ' + n + ' phase is the same as the second phase<br>';
                 if (sessionNum === -1) {
-                    var n = 'this';
-                    var p = 'This is a training phase, the results do not count for the final payoff.';
+                    var n = 'second';
+                    var p = '(This is a training phase, the results do not count for the final payoff.)<br><br></h3>';
+                    var s = '';
                 }
 
-                Info = '<H3 align = "center">In each round of ' + n + ' phase you have to choose<br> '
-                + 'between one of two options displayed on either side of the screen<br><br>'
-                + 'You can select one of the two options with a left-click<br><br> '
-                + 'In each round, one of the two options will be a symbol<br> you already met during '
-                + 'the previous phase. The other option will be a value<br> representing how much rewarding '
-                + 'the present option is on average.<br><br>' + p + '<br>Ready? <br></H3>';
+                Info = '<H3 align = "center">' + s
+                    + 'In each round of ' + n + ' phase you have to choose '
+                    + 'between one of two options displayed on either side of the screen<br><br>'
+                    + 'You can select one of the two options with a left-click<br><br> '
+                    + 'In each round, one of the two options will be a symbol<br> you already met during '
+                    + 'the previous phase. The other option will be a value<br> representing how much rewarding '
+                    + 'the present option is on average.<br><br>' + p;
 
         }
 
-        nextBut = '"Next"';
+        nextBut = '"Start"';
 
         $('#TextBoxDiv').html(Title + Info);
 
-        var Buttons = '<div align="center"><input align="center" type="button" class="btn btn-default" id="Next" value=' + nextBut + ' ></div>';
-
-        $('#Bottom').html(Buttons);
-
-        $('#Next').click(function () {
-            $('#TextBoxDiv').remove();
-            $('#Stage').empty();
-            $('#Bottom').empty();
-            playElicitation(sessionNum, 0);
-        })
-    }
-
-    function endSession(sessionNum, trialNum) {
-
-        createDiv('Stage', 'TextBoxDiv');
-
-        var Title = '<H2 align = "center">SESSION</H2>';
-
-        var points = sumReward;
-        var pence = pointsToPence(points);
-        var pounds = pointsToPounds(points);
-
-        var wonlost;
-        var Info;
-        var nextBut;
-
-        wonlost = [' won ', ' lost '][+(points < 0)];
-        Info = '<H3 align = "center">So far, you have ' + wonlost + points + ' points = ' + pence +
-            ' pence = ' + pounds + ' pounds!<br><br> Click when you are ready to continue';
-        nextBut = '"Next"';
-
-        $('#TextBoxDiv').html(Info);
-
-        var Buttons = '<div align="center"><input align="center" type="button"  class="btn btn-default" id="Next" value='
+        var Buttons = '<div align="center"><input align="center" type="button" class="btn btn-default" id="Start" value='
             + nextBut + ' ></div>';
 
         $('#Bottom').html(Buttons);
 
-        $('#Next').click(function () {
+        ready = 'Ready...';
+        steady = 'Steady...';
+        go = 'Go!';
+
+        if (training) {
+            ready = '';
+            steady = '';
+            go = '';
+        }
+
+        $('#Start').click(function () {
+
             $('#TextBoxDiv').remove();
             $('#Stage').empty();
             $('#Bottom').empty();
-
-            playSessions(sessionNum, trialNum);
-
-        })
+            setTimeout(function () {
+                $('#Stage').html('<H1 align = "center">' + ready + '</H1>');
+                setTimeout(function () {
+                    $('#Stage').html('<H1 align = "center">' + steady + '</H1>');
+                    setTimeout(function () {
+                        $('#Stage').html('<H1 align = "center">' + go + '</H1>');
+                        setTimeout(function () {
+                            $('#Stage').empty();
+                            playElicitation(sessionNum, 0);
+                        }, 1000);
+                    }, 1000);
+                }, 1000);
+            }, 10);
+        });
     }
+
+    // function endSession(sessionNum, trialNum) {
+
+        // createDiv('Stage', 'TextBoxDiv');
+        //
+        // var Title = '<H2 align = "center">SESSION</H2>';
+        //
+        // var points = sumReward;
+        // var pence = pointsToPence(points);
+        // var pounds = pointsToPounds(points);
+        //
+        // var wonlost;
+        // var Info;
+        // var nextBut;
+        //
+        // wonlost = [' won ', ' lost '][+(points < 0)];
+        // Info = '<H3 align = "center">So far, you have ' + wonlost + points + ' points = ' + pence +
+        //     ' pence = ' + pounds + ' pounds!<br><br> Click when you are ready to continue';
+        // nextBut = '"Next"';
+        //
+        // $('#TextBoxDiv').html(Info);
+        //
+        // var Buttons = '<div align="center"><input align="center" type="button"  class="btn btn-default" id="Next" value='
+        //     + nextBut + ' ></div>';
+        //
+        // $('#Bottom').html(Buttons);
+        //
+        // $('#Next').click(function () {
+        //     $('#TextBoxDiv').remove();
+        //     $('#Stage').empty();
+        //     $('#Bottom').empty();
+        //
+        //     playSessions(sessionNum, trialNum);
+        //
+        // })
+    // }
 
     function endExperiment() {
 
@@ -1529,27 +1578,29 @@ $(document).ready(function () {
         switch (pageNum) {
 
             case 1:
-                var Info = '<H3 align = "center">This experiment is composed of four phases.<br><br>'
+                var Info = '<H3 align = "center">This experiment is composed of 6 phases.<br><br>'
                     + 'All phases consists in a cognitive test<br><br>'
-                    + 'The first and the third phase will last approximately ? minutes and include '
-                    + nTrialsPerSession + ' rounds.<br><br>'
-                    + 'The second and the fourth phase will last approximately ? minutes and include '
-                    + nTrialPerElicitation + ' rounds.<br><br> </H3>';
+                    + 'The first and the second phase are considered as training phases.<br>'
+                    + 'The third and the fifth phase consist in the same task as the first phase.<br>'
+                    + 'The fourth and the sixth phase consist in the same task as the second phase.<br>'
+                    + '<br><br> </H3>';
                 break;
 
             case 2:
                 var Info = '<H3 align = "center">In addition of the fixed compensation,'
                     + ' you will receive a bonus depending on your choices.<br><br>'
-                    + 'Before the first phase there will be a short training session of about ' + nTrainingTrials + ' rounds.<br><br>'
-                    + 'The word "ready" will be displayed before the game starts.<br><br>'
+                    + 'The training does not count in the final payoff (first and second phase)<br>'
+                    + '<br> While the others (third, fourth, fifth and sixth phase) do.<br>'
+                    + 'Across the last four phases of the cognitive experiment, you can win up to ? points = ? pounds.<br>'
+                    + 'The word "ready" will be displayed before the actual game starts.<br><br></H3>';
                 break;
 
             case 3:
-                var Info = '<H3 align = "center">In each round of the training you have to choose between one of two symbols displayed on either side of the screen.<br><br>'
+                var Info = '<H3 align = "center">In each round of the first phase you have to choose between one of two symbols displayed on either side of the screen.<br><br>'
                     + 'You can select one of the two symbols with a left-click.'
                     + 'After a choice, you can win/lose the following outcomes:<br><br>'
-                    + '-1 point = ? pence<br>-1 points = ? pence<br>'
-                    + 'Across the two phases of the cognitive experiment, you can win up to ? points = ? pounds.<br><br></H3>';
+                    + '1 point = ? pence<br>-1 points = ? pence<br><br></H3>';
+                    //+ 'Across the two phases of the cognitive experiment, you can win up to ? points = ? pounds.<br><br></H3>';
                 break;
 
             case 4:
@@ -1557,15 +1608,15 @@ $(document).ready(function () {
                     + 'The different symbols are most of the time not equal in terms of outcome: in most trials of the experiment<br><br>'
                     + 'one is in average more advantageous (‘lucky’) compared to the other in terms of both points to be won, as well as points not to be lost.<br><br>'
                     + 'Your task is to find out, by trial and error, which is the most advantageous symbol and win as many points as possible,'
-                    + 'even if it’s not possible to win points on every round.'
+                    + 'even if it’s not possible to win points on every round.';
                 break;
 
             case 5:
                 var Info = '<H3 align = "center">At the end of the experiment you will know the total amount of points you won.<br><br>'
                     + 'The points won during the experiment will be translated into actual money, which will affect your final payment.<br><br>'
                     + 'Since the total number of trials is fixed, your final payoff depends only your capacity to identify the advantageous symbol and not on your rapidity.<br><br>'
-                    + 'Let\'s begin with a training!<br><br>'
-                    + '(points won during the training do not count for the final payoff)<br><br></H3>';
+                    + 'Let\'s begin with the first two phases of training!<br><br>'
+                    + '(points won during the training (first and second phase) do not count for the final payoff)<br><br></H3>';
                 break;
 
             default:
@@ -1578,7 +1629,7 @@ $(document).ready(function () {
 
         var Buttons = '<div align="center"><input align="center" type="button"  class="btn btn-default" id="Back" value="Back" >\n\
 		<input align="center" type="button"  class="btn btn-default" id="Next" value="Next" >\n\
-		<input align="center" type="button"  class="btn btn-default" id="Start" value="Start!" ></div>';
+		<input align="center" type="button"  class="btn btn-default" id="Start" value="Start the first phase!" ></div>';
 
         $('#Bottom').html(Buttons);
 
