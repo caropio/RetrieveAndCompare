@@ -230,9 +230,9 @@ $(document).ready(function () {
 
     // Run the experiment
     // ------------------------------------------------------------------------------------------------ //
-    // playSessions(0, 0);
-    getUserID();
-    //playTraining(0);
+    playSessions(0, 0);
+    // getUserID();
+    // playTraining(0);
 
     function sendExpDataDB(call) {
 
@@ -797,25 +797,15 @@ $(document).ready(function () {
             }
             $('#TextBoxDiv').html(Title + Feedback + Images + myCanvas);
 
-            var targetElement = document.body;
-            var pic1 = document.getElementById("option1");
-            var pic2 = document.getElementById("option2");
-
-            var cv1 = document.getElementById("canvas1");
-            var cv2 = document.getElementById("canvas2");
+            var choiceTime = (new Date()).getTime();
 
             $('#canvas1').click(function () {
                 if (clickDisabled)
                     return;
                 clickDisabled = true;
                 var choice = 1;
-                var reactionTime = (new Date()).getTime();
+                getReward(choice);
                 document.getElementById("canvas1").style.borderColor = "black";
-                setTimeout(function () {
-                    slideCard(pic1, cv1);
-                    next();
-                }, 500);
-
             });
 
             $('#canvas2').click(function () {
@@ -823,29 +813,21 @@ $(document).ready(function () {
                     return;
                 clickDisabled = true;
                 var choice = 2;
-                var reactionTime = (new Date()).getTime();
+                getReward(choice);
                 document.getElementById("canvas2").style.borderColor = "black";
-                setTimeout(function () {
-                    slideCard(pic2, cv2);
-                    next();
-                }, 500);
-
             });
+
         } else {
             var Images = '<div id = "stimrow" style="transform: translate(0%, -100%);position:relative"> ' +
                 '<div class="col-xs-1 col-md-1"></div>  <div class="col-xs-3 col-md-3">'
                 + '</div><div id = "Middle" class="col-xs-4 col-md-4">' + option1 + '</div></div>';
-
-            // var Slider = '<div class="slidecontainer">' +
-            //     '<input type="range" min="-10" max="10" value="0" class="slider" id="myRange">' +
-            //     '</div><br><div align="center"><span style="font-size: 400%" id="displayValue"></span><br><br><button id="ok" class="btn btn-default btn-lg">Ok</button></div><br><br><br><br><br><br>';
 
             var Slider = '<main>\n' +
                 '  <form oninput="output.value = range.valueAsNumber / 10">\n' +
                 '    <h2>\n' +
                 '    </h2>\n' +
                 '    <div class="range">\n' +
-                '      <input id="slider" name="range" type="range" value="0" min="-10" max="10">\n' +
+                '      <input id="slider" name="range" type="range" value="0" min="-10" max="10" step="2">\n' +
                 '      <div class="range-output">\n' +
                 '        <output class="output" name="output" for="range">\n' +
                 '          0\n' +
@@ -864,128 +846,186 @@ $(document).ready(function () {
 
             ok.onclick = function () {
                 var choice = slider.value;
-                var reactionTime = (new Date()).getTime();
-
-                next();
+                getReward(choice, true)
             };
         }
 
-        var choiceTime = (new Date()).getTime();
+        function getReward(choice, slider=false) {
 
-        function slideCard(pic, cv) {  /* faire défiler la carte pour decouvrir le feedback */
+            var reactionTime = (new Date()).getTime();
 
-            var img = new Image();
-            img.src = pic.src;
-            img.width = pic.width;
-            img.height = pic.height;
+            var p1 = symbolValueMap[stimIdx];
+            var r1 = [-1, 1];//symbolValueMap[stimIdx]['reward'][0];
+            var ev1 = sum([p1[0] * r1[0], p1[1] * r1[1]]);
 
-            var speed = 3; /*plus elle est basse, plus c'est rapide*/
-            var y = 0; /*décalage vertical*/
+            if (slider) {
+                var thisReward = 1 - Math.abs(choice - ev1);
+            } else {
+                var ev2 = choiceAgainst;
+                var leftRight = -1;
 
-            /*Programme principal*/
-
-            var dy = 10;
-            var x = 0;
-            var ctx;
-
-            img.onload = function () {
-
-                canvas = cv;
-                ctx = cv.getContext('2d');
-
-                canvas.width = img.width;
-                canvas.height = img.height;
-
-                var scroll = setInterval(draw, speed);
-
-                setTimeout(function () {
-                    pic.style.visibility = "hidden";
-                    clearInterval(scroll);
-                    ctx.clearRect(0, 0, canvas.width, canvas.height);
-                }, 1000);
-            };
-
-            function draw() {
-
-                ctx.clearRect(0, 0, canvas.width, canvas.height); /* clear the canvas*/
-
-                if (y > img.height) {
-                    y = -img.height + y;
+                if ((invertedPosition && (choice === 1)) || (!invertedPosition && (choice === 2))) {
+                    leftRight = 1;
                 }
 
-                if (y > 0) {
-                    ctx.drawImage(img, x, -img.height + y, img.width, img.height);
+                var p1 = symbolValueMap[stimIdx];
+                var r1 = [-1, 1];//symbolValueMap[stimIdx]['reward'][0];
+                var ev1 = sum([p1[0] * r1[0], p1[1] * r1[1]]);
+                var ev2 = choiceAgainst;
+
+                if (choice === 1) { /*option1*/
+                    var thisReward = r1[+(Math.random() < p1[1])];
+                    var otherReward = ev2;
+                    var correctChoice = +(ev1 > ev2);
+                } else { /*option2*/
+                    var otherReward = r1[+(Math.random() < p1[1])];
+                    var thisReward = ev2;
+                    var correctChoice = +(ev2 > ev1);
                 }
-
-                ctx.drawImage(img, x, y, img.width, img.height);
-
-                /*quantité à déplacer*/
-                y += dy;
             }
-        };
 
-        // function sendLearnDataDB(call) {
-        //         wtest = 1;
-        //
-        //         $.ajax({
-        //             type: 'POST',
-        //             data: {
-        //                 exp: expName,
-        //                 expID: expID,
-        //                 id: subID,
-        //                 test: wtest,
-        //                 trial: trialNum,
-        //                 condition: conditionIdx,
-        //                 symL: symbols[0],
-        //                 symR: symbols[1],
-        //                 choice: choice,
-        //                 correct_choice: correctChoice,
-        //                 outcome: thisReward,
-        //                 cf_outcome: otherReward,
-        //                 choice_left_right: leftRight,
-        //                 reaction_time: reactionTime - choiceTime,
-        //                 reward: sumReward,
-        //                 session: sessionNum,
-        //                 p1: -1,
-        //                 p2: -1,
-        //                 option1: option1ImgIdx,
-        //                 option2: option2ImgIdx,
-        //                 inverted: invertedPosition,
-        //                 choice_time: choiceTime - initTime
-        //             },
-        //             async: true,
-        //             url: 'php/InsertLearningDataDB.php',
-        //             /*dataType: 'json',*/
-        //             success: function (r) {
-        //
-        //                 if (r[0].ErrorNo > 0 && call + 1 < maxDBCalls) {
-        //                     sendLearnDataDB(call + 1);
-        //                 }
-        //             },
-        //             error: function (XMLHttpRequest, textStatus, errorThrown) {
-        //
-        //                 if (call + 1 < maxDBCalls) {
-        //                     sendLearnDataDB(call + 1);
-        //                 }
-        //             }
-        //         });
-        //     }
+            sumReward += thisReward;
+
+            if (offline === 0) sendLearnDataDB(0);
+
+            next();
+
+            var pic1 = document.getElementById("option1");
+            var pic2 = document.getElementById("option2");
+
+            var cv1 = document.getElementById("canvas1");
+            var cv2 = document.getElementById("canvas2");
+
+            if (choice === 1) {
+                setTimeout(function () {
+                    slideCard(pic1, cv1);
+                }, 500)
+
+            } else {
+                setTimeout(function () {
+                    slideCard(pic2, cv2);
+                }, 500)
+
+            }
+
+            function slideCard(pic, cv) {  /* faire défiler la carte pour decouvrir le feedback */
+
+                var img = new Image();
+                img.src = pic.src;
+                img.width = pic.width;
+                img.height = pic.height;
+
+                var speed = 3; /*plus elle est basse, plus c'est rapide*/
+                var y = 0; /*décalage vertical*/
+
+                /*Programme principal*/
+
+                var dy = 10;
+                var x = 0;
+                var ctx;
+
+                img.onload = function () {
+
+                    canvas = cv;
+                    ctx = cv.getContext('2d');
+
+                    canvas.width = img.width;
+                    canvas.height = img.height;
+
+                    var scroll = setInterval(draw, speed);
+
+                    // setTimeout(function () {
+                    //     pic.style.visibility = "hidden";
+                    //     clearInterval(scroll);
+                    //     ctx.clearRect(0, 0, canvas.width, canvas.height);
+                    // }, 1000);
+                };
+
+                function draw() {
+
+                    ctx.clearRect(0, 0, canvas.width, canvas.height); /* clear the canvas*/
+
+                    if (y > img.height) {
+                        y = -img.height + y;
+                    }
+
+                    if (y > 0) {
+                        ctx.drawImage(img, x, -img.height + y, img.width, img.height);
+                    }
+
+                    ctx.drawImage(img, x, y, img.width, img.height);
+
+                    /*quantité à déplacer*/
+                    y += dy;
+                }
+            }
+
+            function sendLearnDataDB(call) {
+                wtest = 1;
+
+                $.ajax({
+                    type: 'POST',
+                    data: {
+                        exp: expName,
+                        expID: expID,
+                        id: subID,
+                        test: wtest,
+                        trial: trialNum,
+                        condition: -1,
+                        symL: -1, //tochange
+                        symR: -1, //tochange
+                        choice: choice, //tochange
+                        correct_choice: correctChoice, //tochange
+                        outcome: thisReward, //tochange
+                        cf_outcome: otherReward, //tochange
+                        choice_left_right: leftRight, //tochange
+                        reaction_time: reactionTime - choiceTime,
+                        reward: sumReward, //tochange
+                        session: sessionNum, //tochange
+                        p1: -1, //tochange
+                        p2: -1, //tochange
+                        option1: -1, //tochange
+                        option2: -1, //tochange
+                        inverted: invertedPosition,
+                        choice_time: choiceTime - initTime
+                    },
+                    async: true,
+                    url: 'php/InsertLearningDataDB.php',
+                    success: function (r) {
+
+                        if (r[0].ErrorNo > 0 && call + 1 < maxDBCalls) {
+                            sendLearnDataDB(call + 1);
+                        }
+                    },
+                    error: function (XMLHttpRequest, textStatus, errorThrown) {
+
+                        if (call + 1 < maxDBCalls) {
+                            sendLearnDataDB(call + 1);
+                        }
+                    }
+                });
+            }
+            return thisReward;
+        }
 
         function next() {
             trialNum++;
             if (trialNum < nTrialPerElicitation) {
-                $('#stimrow').fadeOut(500);
-                $('#fbrow').fadeOut(500);
-                $('#cvrow').fadeOut(500);
-                $('main').fadeOut(500);
                 setTimeout(function () {
-                    clickDisabled = false;
-                    playElicitation(sessionNum, trialNum);
+                    $('#stimrow').fadeOut(500);
+                    $('#fbrow').fadeOut(500);
+                    $('#cvrow').fadeOut(500);
+                    $('main').fadeOut(500);
+                    setTimeout(function () {
+                        clickDisabled = false;
+                        playElicitation(sessionNum, trialNum);
                     }, 500);
+                }, feedbackDuration);
             } else {
                 trialNum = 0;
                 sessionNum++;
-                $('#TextBoxDiv').fadeOut(500);
+                setTimeout(function () {
+                    $('#TextBoxDiv').fadeOut(500);
                     setTimeout(function () {
                         $('#Stage').empty();
                         $('#Bottom').empty();
@@ -996,6 +1036,7 @@ $(document).ready(function () {
                             nextSession(sessionNum, trialNum);
                         }
                     }, 500);
+                }, feedbackDuration);
             }
         }
     }
@@ -1307,7 +1348,6 @@ $(document).ready(function () {
 
             return thisReward;
         }
-
 
         function next() {
             trialNum++;
