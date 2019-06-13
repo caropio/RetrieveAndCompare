@@ -165,6 +165,7 @@ $(document).ready(function () {
     }
 
     // create training contexts
+    trainingOptions = shuffle(trainingOptions);
     var trainingContexts = [];
     var arr = [];
     var elicitationsStimEVTraining = [];
@@ -1363,6 +1364,8 @@ $(document).ready(function () {
 
         switch (elicitationType) {
             case 1:
+            case 2:
+            case 0:
                 var p = '<br><br>Ready? <br></H3>';
                 if (sessionNum === 0)
                     var n = 'fourth';
