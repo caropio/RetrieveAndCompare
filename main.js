@@ -2,7 +2,7 @@ $(document).ready(function () {
 
     // Initial Experiment Parameters
     // -------------------------------------------------------------------------------------------------- //
-    var offline = 1;
+    var offline = 0;
     var expName = 'RetrieveAndCompare';
     //var language = "en"; // only en is available at the moment
     var compLink = 1;
