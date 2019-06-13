@@ -24,15 +24,15 @@ SET time_zone = "+00:00";
 
 --
 -- Table structure for table `experiment_data`
+----
 --
-
-CREATE TABLE IF NOT EXISTS `experiment_data` (
-`EXPID` varchar(20) NOT NULL,
-`ID` varchar(100) NOT NULL,
-`EXP` varchar(20) NOT NULL,
-`BROW` text NOT NULL,
-`DBTIME` datetime NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+--CREATE TABLE IF NOT EXISTS `experiment_data` (
+--`EXPID` varchar(20) NOT NULL,
+--`ID` varchar(100) NOT NULL,
+--`EXP` varchar(20) NOT NULL,
+--`BROW` text NOT NULL,
+--`DBTIME` datetime NOT NULL
+--) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 -- --------------------------------------------------------
 
@@ -40,7 +40,7 @@ CREATE TABLE IF NOT EXISTS `experiment_data` (
 -- Table structure for table `learning_data`
 --
 
-CREATE TABLE IF NOT EXISTS `learning_data` (
+CREATE TABLE IF NOT EXISTS `learning_data_r_and_c` (
 `EXP` varchar(20) NOT NULL,
 `EXPID` varchar(20) NOT NULL,
 `ID` varchar(100) NOT NULL,
@@ -72,34 +72,34 @@ CREATE TABLE IF NOT EXISTS `learning_data` (
 -- Table structure for table `questionnaire_data`
 --
 
-CREATE TABLE IF NOT EXISTS `questionnaire_data` (
-`EXP` varchar(20) NOT NULL,
-`EXPID` varchar(20) NOT NULL,
-`ID` varchar(100) NOT NULL,
-`QUESTIONNAIRE` varchar(20) NOT NULL,
-`NUMBER` int(11) NOT NULL,
-`ITEM` int(11) NOT NULL,
-`ANSWER` int(11) NOT NULL,
-`VAL` int(11) NOT NULL,
-`RTIME` bigint(20) NOT NULL,
-`DBTIME` time NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
-
--- --------------------------------------------------------
-
+--CREATE TABLE IF NOT EXISTS `questionnaire_data` (
+--`EXP` varchar(20) NOT NULL,
+--`EXPID` varchar(20) NOT NULL,
+--`ID` varchar(100) NOT NULL,
+--`QUESTIONNAIRE` varchar(20) NOT NULL,
+--`NUMBER` int(11) NOT NULL,
+--`ITEM` int(11) NOT NULL,
+--`ANSWER` int(11) NOT NULL,
+--`VAL` int(11) NOT NULL,
+--`RTIME` bigint(20) NOT NULL,
+--`DBTIME` time NOT NULL
+--) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 --
--- Table structure for table `users`
+---- --------------------------------------------------------
 --
-
-CREATE TABLE IF NOT EXISTS `users` (
-`ID` varchar(100) NOT NULL,
-`AGE` int(2) NOT NULL,
-`GENDER` varchar(20) NOT NULL,
-`COUNTRY` varchar(20) NOT NULL,
-`EDUCATION` varchar(20) NOT NULL,
-`TIME` varchar(20) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
-
-/*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
-/*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
-/*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
+----
+---- Table structure for table `users`
+----
+--
+--CREATE TABLE IF NOT EXISTS `users` (
+--`ID` varchar(100) NOT NULL,
+--`AGE` int(2) NOT NULL,
+--`GENDER` varchar(20) NOT NULL,
+--`COUNTRY` varchar(20) NOT NULL,
+--`EDUCATION` varchar(20) NOT NULL,
+--`TIME` varchar(20) NOT NULL
+--) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+--
+--/*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
+--/*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
+--/*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
