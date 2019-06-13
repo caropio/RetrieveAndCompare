@@ -543,7 +543,6 @@ $(document).ready(function () {
 
                     success: function (r) {
 
-                        alert('test2');
                         if (r[0].ErrorNo > 0 && call + 1 < maxDBCalls) {
                             sendTrainDataDB(call + 1);
                         }
@@ -552,7 +551,6 @@ $(document).ready(function () {
 
                         // what type of error is it
                         alert(errorThrown.responseText);
-                        alert('test3');
 
                         if (call + 1 < maxDBCalls) {
                             sendTrainDataDB(call + 1);
