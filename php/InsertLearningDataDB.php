@@ -26,7 +26,7 @@ $INV 		= stripslashes(htmlspecialchars($_POST['inverted']));
 $CTIME 		= stripslashes(htmlspecialchars($_POST['choice_time']));
 
 $stmt = $db->prepare("INSERT INTO learning_data_r_and_c VALUE(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, NOW())");
-$stmt->bind_param("sssddiiiiiiiiiiiiiiiii",
+$stmt->bind_param("sssddidiiiiiiiiiiiiiii",
     $EXP,$EXPID,$ID, $P1,$P2, $RTIME, $OUT, $CF_OUT, $CHOICE, $CORRECT_CHOICE, $TEST,$TRIAL,$COND,$SYML,$SYMR,$LR,$REW,$SESSION,$OP1,$OP2,$INV,$CTIME
 );
 $stmt->execute();
