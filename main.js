@@ -54,9 +54,6 @@ $(document).ready(function () {
     var penceToPounds = pence => pence / 100;
     var pointsToPounds = points => penceToPounds(pointsToPence(points));
 
-    // if offline is 1 do not call database
-    var offline = 1;
-
     // Define conditions
     // -------------------------------------------------------------------------------------------------- //
     var probs = [];
