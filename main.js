@@ -249,6 +249,7 @@ $(document).ready(function () {
                 }
             },
             error: function (xhr, textStatus, err) {
+                alert('tonpere');
             },
         });
     }
