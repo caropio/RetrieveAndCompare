@@ -232,7 +232,6 @@ $(document).ready(function () {
     // playTraining(0);
 
     function sendExpDataDB(call) {
-        alert('tamere');
 
         $.ajax({
             type: 'POST',
@@ -249,7 +248,6 @@ $(document).ready(function () {
                 }
             },
             error: function (xhr, textStatus, err) {
-                alert('tonpere');
             },
         });
     }
@@ -510,7 +508,6 @@ $(document).ready(function () {
             function sendTrainDataDB(call) {
 
                 var wtest = 0; /* training */
-                alert('test');
 
                 $.ajax({
                     type: 'POST',
