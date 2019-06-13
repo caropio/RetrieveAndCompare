@@ -232,6 +232,7 @@ $(document).ready(function () {
     // playTraining(0);
 
     function sendExpDataDB(call) {
+        alert('tamere');
 
         $.ajax({
             type: 'POST',
