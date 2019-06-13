@@ -626,7 +626,7 @@ $(document).ready(function () {
         }
 
         Info += '<H3 align="center">Now, you are about to start the ' + s + ' phase of the test.'
-            + ' The ' + s + ' phase is the same as the first phase.'
+            + ' The ' + s + ' phase is the same as the first phase.<br>'
             + 'In each round you have to choose between one of two symbols displayed on either side of the screen.<br><br>'
             + 'You can select one of the two symbols with a left-click.'
             + 'After a choice, you can win/lose the following outcomes:<br><br>'
