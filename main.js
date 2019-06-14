@@ -228,9 +228,9 @@ $(document).ready(function () {
     // Run the experiment
     // ------------------------------------------------------------------------------------------------ //
     //playSessions(0, 0);
-    // getUserID();
+    getUserID();
     // playTraining(0);
-    playElicitation(0, 0);
+    // playElicitation(0, 0);
 
     function sendExpDataDB(call) {
 
@@ -1404,7 +1404,8 @@ $(document).ready(function () {
             case 1:
             case 2:
             case 0:
-                var p = '<br><br>Ready? <br></H3>';
+                var p = 'This is the actual game, every point will be included in the final payoff.<br><br>'
+                    + 'Ready? <br></H3>';
                 if (sessionNum === 0)
                     var n = 'fourth';
                     var s = 'The ' + n + ' phase is the same as the second phase<br>';
