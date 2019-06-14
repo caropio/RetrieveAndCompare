@@ -1230,6 +1230,8 @@ $(document).ready(function () {
 
             p1 = conditions[conditionIdx]['prob'][0];
             p2 = conditions[conditionIdx]['prob'][1];
+            contIdx1 = cont.findIndex(x => x.toString() === p1.toString());
+            contIdx2 = cont.findIndex(x => x.toString() === p2.toString());
             r1 = conditions[conditionIdx]['reward'][0];
             r2 = conditions[conditionIdx]['reward'][1];
 
@@ -1355,6 +1357,8 @@ $(document).ready(function () {
                         elicitation_type: elicitationType,
                         trial: trialNum,
                         condition: conditionIdx,
+                        cont_idx_1: contIdx1,
+                        cont_idx_2: contIdx2,
                         symL: symbols[0],
                         symR: symbols[1],
                         choice: choice,
