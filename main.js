@@ -230,8 +230,8 @@ $(document).ready(function () {
 
     // Run the experiment
     // ------------------------------------------------------------------------------------------------ //
-    //playSessions(0, 0);
-    getUserID();
+    playSessions(0, 0);
+    // getUserID();
     // playTraining(0);
     // playElicitation(0, 0);
 
