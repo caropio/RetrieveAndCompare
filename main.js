@@ -12,7 +12,7 @@ $(document).ready(function () {
     // Main Exp
     var nCond = 9;
     nCond--; //because of range function
-    var nCondPerSession = 4;
+    var nCondPerSession = 5;
     var nTrialsPerCondition = 1;
     var nTrialsPerSession = nTrialsPerCondition * ((nCond + 1) / nSessions);
 
