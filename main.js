@@ -21,7 +21,7 @@ $(document).ready(function () {
     //var totalReward = 0;
 
     // Training
-    var nCondTraining = 4;
+    var nCondTraining = 5;
     var nTrialTrainingPerCond = 1;
     var nTrainingTrials = nTrialTrainingPerCond * nCondTraining;//1;
     var maxTrainingSessions = 1;
@@ -62,17 +62,17 @@ $(document).ready(function () {
     rewards[0] = [[-1, 1], [-1, 1]];
     probs[0] = [[0.1, 0.9], [0.9, 0.1]];
 
-    rewards[0] = [[-1, 1], [-1, 1]];
-    probs[0] = [[0.2, 0.8], [0.8, 0.2]];
-
     rewards[1] = [[-1, 1], [-1, 1]];
-    probs[1] = [[0.3, 0.7], [0.7, 0.3]];
+    probs[1] = [[0.2, 0.8], [0.8, 0.2]];
 
     rewards[2] = [[-1, 1], [-1, 1]];
-    probs[2] = [[0.4, 0.6], [0.6, 0.4]];
+    probs[2] = [[0.3, 0.7], [0.7, 0.3]];
 
     rewards[3] = [[-1, 1], [-1, 1]];
-    probs[3] = [[0.5, 0.5], [0.5, 0.5]];
+    probs[3] = [[0.4, 0.6], [0.6, 0.4]];
+
+    rewards[4] = [[-1, 1], [-1, 1]];
+    probs[4] = [[0.5, 0.5], [0.5, 0.5]];
     // -------------------------------------------------------------------------------------------------- //
     var expCondition = [];
     var conditions = [];
