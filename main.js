@@ -6,7 +6,7 @@ $(document).ready(function () {
     var expName = 'RetrieveAndCompare';
     //var language = "en"; // only en is available at the moment
     var compLink = 1;
-    var nSessions = 1;
+    var nSessions = 2;
     var questionnaire = 0;
 
     // Main Exp
