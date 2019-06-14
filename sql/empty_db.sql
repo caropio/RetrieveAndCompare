@@ -34,6 +34,18 @@ SET time_zone = "+00:00";
 -- `DBTIME` datetime NOT NULL
 -- ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
+--
+--  Table structure for table `experiment_data`
+-- --
+
+ CREATE TABLE IF NOT EXISTS `experiment_data_r_and_c` (
+ `EXPID` varchar(20) NOT NULL,
+ `ID` varchar(100) NOT NULL,
+ `EXP` varchar(20) NOT NULL,
+ `BROW` text NOT NULL,
+ `DBTIME` datetime NOT NULL
+ ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
 --  -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- 
 
 -- 

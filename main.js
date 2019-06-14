@@ -6,7 +6,7 @@ $(document).ready(function () {
     var expName = 'RetrieveAndCompare';
     //var language = "en"; // only en is available at the moment
     var compLink = 1;
-    var nSessions = 2;
+    var nSessions = 1;
     var questionnaire = 0;
 
     // Main Exp
@@ -60,6 +60,9 @@ $(document).ready(function () {
     var rewards = [];
 
     rewards[0] = [[-1, 1], [-1, 1]];
+    probs[0] = [[0.1, 0.9], [0.9, 0.1]];
+
+    rewards[0] = [[-1, 1], [-1, 1]];
     probs[0] = [[0.2, 0.8], [0.8, 0.2]];
 
     rewards[1] = [[-1, 1], [-1, 1]];
@@ -74,7 +77,7 @@ $(document).ready(function () {
     var expCondition = [];
     var conditions = [];
 
-    var cond = [range(0, 3), range(4, 7)];
+    var cond = [range(0, 4), range(4, 8)];
 
     for (let i = 0; i < nSessions; i++)
         expCondition[i] = shuffle(
@@ -89,13 +92,13 @@ $(document).ready(function () {
             });
 
     var trainingCondition = shuffle(
-        Array(nTrialTrainingPerCond).fill([0, 1, 2, 3]).flat()
+        Array(nTrialTrainingPerCond).fill([0, 1, 2, 3, 4]).flat()
     );
 
     // Get stims, feedbacks, resources
     // -------------------------------------------------------------------------------------------------------- //
     var imgPath = 'images/cards_gif/';
-    var nImg = 16;
+    var nImg = 20;
     var imgExt = 'gif';
     var borderColor = "transparent";
 
@@ -141,8 +144,8 @@ $(document).ready(function () {
 
     // Elicitations
     // ------------------------------------------------------------------------------------------------------- //
-    var elicitationType = 1;
-    var expectedValue = [-1, -0.8, -0.6, -0.4, -0.2, 0, 0.2, 0.4, 0.6, 0.8, 1];
+    var elicitationType = 0;
+    var expectedValue = [-0.8, -0.6, -0.4, -0.2, 0, 0.2, 0.4, 0.6, 0.8];
 
     if ([0, 1].includes(elicitationType)) {
         // var nTrialPerElicitation = expectedValue.length * 8;
@@ -516,6 +519,7 @@ $(document).ready(function () {
                         exp: expName,
                         expID: expID,
                         id: subID,
+                        elicitation_type: elicitationType,
                         test: wtest,
                         trial: trialNum,
                         condition: conditionIdx,
@@ -969,6 +973,7 @@ $(document).ready(function () {
                         id: subID,
                         test: wtest,
                         trial: trialNum,
+                        elicitation_type: elicitationType,
                         condition: -1,
                         symL: -1, //tochange
                         symR: -1, //tochange
@@ -1307,6 +1312,7 @@ $(document).ready(function () {
                         expID: expID,
                         id: subID,
                         test: wtest,
+                        elicitation_type: elicitationType,
                         trial: trialNum,
                         condition: conditionIdx,
                         symL: symbols[0],

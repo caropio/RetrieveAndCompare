@@ -5,6 +5,7 @@ include 'connectDB.php';
 $EXP 		= stripslashes(htmlspecialchars($_POST['exp']));
 $EXPID 		= stripslashes(htmlspecialchars($_POST['expID']));
 $ID 		= stripslashes(htmlspecialchars($_POST['id']));
+$ELIC 		= stripslashes(htmlspecialchars($_POST['elicitation_type']));
 $TEST 		= stripslashes(htmlspecialchars($_POST['test']));
 $TRIAL 		= stripslashes(htmlspecialchars($_POST['trial']));
 $COND 		= stripslashes(htmlspecialchars($_POST['condition']));
@@ -25,9 +26,9 @@ $OP2 		= stripslashes(htmlspecialchars($_POST['option2']));
 $INV 		= stripslashes(htmlspecialchars($_POST['inverted']));
 $CTIME 		= stripslashes(htmlspecialchars($_POST['choice_time']));
 
-$stmt = $db->prepare("INSERT INTO learning_data_r_and_c VALUE(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, NOW())");
-$stmt->bind_param("sssddidiiiiiiiiidiiiii",
-    $EXP,$EXPID,$ID, $P1,$P2, $RTIME, $OUT, $CF_OUT, $CHOICE, $CORRECT_CHOICE, $TEST,$TRIAL,$COND,$SYML,$SYMR,$LR,$REW,$SESSION,$OP1,$OP2,$INV,$CTIME
+$stmt = $db->prepare("INSERT INTO learning_data_r_and_c VALUE(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, NOW())");
+$stmt->bind_param("sssiddidiiiiiiiiidiiiii",
+    $EXP,$EXPID,$ID, $ELIC, $P1,$P2, $RTIME, $OUT, $CF_OUT, $CHOICE, $CORRECT_CHOICE, $TEST,$TRIAL,$COND,$SYML,$SYMR,$LR,$REW,$SESSION,$OP1,$OP2,$INV,$CTIME
 );
 $stmt->execute();
 $err = $stmt->errno ;
