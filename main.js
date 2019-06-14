@@ -1025,6 +1025,8 @@ $(document).ready(function () {
                     }, 500);
                 }, feedbackDuration);
             } else {
+                console.log('Session');
+                console.log(sessionNum);
                 trialNum = 0;
                 sessionNum++;
                 setTimeout(function () {
