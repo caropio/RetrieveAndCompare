@@ -228,7 +228,6 @@ $(document).ready(function () {
         symbolValueMap[contexts[i][0]] = [v1, cont.findIndex(x => x.toString() === v1.toString())];
         symbolValueMap[contexts[i][1]] = [v2, cont.findIndex(x => x.toString() === v2.toString())];
     }
-    console.log(symbolValueMap);
     var elicitationsStim = [];
     elicitationsStim[0] = [];
     elicitationsStim[1] = [];
@@ -292,8 +291,6 @@ $(document).ready(function () {
         var conditionIdx = trainingCondition[trialNum];
         var option1ImgIdx = trainingContexts[conditionIdx][0];
         var option2ImgIdx = trainingContexts[conditionIdx][1];
-        console.log(symbolValueMap[option1ImgIdx]);
-        console.log(symbolValueMap[option2ImgIdx]);
 
         var option1 = trainingImg[option1ImgIdx];
         option1.id = "option1";
@@ -888,10 +885,6 @@ $(document).ready(function () {
 
             var p1 = symbolValueMap[stimIdx][0];
             var contIdx1 = symbolValueMap[stimIdx][1];
-            console.log('SymbolValueMap');
-            console.log(symbolValueMap[stimIdx]);
-            console.log('contIdx1');
-            console.log(contIdx1);
             var r1 = [-1, 1];//symbolValueMap[stimIdx]['reward'][0];
             var ev1 = sum([p1[0] * r1[0], p1[1] * r1[1]]);
 
@@ -1061,8 +1054,6 @@ $(document).ready(function () {
                     }, 500);
                 }, feedbackDuration);
             } else {
-                console.log('Session');
-                console.log(sessionNum);
                 trialNum = 0;
                 sessionNum++;
                 setTimeout(function () {
