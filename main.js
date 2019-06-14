@@ -10,7 +10,7 @@ $(document).ready(function () {
     var questionnaire = 0;
 
     // Main Exp
-    var nCond = 8;
+    var nCond = 9;
     nCond--; //because of range function
     var nCondPerSession = 4;
     var nTrialsPerCondition = 1;
