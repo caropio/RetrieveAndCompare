@@ -227,10 +227,10 @@ $(document).ready(function () {
     for (let i = 0; i < contexts.length; i++) {
         v1 = conditions[i]['prob'][0];
         v2 = conditions[i]['prob'][1];
-        symbolValueMap[contexts[i][0]] = [v1, cont.findIndex(x => x === v1)];
-        symbolValueMap[contexts[i][1]] = [v2, cont.findIndex(x => x === v2)];
+        symbolValueMap[contexts[i][0]] = [v1, cont.findIndex(x => x.toString() === v1.toString())];
+        symbolValueMap[contexts[i][1]] = [v2, cont.findIndex(x => x.toString() === v2.toString())];
     }
-    //console.log(symbolValueMap);
+    console.log(symbolValueMap);
     var elicitationsStim = [];
     elicitationsStim[0] = [];
     elicitationsStim[1] = [];
