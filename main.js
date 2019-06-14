@@ -227,8 +227,8 @@ $(document).ready(function () {
     for (let i = 0; i < contexts.length; i++) {
         v1 = conditions[i]['prob'][0];
         v2 = conditions[i]['prob'][1];
-        symbolValueMap[contexts[i][0]] = [v1, cont.indexOf(v1)];
-        symbolValueMap[contexts[i][1]] = [v2, cont.indexOf(v2)];
+        symbolValueMap[contexts[i][0]] = [v1, cont.findIndex(v1)];
+        symbolValueMap[contexts[i][1]] = [v2, cont.findIndex(v2)];
     }
     //console.log(symbolValueMap);
     var elicitationsStim = [];

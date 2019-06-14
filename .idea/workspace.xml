@@ -1,7 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="ee13ee03-398f-45ad-ac72-fc244a54d0c8" name="Default Changelist" comment="" />
+    <list default="true" id="ee13ee03-398f-45ad-ac72-fc244a54d0c8" name="Default Changelist" comment="">
+      <change beforePath="$PROJECT_DIR$/main.js" beforeDir="false" afterPath="$PROJECT_DIR$/main.js" afterDir="false" />
+    </list>
     <ignored path="$PROJECT_DIR$/.tmp/" />
     <ignored path="$PROJECT_DIR$/temp/" />
     <ignored path="$PROJECT_DIR$/tmp/" />
@@ -43,11 +45,11 @@
               <provider selected="true" editor-type-id="images" />
             </entry>
           </file>
-          <file pinned="false" current-in-tab="false">
+          <file pinned="false" current-in-tab="true">
             <entry file="file://$PROJECT_DIR$/main.js">
               <provider selected="true" editor-type-id="text-editor">
-                <state relative-caret-position="666">
-                  <caret line="231" column="4" selection-start-line="231" selection-start-column="4" selection-end-line="231" selection-end-column="4" />
+                <state relative-caret-position="1351">
+                  <caret line="230" column="8" selection-start-line="230" selection-start-column="8" selection-end-line="230" selection-end-column="8" />
                   <folding>
                     <element signature="n#style#0;n#canvas#0;n#!!top" expanded="true" />
                     <element signature="n#style#0;n#canvas#0;n#!!top" expanded="true" />
@@ -80,7 +82,7 @@
               </provider>
             </entry>
           </file>
-          <file pinned="false" current-in-tab="true">
+          <file pinned="false" current-in-tab="false">
             <entry file="file://$PROJECT_DIR$/php/InsertLearningDataDB.php">
               <provider selected="true" editor-type-id="text-editor">
                 <state relative-caret-position="558">
@@ -128,8 +130,8 @@
           <file pinned="false" current-in-tab="true">
             <entry file="file://$PROJECT_DIR$/main.js">
               <provider selected="true" editor-type-id="text-editor">
-                <state relative-caret-position="145">
-                  <caret line="890" column="41" selection-start-line="890" selection-start-column="41" selection-end-line="890" selection-end-column="41" />
+                <state relative-caret-position="576">
+                  <caret line="230" column="60" selection-start-line="230" selection-start-column="60" selection-end-line="230" selection-end-column="60" />
                   <folding>
                     <element signature="n#style#0;n#canvas#0;n#!!top" expanded="true" />
                     <element signature="n#style#0;n#canvas#0;n#!!top" expanded="true" />
@@ -311,12 +313,12 @@
       <workItem from="1559833811951" duration="8793000" />
       <workItem from="1560176209406" duration="38061000" />
       <workItem from="1560355059489" duration="4590000" />
-      <workItem from="1560418283483" duration="20913000" />
+      <workItem from="1560418283483" duration="21544000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="221294000" />
+    <option name="totallyTimeSpent" value="221925000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="0" y="27" width="1920" height="1173" extended-state="6" />
@@ -521,8 +523,8 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/main.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="145">
-          <caret line="890" column="41" selection-start-line="890" selection-start-column="41" selection-end-line="890" selection-end-column="41" />
+        <state relative-caret-position="576">
+          <caret line="230" column="60" selection-start-line="230" selection-start-column="60" selection-end-line="230" selection-end-column="60" />
           <folding>
             <element signature="n#style#0;n#canvas#0;n#!!top" expanded="true" />
             <element signature="n#style#0;n#canvas#0;n#!!top" expanded="true" />
