@@ -77,7 +77,7 @@ $(document).ready(function () {
     var expCondition = [];
     var conditions = [];
 
-    var cond = [range(0, 4), range(4, 8)];
+    var cond = [range(0, 4), range(5, 9)];
 
     for (let i = 0; i < nSessions; i++)
         expCondition[i] = shuffle(
