@@ -29,11 +29,11 @@
               </provider>
             </entry>
           </file>
-          <file pinned="false" current-in-tab="false">
+          <file pinned="false" current-in-tab="true">
             <entry file="file://$PROJECT_DIR$/index.html">
               <provider selected="true" editor-type-id="text-editor">
-                <state relative-caret-position="558">
-                  <caret line="31" column="25" lean-forward="true" selection-start-line="31" selection-start-column="25" selection-end-line="31" selection-end-column="25" />
+                <state relative-caret-position="486">
+                  <caret line="27" selection-start-line="27" selection-end-line="27" />
                 </state>
               </provider>
             </entry>
@@ -47,7 +47,7 @@
             <entry file="file://$PROJECT_DIR$/main.js">
               <provider selected="true" editor-type-id="text-editor">
                 <state relative-caret-position="1729">
-                  <caret line="1408" column="33" selection-start-line="1408" selection-start-column="33" selection-end-line="1408" selection-end-column="33" />
+                  <caret line="1409" column="33" selection-start-line="1409" selection-start-column="33" selection-end-line="1409" selection-end-column="33" />
                   <folding>
                     <element signature="n#style#0;n#canvas#0;n#!!top" expanded="true" />
                     <element signature="n#style#0;n#canvas#0;n#!!top" expanded="true" />
@@ -98,7 +98,7 @@
               </provider>
             </entry>
           </file>
-          <file pinned="false" current-in-tab="true">
+          <file pinned="false" current-in-tab="false">
             <entry file="file://$PROJECT_DIR$/php/InsertExpDetails.php">
               <provider selected="true" editor-type-id="text-editor">
                 <state relative-caret-position="198">
@@ -128,8 +128,8 @@
           <file pinned="false" current-in-tab="true">
             <entry file="file://$PROJECT_DIR$/main.js">
               <provider selected="true" editor-type-id="text-editor">
-                <state relative-caret-position="144">
-                  <caret line="8" column="19" selection-start-line="8" selection-start-column="19" selection-end-line="8" selection-end-column="19" />
+                <state relative-caret-position="324">
+                  <caret line="234" column="19" lean-forward="true" selection-start-line="234" selection-start-column="19" selection-end-line="234" selection-end-column="19" />
                   <folding>
                     <element signature="n#style#0;n#canvas#0;n#!!top" expanded="true" />
                     <element signature="n#style#0;n#canvas#0;n#!!top" expanded="true" />
@@ -211,13 +211,13 @@
         <option value="$PROJECT_DIR$/RLTask_1pf2pf.js" />
         <option value="$PROJECT_DIR$/connectDB.php" />
         <option value="$PROJECT_DIR$/RLTask_1pf2nf.js" />
-        <option value="$PROJECT_DIR$/index.html" />
         <option value="$PROJECT_DIR$/main.css" />
         <option value="$PROJECT_DIR$/lib/js/slider.js" />
         <option value="$PROJECT_DIR$/php/connectDB.php" />
         <option value="$PROJECT_DIR$/php/InsertLearningDataDB.php" />
         <option value="$PROJECT_DIR$/sql/empty_db.sql" />
         <option value="$PROJECT_DIR$/php/InsertExpDetails.php" />
+        <option value="$PROJECT_DIR$/index.html" />
         <option value="$PROJECT_DIR$/main.js" />
       </list>
     </option>
@@ -310,12 +310,12 @@
       <workItem from="1559833811951" duration="8793000" />
       <workItem from="1560176209406" duration="38061000" />
       <workItem from="1560355059489" duration="4590000" />
-      <workItem from="1560418283483" duration="16348000" />
+      <workItem from="1560418283483" duration="16778000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="216729000" />
+    <option name="totallyTimeSpent" value="217159000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="0" y="27" width="1920" height="1173" extended-state="6" />
@@ -490,13 +490,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/index.html">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="558">
-          <caret line="31" column="25" lean-forward="true" selection-start-line="31" selection-start-column="25" selection-end-line="31" selection-end-column="25" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/php/InsertLearningDataDB.php">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="540">
@@ -518,10 +511,17 @@
         </state>
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/index.html">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="486">
+          <caret line="27" selection-start-line="27" selection-end-line="27" />
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/main.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="144">
-          <caret line="8" column="19" selection-start-line="8" selection-start-column="19" selection-end-line="8" selection-end-column="19" />
+        <state relative-caret-position="324">
+          <caret line="234" column="19" lean-forward="true" selection-start-line="234" selection-start-column="19" selection-end-line="234" selection-end-column="19" />
           <folding>
             <element signature="n#style#0;n#canvas#0;n#!!top" expanded="true" />
             <element signature="n#style#0;n#canvas#0;n#!!top" expanded="true" />

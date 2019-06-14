@@ -1034,9 +1034,11 @@ $(document).ready(function () {
                         $('#Bottom').empty();
                         clickDisabled = false;
                         if (sessionNum === 0) {
-                            elicitationType = 2;
-                            startElicitation(sessionNum);
+                            endSession(sessionNum);
                         } else {
+                            elicitationType = 2;
+                            nTrialPerElicitation = 8;
+                            startElicitation(sessionNum);
                             nextSession(sessionNum, trialNum);
                         }
                     }, 500);
