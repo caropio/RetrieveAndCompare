@@ -47,7 +47,7 @@
             <entry file="file://$PROJECT_DIR$/main.js">
               <provider selected="true" editor-type-id="text-editor">
                 <state relative-caret-position="1729">
-                  <caret line="1409" column="33" selection-start-line="1409" selection-start-column="33" selection-end-line="1409" selection-end-column="33" />
+                  <caret line="1412" column="33" selection-start-line="1412" selection-start-column="33" selection-end-line="1412" selection-end-column="33" />
                   <folding>
                     <element signature="n#style#0;n#canvas#0;n#!!top" expanded="true" />
                     <element signature="n#style#0;n#canvas#0;n#!!top" expanded="true" />
@@ -128,8 +128,8 @@
           <file pinned="false" current-in-tab="true">
             <entry file="file://$PROJECT_DIR$/main.js">
               <provider selected="true" editor-type-id="text-editor">
-                <state relative-caret-position="324">
-                  <caret line="234" column="19" lean-forward="true" selection-start-line="234" selection-start-column="19" selection-end-line="234" selection-end-column="19" />
+                <state relative-caret-position="633">
+                  <caret line="1028" column="37" selection-start-line="1028" selection-start-column="37" selection-end-line="1028" selection-end-column="37" />
                   <folding>
                     <element signature="n#style#0;n#canvas#0;n#!!top" expanded="true" />
                     <element signature="n#style#0;n#canvas#0;n#!!top" expanded="true" />
@@ -310,12 +310,12 @@
       <workItem from="1559833811951" duration="8793000" />
       <workItem from="1560176209406" duration="38061000" />
       <workItem from="1560355059489" duration="4590000" />
-      <workItem from="1560418283483" duration="16778000" />
+      <workItem from="1560418283483" duration="17287000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="217159000" />
+    <option name="totallyTimeSpent" value="217668000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="0" y="27" width="1920" height="1173" extended-state="6" />
@@ -520,8 +520,8 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/main.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="324">
-          <caret line="234" column="19" lean-forward="true" selection-start-line="234" selection-start-column="19" selection-end-line="234" selection-end-column="19" />
+        <state relative-caret-position="633">
+          <caret line="1028" column="37" selection-start-line="1028" selection-start-column="37" selection-end-line="1028" selection-end-column="37" />
           <folding>
             <element signature="n#style#0;n#canvas#0;n#!!top" expanded="true" />
             <element signature="n#style#0;n#canvas#0;n#!!top" expanded="true" />
