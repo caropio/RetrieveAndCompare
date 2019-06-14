@@ -10,9 +10,9 @@ $(document).ready(function () {
     var questionnaire = 0;
 
     // Main Exp
-    var nCond = 9;
+    var nCond = 8;
     nCond--; //because of range function
-    var nCondPerSession = 5;
+    var nCondPerSession = 4;
     var nTrialsPerCondition = 1;
     var nTrialsPerSession = nTrialsPerCondition * ((nCond + 1) / nSessions);
 
@@ -21,7 +21,7 @@ $(document).ready(function () {
     //var totalReward = 0;
 
     // Training
-    var nCondTraining = 5;
+    var nCondTraining = 4;
     var nTrialTrainingPerCond = 1;
     var nTrainingTrials = nTrialTrainingPerCond * nCondTraining;//1;
     var maxTrainingSessions = 1;
@@ -71,19 +71,19 @@ $(document).ready(function () {
     rewards[3] = [[-1, 1], [-1, 1]];
     probs[3] = [[0.4, 0.6], [0.6, 0.4]];
 
-    rewards[4] = [[-1, 1], [-1, 1]];
-    probs[4] = [[0.5, 0.5], [0.5, 0.5]];
+    // rewards[4] = [[-1, 1], [-1, 1]];
+    // probs[4] = [[0.5, 0.5], [0.5, 0.5]];
     // -------------------------------------------------------------------------------------------------- //
     var expCondition = [];
     var conditions = [];
 
-    var cond = [range(0, 4), range(5, 9)];
+    var cond = [range(0, 3), range(4, 7)];
 
     for (let i = 0; i < nSessions; i++)
         expCondition[i] = shuffle(
             Array(nTrialsPerSession / nCondPerSession).fill(cond[i]).flat()
         );
-    var map = [range(0, 4), range(0, 4)].flat();
+    var map = [range(0, 3), range(0, 3)].flat();
 
     for (let i = 0; i <= nCond; i++)
             conditions.push({
@@ -92,13 +92,13 @@ $(document).ready(function () {
             });
 
     var trainingCondition = shuffle(
-        Array(nTrialTrainingPerCond).fill([0, 1, 2, 3, 4]).flat()
+        Array(nTrialTrainingPerCond).fill([0, 1, 2, 3]).flat()
     );
 
     // Get stims, feedbacks, resources
     // -------------------------------------------------------------------------------------------------------- //
     var imgPath = 'images/cards_gif/';
-    var nImg = 20;
+    var nImg = 16;
     var imgExt = 'gif';
     var borderColor = "transparent";
 
