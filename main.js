@@ -83,7 +83,7 @@ $(document).ready(function () {
         expCondition[i] = shuffle(
             Array(nTrialsPerSession / nCondPerSession).fill(cond[i]).flat()
         );
-    var map = [range(0, 3), range(0, 3)].flat();
+    var map = [range(0, 4), range(0, 4)].flat();
 
     for (let i = 0; i <= nCond; i++)
             conditions.push({
