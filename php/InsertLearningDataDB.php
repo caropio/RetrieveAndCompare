@@ -9,6 +9,8 @@ $ELIC 		= stripslashes(htmlspecialchars($_POST['elicitation_type']));
 $TEST 		= stripslashes(htmlspecialchars($_POST['test']));
 $TRIAL 		= stripslashes(htmlspecialchars($_POST['trial']));
 $COND 		= stripslashes(htmlspecialchars($_POST['condition']));
+$CONT1 		= stripslashes(htmlspecialchars($_POST['cont_idx_1']));
+$CONT2 		= stripslashes(htmlspecialchars($_POST['cont_idx_2']));
 $SYML 		= stripslashes(htmlspecialchars($_POST['symL']));
 $SYMR 		= stripslashes(htmlspecialchars($_POST['symR']));
 $LR 		= stripslashes(htmlspecialchars($_POST['choice_left_right']));
@@ -26,9 +28,9 @@ $OP2 		= stripslashes(htmlspecialchars($_POST['option2']));
 $INV 		= stripslashes(htmlspecialchars($_POST['inverted']));
 $CTIME 		= stripslashes(htmlspecialchars($_POST['choice_time']));
 
-$stmt = $db->prepare("INSERT INTO learning_data_r_and_c VALUE(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, NOW())");
-$stmt->bind_param("sssiddidiiiiiiiiidiiiii",
-    $EXP,$EXPID,$ID, $ELIC, $P1,$P2, $RTIME, $OUT, $CF_OUT, $CHOICE, $CORRECT_CHOICE, $TEST,$TRIAL,$COND,$SYML,$SYMR,$LR,$REW,$SESSION,$OP1,$OP2,$INV,$CTIME
+$stmt = $db->prepare("INSERT INTO learning_data_r_and_c VALUE(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, NOW())");
+$stmt->bind_param("sssiddidiiiiiiiiiiidiiiii",
+    $EXP,$EXPID,$ID, $ELIC, $P1,$P2, $RTIME, $OUT, $CF_OUT, $CHOICE, $CORRECT_CHOICE, $TEST,$TRIAL,$COND, $CONT1, $CONT2, $SYML,$SYMR,$LR,$REW,$SESSION,$OP1,$OP2,$INV,$CTIME
 );
 $stmt->execute();
 $err = $stmt->errno ;

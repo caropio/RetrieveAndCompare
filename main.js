@@ -58,6 +58,18 @@ $(document).ready(function () {
     // -------------------------------------------------------------------------------------------------- //
     var probs = [];
     var rewards = [];
+    var cont = [];
+
+    // define ind cont
+    cont[0] = [0.1, 0.9];
+    cont[1] = [0.9, 0.1];
+    cont[2] = [0.2, 0.8];
+    cont[3] = [0.8, 0.2];
+    cont[4] = [0.3, 0.7];
+    cont[5] = [0.7, 0.3];
+    cont[6] = [0.4, 0.6];
+    cont[7] = [0.6, 0.4];
+    cont[8] = [0.5, 0.5];
 
     rewards[0] = [[-1, 1], [-1, 1]];
     probs[0] = [[0.1, 0.9], [0.9, 0.1]];
@@ -71,6 +83,9 @@ $(document).ready(function () {
     rewards[3] = [[-1, 1], [-1, 1]];
     probs[3] = [[0.4, 0.6], [0.6, 0.4]];
 
+    rewards[4] = [[-1, 1], [-1, 1]];
+    probs[4] = [[0.5, 0.5], [0.5, 0.5]];
+
     // rewards[4] = [[-1, 1], [-1, 1]];
     // probs[4] = [[0.5, 0.5], [0.5, 0.5]];
     // -------------------------------------------------------------------------------------------------- //
@@ -83,13 +98,13 @@ $(document).ready(function () {
         expCondition[i] = shuffle(
             Array(nTrialsPerSession / nCondPerSession).fill(cond[i]).flat()
         );
-    var map = [range(0, 3), range(0, 3)].flat();
+    var map = [range(0, 4), range(0, 4)].flat();
 
     for (let i = 0; i <= nCond; i++)
-            conditions.push({
-                reward: rewards[map[i]],
-                prob: probs[map[i]]
-            });
+        conditions.push({
+            reward: rewards[map[i]],
+            prob: probs[map[i]]
+        });
 
     var trainingCondition = shuffle(
         Array(nTrialTrainingPerCond).fill([0, 1, 2, 3]).flat()
@@ -146,6 +161,17 @@ $(document).ready(function () {
     // ------------------------------------------------------------------------------------------------------- //
     var elicitationType = 0;
     var expectedValue = [-0.8, -0.6, -0.4, -0.2, 0, 0.2, 0.4, 0.6, 0.8];
+    var expectedValueMap = {
+        '-0.8': [cont[0], 0],
+        '-0.6': [cont[2], 2],
+        '-0.4': [cont[4], 4],
+        '-0.2': [cont[6], 6],
+        '0': [cont[8], 8],
+        '0.2': [cont[7], 7],
+        '0.4': [cont[5], 5],
+        '0.6': [cont[3], 3],
+        '0.8': [cont[1], 1]
+    };
 
     if ([0, 1].includes(elicitationType)) {
         // var nTrialPerElicitation = expectedValue.length * 8;
@@ -176,7 +202,7 @@ $(document).ready(function () {
             trainingOptions[i], trainingOptions[i + 1]
         ];
         j++;
-        for (let k = 0; k < expectedValue.length; k++) {
+        for (let k = 0; k < probs.length; k++) {
             elicitationsStimEVTraining.push([trainingOptions[i], expectedValue[k]]);
             elicitationsStimEVTraining.push([trainingOptions[i+1], expectedValue[k]]);
         }
@@ -199,8 +225,10 @@ $(document).ready(function () {
     var symbolValueMap = [];
 
     for (let i = 0; i < contexts.length; i++) {
-        symbolValueMap[contexts[i][0]] = conditions[i]['prob'][0];
-        symbolValueMap[contexts[i][1]] = conditions[i]['prob'][1];
+        v1 = conditions[i]['prob'][0];
+        v2 = conditions[i]['prob'][1];
+        symbolValueMap[contexts[i][0]] = [v1, cont.indexOf(v1)];
+        symbolValueMap[contexts[i][1]] = [v2, cont.indexOf(v2)];
     }
     //console.log(symbolValueMap);
     var elicitationsStim = [];
@@ -523,6 +551,8 @@ $(document).ready(function () {
                         test: wtest,
                         trial: trialNum,
                         condition: conditionIdx,
+                        cont_idx_1: -1,
+                        cont_idx_2: -1,
                         symL: symbols[0],
                         symR: symbols[1],
                         choice: choice,
@@ -856,7 +886,8 @@ $(document).ready(function () {
 
             var reactionTime = (new Date()).getTime();
 
-            var p1 = symbolValueMap[stimIdx];
+            var p1 = symbolValueMap[stimIdx][0];
+            var contIdx1 = symbolValueMap[stimIdx][1];
             var r1 = [-1, 1];//symbolValueMap[stimIdx]['reward'][0];
             var ev1 = sum([p1[0] * r1[0], p1[1] * r1[1]]);
 
@@ -864,22 +895,20 @@ $(document).ready(function () {
                 var thisReward = 1 - Math.abs(choice - ev1);
             } else {
                 var ev2 = choiceAgainst;
+                var contIdx2 = expectedValueMap[ev2.toString()][1];
+                var p2 = expectedValueMap[ev2.toString()][0];
                 var leftRight = -1;
 
                 if ((invertedPosition && (choice === 1)) || (!invertedPosition && (choice === 2))) {
                     leftRight = 1;
                 }
 
-                var p1 = symbolValueMap[stimIdx];
-                var r1 = [-1, 1];//symbolValueMap[stimIdx]['reward'][0];
-                var ev1 = sum([p1[0] * r1[0], p1[1] * r1[1]]);
-                var ev2 = choiceAgainst;
-
                 if (choice === 1) { /*option1*/
                     var thisReward = r1[+(Math.random() < p1[1])];
-                    var otherReward = ev2;
+                    var otherReward = r1[+(Math.random() < p2[1])];
                     var correctChoice = +(ev1 > ev2);
                 } else { /*option2*/
+                    var thisReward = r1[+(Math.random() < p2[1])];
                     var otherReward = r1[+(Math.random() < p1[1])];
                     var thisReward = ev2;
                     var correctChoice = +(ev2 > ev1);
@@ -974,6 +1003,8 @@ $(document).ready(function () {
                         test: wtest,
                         trial: trialNum,
                         elicitation_type: elicitationType,
+                        cont_idx_1: contIdx1,
+                        cont_idx_2: contIdx2,
                         condition: -1,
                         symL: -1, //tochange
                         symR: -1, //tochange
@@ -985,8 +1016,8 @@ $(document).ready(function () {
                         reaction_time: reactionTime - choiceTime,
                         reward: sumReward, //tochange
                         session: sessionNum, //tochange
-                        p1: -1, //tochange
-                        p2: -1, //tochange
+                        p1: p1, //tochange
+                        p2: p2, //tochange
                         option1: -1, //tochange
                         option2: -1, //tochange
                         inverted: invertedPosition,
