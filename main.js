@@ -86,8 +86,6 @@ $(document).ready(function () {
     rewards[4] = [[-1, 1], [-1, 1]];
     probs[4] = [[0.5, 0.5], [0.5, 0.5]];
 
-    // rewards[4] = [[-1, 1], [-1, 1]];
-    // probs[4] = [[0.5, 0.5], [0.5, 0.5]];
     // -------------------------------------------------------------------------------------------------- //
     var expCondition = [];
     var conditions = [];
@@ -567,6 +565,8 @@ $(document).ready(function () {
                         p2: P2,
                         option1: option1ImgIdx,
                         option2: option2ImgIdx,
+                        ev1: ev1,
+                        ev2: ev2,
                         inverted: invertedPosition,
                         choice_time: choiceTime - initTime
                     },
@@ -1023,6 +1023,8 @@ $(document).ready(function () {
                         p2: p2, //tochange
                         option1: -1, //tochange
                         option2: -1, //tochange
+                        ev1: ev1,
+                        ev2: ev2,
                         inverted: invertedPosition,
                         choice_time: choiceTime - initTime
                     },
@@ -1367,6 +1369,8 @@ $(document).ready(function () {
                         p2: P2,
                         option1: option1ImgIdx,
                         option2: option2ImgIdx,
+                        ev1: ev1,
+                        ev2: ev2,
                         inverted: invertedPosition,
                         choice_time: choiceTime - initTime
                     },

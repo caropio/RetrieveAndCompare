@@ -76,6 +76,8 @@ CREATE TABLE IF NOT EXISTS `learning_data_r_and_c` (
 `SESSION` int(11) NOT NULL,
 `OP1` int(11) NOT NULL,
 `OP2` int(11) NOT NULL,
+`EV1` double NOT NULL,
+`EV2`  double NOT NULL,
 `INV` tinyint(4) NOT NULL,
 `CTIME` bigint(20) NOT NULL,
 `DBTIME` time NOT NULL
