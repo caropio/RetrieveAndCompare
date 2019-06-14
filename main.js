@@ -914,7 +914,6 @@ $(document).ready(function () {
                 } else { /*option2*/
                     var thisReward = r1[+(Math.random() < p2[1])];
                     var otherReward = r1[+(Math.random() < p1[1])];
-                    var thisReward = ev2;
                     var correctChoice = +(ev2 > ev1);
                 }
             }
