@@ -1034,7 +1034,8 @@ $(document).ready(function () {
                         $('#Bottom').empty();
                         clickDisabled = false;
                         if (sessionNum === 0) {
-                            endSession(sessionNum);
+                            elicitationType = 2;
+                            startElicitation(sessionNum);
                         } else {
                             nextSession(sessionNum, trialNum);
                         }
