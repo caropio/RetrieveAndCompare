@@ -1,10 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="ee13ee03-398f-45ad-ac72-fc244a54d0c8" name="Default Changelist" comment="">
-      <change beforePath="$PROJECT_DIR$/main.js" beforeDir="false" afterPath="$PROJECT_DIR$/main.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/sql/empty_db.sql" beforeDir="false" afterPath="$PROJECT_DIR$/sql/empty_db.sql" afterDir="false" />
-    </list>
+    <list default="true" id="ee13ee03-398f-45ad-ac72-fc244a54d0c8" name="Default Changelist" comment="" />
     <ignored path="$PROJECT_DIR$/.tmp/" />
     <ignored path="$PROJECT_DIR$/temp/" />
     <ignored path="$PROJECT_DIR$/tmp/" />
@@ -83,20 +80,20 @@
               </provider>
             </entry>
           </file>
-          <file pinned="false" current-in-tab="false">
+          <file pinned="false" current-in-tab="true">
             <entry file="file://$PROJECT_DIR$/php/InsertLearningDataDB.php">
               <provider selected="true" editor-type-id="text-editor">
-                <state relative-caret-position="540">
-                  <caret line="30" column="27" selection-start-line="30" selection-start-column="27" selection-end-line="30" selection-end-column="27" />
+                <state relative-caret-position="558">
+                  <caret line="31" column="36" selection-start-line="31" selection-start-column="36" selection-end-line="31" selection-end-column="36" />
                 </state>
               </provider>
             </entry>
           </file>
-          <file pinned="false" current-in-tab="true">
+          <file pinned="false" current-in-tab="false">
             <entry file="file://$PROJECT_DIR$/sql/empty_db.sql">
               <provider selected="true" editor-type-id="text-editor">
-                <state relative-caret-position="471">
-                  <caret line="58" column="4" selection-start-line="58" selection-start-column="4" selection-end-line="58" selection-end-column="4" />
+                <state relative-caret-position="669">
+                  <caret line="69" column="21" selection-start-line="69" selection-start-column="21" selection-end-line="69" selection-end-column="21" />
                 </state>
               </provider>
             </entry>
@@ -131,8 +128,8 @@
           <file pinned="false" current-in-tab="true">
             <entry file="file://$PROJECT_DIR$/main.js">
               <provider selected="true" editor-type-id="text-editor">
-                <state relative-caret-position="433">
-                  <caret line="1342" column="18" selection-start-line="1342" selection-start-column="18" selection-end-line="1342" selection-end-column="18" />
+                <state relative-caret-position="145">
+                  <caret line="890" column="41" selection-start-line="890" selection-start-column="41" selection-end-line="890" selection-end-column="41" />
                   <folding>
                     <element signature="n#style#0;n#canvas#0;n#!!top" expanded="true" />
                     <element signature="n#style#0;n#canvas#0;n#!!top" expanded="true" />
@@ -217,11 +214,11 @@
         <option value="$PROJECT_DIR$/main.css" />
         <option value="$PROJECT_DIR$/lib/js/slider.js" />
         <option value="$PROJECT_DIR$/php/connectDB.php" />
-        <option value="$PROJECT_DIR$/php/InsertLearningDataDB.php" />
         <option value="$PROJECT_DIR$/php/InsertExpDetails.php" />
         <option value="$PROJECT_DIR$/index.html" />
-        <option value="$PROJECT_DIR$/main.js" />
         <option value="$PROJECT_DIR$/sql/empty_db.sql" />
+        <option value="$PROJECT_DIR$/php/InsertLearningDataDB.php" />
+        <option value="$PROJECT_DIR$/main.js" />
       </list>
     </option>
   </component>
@@ -314,18 +311,17 @@
       <workItem from="1559833811951" duration="8793000" />
       <workItem from="1560176209406" duration="38061000" />
       <workItem from="1560355059489" duration="4590000" />
-      <workItem from="1560418283483" duration="20609000" />
+      <workItem from="1560418283483" duration="20913000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="220990000" />
+    <option name="totallyTimeSpent" value="221294000" />
   </component>
   <component name="ToolWindowManager">
-    <frame x="469" y="328" width="1242" height="1171" extended-state="0" />
-    <editor active="true" />
+    <frame x="0" y="27" width="1920" height="1173" extended-state="6" />
     <layout>
-      <window_info active="true" content_ui="combo" id="Project" order="0" visible="true" weight="0.1215781" />
+      <window_info content_ui="combo" id="Project" order="0" visible="true" weight="0.07864583" />
       <window_info id="Structure" order="1" side_tool="true" weight="0.25" />
       <window_info id="Favorites" order="2" side_tool="true" />
       <window_info anchor="bottom" id="Message" order="0" />
@@ -337,7 +333,7 @@
       <window_info anchor="bottom" id="TODO" order="6" />
       <window_info anchor="bottom" id="Docker" order="7" show_stripe_button="false" />
       <window_info anchor="bottom" id="Version Control" order="8" />
-      <window_info anchor="bottom" id="Terminal" order="9" visible="true" weight="0.17757848" />
+      <window_info active="true" anchor="bottom" id="Terminal" order="9" visible="true" weight="0.17726052" />
       <window_info anchor="bottom" id="Event Log" order="10" side_tool="true" />
       <window_info anchor="right" id="Commander" internal_type="SLIDING" order="0" type="SLIDING" weight="0.4" />
       <window_info anchor="right" id="Ant Build" order="1" weight="0.25" />
@@ -502,10 +498,31 @@
         </state>
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/php/InsertExpDetails.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="198">
+          <caret line="11" column="56" selection-start-line="11" selection-start-column="56" selection-end-line="11" selection-end-column="56" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/sql/empty_db.sql">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="669">
+          <caret line="69" column="21" selection-start-line="69" selection-start-column="21" selection-end-line="69" selection-end-column="21" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/php/InsertLearningDataDB.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="558">
+          <caret line="31" column="36" selection-start-line="31" selection-start-column="36" selection-end-line="31" selection-end-column="36" />
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/main.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="666">
-          <caret line="231" column="4" selection-start-line="231" selection-start-column="4" selection-end-line="231" selection-end-column="4" />
+        <state relative-caret-position="145">
+          <caret line="890" column="41" selection-start-line="890" selection-start-column="41" selection-end-line="890" selection-end-column="41" />
           <folding>
             <element signature="n#style#0;n#canvas#0;n#!!top" expanded="true" />
             <element signature="n#style#0;n#canvas#0;n#!!top" expanded="true" />
@@ -534,27 +551,6 @@
             <element signature="n#style#0;n#div#0;n#!!top" expanded="true" />
             <element signature="n#style#0;n#div#0;n#!!top" expanded="true" />
           </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/php/InsertExpDetails.php">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="198">
-          <caret line="11" column="56" selection-start-line="11" selection-start-column="56" selection-end-line="11" selection-end-column="56" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/php/InsertLearningDataDB.php">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="540">
-          <caret line="30" column="27" selection-start-line="30" selection-start-column="27" selection-end-line="30" selection-end-column="27" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/sql/empty_db.sql">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="471">
-          <caret line="58" column="4" selection-start-line="58" selection-start-column="4" selection-end-line="58" selection-end-column="4" />
         </state>
       </provider>
     </entry>

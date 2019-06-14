@@ -887,7 +887,11 @@ $(document).ready(function () {
             var reactionTime = (new Date()).getTime();
 
             var p1 = symbolValueMap[stimIdx][0];
-            var contIdx1 = cont.indexOf(p1);
+            var contIdx1 = symbolValueMap[stimIdx][1];
+            console.log('SymbolValueMap');
+            console.log(symbolValueMap[stimIdx]);
+            console.log('contIdx1');
+            console.log(contIdx1);
             var r1 = [-1, 1];//symbolValueMap[stimIdx]['reward'][0];
             var ev1 = sum([p1[0] * r1[0], p1[1] * r1[1]]);
 
