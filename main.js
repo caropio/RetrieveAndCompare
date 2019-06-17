@@ -179,7 +179,7 @@ $(document).ready(function () {
     var choiceBasedOption = [];
     for (let i = 0; i < expectedValue.length; i++) {
         choiceBasedOption[expectedValue[i] + '_' + elicitationType] = new Image();
-        choiceBasedOption[expectedValue[i] + '_' + elicitationType].src = imgPath + 'stim/' + expectedValue[i] + '_' + elicitationType + '.jpg';
+        choiceBasedOption[expectedValue[i] + '_' + elicitationType].src = imgPath + 'stim/' + expectedValue[i] + '_' + elicitationType + '.png';
         choiceBasedOption[expectedValue[i] + '_' + elicitationType].className = "img-responsive center-block";
         choiceBasedOption[expectedValue[i] + '_' + elicitationType].style.border = "5px solid " + borderColor;
         choiceBasedOption[expectedValue[i] + '_' + elicitationType].style.position = "relative";
@@ -229,7 +229,7 @@ $(document).ready(function () {
         symbolValueMap[contexts[i][0]] = [v1, cont.findIndex(x => x.toString() === v1.toString())];
         symbolValueMap[contexts[i][1]] = [v2, cont.findIndex(x => x.toString() === v2.toString())];
     }
-    console.log(symbolValueMap);
+
     // Elicitation
     var elicitationsStim = [];
     elicitationsStim[0] = [];
