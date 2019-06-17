@@ -1,7 +1,19 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="ee13ee03-398f-45ad-ac72-fc244a54d0c8" name="Default Changelist" comment="" />
+    <list default="true" id="ee13ee03-398f-45ad-ac72-fc244a54d0c8" name="Default Changelist" comment="">
+      <change beforePath="$PROJECT_DIR$/images/cards_gif/stim/-0.2_0.png" beforeDir="false" afterPath="$PROJECT_DIR$/images/cards_gif/stim/-0.2_0.png" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/images/cards_gif/stim/-0.4_0.png" beforeDir="false" afterPath="$PROJECT_DIR$/images/cards_gif/stim/-0.4_0.png" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/images/cards_gif/stim/-0.6_0.png" beforeDir="false" afterPath="$PROJECT_DIR$/images/cards_gif/stim/-0.6_0.png" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/images/cards_gif/stim/-0.8_0.png" beforeDir="false" afterPath="$PROJECT_DIR$/images/cards_gif/stim/-0.8_0.png" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/images/cards_gif/stim/0.0_0.png" beforeDir="false" afterPath="$PROJECT_DIR$/images/cards_gif/stim/0.0_0.png" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/images/cards_gif/stim/0.2_0.png" beforeDir="false" afterPath="$PROJECT_DIR$/images/cards_gif/stim/0.2_0.png" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/images/cards_gif/stim/0.4_0.png" beforeDir="false" afterPath="$PROJECT_DIR$/images/cards_gif/stim/0.4_0.png" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/images/cards_gif/stim/0.6_0.png" beforeDir="false" afterPath="$PROJECT_DIR$/images/cards_gif/stim/0.6_0.png" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/images/cards_gif/stim/0.8_0.png" beforeDir="false" afterPath="$PROJECT_DIR$/images/cards_gif/stim/0.8_0.png" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/main.css" beforeDir="false" afterPath="$PROJECT_DIR$/main.css" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/main.js" beforeDir="false" afterPath="$PROJECT_DIR$/main.js" afterDir="false" />
+    </list>
     <ignored path="$PROJECT_DIR$/.tmp/" />
     <ignored path="$PROJECT_DIR$/temp/" />
     <ignored path="$PROJECT_DIR$/tmp/" />
@@ -12,7 +24,7 @@
     <option name="LAST_RESOLUTION" value="IGNORE" />
   </component>
   <component name="FileEditorManager">
-    <splitter split-orientation="horizontal" split-proportion="0.5">
+    <splitter split-orientation="horizontal" split-proportion="0.76385224">
       <split-first>
         <leaf SIDE_TABS_SIZE_LIMIT_KEY="225">
           <file pinned="false" current-in-tab="false">
@@ -20,11 +32,11 @@
               <provider selected="true" editor-type-id="images" />
             </entry>
           </file>
-          <file pinned="false" current-in-tab="false">
+          <file pinned="false" current-in-tab="true">
             <entry file="file://$PROJECT_DIR$/main.css">
               <provider selected="true" editor-type-id="text-editor">
-                <state relative-caret-position="849">
-                  <caret line="78" column="21" selection-start-line="78" selection-start-column="21" selection-end-line="78" selection-end-column="21" />
+                <state relative-caret-position="759">
+                  <caret line="214" column="5" selection-start-line="214" selection-start-column="5" selection-end-line="214" selection-end-column="5" />
                 </state>
               </provider>
             </entry>
@@ -43,11 +55,11 @@
               <provider selected="true" editor-type-id="images" />
             </entry>
           </file>
-          <file pinned="false" current-in-tab="true">
+          <file pinned="false" current-in-tab="false">
             <entry file="file://$PROJECT_DIR$/main.js">
               <provider selected="true" editor-type-id="text-editor">
-                <state relative-caret-position="718">
-                  <caret line="1079" column="45" selection-start-line="1079" selection-start-column="45" selection-end-line="1079" selection-end-column="45" />
+                <state relative-caret-position="486">
+                  <caret line="264" column="29" selection-start-line="264" selection-start-column="29" selection-end-line="264" selection-end-column="29" />
                   <folding>
                     <element signature="n#style#0;n#canvas#0;n#!!top" expanded="true" />
                     <element signature="n#style#0;n#canvas#0;n#!!top" expanded="true" />
@@ -83,7 +95,7 @@
           <file pinned="false" current-in-tab="false">
             <entry file="file://$PROJECT_DIR$/php/InsertLearningDataDB.php">
               <provider selected="true" editor-type-id="text-editor">
-                <state relative-caret-position="508">
+                <state relative-caret-position="576">
                   <caret line="32" column="111" selection-start-line="32" selection-start-column="111" selection-end-line="32" selection-end-column="111" />
                 </state>
               </provider>
@@ -92,7 +104,7 @@
           <file pinned="false" current-in-tab="false">
             <entry file="file://$PROJECT_DIR$/sql/empty_db.sql">
               <provider selected="true" editor-type-id="text-editor">
-                <state relative-caret-position="741">
+                <state relative-caret-position="1422">
                   <caret line="79" column="12" selection-start-line="79" selection-start-column="12" selection-end-line="79" selection-end-column="12" />
                 </state>
               </provider>
@@ -124,12 +136,12 @@
         </leaf>
       </split-first>
       <split-second>
-        <leaf>
+        <leaf SIDE_TABS_SIZE_LIMIT_KEY="225">
           <file pinned="false" current-in-tab="true">
             <entry file="file://$PROJECT_DIR$/main.js">
               <provider selected="true" editor-type-id="text-editor">
-                <state relative-caret-position="774">
-                  <caret line="265" lean-forward="true" selection-start-line="265" selection-end-line="265" />
+                <state relative-caret-position="433">
+                  <caret line="719" column="71" selection-start-line="719" selection-start-column="71" selection-end-line="719" selection-end-column="71" />
                   <folding>
                     <element signature="n#style#0;n#canvas#0;n#!!top" expanded="true" />
                     <element signature="n#style#0;n#canvas#0;n#!!top" expanded="true" />
@@ -225,7 +237,6 @@
         <option value="$PROJECT_DIR$/RLTask_1pf2pf.js" />
         <option value="$PROJECT_DIR$/connectDB.php" />
         <option value="$PROJECT_DIR$/RLTask_1pf2nf.js" />
-        <option value="$PROJECT_DIR$/main.css" />
         <option value="$PROJECT_DIR$/lib/js/slider.js" />
         <option value="$PROJECT_DIR$/php/connectDB.php" />
         <option value="$PROJECT_DIR$/php/InsertExpDetails.php" />
@@ -233,14 +244,15 @@
         <option value="$PROJECT_DIR$/sql/empty_db.sql" />
         <option value="$PROJECT_DIR$/php/InsertLearningDataDB.php" />
         <option value="$PROJECT_DIR$/main.js" />
+        <option value="$PROJECT_DIR$/main.css" />
       </list>
     </option>
   </component>
-  <component name="ProjectFrameBounds" extendedState="6">
-    <option name="x" value="289" />
-    <option name="y" value="27" />
-    <option name="width" value="1242" />
-    <option name="height" value="1171" />
+  <component name="ProjectFrameBounds">
+    <option name="x" value="691" />
+    <option name="y" value="520" />
+    <option name="width" value="1232" />
+    <option name="height" value="1169" />
   </component>
   <component name="ProjectLevelVcsManager" settingsEditedManually="true" />
   <component name="ProjectView">
@@ -326,18 +338,26 @@
       <workItem from="1560176209406" duration="38061000" />
       <workItem from="1560355059489" duration="4590000" />
       <workItem from="1560418283483" duration="37055000" />
+      <workItem from="1560778754125" duration="1876000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="237436000" />
+    <option name="totallyTimeSpent" value="239312000" />
   </component>
   <component name="ToolWindowManager">
-    <frame x="0" y="27" width="1920" height="1173" extended-state="7" />
+    <frame x="0" y="27" width="1920" height="1173" extended-state="6" />
+    <editor active="true" />
     <layout>
-      <window_info content_ui="combo" id="Project" order="0" visible="true" weight="0.07864583" />
+      <window_info id="DB Browser" />
+      <window_info id="Project Explorer" />
+      <window_info id="Job Explorer" />
+      <window_info active="true" content_ui="combo" id="Project" order="0" visible="true" weight="0.21041666" />
       <window_info id="Structure" order="1" side_tool="true" weight="0.25" />
       <window_info id="Favorites" order="2" side_tool="true" />
+      <window_info anchor="bottom" id="Console" />
+      <window_info anchor="bottom" id="DB Execution Console" />
+      <window_info anchor="bottom" id="Database Changes" />
       <window_info anchor="bottom" id="Message" order="0" />
       <window_info anchor="bottom" id="Find" order="1" weight="0.3294539" />
       <window_info anchor="bottom" id="Run" order="2" />
@@ -347,8 +367,9 @@
       <window_info anchor="bottom" id="TODO" order="6" />
       <window_info anchor="bottom" id="Docker" order="7" show_stripe_button="false" />
       <window_info anchor="bottom" id="Version Control" order="8" />
-      <window_info active="true" anchor="bottom" id="Terminal" order="9" visible="true" weight="0.17726052" />
+      <window_info anchor="bottom" id="Terminal" order="9" visible="true" weight="0.17726052" />
       <window_info anchor="bottom" id="Event Log" order="10" side_tool="true" />
+      <window_info anchor="right" id="Database" />
       <window_info anchor="right" id="Commander" internal_type="SLIDING" order="0" type="SLIDING" weight="0.4" />
       <window_info anchor="right" id="Ant Build" order="1" weight="0.25" />
       <window_info anchor="right" content_ui="combo" id="Hierarchy" order="2" weight="0.25" />
@@ -458,12 +479,6 @@
     <entry file="file://$PROJECT_DIR$/images/cards_gif/lotteries/5_2.gif">
       <provider selected="true" editor-type-id="images" />
     </entry>
-    <entry file="file://$PROJECT_DIR$/images/cards_gif/lotteries/4_1.gif">
-      <provider selected="true" editor-type-id="images" />
-    </entry>
-    <entry file="file://$PROJECT_DIR$/images/cards_gif/fb/0.gif">
-      <provider selected="true" editor-type-id="images" />
-    </entry>
     <entry file="file://$PROJECT_DIR$/lib/js/slider.js">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="-162">
@@ -471,20 +486,10 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/php/InsertQuestionnaireDataDB.php">
-      <provider selected="true" editor-type-id="text-editor" />
-    </entry>
     <entry file="file://$PROJECT_DIR$/php/connectDB.php">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="270">
           <caret line="15" lean-forward="true" selection-start-line="15" selection-end-line="15" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/php/InsertSubDetails.php">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="18">
-          <caret line="1" selection-start-line="1" selection-end-line="1" />
         </state>
       </provider>
     </entry>
@@ -498,17 +503,30 @@
     <entry file="file://$PROJECT_DIR$/lib/js/popper.js">
       <provider selected="true" editor-type-id="text-editor" />
     </entry>
-    <entry file="file://$PROJECT_DIR$/main.css">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="849">
-          <caret line="78" column="21" selection-start-line="78" selection-start-column="21" selection-end-line="78" selection-end-column="21" />
-        </state>
-      </provider>
+    <entry file="file://$PROJECT_DIR$/images/cards_gif/lotteries/4_1.gif">
+      <provider selected="true" editor-type-id="images" />
     </entry>
     <entry file="file://$PROJECT_DIR$/index.html">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="306">
           <caret line="17" column="56" selection-start-line="17" selection-start-column="56" selection-end-line="17" selection-end-column="56" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/images/cards_gif/fb/0.gif">
+      <provider selected="true" editor-type-id="images" />
+    </entry>
+    <entry file="file://$PROJECT_DIR$/php/InsertLearningDataDB.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="576">
+          <caret line="32" column="111" selection-start-line="32" selection-start-column="111" selection-end-line="32" selection-end-column="111" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/sql/empty_db.sql">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="1422">
+          <caret line="79" column="12" selection-start-line="79" selection-start-column="12" selection-end-line="79" selection-end-column="12" />
         </state>
       </provider>
     </entry>
@@ -519,24 +537,20 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/sql/empty_db.sql">
+    <entry file="file://$PROJECT_DIR$/php/InsertSubDetails.php">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="741">
-          <caret line="79" column="12" selection-start-line="79" selection-start-column="12" selection-end-line="79" selection-end-column="12" />
+        <state relative-caret-position="18">
+          <caret line="1" selection-start-line="1" selection-end-line="1" />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/php/InsertLearningDataDB.php">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="508">
-          <caret line="32" column="111" selection-start-line="32" selection-start-column="111" selection-end-line="32" selection-end-column="111" />
-        </state>
-      </provider>
+    <entry file="file://$PROJECT_DIR$/php/InsertQuestionnaireDataDB.php">
+      <provider selected="true" editor-type-id="text-editor" />
     </entry>
     <entry file="file://$PROJECT_DIR$/main.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="774">
-          <caret line="265" lean-forward="true" selection-start-line="265" selection-end-line="265" />
+        <state relative-caret-position="486">
+          <caret line="264" column="29" selection-start-line="264" selection-start-column="29" selection-end-line="264" selection-end-column="29" />
           <folding>
             <element signature="n#style#0;n#canvas#0;n#!!top" expanded="true" />
             <element signature="n#style#0;n#canvas#0;n#!!top" expanded="true" />
@@ -565,6 +579,13 @@
             <element signature="n#style#0;n#div#0;n#!!top" expanded="true" />
             <element signature="n#style#0;n#div#0;n#!!top" expanded="true" />
           </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/main.css">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="759">
+          <caret line="214" column="5" selection-start-line="214" selection-start-column="5" selection-end-line="214" selection-end-column="5" />
         </state>
       </provider>
     </entry>

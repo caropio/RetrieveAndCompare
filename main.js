@@ -259,10 +259,10 @@ $(document).ready(function () {
     // Run the experiment
     // ------------------------------------------------------------------------------------------------ //
     // playSessions(0, 0);
-    getUserID();
+    // getUserID();
     // playTraining(0, 1);
 
-    // playElicitation(0, 0);
+    playElicitation(0, 0, 0, 3);
 
     function sendExpDataDB(call) {
 

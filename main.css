@@ -211,5 +211,12 @@ form {
   min-height: 100%;
 }
 
+.col-md-3 {
+  width: 29%;
+}
+
+.col-xs-3 {
+  width: 29%;
+}
 
 
