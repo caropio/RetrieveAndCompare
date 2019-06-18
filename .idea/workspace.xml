@@ -1,9 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="ee13ee03-398f-45ad-ac72-fc244a54d0c8" name="Default Changelist" comment="">
-      <change beforePath="$PROJECT_DIR$/main.js" beforeDir="false" afterPath="$PROJECT_DIR$/main.js" afterDir="false" />
-    </list>
+    <list default="true" id="ee13ee03-398f-45ad-ac72-fc244a54d0c8" name="Default Changelist" comment="" />
     <ignored path="$PROJECT_DIR$/.tmp/" />
     <ignored path="$PROJECT_DIR$/temp/" />
     <ignored path="$PROJECT_DIR$/tmp/" />
@@ -18,8 +16,8 @@
       <file pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/main.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="543">
-              <caret line="1939" column="54" selection-start-line="1939" selection-start-column="54" selection-end-line="1939" selection-end-column="54" />
+            <state relative-caret-position="396">
+              <caret line="265" lean-forward="true" selection-start-line="265" selection-end-line="265" />
               <folding>
                 <element signature="n#style#0;n#canvas#0;n#!!top" expanded="true" />
                 <element signature="n#style#0;n#canvas#0;n#!!top" expanded="true" />
@@ -125,9 +123,9 @@
       </list>
     </option>
   </component>
-  <component name="ProjectFrameBounds">
+  <component name="ProjectFrameBounds" extendedState="6">
     <option name="x" value="540" />
-    <option name="y" value="263" />
+    <option name="y" value="260" />
     <option name="width" value="1232" />
     <option name="height" value="1169" />
   </component>
@@ -240,16 +238,15 @@
       <workItem from="1560176209406" duration="38061000" />
       <workItem from="1560355059489" duration="4590000" />
       <workItem from="1560418283483" duration="37055000" />
-      <workItem from="1560778754125" duration="6860000" />
+      <workItem from="1560778754125" duration="7606000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="244296000" />
+    <option name="totallyTimeSpent" value="245042000" />
   </component>
   <component name="ToolWindowManager">
-    <frame x="540" y="263" width="1232" height="1169" extended-state="0" />
-    <editor active="true" />
+    <frame x="0" y="27" width="1920" height="1173" extended-state="6" />
     <layout>
       <window_info id="DB Browser" />
       <window_info id="Project Explorer" />
@@ -269,7 +266,7 @@
       <window_info anchor="bottom" id="TODO" order="6" />
       <window_info anchor="bottom" id="Docker" order="7" show_stripe_button="false" />
       <window_info anchor="bottom" id="Version Control" order="8" />
-      <window_info anchor="bottom" id="Terminal" order="9" weight="0.17789757" />
+      <window_info active="true" anchor="bottom" id="Terminal" order="9" visible="true" weight="0.17726052" />
       <window_info anchor="bottom" id="Event Log" order="10" side_tool="true" />
       <window_info anchor="right" id="Database" />
       <window_info anchor="right" id="Commander" internal_type="SLIDING" order="0" type="SLIDING" weight="0.4" />
@@ -499,8 +496,8 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/main.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="543">
-          <caret line="1939" column="54" selection-start-line="1939" selection-start-column="54" selection-end-line="1939" selection-end-column="54" />
+        <state relative-caret-position="396">
+          <caret line="265" lean-forward="true" selection-start-line="265" selection-end-line="265" />
           <folding>
             <element signature="n#style#0;n#canvas#0;n#!!top" expanded="true" />
             <element signature="n#style#0;n#canvas#0;n#!!top" expanded="true" />
