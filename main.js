@@ -878,7 +878,6 @@ $(document).ready(function () {
         function getReward(choice, slider = false) {
 
             var reactionTime = (new Date()).getTime();
-            console.log(stimIdx);
             var p1 = symbolValueMap[stimIdx][0];
             var contIdx1 = symbolValueMap[stimIdx][1];
             var r1 = [-1, 1];//symbolValueMap[stimIdx]['reward'][0];
@@ -1063,8 +1062,6 @@ $(document).ready(function () {
                     }, 500);
                 }, fbdur);
             } else {
-                console.log('phase num');
-                console.log(phaseNum);
                 trialNum = 0;
                 setTimeout(function () {
                     $('#TextBoxDiv').fadeOut(500);
@@ -1072,17 +1069,18 @@ $(document).ready(function () {
                         $('#Stage').empty();
                         $('#Bottom').empty();
                         clickDisabled = false;
-                        if (phaseNum === 2) {
-                            phaseNum++;
-                            startElicitation(sessionNum, true, 2, phaseNum);
-                        } else if (phaseNum === 3) {
-                            phaseNum++;
-                            endSession(0, phaseNum);
-                        } else if (phaseNum === 5) {
-                            phaseNum++;
-                            startElicitation(sessionNum, true, 2, phaseNum);
-                        } else if (phaseNum === 6) {
-                            endExperiment()
+                        switch (phaseNum) {
+                            case 2:
+                                phaseNum++;
+                                startElicitation(sessionNum, true, 2, phaseNum);
+                            case 3:
+                                phaseNum++;
+                                endSession(0, phaseNum);
+                            case 5:
+                                phaseNum++;
+                                startElicitation(sessionNum, true, 2, phaseNum);
+                            case 6:
+                                endExperiment()
                         }
                     }, 500);
                 }, fbdur);
@@ -1103,7 +1101,6 @@ $(document).ready(function () {
         elicitationType = 2;
         nTrialPerElicitation = 8;
 
-        /*Choisir une condition*/
         var conditionIdx = expCondition[sessionNum][trialNum];
 
         var option1ImgIdx = contexts[conditionIdx][0];
