@@ -848,11 +848,11 @@ $(document).ready(function () {
                 + '</div><div id = "Middle" class="col-xs-4 col-md-4">' + option1 + '</div></div>';
 
             var Slider = '<main>\n' +
-                '  <form oninput="output.value = range.valueAsNumber / 10">\n' +
+                '  <form oninput="output.value = range.valueAsNumber">\n' +
                 '    <h2>\n' +
                 '    </h2>\n' +
                 '    <div class="range">\n' +
-                '      <input id="slider" name="range" type="range" value="0" min="0" max="10" step="2">\n' +
+                '      <input id="slider" name="range" type="range" value="0" min="0" max="100" step="10">\n' +
                 '      <div class="range-output">\n' +
                 '        <output class="output" name="output" for="range">\n' +
                 '          0\n' +
