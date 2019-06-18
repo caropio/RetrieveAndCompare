@@ -259,10 +259,10 @@ $(document).ready(function () {
     // Run the experiment
     // ------------------------------------------------------------------------------------------------ //
     // playSessions(0, 0);
-    // getUserID();
+    getUserID();
     // playTraining(0, 1);
 
-    playElicitation(0, 0, 0, 3);
+    // playElicitation(0, 0, 0, 3);
 
     function sendExpDataDB(call) {
 
@@ -963,11 +963,6 @@ $(document).ready(function () {
 
                     var scroll = setInterval(draw, speed);
 
-                    // setTimeout(function () {
-                    //     pic.style.visibility = "hidden";
-                    //     clearInterval(scroll);
-                    //     ctx.clearRect(0, 0, canvas.width, canvas.height);
-                    // }, 1000);
                 };
 
                 function draw() {
@@ -1529,42 +1524,6 @@ $(document).ready(function () {
             }, 10);
         });
     }
-
-    // function endSession(sessionNum, trialNum) {
-
-    // createDiv('Stage', 'TextBoxDiv');
-    //
-    // var Title = '<H2 align = "center">SESSION</H2>';
-    //
-    // var points = sumReward;
-    // var pence = pointsToPence(points);
-    // var pounds = pointsToPounds(points);
-    //
-    // var wonlost;
-    // var Info;
-    // var nextBut;
-    //
-    // wonlost = [' won ', ' lost '][+(points < 0)];
-    // Info = '<H3 align = "center">So far, you have ' + wonlost + points + ' points = ' + pence +
-    //     ' pence = ' + pounds + ' pounds!<br><br> Click when you are ready to continue';
-    // nextBut = '"Next"';
-    //
-    // $('#TextBoxDiv').html(Info);
-    //
-    // var Buttons = '<div align="center"><input align="center" type="button"  class="btn btn-default" id="Next" value='
-    //     + nextBut + ' ></div>';
-    //
-    // $('#Bottom').html(Buttons);
-    //
-    // $('#Next').click(function () {
-    //     $('#TextBoxDiv').remove();
-    //     $('#Stage').empty();
-    //     $('#Bottom').empty();
-    //
-    //     playSessions(sessionNum, trialNum);
-    //
-    // })
-    // }
 
     function endExperiment() {
 
