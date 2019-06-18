@@ -1078,7 +1078,7 @@ $(document).ready(function () {
                                 endSession(0, phaseNum);
                             case 5:
                                 phaseNum++;
-                                startElicitation(sessionNum, true, 2, phaseNum);
+                                startElicitation(sessionNum, false, 2, phaseNum);
                             case 6:
                                 endExperiment()
                         }
@@ -1426,7 +1426,7 @@ $(document).ready(function () {
                         $('#Bottom').empty();
                         clickDisabled = false;
                         phaseNum++;
-                        startElicitation(sessionNum, trialNum, 0, phaseNum);
+                        startElicitation(sessionNum, false, 0, phaseNum);
                     }, 500);
                 }, feedbackDuration);
             }
@@ -1445,7 +1445,7 @@ $(document).ready(function () {
         }
     }
 
-    function startElicitation(sessionNum, training = false, elicitationType, phaseNum) {
+    function startElicitation(sessionNum, training, elicitationType, phaseNum) {
 
         createDiv('Stage', 'TextBoxDiv');
 
