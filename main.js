@@ -1073,14 +1073,18 @@ $(document).ready(function () {
                             case 2:
                                 phaseNum++;
                                 startElicitation(sessionNum, true, 2, phaseNum);
+                                break;
                             case 3:
                                 phaseNum++;
                                 endSession(0, phaseNum);
+                                break;
                             case 5:
                                 phaseNum++;
                                 startElicitation(sessionNum, false, 2, phaseNum);
+                                break;
                             case 6:
-                                endExperiment()
+                                endExperiment();
+                                break;
                         }
                     }, 500);
                 }, fbdur);
