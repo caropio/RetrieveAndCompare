@@ -28,7 +28,8 @@ $(document).ready(function () {
     var nTrainingImg = nCondTraining * 2;
     nCondTraining--; // because of range function
 
-    // Elicitation
+    // Phase
+    var phases = [-1, 1, 2, 3, 1, 2, 3];
 
     // var nTrialsPerConditionLot = 2;
     // var nTrialsLotteries = (nCond + 1) * nTrialsPerConditionLot;
@@ -208,7 +209,6 @@ $(document).ready(function () {
     trainingContexts = shuffle(trainingContexts);
 
     elicitationsStimEVTraining = shuffle(elicitationsStimEVTraining);
-    console.log(elicitationsStimEVTraining);
 
     // EXP
     availableOptions = shuffle(availableOptions);
@@ -259,10 +259,10 @@ $(document).ready(function () {
     // Run the experiment
     // ------------------------------------------------------------------------------------------------ //
     // playSessions(0, 0);
-    // getUserID();
+    getUserID();
     // playTraining(0, 1);
 
-    playElicitation(-1, 0, 2, 3);
+    // playElicitation(-1, 0, 2, 3);
 
     function sendExpDataDB(call) {
 
@@ -621,15 +621,13 @@ $(document).ready(function () {
                 }, feedbackDuration);
             }
         }
-    };
+    }
 
-    function endSession(sessionNum, phaseNum) {
-
-        // InsertLog(0,'train');
+    function endTraining(sessionNum, phaseNum) {
 
         createDiv('Stage', 'TextBoxDiv');
 
-        var Title = '<H2 align = "center">PHASE ' + phaseNum + '</H2>';
+        var Title = '<H2 align = "center">PHASE ' + phases[phaseNum] + '</H2>';
 
         var instBut;
         var trainBut;
@@ -645,14 +643,13 @@ $(document).ready(function () {
         var pence = pointsToPence(points);
         var pounds = pointsToPounds(points);
 
-        if (phaseNum === 4) {
-            var wonlost = [' you won ', ' you lost '][+(points < 0)];
+        var wonlost = [' you won ', ' you lost '][+(points < 0)];
 
-            Info += '<H3 align = "center">In this training,' + wonlost + points + ' points = ' + pence + ' pence = ' + pounds + ' pounds!</h3><br><br>';
-        }
+        Info += '<H3 align = "center">In this training,' + wonlost + points +
+            ' points = ' + pence + ' pence = ' + pounds + ' pounds!</h3><br><br>';
 
-        Info += '<H3 align="center">Now, you are about to start the phase ' + phaseNum + ' of the test.'
-            + ' The phase ' + phaseNum + ' is the same as the first phase but with different symbols and different values.<br>'
+        Info += '<H3 align="center">Now, you are about to start the first phase of the test.'
+            + ' The phase ' + phases[phaseNum] + ' is the same as the first phase but with different symbols and different values.<br>'
             + 'In each round you have to choose between one of two symbols displayed on either side of the screen.<br><br>'
             + 'You can select one of the two symbols with a left-click.'
             + 'After a choice, you can win/lose the following outcomes:<br><br>'
@@ -1083,7 +1080,7 @@ $(document).ready(function () {
                                 break;
                             case 3:
                                 phaseNum++;
-                                endSession(0, phaseNum);
+                                endTraining(0, phaseNum);
                                 break;
                             case 5:
                                 phaseNum++;
@@ -1447,7 +1444,7 @@ $(document).ready(function () {
     function nextSession(sessionNum, trialNum) {
 
         if (sessionNum < nSessions) {
-            endSession(sessionNum, trialNum);
+            endTraining(sessionNum, trialNum);
         } else {
             if (questionnaire) {
             } else {
@@ -1460,34 +1457,39 @@ $(document).ready(function () {
 
         createDiv('Stage', 'TextBoxDiv');
 
-        var Title = '<H2 align = "center">PHASE ' + phaseNum + '</H2><br>';
-
-        var p = 'This is the actual game, every point will be included in the final payoff.<br><br>'
-            + 'Ready? <br></H3>';
-        if (phaseNum === 5)
-            var s = 'The phase 5 is the same as the phase 2<br>';
-        if (phaseNum === 6)
-            var s = 'The phase 6 is the same as the phase 3<br>';
         if (training) {
+            var Title = '<H2 align = "center">TRAINING</H2><br>';
             var p = '(This is a training phase, the results do not count for the final payoff.)<br><br></h3>';
             var s = '';
+        } else {
+            var Title = '<H2 align = "center">PHASE ' + phases[phaseNum] + '</H2><br>';
+            var p = 'This is the actual game, every point will be included in the final payoff.<br><br>'
+                + 'Ready? <br></H3>';
         }
+
+        if (phaseNum === 5)
+            var s = 'The phase ' + phases[phaseNum] + ' consists in the same task as the second phase of the training.<br>';
+        if (phaseNum === 6)
+            var s = 'The phase ' + phases[phaseNum] + ' consists in the same task as the third phase of the training.<br>';
+
         switch (elicitationType) {
             case 0:
 
                 Info = '<H3 align = "center">' + s
-                    + 'In each round of phase ' + phaseNum + ' you have to choose '
+                    + 'In each round of phase ' + phases[phaseNum]+ ' you have to choose '
                     + 'between one of two options displayed on either side of the screen<br><br>'
                     + 'You can select one of the two options with a left-click<br><br> '
                     + 'In each round, one of the two options will be a symbol<br> you already met during '
-                    + 'the previous phase and that is equally rewarding. ' +
-                    'The other option will display explicitly what chances you have to win by choosing it'
-                    + '.<br><br>' + p;
+                    + 'the previous phase and that is equally rewarding. '
+                    + 'The other option will display explicitly what chances you have to win by choosing it'
+                    + 'Please not that the outcome of your choice will not be displayed.'
+                    + '<br>However, there is still one and it will be taken into account in the final payoff.<br><br>' + p;
                 break;
+
             case 2:
 
                 Info = '<H3 align = "center">' + s
-                    + 'In each round of phase ' + phaseNum + ' you have to choose ... BDM bid?'
+                    + 'In each round of phase ' + phases[phaseNum] + ' you have to choose ... BDM bid?'
                     + '<br><br>' + p;
                 break;
 
@@ -1650,19 +1652,17 @@ $(document).ready(function () {
         switch (pageNum) {
 
             case 1:
-                var Info = '<H3 align = "center">This experiment is composed of 6 phases.<br><br>'
+                var Info = '<H3 align = "center">This experiment is composed of 3 phases.<br><br>'
                     + 'All phases consists in a cognitive test<br><br>'
-                    + 'The first, second, and third phase are considered as training phases.<br>'
-                    + 'The fourth, fifth and sixth phase consist in the same task as the first three phases.<br>'
+                    + 'There will be a training session composed of 3 phases before the actual experiment starts.<br>'
                     + '<br><br> </H3>';
                 break;
 
             case 2:
                 var Info = '<H3 align = "center">In addition of the fixed compensation,'
                     + ' you will receive a bonus depending on your choices.<br><br>'
-                    + 'The training does not count in the final payoff (first, second and third phase)<br>'
-                    + '<br> while the others (fourth, fifth and sixth phase) do.<br>'
-                    + 'Across the last three phases of the cognitive experiment, you can win up to ? points = ? pounds.<br>'
+                    + 'The training does not count in the final payoff.<br>'
+                    + 'Across the three phases of the cognitive experiment, you can win up to ? points = ? pounds.<br>'
                     + 'The word "ready" will be displayed before the actual game starts.<br><br></H3>';
                 break;
 
