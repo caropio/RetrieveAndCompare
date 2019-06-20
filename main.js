@@ -259,10 +259,10 @@ $(document).ready(function () {
     // Run the experiment
     // ------------------------------------------------------------------------------------------------ //
     // playSessions(0, 0);
-    getUserID();
+    // getUserID();
     // playTraining(0, 1);
 
-    // playElicitation(0, 0, 0, 3);
+    playElicitation(-1, 0, 2, 3);
 
     function sendExpDataDB(call) {
 
@@ -847,15 +847,17 @@ $(document).ready(function () {
                 '<div class="col-xs-1 col-md-1"></div>  <div class="col-xs-3 col-md-3">'
                 + '</div><div id = "Middle" class="col-xs-4 col-md-4">' + option1 + '</div></div>';
 
+            var initvalue = range(25, 75, 5)[Math.floor(Math.random() * 10)];
+
             var Slider = '<main>\n' +
                 '  <form oninput="output.value = range.valueAsNumber">\n' +
                 '    <h2>\n' +
                 '    </h2>\n' +
                 '    <div class="range">\n' +
-                '      <input id="slider" name="range" type="range" value="0" min="0" max="100" step="10">\n' +
+                '      <input id="slider" name="range" type="range" value="' + initvalue + '" min="0" max="100" step="5">\n' +
                 '      <div class="range-output">\n' +
                 '        <output class="output" name="output" for="range">\n' +
-                '          0\n' +
+                '          ' + initvalue + '\n' +
                 '        </output>\n' +
                 '      </div>\n' +
                 '    </div>\n' +
@@ -884,7 +886,12 @@ $(document).ready(function () {
             var ev1 = sum([p1[0] * r1[0], p1[1] * r1[1]]);
 
             if (slider) {
-                var thisReward = 1 - Math.abs(choice - ev1);
+                var pLottery = Math.random();
+                if (pLottery < choice / 100) {
+                    var thisReward = r1[+(Math.random() < p1[1])];
+                } else {
+                    var thisReward = r1[+(Math.random()) < pLottery]
+                }
                 var otherReward = -1;
                 var correctChoice = -1;
                 var ev2 = -1;
@@ -1044,11 +1051,11 @@ $(document).ready(function () {
             } else {
                 var nTrialPerElicitation = nTrialPerElicitationSlider;
             }
-              if (elicitationType === 2) {
-                        fbdur = 200;
-                    } else {
-                        fbdur = feedbackDuration;
-                    }
+            if (elicitationType === 2) {
+                var fbdur = 200;
+            } else {
+                var fbdur = feedbackDuration;
+            }
             if (trialNum < nTrialPerElicitation) {
                 setTimeout(function () {
                     $('#stimrow').fadeOut(500);
