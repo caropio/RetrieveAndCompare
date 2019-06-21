@@ -49,8 +49,8 @@ $(document).ready(function () {
 
     // Manage compensations
     // -------------------------------------------------------------------------------------------------- //
-    // one point equals 7.5 pence
-    var conversionRate = 7.5;
+    // one point equals 10 pence
+    var conversionRate = 10;
     var pointsToPence = points => points * conversionRate;
     var penceToPounds = pence => pence / 100;
     var pointsToPounds = points => penceToPounds(pointsToPence(points));
@@ -85,6 +85,7 @@ $(document).ready(function () {
     rewards[3] = [[-1, 1], [-1, 1]];
     probs[3] = [[0.4, 0.6], [0.6, 0.4]];
 
+    // only for lotteries
     rewards[4] = [[-1, 1], [-1, 1]];
     probs[4] = [[0.5, 0.5], [0.5, 0.5]];
 
@@ -653,7 +654,7 @@ $(document).ready(function () {
             + 'In each round you have to choose between one of two symbols displayed on either side of the screen.<br><br>'
             + 'You can select one of the two symbols with a left-click.'
             + 'After a choice, you can win/lose the following outcomes:<br><br>'
-            + '-1 point = ? pence<br>1 points = ? pence<br><br>'
+            + '-1 point = -10 pence<br>1 points = +10 pence<br><br>'
             + 'This is the actual game, every point will be included in the final payoff.<br><br>'
             + '<br>Click on start when you are ready.</h3><br><br>';
 
@@ -840,6 +841,7 @@ $(document).ready(function () {
             });
 
         } else {
+            var Title = '<div id = "Title"><H2 align = "center">To what extent this symbol gives a reward of +1?<br><br><br><br></H2></div>';
             var Images = '<div id = "stimrow" style="transform: translate(0%, -100%);position:relative"> ' +
                 '<div class="col-xs-1 col-md-1"></div>  <div class="col-xs-3 col-md-3">'
                 + '</div><div id = "Middle" class="col-xs-4 col-md-4">' + option1 + '</div></div>';
@@ -847,14 +849,14 @@ $(document).ready(function () {
             var initvalue = range(25, 75, 5)[Math.floor(Math.random() * 10)];
 
             var Slider = '<main>\n' +
-                '  <form oninput="output.value = range.valueAsNumber">\n' +
+                '  <form id="form">\n' +
                 '    <h2>\n' +
                 '    </h2>\n' +
                 '    <div class="range">\n' +
                 '      <input id="slider" name="range" type="range" value="' + initvalue + '" min="0" max="100" step="5">\n' +
                 '      <div class="range-output">\n' +
-                '        <output class="output" name="output" for="range">\n' +
-                '          ' + initvalue + '\n' +
+                '        <output id="output" class="output" name="output" for="range">\n' +
+                '          ' + initvalue + '%\n' +
                 '        </output>\n' +
                 '      </div>\n' +
                 '    </div>\n' +
@@ -866,12 +868,21 @@ $(document).ready(function () {
             rangeInputRun();
 
             var slider = document.getElementById('slider');
-            var ok = document.getElementById("ok");
+            var output = document.getElementById('output');
+            var ok = document.getElementById('ok');
+            var form = document.getElementById('form');
+
+            form.oninput = function () {
+                    output.value = slider.valueAsNumber;
+                    output.innerHTML += "%";
+            };
 
             ok.onclick = function () {
                 var choice = slider.value;
                 getReward(choice, true)
             };
+
+
         }
 
         function getReward(choice, slider = false) {
@@ -1458,7 +1469,7 @@ $(document).ready(function () {
         createDiv('Stage', 'TextBoxDiv');
 
         if (training) {
-            var Title = '<H2 align = "center">TRAINING</H2><br>';
+            var Title = '<H2 align = "center">INSTRUCTIONS</H2><br>';
             var p = '(This is a training phase, the results do not count for the final payoff.)<br><br></h3>';
             var s = '';
         } else {
@@ -1481,17 +1492,33 @@ $(document).ready(function () {
                     + 'You can select one of the two options with a left-click<br><br> '
                     + 'In each round, one of the two options will be a symbol<br> you already met during '
                     + 'the previous phase and that is equally rewarding. '
-                    + 'The other option will display explicitly what chances you have to win by choosing it'
-                    + 'Please not that the outcome of your choice will not be displayed.'
-                    + '<br>However, there is still one and it will be taken into account in the final payoff.<br><br>' + p;
+                    + 'The other option will display explicitly what chances you have to win by choosing it.<br>'
+                    + 'Please note that the outcome of your choice will not be displayed.'
+                    + '<br>However, each choice still have an outcome and it will be taken into account for the final payoff.<br><br>' + p;
                 break;
 
             case 2:
 
                 Info = '<H3 align = "center">' + s
-                    + 'In each round of phase ' + phases[phaseNum] + ' you have to choose ... BDM bid?'
-                    + '<br><br>' + p;
-                break;
+                    + 'In each round of phase ' + phases[phaseNum] + ' you will be'
+                    +' presented with the symbols you met in the first phase. You will be asked to indicate in percentages, <br>'
+                    + 'to what extent this symbol rewards you with a +1.<br> 0% means it was not rewarding at all, and gives always a -1, and 100% means this symbol gives always a +1.<br><br>'
+                    + 'You will be able to do this through moving a slider on the screen and then confirm your final answer by clicking on the confirmation button. <br>'
+                    + 'After confirming your choice (denoted C hereafter) the computer will draw a random lottery number (denoted L hereafter) between 0 and 100. If C > L, you win the reward with the probabilities associated to the symbol.<br>'
+                    + ' If C < L, the program will spin a wheel of fortune and you will win a reward of +1 point with a probability of L%, otherwise you will lose -1 point.<br>'
+                    + 'To sum up, the more you are confident in the fact that a symbol rewards you with +1, the more you should put a high percentage. '
+                    + '<br> Conversely, the lower the percentage, the more you choose to rely on a random lottery instead of the symbol in order to win reward.'
+                    + ' <br><br>' + p;
+                    break;
+
+
+// In the practice period, you will not be rewarded for your answers. In the real experiment, you will be able to win a monetary prize for accurate answers as follows. After confirming your confidence (C), the computer will draw a random lottery number (L) between 50 and 100. If C > L, you win a prize if your answer is correct and earn nothing otherwise. If C < L, the program will spin a wheel of fortune and you will win a prize with a probability of L%.
+
+// This procedure may seem complicated at first, but it is designed so that you maximize your chance of winning the prize by accurately and truthfully stating your confidence. Roughly speaking, the intuition is as follows: If you are confident your answer is correct, then you should state a high value of C, so that you are likely to get paid on the basis of your answer. If you are not very confident in your answer, then you should state a low value of C, in order to get paid on the basis of lottery L, independently of your answer.
+// The following two examples demonstrate this logic in more detail. First, suppose your true confidence is 75%, but instead of reporting this, you exaggerate and report C=100%. In this case, L is always lower than C, so you win the prize if your answer is correct. Since the true confidence in your answer is 75%, you can be 75% confident to win the prize. Now suppose you had instead stated your confidence truthfully as C=75% and the computer had drawn a number L>75%. In this case, you win the prize with a probability L, which is higher than 75%. Thus, you could have increased your chance of winning by reporting truthfully that C=75%.
+// As a second example, suppose again that your true confidence is 75%, but instead of reporting this, you report C=50%. In this case, L is always higher than C, so you will get paid with probability L. However, in the case that L<75%, you could have improved your chance of winning by reporting truthfully that C=75%, and getting paid on the basis of your answer.
+// The logic in these two examples holds for any level of confidence, and demonstrates that you maximize your chance of winning the prize if you state your true confidence.
+
 
         }
 
@@ -1662,7 +1689,7 @@ $(document).ready(function () {
                 var Info = '<H3 align = "center">In addition of the fixed compensation,'
                     + ' you will receive a bonus depending on your choices.<br><br>'
                     + 'The training does not count in the final payoff.<br>'
-                    + 'Across the three phases of the cognitive experiment, you can win up to ? points = ? pounds.<br>'
+                    + 'Across the three phases of the cognitive experiment, you can win a bonus up to 52 points = 5 pounds.<br>'
                     + 'The word "ready" will be displayed before the actual game starts.<br><br></H3>';
                 break;
 
@@ -1670,7 +1697,7 @@ $(document).ready(function () {
                 var Info = '<H3 align = "center">In each round of the first phase you have to choose between one of two symbols displayed on either side of the screen.<br><br>'
                     + 'You can select one of the two symbols with a left-click.'
                     + 'After a choice, you can win/lose the following outcomes:<br><br>'
-                    + '1 point = ? pence<br>-1 points = ? pence<br><br></H3>';
+                    + '1 point = +10 pence<br>-1 points = -10 pence<br><br></H3>';
                 //+ 'Across the two phases of the cognitive experiment, you can win up to ? points = ? pounds.<br><br></H3>';
                 break;
 
@@ -1683,11 +1710,11 @@ $(document).ready(function () {
                 break;
 
             case 5:
-                var Info = '<H3 align = "center">At the end of the experiment you will know the total amount of points you won.<br><br>'
+                var Info = '<H3 align = "center">At each step of the experiment you will know the total amount of points you won.<br><br>'
                     + 'The points won during the experiment will be translated into actual money, which will affect your final payment.<br><br>'
                     + 'Since the total number of trials is fixed, your final payoff depends only your capacity to identify the advantageous symbol and not on your rapidity.<br><br>'
                     + 'Let\'s begin with the first training phase!<br><br>'
-                    + '(points won during the training (first, second and third phase) do not count for the final payoff)<br><br></H3>';
+                    + '(points won during the training do not count for the final payoff)<br><br></H3>';
                 break;
 
             default:
@@ -1965,6 +1992,7 @@ $(document).ready(function () {
         if (navigator.appVersion.indexOf("Linux") != -1) OSName = "Linux";
         return OSName;
     }
+
 });
 
 
