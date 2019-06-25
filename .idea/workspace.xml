@@ -2,18 +2,7 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="ee13ee03-398f-45ad-ac72-fc244a54d0c8" name="Default Changelist" comment="">
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/images/cards_gif/stim/-0.2_0.png" beforeDir="false" afterPath="$PROJECT_DIR$/images/cards_gif/stim/-0.2_0.png" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/images/cards_gif/stim/-0.4_0.png" beforeDir="false" afterPath="$PROJECT_DIR$/images/cards_gif/stim/-0.4_0.png" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/images/cards_gif/stim/-0.6_0.png" beforeDir="false" afterPath="$PROJECT_DIR$/images/cards_gif/stim/-0.6_0.png" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/images/cards_gif/stim/-0.8_0.png" beforeDir="false" afterPath="$PROJECT_DIR$/images/cards_gif/stim/-0.8_0.png" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/images/cards_gif/stim/-1.0_0.png" beforeDir="false" afterPath="$PROJECT_DIR$/images/cards_gif/stim/-1.0_0.png" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/images/cards_gif/stim/0.2_0.png" beforeDir="false" afterPath="$PROJECT_DIR$/images/cards_gif/stim/0.2_0.png" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/images/cards_gif/stim/0.4_0.png" beforeDir="false" afterPath="$PROJECT_DIR$/images/cards_gif/stim/0.4_0.png" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/images/cards_gif/stim/0.6_0.png" beforeDir="false" afterPath="$PROJECT_DIR$/images/cards_gif/stim/0.6_0.png" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/images/cards_gif/stim/0.8_0.png" beforeDir="false" afterPath="$PROJECT_DIR$/images/cards_gif/stim/0.8_0.png" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/images/cards_gif/stim/0_0.png" beforeDir="false" afterPath="$PROJECT_DIR$/images/cards_gif/stim/0_0.png" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/images/cards_gif/stim/1.0_0.png" beforeDir="false" afterPath="$PROJECT_DIR$/images/cards_gif/stim/1.0_0.png" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/main.js" beforeDir="false" afterPath="$PROJECT_DIR$/main.js" afterDir="false" />
     </list>
     <ignored path="$PROJECT_DIR$/.tmp/" />
     <ignored path="$PROJECT_DIR$/temp/" />
@@ -32,7 +21,7 @@
             <entry file="file://$PROJECT_DIR$/main.js">
               <provider selected="true" editor-type-id="text-editor">
                 <state relative-caret-position="811">
-                  <caret line="879" selection-start-line="879" selection-end-line="879" />
+                  <caret line="880" selection-start-line="880" selection-end-line="880" />
                   <folding>
                     <element signature="n#style#0;n#canvas#0;n#!!top" expanded="true" />
                     <element signature="n#style#0;n#canvas#0;n#!!top" expanded="true" />
@@ -121,54 +110,99 @@
         </leaf>
       </split-first>
       <split-second>
-        <leaf>
-          <file pinned="false" current-in-tab="true">
-            <entry file="file://$PROJECT_DIR$/main.js">
-              <provider selected="true" editor-type-id="text-editor">
-                <state relative-caret-position="2214">
-                  <caret line="174" column="26" selection-start-line="174" selection-start-column="26" selection-end-line="174" selection-end-column="26" />
-                  <folding>
-                    <element signature="n#style#0;n#canvas#0;n#!!top" expanded="true" />
-                    <element signature="n#style#0;n#canvas#0;n#!!top" expanded="true" />
-                    <element signature="n#style#0;n#div#0;n#!!top" expanded="true" />
-                    <element signature="n#style#0;n#div#0;n#!!top" expanded="true" />
-                    <element signature="n#style#0;n#div#0;n#!!top" expanded="true" />
-                    <element signature="n#style#0;n#div#0;n#!!top" expanded="true" />
-                    <element signature="n#style#0;n#div#0;n#!!top" expanded="true" />
-                    <element signature="n#style#0;n#div#0;n#!!top" expanded="true" />
-                    <element signature="n#style#0;n#canvas#0;n#!!top" expanded="true" />
-                    <element signature="n#style#0;n#canvas#0;n#!!top" expanded="true" />
-                    <element signature="n#style#0;n#div#0;n#!!top" expanded="true" />
-                    <element signature="n#style#0;n#div#0;n#!!top" expanded="true" />
-                    <element signature="n#style#0;n#div#0;n#!!top" expanded="true" />
-                    <element signature="n#style#0;n#div#0;n#!!top" expanded="true" />
-                    <element signature="n#style#0;n#div#0;n#!!top" expanded="true" />
-                    <element signature="n#style#0;n#div#0;n#!!top" expanded="true" />
-                    <element signature="n#style#0;n#div#0;n#!!top" expanded="true" />
-                    <element signature="n#style#0;n#div#0;n#!!top" expanded="true" />
-                    <element signature="n#style#0;n#canvas#0;n#!!top" expanded="true" />
-                    <element signature="n#style#0;n#canvas#0;n#!!top" expanded="true" />
-                    <element signature="n#style#0;n#div#0;n#!!top" expanded="true" />
-                    <element signature="n#style#0;n#div#0;n#!!top" expanded="true" />
-                    <element signature="n#style#0;n#div#0;n#!!top" expanded="true" />
-                    <element signature="n#style#0;n#div#0;n#!!top" expanded="true" />
-                    <element signature="n#style#0;n#div#0;n#!!top" expanded="true" />
-                    <element signature="n#style#0;n#div#0;n#!!top" expanded="true" />
-                  </folding>
-                </state>
-              </provider>
-            </entry>
-          </file>
-          <file pinned="false" current-in-tab="false">
-            <entry file="file://$PROJECT_DIR$/compute_ev.py">
-              <provider selected="true" editor-type-id="text-editor">
-                <state relative-caret-position="399">
-                  <caret line="47" column="70" selection-start-line="47" selection-start-column="70" selection-end-line="47" selection-end-column="70" />
-                </state>
-              </provider>
-            </entry>
-          </file>
-        </leaf>
+        <splitter split-orientation="horizontal" split-proportion="0.5">
+          <split-first>
+            <leaf>
+              <file pinned="false" current-in-tab="true">
+                <entry file="file://$PROJECT_DIR$/main.js">
+                  <provider selected="true" editor-type-id="text-editor">
+                    <state relative-caret-position="330">
+                      <caret line="2000" lean-forward="true" selection-start-line="2000" selection-end-line="2000" />
+                      <folding>
+                        <element signature="n#style#0;n#canvas#0;n#!!top" expanded="true" />
+                        <element signature="n#style#0;n#canvas#0;n#!!top" expanded="true" />
+                        <element signature="n#style#0;n#div#0;n#!!top" expanded="true" />
+                        <element signature="n#style#0;n#div#0;n#!!top" expanded="true" />
+                        <element signature="n#style#0;n#div#0;n#!!top" expanded="true" />
+                        <element signature="n#style#0;n#div#0;n#!!top" expanded="true" />
+                        <element signature="n#style#0;n#div#0;n#!!top" expanded="true" />
+                        <element signature="n#style#0;n#div#0;n#!!top" expanded="true" />
+                        <element signature="n#style#0;n#canvas#0;n#!!top" expanded="true" />
+                        <element signature="n#style#0;n#canvas#0;n#!!top" expanded="true" />
+                        <element signature="n#style#0;n#div#0;n#!!top" expanded="true" />
+                        <element signature="n#style#0;n#div#0;n#!!top" expanded="true" />
+                        <element signature="n#style#0;n#div#0;n#!!top" expanded="true" />
+                        <element signature="n#style#0;n#div#0;n#!!top" expanded="true" />
+                        <element signature="n#style#0;n#div#0;n#!!top" expanded="true" />
+                        <element signature="n#style#0;n#div#0;n#!!top" expanded="true" />
+                        <element signature="n#style#0;n#div#0;n#!!top" expanded="true" />
+                        <element signature="n#style#0;n#div#0;n#!!top" expanded="true" />
+                        <element signature="n#style#0;n#canvas#0;n#!!top" expanded="true" />
+                        <element signature="n#style#0;n#canvas#0;n#!!top" expanded="true" />
+                        <element signature="n#style#0;n#div#0;n#!!top" expanded="true" />
+                        <element signature="n#style#0;n#div#0;n#!!top" expanded="true" />
+                        <element signature="n#style#0;n#div#0;n#!!top" expanded="true" />
+                        <element signature="n#style#0;n#div#0;n#!!top" expanded="true" />
+                        <element signature="n#style#0;n#div#0;n#!!top" expanded="true" />
+                        <element signature="n#style#0;n#div#0;n#!!top" expanded="true" />
+                      </folding>
+                    </state>
+                  </provider>
+                </entry>
+              </file>
+              <file pinned="false" current-in-tab="false">
+                <entry file="file://$PROJECT_DIR$/compute_ev.py">
+                  <provider selected="true" editor-type-id="text-editor">
+                    <state relative-caret-position="399">
+                      <caret line="47" column="70" selection-start-line="47" selection-start-column="70" selection-end-line="47" selection-end-column="70" />
+                    </state>
+                  </provider>
+                </entry>
+              </file>
+            </leaf>
+          </split-first>
+          <split-second>
+            <leaf>
+              <file pinned="false" current-in-tab="true">
+                <entry file="file://$PROJECT_DIR$/main.js">
+                  <provider selected="true" editor-type-id="text-editor">
+                    <state relative-caret-position="476">
+                      <caret line="1590" column="17" selection-start-line="1590" selection-start-column="17" selection-end-line="1590" selection-end-column="17" />
+                      <folding>
+                        <element signature="n#style#0;n#canvas#0;n#!!top" expanded="true" />
+                        <element signature="n#style#0;n#canvas#0;n#!!top" expanded="true" />
+                        <element signature="n#style#0;n#div#0;n#!!top" expanded="true" />
+                        <element signature="n#style#0;n#div#0;n#!!top" expanded="true" />
+                        <element signature="n#style#0;n#div#0;n#!!top" expanded="true" />
+                        <element signature="n#style#0;n#div#0;n#!!top" expanded="true" />
+                        <element signature="n#style#0;n#div#0;n#!!top" expanded="true" />
+                        <element signature="n#style#0;n#div#0;n#!!top" expanded="true" />
+                        <element signature="n#style#0;n#canvas#0;n#!!top" expanded="true" />
+                        <element signature="n#style#0;n#canvas#0;n#!!top" expanded="true" />
+                        <element signature="n#style#0;n#div#0;n#!!top" expanded="true" />
+                        <element signature="n#style#0;n#div#0;n#!!top" expanded="true" />
+                        <element signature="n#style#0;n#div#0;n#!!top" expanded="true" />
+                        <element signature="n#style#0;n#div#0;n#!!top" expanded="true" />
+                        <element signature="n#style#0;n#div#0;n#!!top" expanded="true" />
+                        <element signature="n#style#0;n#div#0;n#!!top" expanded="true" />
+                        <element signature="n#style#0;n#div#0;n#!!top" expanded="true" />
+                        <element signature="n#style#0;n#div#0;n#!!top" expanded="true" />
+                        <element signature="n#style#0;n#canvas#0;n#!!top" expanded="true" />
+                        <element signature="n#style#0;n#canvas#0;n#!!top" expanded="true" />
+                        <element signature="n#style#0;n#div#0;n#!!top" expanded="true" />
+                        <element signature="n#style#0;n#div#0;n#!!top" expanded="true" />
+                        <element signature="n#style#0;n#div#0;n#!!top" expanded="true" />
+                        <element signature="n#style#0;n#div#0;n#!!top" expanded="true" />
+                        <element signature="n#style#0;n#div#0;n#!!top" expanded="true" />
+                        <element signature="n#style#0;n#div#0;n#!!top" expanded="true" />
+                      </folding>
+                    </state>
+                  </provider>
+                </entry>
+              </file>
+            </leaf>
+          </split-second>
+        </splitter>
       </split-second>
     </splitter>
   </component>
@@ -246,6 +280,8 @@
     </option>
   </component>
   <component name="ProjectFrameBounds" extendedState="6">
+    <option name="x" value="515" />
+    <option name="y" value="217" />
     <option name="width" value="1052" />
     <option name="height" value="854" />
   </component>
@@ -352,18 +388,18 @@
       <workItem from="1560176209406" duration="38061000" />
       <workItem from="1560355059489" duration="4590000" />
       <workItem from="1560418283483" duration="37055000" />
-      <workItem from="1560778754125" duration="46688000" />
+      <workItem from="1560778754125" duration="48073000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="284124000" />
+    <option name="totallyTimeSpent" value="285509000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="0" y="27" width="1920" height="1173" extended-state="6" />
     <editor active="true" />
     <layout>
-      <window_info active="true" content_ui="combo" id="Project" order="0" visible="true" weight="0.109375" />
+      <window_info content_ui="combo" id="Project" order="0" visible="true" weight="0.109375" />
       <window_info id="Structure" order="1" side_tool="true" weight="0.25" />
       <window_info id="Favorites" order="2" side_tool="true" />
       <window_info id="Project Explorer" order="3" />
@@ -378,7 +414,7 @@
       <window_info anchor="bottom" id="TODO" order="6" />
       <window_info anchor="bottom" id="Docker" order="7" show_stripe_button="false" />
       <window_info anchor="bottom" id="Version Control" order="8" />
-      <window_info anchor="bottom" id="Terminal" order="9" visible="true" weight="0.17726052" />
+      <window_info active="true" anchor="bottom" id="Terminal" order="9" visible="true" weight="0.16472694" />
       <window_info anchor="bottom" id="Event Log" order="10" side_tool="true" />
       <window_info anchor="bottom" id="Console" order="11" />
       <window_info anchor="bottom" id="DB Execution Console" order="12" />
@@ -618,8 +654,8 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/main.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="2214">
-          <caret line="174" column="26" selection-start-line="174" selection-start-column="26" selection-end-line="174" selection-end-column="26" />
+        <state relative-caret-position="330">
+          <caret line="2000" lean-forward="true" selection-start-line="2000" selection-end-line="2000" />
           <folding>
             <element signature="n#style#0;n#canvas#0;n#!!top" expanded="true" />
             <element signature="n#style#0;n#canvas#0;n#!!top" expanded="true" />
