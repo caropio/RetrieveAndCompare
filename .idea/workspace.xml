@@ -2,6 +2,19 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="ee13ee03-398f-45ad-ac72-fc244a54d0c8" name="Default Changelist" comment="">
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/images/cards_gif/stim/-0.2_0.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/images/cards_gif/stim/-0.4_0.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/images/cards_gif/stim/-0.6_0.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/images/cards_gif/stim/-0.8_0.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/images/cards_gif/stim/-1.0_0.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/images/cards_gif/stim/0.2_0.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/images/cards_gif/stim/0.4_0.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/images/cards_gif/stim/0.6_0.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/images/cards_gif/stim/0.8_0.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/images/cards_gif/stim/0_0.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/images/cards_gif/stim/1.0_0.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/main.css" beforeDir="false" afterPath="$PROJECT_DIR$/main.css" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/main.js" beforeDir="false" afterPath="$PROJECT_DIR$/main.js" afterDir="false" />
     </list>
     <ignored path="$PROJECT_DIR$/.tmp/" />
@@ -20,82 +33,25 @@
           <file pinned="false" current-in-tab="false">
             <entry file="file://$PROJECT_DIR$/main.js">
               <provider selected="true" editor-type-id="text-editor">
-                <state relative-caret-position="811">
+                <state relative-caret-position="15840">
                   <caret line="880" selection-start-line="880" selection-end-line="880" />
-                  <folding>
-                    <element signature="n#style#0;n#canvas#0;n#!!top" expanded="true" />
-                    <element signature="n#style#0;n#canvas#0;n#!!top" expanded="true" />
-                    <element signature="n#style#0;n#div#0;n#!!top" expanded="true" />
-                    <element signature="n#style#0;n#div#0;n#!!top" expanded="true" />
-                    <element signature="n#style#0;n#div#0;n#!!top" expanded="true" />
-                    <element signature="n#style#0;n#div#0;n#!!top" expanded="true" />
-                    <element signature="n#style#0;n#div#0;n#!!top" expanded="true" />
-                    <element signature="n#style#0;n#div#0;n#!!top" expanded="true" />
-                    <element signature="n#style#0;n#canvas#0;n#!!top" expanded="true" />
-                    <element signature="n#style#0;n#canvas#0;n#!!top" expanded="true" />
-                    <element signature="n#style#0;n#div#0;n#!!top" expanded="true" />
-                    <element signature="n#style#0;n#div#0;n#!!top" expanded="true" />
-                    <element signature="n#style#0;n#div#0;n#!!top" expanded="true" />
-                    <element signature="n#style#0;n#div#0;n#!!top" expanded="true" />
-                    <element signature="n#style#0;n#div#0;n#!!top" expanded="true" />
-                    <element signature="n#style#0;n#div#0;n#!!top" expanded="true" />
-                    <element signature="n#style#0;n#div#0;n#!!top" expanded="true" />
-                    <element signature="n#style#0;n#div#0;n#!!top" expanded="true" />
-                    <element signature="n#style#0;n#canvas#0;n#!!top" expanded="true" />
-                    <element signature="n#style#0;n#canvas#0;n#!!top" expanded="true" />
-                    <element signature="n#style#0;n#div#0;n#!!top" expanded="true" />
-                    <element signature="n#style#0;n#div#0;n#!!top" expanded="true" />
-                    <element signature="n#style#0;n#div#0;n#!!top" expanded="true" />
-                    <element signature="n#style#0;n#div#0;n#!!top" expanded="true" />
-                    <element signature="n#style#0;n#div#0;n#!!top" expanded="true" />
-                    <element signature="n#style#0;n#div#0;n#!!top" expanded="true" />
-                  </folding>
                 </state>
               </provider>
             </entry>
           </file>
           <file pinned="false" current-in-tab="false">
-            <entry file="file://$PROJECT_DIR$/images/cards_gif/stim/-0.4_1.jpg">
+            <entry file="file://$PROJECT_DIR$/images/cards_gif/stim/0.6_1.jpg">
               <provider selected="true" editor-type-id="images" />
             </entry>
           </file>
           <file pinned="false" current-in-tab="false">
-            <entry file="file://$PROJECT_DIR$/images/cards_gif/stim/-0.4_0.jpg">
-              <provider selected="true" editor-type-id="images" />
-            </entry>
-          </file>
-          <file pinned="false" current-in-tab="false">
-            <entry file="file://$PROJECT_DIR$/images/cards_gif/stim/0_0.jpg">
-              <provider selected="true" editor-type-id="images" />
-            </entry>
-          </file>
-          <file pinned="false" current-in-tab="false">
-            <entry file="file://$PROJECT_DIR$/images/cards_gif/stim/0.4_1.jpg">
-              <provider selected="true" editor-type-id="images" />
-            </entry>
-          </file>
-          <file pinned="false" current-in-tab="false">
-            <entry file="file://$PROJECT_DIR$/images/cards_gif/stim/0.8_0.jpg">
-              <provider selected="true" editor-type-id="images" />
-            </entry>
-          </file>
-          <file pinned="false" current-in-tab="false">
-            <entry file="file://$PROJECT_DIR$/images/cards_gif/stim/0.8_0.png">
+            <entry file="file://$PROJECT_DIR$/images/cards_gif/stim/0.6_0.jpg">
               <provider selected="true" editor-type-id="images" />
             </entry>
           </file>
           <file pinned="false" current-in-tab="true">
-            <entry file="file://$PROJECT_DIR$/images/cards_gif/stim/0.6_0.png">
+            <entry file="file://$PROJECT_DIR$/images/cards_gif/stim/N.jpg">
               <provider selected="true" editor-type-id="images" />
-            </entry>
-          </file>
-          <file pinned="false" current-in-tab="false">
-            <entry file="file://$PROJECT_DIR$/main.css">
-              <provider selected="true" editor-type-id="text-editor">
-                <state relative-caret-position="3816">
-                  <caret line="212" selection-start-line="212" selection-end-line="212" />
-                </state>
-              </provider>
             </entry>
           </file>
           <file pinned="false" current-in-tab="false">
@@ -110,14 +66,14 @@
         </leaf>
       </split-first>
       <split-second>
-        <splitter split-orientation="horizontal" split-proportion="0.5">
+        <splitter split-orientation="horizontal" split-proportion="0.45706558">
           <split-first>
-            <leaf>
-              <file pinned="false" current-in-tab="true">
+            <leaf SIDE_TABS_SIZE_LIMIT_KEY="225">
+              <file pinned="false" current-in-tab="false">
                 <entry file="file://$PROJECT_DIR$/main.js">
                   <provider selected="true" editor-type-id="text-editor">
-                    <state relative-caret-position="330">
-                      <caret line="2000" lean-forward="true" selection-start-line="2000" selection-end-line="2000" />
+                    <state relative-caret-position="440">
+                      <caret line="565" column="36" selection-start-line="565" selection-start-column="36" selection-end-line="565" selection-end-column="36" />
                       <folding>
                         <element signature="n#style#0;n#canvas#0;n#!!top" expanded="true" />
                         <element signature="n#style#0;n#canvas#0;n#!!top" expanded="true" />
@@ -151,10 +107,24 @@
                 </entry>
               </file>
               <file pinned="false" current-in-tab="false">
+                <entry file="file://$PROJECT_DIR$/images/cards_gif/stim/0.2_0.jpg">
+                  <provider selected="true" editor-type-id="images" />
+                </entry>
+              </file>
+              <file pinned="false" current-in-tab="false">
                 <entry file="file://$PROJECT_DIR$/compute_ev.py">
                   <provider selected="true" editor-type-id="text-editor">
-                    <state relative-caret-position="399">
+                    <state relative-caret-position="846">
                       <caret line="47" column="70" selection-start-line="47" selection-start-column="70" selection-end-line="47" selection-end-column="70" />
+                    </state>
+                  </provider>
+                </entry>
+              </file>
+              <file pinned="false" current-in-tab="true">
+                <entry file="file://$PROJECT_DIR$/main.css">
+                  <provider selected="true" editor-type-id="text-editor">
+                    <state relative-caret-position="863">
+                      <caret line="214" column="17" selection-start-line="214" selection-start-column="17" selection-end-line="214" selection-end-column="17" />
                     </state>
                   </provider>
                 </entry>
@@ -162,12 +132,12 @@
             </leaf>
           </split-first>
           <split-second>
-            <leaf>
+            <leaf SIDE_TABS_SIZE_LIMIT_KEY="225">
               <file pinned="false" current-in-tab="true">
                 <entry file="file://$PROJECT_DIR$/main.js">
                   <provider selected="true" editor-type-id="text-editor">
-                    <state relative-caret-position="476">
-                      <caret line="1590" column="17" selection-start-line="1590" selection-start-column="17" selection-end-line="1590" selection-end-column="17" />
+                    <state relative-caret-position="440">
+                      <caret line="317" column="16" selection-start-line="317" selection-start-column="16" selection-end-line="317" selection-end-column="16" />
                       <folding>
                         <element signature="n#style#0;n#canvas#0;n#!!top" expanded="true" />
                         <element signature="n#style#0;n#canvas#0;n#!!top" expanded="true" />
@@ -273,17 +243,17 @@
         <option value="$PROJECT_DIR$/php/InsertLearningDataDB.php" />
         <option value="$PROJECT_DIR$/manifest.json" />
         <option value="$PROJECT_DIR$/index.html" />
-        <option value="$PROJECT_DIR$/main.css" />
         <option value="$PROJECT_DIR$/compute_ev.py" />
         <option value="$PROJECT_DIR$/main.js" />
+        <option value="$PROJECT_DIR$/main.css" />
       </list>
     </option>
   </component>
-  <component name="ProjectFrameBounds" extendedState="6">
-    <option name="x" value="515" />
-    <option name="y" value="217" />
+  <component name="ProjectFrameBounds" extendedState="7">
+    <option name="x" value="868" />
+    <option name="y" value="347" />
     <option name="width" value="1052" />
-    <option name="height" value="854" />
+    <option name="height" value="853" />
   </component>
   <component name="ProjectLevelVcsManager" settingsEditedManually="true" />
   <component name="ProjectView">
@@ -388,18 +358,19 @@
       <workItem from="1560176209406" duration="38061000" />
       <workItem from="1560355059489" duration="4590000" />
       <workItem from="1560418283483" duration="37055000" />
-      <workItem from="1560778754125" duration="48073000" />
+      <workItem from="1560778754125" duration="48715000" />
+      <workItem from="1561542308097" duration="1195000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="285509000" />
+    <option name="totallyTimeSpent" value="287346000" />
   </component>
   <component name="ToolWindowManager">
-    <frame x="0" y="27" width="1920" height="1173" extended-state="6" />
+    <frame x="0" y="27" width="1920" height="1173" extended-state="7" />
     <editor active="true" />
     <layout>
-      <window_info content_ui="combo" id="Project" order="0" visible="true" weight="0.109375" />
+      <window_info active="true" content_ui="combo" id="Project" order="0" visible="true" weight="0.109375" />
       <window_info id="Structure" order="1" side_tool="true" weight="0.25" />
       <window_info id="Favorites" order="2" side_tool="true" />
       <window_info id="Project Explorer" order="3" />
@@ -414,7 +385,7 @@
       <window_info anchor="bottom" id="TODO" order="6" />
       <window_info anchor="bottom" id="Docker" order="7" show_stripe_button="false" />
       <window_info anchor="bottom" id="Version Control" order="8" />
-      <window_info active="true" anchor="bottom" id="Terminal" order="9" visible="true" weight="0.16472694" />
+      <window_info anchor="bottom" id="Terminal" order="9" visible="true" weight="0.16472694" />
       <window_info anchor="bottom" id="Event Log" order="10" side_tool="true" />
       <window_info anchor="bottom" id="Console" order="11" />
       <window_info anchor="bottom" id="DB Execution Console" order="12" />
@@ -458,28 +429,10 @@
     <option name="version" value="1" />
   </component>
   <component name="editorHistoryManager">
-    <entry file="file://$PROJECT_DIR$/images/cards_gif/stim/0.6_1.jpg">
-      <provider selected="true" editor-type-id="images" />
-    </entry>
-    <entry file="file://$PROJECT_DIR$/images/cards_gif/stim/0.4_0.jpg">
-      <provider selected="true" editor-type-id="images" />
-    </entry>
-    <entry file="file://$PROJECT_DIR$/images/cards_gif/stim/-0.2_0.jpg">
-      <provider selected="true" editor-type-id="images" />
-    </entry>
-    <entry file="file://$PROJECT_DIR$/images/cards_gif/stim/0.6_0.jpg">
-      <provider selected="true" editor-type-id="images" />
-    </entry>
-    <entry file="file://$PROJECT_DIR$/images/cards_gif/stim/-0.8_0.jpg">
-      <provider selected="true" editor-type-id="images" />
-    </entry>
     <entry file="file://$PROJECT_DIR$/images/cards_gif/stim/0.8_1.jpg">
       <provider selected="true" editor-type-id="images" />
     </entry>
     <entry file="file://$PROJECT_DIR$/images/cards_gif/stim/-0.2_1.jpg">
-      <provider selected="true" editor-type-id="images" />
-    </entry>
-    <entry file="file://$PROJECT_DIR$/images/cards_gif/stim/0.2_0.jpg">
       <provider selected="true" editor-type-id="images" />
     </entry>
     <entry file="file://$PROJECT_DIR$/images/cards_gif/stim/0.2_1.jpg">
@@ -586,9 +539,6 @@
     <entry file="file://$PROJECT_DIR$/images/cards_gif/stim/-0.2_0.png">
       <provider selected="true" editor-type-id="images" />
     </entry>
-    <entry file="file://$PROJECT_DIR$/images/cards_gif/stim/0_0.png">
-      <provider selected="true" editor-type-id="images" />
-    </entry>
     <entry file="file://$PROJECT_DIR$/images/cards_gif/stim_old/9.gif">
       <provider selected="true" editor-type-id="images" />
     </entry>
@@ -604,19 +554,8 @@
     <entry file="file://$PROJECT_DIR$/images/cards_gif/stim/-0.6_0.jpg">
       <provider selected="true" editor-type-id="images" />
     </entry>
-    <entry file="file://$PROJECT_DIR$/main.css">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="3816">
-          <caret line="212" selection-start-line="212" selection-end-line="212" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/index.html">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="396">
-          <caret line="22" column="14" selection-start-line="22" selection-start-column="14" selection-end-line="22" selection-end-column="14" />
-        </state>
-      </provider>
+    <entry file="file://$PROJECT_DIR$/images/cards_gif/stim/0_0.png">
+      <provider selected="true" editor-type-id="images" />
     </entry>
     <entry file="file://$PROJECT_DIR$/images/cards_gif/stim/-0.4_1.jpg">
       <provider selected="true" editor-type-id="images" />
@@ -627,35 +566,60 @@
     <entry file="file://$PROJECT_DIR$/images/cards_gif/stim/0_0.jpg">
       <provider selected="true" editor-type-id="images" />
     </entry>
-    <entry file="file://$PROJECT_DIR$/images/cards_gif/stim/0.4_0.png">
-      <provider selected="true" editor-type-id="images" />
-    </entry>
-    <entry file="file://$PROJECT_DIR$/compute_ev.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="399">
-          <caret line="47" column="70" selection-start-line="47" selection-start-column="70" selection-end-line="47" selection-end-column="70" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/images/cards_gif/stim/0.4_1.jpg">
-      <provider selected="true" editor-type-id="images" />
-    </entry>
-    <entry file="file://$PROJECT_DIR$/images/cards_gif/stim/0_0.png">
       <provider selected="true" editor-type-id="images" />
     </entry>
     <entry file="file://$PROJECT_DIR$/images/cards_gif/stim/0.8_0.jpg">
       <provider selected="true" editor-type-id="images" />
     </entry>
+    <entry file="file://$PROJECT_DIR$/index.html">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="396">
+          <caret line="22" column="14" selection-start-line="22" selection-start-column="14" selection-end-line="22" selection-end-column="14" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/compute_ev.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="846">
+          <caret line="47" column="70" selection-start-line="47" selection-start-column="70" selection-end-line="47" selection-end-column="70" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/images/cards_gif/stim/0.2_0.png">
+      <provider selected="true" editor-type-id="images" />
+    </entry>
     <entry file="file://$PROJECT_DIR$/images/cards_gif/stim/0.8_0.png">
+      <provider selected="true" editor-type-id="images" />
+    </entry>
+    <entry file="file://$PROJECT_DIR$/images/cards_gif/stim/0.6_1.jpg">
       <provider selected="true" editor-type-id="images" />
     </entry>
     <entry file="file://$PROJECT_DIR$/images/cards_gif/stim/0.6_0.png">
       <provider selected="true" editor-type-id="images" />
     </entry>
+    <entry file="file://$PROJECT_DIR$/images/cards_gif/stim/0.6_0.jpg">
+      <provider selected="true" editor-type-id="images" />
+    </entry>
+    <entry file="file://$PROJECT_DIR$/images/cards_gif/stim/0.4_0.png">
+      <provider selected="true" editor-type-id="images" />
+    </entry>
+    <entry file="file://$PROJECT_DIR$/images/cards_gif/stim/-0.8_0.png">
+      <provider selected="true" editor-type-id="images" />
+    </entry>
+    <entry file="file://$PROJECT_DIR$/images/cards_gif/stim/-0.6_0.png">
+      <provider selected="true" editor-type-id="images" />
+    </entry>
+    <entry file="file://$PROJECT_DIR$/images/cards_gif/stim/N.jpg">
+      <provider selected="true" editor-type-id="images" />
+    </entry>
+    <entry file="file://$PROJECT_DIR$/images/cards_gif/stim/0.2_0.jpg">
+      <provider selected="true" editor-type-id="images" />
+    </entry>
     <entry file="file://$PROJECT_DIR$/main.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="330">
-          <caret line="2000" lean-forward="true" selection-start-line="2000" selection-end-line="2000" />
+        <state relative-caret-position="440">
+          <caret line="565" column="36" selection-start-line="565" selection-start-column="36" selection-end-line="565" selection-end-column="36" />
           <folding>
             <element signature="n#style#0;n#canvas#0;n#!!top" expanded="true" />
             <element signature="n#style#0;n#canvas#0;n#!!top" expanded="true" />
@@ -684,6 +648,13 @@
             <element signature="n#style#0;n#div#0;n#!!top" expanded="true" />
             <element signature="n#style#0;n#div#0;n#!!top" expanded="true" />
           </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/main.css">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="863">
+          <caret line="214" column="17" selection-start-line="214" selection-start-column="17" selection-end-line="214" selection-end-column="17" />
         </state>
       </provider>
     </entry>

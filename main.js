@@ -181,7 +181,7 @@ $(document).ready(function () {
         var choiceBasedOption = [];
         for (let i = 0; i < expectedValue.length; i++) {
             choiceBasedOption[expectedValue[i] + '_' + elicitationType] = new Image();
-            choiceBasedOption[expectedValue[i] + '_' + elicitationType].src = imgPath + 'stim/' + expectedValue[i] + '_' + elicitationType + '.png';
+            choiceBasedOption[expectedValue[i] + '_' + elicitationType].src = imgPath + 'lotteries/' + expectedValue[i] + '_' + elicitationType + '.png';
             choiceBasedOption[expectedValue[i] + '_' + elicitationType].className = "img-responsive center-block";
             choiceBasedOption[expectedValue[i] + '_' + elicitationType].style.border = "5px solid " + borderColor;
             choiceBasedOption[expectedValue[i] + '_' + elicitationType].style.position = "relative";
