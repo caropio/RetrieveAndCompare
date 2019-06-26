@@ -250,8 +250,11 @@ $(document).ready(function () {
         elicitationsStim[0] = [];
         elicitationsStim[1] = [];
         var elicitationsStimEV = [[], []];
+
         for (let i = 0; i < nSessions; i++) {
+
             var cidx = Array.from(new Set(expCondition[i].flat()));
+
             for (let j = 0; j < cidx.length; j++) {
                 var stim1 = contexts[cidx[j]].flat()[0];
                 var stim2 = contexts[cidx[j]].flat()[1];
@@ -269,6 +272,7 @@ $(document).ready(function () {
             }
             elicitationsStimEV[i] = shuffle(elicitationsStimEV[i]);
         }
+
         var elicitationsStimTraining = shuffle(range(1, nSymbolPerSession));
 
         // Run the experiment
