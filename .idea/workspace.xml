@@ -1,22 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="ee13ee03-398f-45ad-ac72-fc244a54d0c8" name="Default Changelist" comment="">
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/images/cards_gif/stim/-0.2_0.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/images/cards_gif/stim/-0.4_0.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/images/cards_gif/stim/-0.6_0.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/images/cards_gif/stim/-0.8_0.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/images/cards_gif/stim/-1.0_0.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/images/cards_gif/stim/0.2_0.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/images/cards_gif/stim/0.4_0.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/images/cards_gif/stim/0.6_0.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/images/cards_gif/stim/0.8_0.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/images/cards_gif/stim/0_0.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/images/cards_gif/stim/1.0_0.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/main.css" beforeDir="false" afterPath="$PROJECT_DIR$/main.css" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/main.js" beforeDir="false" afterPath="$PROJECT_DIR$/main.js" afterDir="false" />
-    </list>
+    <list default="true" id="ee13ee03-398f-45ad-ac72-fc244a54d0c8" name="Default Changelist" comment="" />
     <ignored path="$PROJECT_DIR$/.tmp/" />
     <ignored path="$PROJECT_DIR$/temp/" />
     <ignored path="$PROJECT_DIR$/tmp/" />
@@ -66,7 +51,7 @@
         </leaf>
       </split-first>
       <split-second>
-        <splitter split-orientation="horizontal" split-proportion="0.45706558">
+        <splitter split-orientation="horizontal" split-proportion="0.15155616">
           <split-first>
             <leaf SIDE_TABS_SIZE_LIMIT_KEY="225">
               <file pinned="false" current-in-tab="false">
@@ -123,8 +108,8 @@
               <file pinned="false" current-in-tab="true">
                 <entry file="file://$PROJECT_DIR$/main.css">
                   <provider selected="true" editor-type-id="text-editor">
-                    <state relative-caret-position="863">
-                      <caret line="214" column="17" selection-start-line="214" selection-start-column="17" selection-end-line="214" selection-end-column="17" />
+                    <state relative-caret-position="690">
+                      <caret line="213" column="5" selection-start-line="213" selection-start-column="5" selection-end-line="213" selection-end-column="5" />
                     </state>
                   </provider>
                 </entry>
@@ -136,7 +121,7 @@
               <file pinned="false" current-in-tab="true">
                 <entry file="file://$PROJECT_DIR$/main.js">
                   <provider selected="true" editor-type-id="text-editor">
-                    <state relative-caret-position="440">
+                    <state relative-caret-position="252">
                       <caret line="317" column="16" selection-start-line="317" selection-start-column="16" selection-end-line="317" selection-end-column="16" />
                       <folding>
                         <element signature="n#style#0;n#canvas#0;n#!!top" expanded="true" />
@@ -359,18 +344,17 @@
       <workItem from="1560355059489" duration="4590000" />
       <workItem from="1560418283483" duration="37055000" />
       <workItem from="1560778754125" duration="48715000" />
-      <workItem from="1561542308097" duration="1195000" />
+      <workItem from="1561542308097" duration="2026000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="287346000" />
+    <option name="totallyTimeSpent" value="288177000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="0" y="27" width="1920" height="1173" extended-state="7" />
-    <editor active="true" />
     <layout>
-      <window_info active="true" content_ui="combo" id="Project" order="0" visible="true" weight="0.109375" />
+      <window_info content_ui="combo" id="Project" order="0" visible="true" weight="0.109375" />
       <window_info id="Structure" order="1" side_tool="true" weight="0.25" />
       <window_info id="Favorites" order="2" side_tool="true" />
       <window_info id="Project Explorer" order="3" />
@@ -385,7 +369,7 @@
       <window_info anchor="bottom" id="TODO" order="6" />
       <window_info anchor="bottom" id="Docker" order="7" show_stripe_button="false" />
       <window_info anchor="bottom" id="Version Control" order="8" />
-      <window_info anchor="bottom" id="Terminal" order="9" visible="true" weight="0.16472694" />
+      <window_info active="true" anchor="bottom" id="Terminal" order="9" visible="true" weight="0.16472694" />
       <window_info anchor="bottom" id="Event Log" order="10" side_tool="true" />
       <window_info anchor="bottom" id="Console" order="11" />
       <window_info anchor="bottom" id="DB Execution Console" order="12" />
@@ -653,8 +637,8 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/main.css">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="863">
-          <caret line="214" column="17" selection-start-line="214" selection-start-column="17" selection-end-line="214" selection-end-column="17" />
+        <state relative-caret-position="690">
+          <caret line="213" column="5" selection-start-line="213" selection-start-column="5" selection-end-line="213" selection-end-column="5" />
         </state>
       </provider>
     </entry>
