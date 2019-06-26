@@ -13,8 +13,11 @@ $(document).ready(function () {
         var nCond = 8;
         nCond--; //because of range function
         var nCondPerSession = 4;
-        var nTrialsPerCondition = 1;
+        var nTrialsPerCondition = 30;
         var nTrialsPerSession = nTrialsPerCondition * ((nCond + 1) / nSessions);
+
+        // Single symbols per session
+        var nSymbolPerSession = 8;
 
         var feedbackDuration = 2000;
         var sumReward = 0;
@@ -28,7 +31,7 @@ $(document).ready(function () {
         var nTrainingImg = nCondTraining * 2;
         nCondTraining--; // because of range function
 
-        // Phase
+        // Phase to print
         var phases = [-1, 1, 2, 3, 1, 2, 3];
 
         // var nTrialsPerConditionLot = 2;
@@ -72,6 +75,8 @@ $(document).ready(function () {
         cont[6] = [0.4, 0.6];
         cont[7] = [0.6, 0.4];
         cont[8] = [0.5, 0.5];
+        cont[9] = [0, 1];
+        cont[10] = [1, 0];
 
         rewards[0] = [[-1, 1], [-1, 1]];
         probs[0] = [[0.1, 0.9], [0.9, 0.1]];
@@ -94,12 +99,15 @@ $(document).ready(function () {
         var expCondition = [];
         var conditions = [];
 
+        // range cond for each session
         var cond = [range(0, 3), range(4, 7)];
 
         for (let i = 0; i < nSessions; i++)
             expCondition[i] = shuffle(
                 Array(nTrialsPerSession / nCondPerSession).fill(cond[i]).flat()
             );
+
+        // map cond 0 to 4 twice for 0, 1, 2, ...,8
         var map = [range(0, 4), range(0, 4)].flat();
 
         for (let i = 0; i <= nCond; i++)
@@ -108,6 +116,7 @@ $(document).ready(function () {
                 prob: probs[map[i]]
             });
 
+        // training conditions
         var trainingCondition = shuffle(
             Array(nTrialTrainingPerCond).fill([0, 1, 2, 3]).flat()
         );
@@ -175,8 +184,8 @@ $(document).ready(function () {
             '0.8': [cont[1], 1]
         };
 
-        var nTrialPerElicitationChoice = 4;
-        var nTrialPerElicitationSlider = 8;
+        var nTrialPerElicitationChoice = nSymbolPerSession*expectedValue.length;
+        var nTrialPerElicitationSlider = nSymbolPerSession;
 
         var choiceBasedOption = [];
         for (let i = 0; i < expectedValue.length; i++) {
@@ -207,6 +216,11 @@ $(document).ready(function () {
                 elicitationsStimEVTraining.push([trainingOptions[i + 1], expectedValue[k]]);
             }
         }
+        elicitationsStimEVTraining.push([-0.8, 0.8]);
+        elicitationsStimEVTraining.push([-0.6, 0.6]);
+        elicitationsStimEVTraining.push([-0.4, 0.4]);
+        elicitationsStimEVTraining.push([-0.2, 0.2]);
+
         trainingContexts = shuffle(trainingContexts);
 
         elicitationsStimEVTraining = shuffle(elicitationsStimEVTraining);
@@ -255,7 +269,7 @@ $(document).ready(function () {
             }
             elicitationsStimEV[i] = shuffle(elicitationsStimEV[i]);
         }
-        var elicitationsStimTraining = shuffle(range(1, 8));
+        var elicitationsStimTraining = shuffle(range(1, nSymbolPerSession));
 
         // Run the experiment
         // ------------------------------------------------------------------------------------------------ //
@@ -264,7 +278,7 @@ $(document).ready(function () {
         goFullscreen();
         // playTraining(0, 1);
 
-        // playElicitation(-1, 0, 2, 3);
+        // playElicitation(-1, 0, 0, 2);
 
         function sendExpDataDB(call) {
 
@@ -571,6 +585,7 @@ $(document).ready(function () {
                             option2: option2ImgIdx,
                             ev1: ev1,
                             ev2: ev2,
+                            iscatch: -1,
                             inverted: invertedPosition,
                             choice_time: choiceTime - initTime
                         },
@@ -725,14 +740,25 @@ $(document).ready(function () {
 
             if ([0, 1].includes(elicitationType)) {
 
+                var ev1 = undefined;
+
                 if ([-1, -2].includes(sessionNum)) {
                     var stimIdx = elicitationsStimEVTraining[trialNum][0];
                     var choiceAgainst = elicitationsStimEVTraining[trialNum][1];
                     var img = trainingImg;
+
                 } else {
                     var stimIdx = elicitationsStimEV[sessionNum][trialNum][0];
                     var choiceAgainst = elicitationsStimEV[sessionNum][trialNum][1];
                     var img = images;
+                    var isCatchTrial = false;
+                }
+
+                if (isFloat(stimIdx)) {
+                    var img = choiceBasedOption;
+                    ev1 = stimIdx;
+                    stimIdx += '_' + elicitationType;
+                    var isCatchTrial = true;
                 }
 
                 var option1 = img[stimIdx];
@@ -785,6 +811,8 @@ $(document).ready(function () {
                 + canvas2 + '</div><div class="col-xs-1 col-md-1"></div></div>';
             //
 
+            var choiceTime = (new Date()).getTime();
+
             if ([0, 1].includes(elicitationType)) {
                 var Images = '<div id = "stimrow" class="row" style= "transform: translate(0%, -100%);position:relative"> ' +
                     '<div class="col-xs-1 col-md-1"></div>  <div class="col-xs-3 col-md-3">'
@@ -821,14 +849,14 @@ $(document).ready(function () {
                 }
                 $('#TextBoxDiv').html(Title + Feedback + Images + myCanvas);
 
-                var choiceTime = (new Date()).getTime();
+
 
                 $('#canvas1').click(function () {
                     if (clickDisabled)
                         return;
                     clickDisabled = true;
                     var choice = 1;
-                    getReward(choice);
+                    getReward(choice, false, ev1);
                     document.getElementById("canvas1").style.borderColor = "black";
                 });
 
@@ -837,7 +865,7 @@ $(document).ready(function () {
                         return;
                     clickDisabled = true;
                     var choice = 2;
-                    getReward(choice);
+                    getReward(choice, false, ev1);
                     document.getElementById("canvas2").style.borderColor = "black";
                 });
 
@@ -886,13 +914,16 @@ $(document).ready(function () {
 
             }
 
-            function getReward(choice, slider = false) {
+            function getReward(choice, slider = false, ev1 = null) {
 
                 var reactionTime = (new Date()).getTime();
-                var p1 = symbolValueMap[stimIdx][0];
-                var contIdx1 = symbolValueMap[stimIdx][1];
-                var r1 = [-1, 1];//symbolValueMap[stimIdx]['reward'][0];
-                var ev1 = sum([p1[0] * r1[0], p1[1] * r1[1]]);
+
+                if (!isCatchTrial) {
+                    var p1 = symbolValueMap[stimIdx][0];
+                    var contIdx1 = symbolValueMap[stimIdx][1];
+                    var r1 = [-1, 1];//symbolValueMap[stimIdx]['reward'][0];
+                    var ev1 = sum([p1[0] * r1[0], p1[1] * r1[1]]);
+                }
 
                 if (slider) {
                     var pLottery = Math.random();
@@ -908,6 +939,12 @@ $(document).ready(function () {
                     var p2 = -1;
                     var leftRight = -1;
                 } else {
+
+                    if (isCatchTrial) {
+                        var contIdx1 = expectedValueMap[ev1.toString()][1];
+                        var p1 = expectedValueMap[ev1.toString()][0];
+                        var r1 = [-1, 1];//symbolValueMap[stimIdx]['reward'][0];
+                    }
                     var ev2 = choiceAgainst;
                     var contIdx2 = expectedValueMap[ev2.toString()][1];
                     var p2 = expectedValueMap[ev2.toString()][0];
@@ -1030,6 +1067,7 @@ $(document).ready(function () {
                             option2: -1, //tochange
                             ev1: ev1,
                             ev2: ev2,
+                            iscatch: isCatchTrial,
                             inverted: invertedPosition,
                             choice_time: choiceTime - initTime
                         },
@@ -1118,8 +1156,8 @@ $(document).ready(function () {
             if ($('#TextBoxDiv').length === 0) {
                 createDiv('Stage', 'TextBoxDiv');
             }
-            elicitationType = 2;
-            nTrialPerElicitation = 8;
+            // elicitationType = 2;
+            // nTrialPerElicitation = 8;
 
             var conditionIdx = expCondition[sessionNum][trialNum];
 
@@ -1400,6 +1438,7 @@ $(document).ready(function () {
                             option2: option2ImgIdx,
                             ev1: ev1,
                             ev2: ev2,
+                            iscatch: -1,
                             inverted: invertedPosition,
                             choice_time: choiceTime - initTime
                         },
@@ -1916,6 +1955,10 @@ $(document).ready(function () {
 
         function randint(min, max) {
             return Math.floor(Math.random() * (max - min + 1)) + min;
+        }
+        
+        function isFloat(n){
+            return Number(n) === n && n % 1 !== 0;
         }
 
         function getBrowser() {
