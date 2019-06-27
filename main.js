@@ -2,7 +2,7 @@ $(document).ready(function () {
 
         // Initial Experiment Parameters
         // -------------------------------------------------------------------------------------------------- //
-        var offline = 0;
+        var offline = 1;
         var expName = 'RetrieveAndCompare';
         //var language = "en"; // only en is available at the moment
         var compLink = 1;
@@ -695,6 +695,8 @@ $(document).ready(function () {
 
             $('#TextBoxDiv').html(Title + Info);
 
+            sumReward = 0;
+
             var Buttons = '<div align="center">';
             if (trainSess > -(maxTrainingSessions + 1)) {
                 Buttons += '<input align="center" type="button"  class="btn btn-default" id="Train" value=' + trainBut + ' >\n\ ';
@@ -942,7 +944,7 @@ $(document).ready(function () {
                     if (pLottery < choice / 100) {
                         var thisReward = r1[+(Math.random() < p1[1])];
                     } else {
-                        var thisReward = r1[+(Math.random()) < pLottery]
+                        var thisReward = r1[+(Math.random() < pLottery)]
                     }
                     var otherReward = -1;
                     var correctChoice = -1;
@@ -1545,6 +1547,8 @@ $(document).ready(function () {
                         + 'In each round, one of the two options will be a symbol<br> you already met during '
                         + 'the previous phase and that is equally rewarding. '
                         + 'The other option will display explicitly what chances you have to win by choosing it.<br>'
+                        + 'The green part indicates the chance of winning +1.<br>'
+                        + 'The red part indicates the chance of losing -1.<br>'
                         + 'Please note that the outcome of your choice will not be displayed.'
                         + '<br>However, each choice still have an outcome and it will be taken into account for the final payoff.<br><br>' + p;
                     break;
