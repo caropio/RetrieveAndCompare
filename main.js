@@ -1518,7 +1518,7 @@ $(document).ready(function () {
             }
         }
 
-        function startElicitation(sessionNum, training, elicitationType, phaseNum) {
+        function startElicitation(sessionNum, training, elicitationType, phaseNum, pageNum) {
 
             createDiv('Stage', 'TextBoxDiv');
 
@@ -1540,81 +1540,114 @@ $(document).ready(function () {
             switch (elicitationType) {
                 case 0:
 
-                    Info = '<H3 align = "center">' + s
-                        + 'In each round of phase ' + phases[phaseNum] + ' you have to choose '
-                        + 'between one of two options displayed on either side of the screen<br><br>'
-                        + 'You can select one of the two options with a left-click<br><br> '
-                        + 'In each round, one of the two options will be a symbol<br> you already met during '
-                        + 'the previous phase and that is equally rewarding. '
-                        + 'The other option will display explicitly what chances you have to win by choosing it.<br>'
-                        + 'The green part indicates the chance of winning +1.<br>'
-                        + 'The red part indicates the chance of losing -1.<br>'
-                        + 'Please note that the outcome of your choice will not be displayed.'
-                        + '<br>However, each choice still have an outcome and it will be taken into account for the final payoff.<br><br>' + p;
-                    break;
+                    var nPages = 3;
 
-                case 2:
+                    switch (pageNum) {
+                        case 0:
 
-                    Info = '<H3 align = "center">' + s
-                        + 'In each round of phase ' + phases[phaseNum] + ' you will be'
-                        + ' presented with the symbols you met in the first phase. You will be asked to indicate in percentages, <br>'
-                        + 'to what extent this symbol rewards you with a +1.<br> 0% means it was not rewarding at all, and gives always a -1, and 100% means this symbol gives always a +1.<br><br>'
-                        + 'You will be able to do this through moving a slider on the screen and then confirm your final answer by clicking on the confirmation button. <br>'
-                        + 'After confirming your choice (denoted C hereafter) the computer will draw a random lottery number (denoted L hereafter) between 0 and 100. If C > L, you win the reward with the probabilities associated to the symbol.<br>'
-                        + ' If C < L, the program will spin a wheel of fortune and you will win a reward of +1 point with a probability of L%, otherwise you will lose -1 point.<br>'
-                        + 'To sum up, the more you are confident in the fact that a symbol rewards you with +1, the more you should put a high percentage. '
-                        + '<br> Conversely, the lower the percentage, the more you choose to rely on a random lottery instead of the symbol in order to win reward.'
-                        + ' <br><br>' + p;
-                    break;
+                            Info = '<H3 align = "center">' + s
+                                + 'In each round of phase ' + phases[phaseNum] + ' you have to choose '
+                                + 'between one of two options displayed on either side of the screen<br><br>'
+                                + 'You can select one of the two options with a left-click<br><br> '
+                                + 'In each round, one of the two options will be a symbol<br> you already met during '
+                                + 'the previous phase and that is equally rewarding. '
+                                + 'The other option will display explicitly what chances you have to win by choosing it.<br>'
+                                + 'The green part indicates the chance of winning +1.<br>'
+                                + 'The red part indicates the chance of losing -1.<br>'
+                                + 'Please note that the outcome of your choice will not be displayed.'
+                                + '<br>However, each choice still have an outcome and it will be taken into account for the final payoff.<br><br>' + p;
+                            break;
+                    }
 
+                    case 2:
 
-// In the practice period, you will not be rewarded for your answers. In the real experiment, you will be able to win a monetary prize for accurate answers as follows. After confirming your confidence (C), the computer will draw a random lottery number (L) between 50 and 100. If C > L, you win a prize if your answer is correct and earn nothing otherwise. If C < L, the program will spin a wheel of fortune and you will win a prize with a probability of L%.
-
-// This procedure may seem complicated at first, but it is designed so that you maximize your chance of winning the prize by accurately and truthfully stating your confidence. Roughly speaking, the intuition is as follows: If you are confident your answer is correct, then you should state a high value of C, so that you are likely to get paid on the basis of your answer. If you are not very confident in your answer, then you should state a low value of C, in order to get paid on the basis of lottery L, independently of your answer.
-// The following two examples demonstrate this logic in more detail. First, suppose your true confidence is 75%, but instead of reporting this, you exaggerate and report C=100%. In this case, L is always lower than C, so you win the prize if your answer is correct. Since the true confidence in your answer is 75%, you can be 75% confident to win the prize. Now suppose you had instead stated your confidence truthfully as C=75% and the computer had drawn a number L>75%. In this case, you win the prize with a probability L, which is higher than 75%. Thus, you could have increased your chance of winning by reporting truthfully that C=75%.
-// As a second example, suppose again that your true confidence is 75%, but instead of reporting this, you report C=50%. In this case, L is always higher than C, so you will get paid with probability L. However, in the case that L<75%, you could have improved your chance of winning by reporting truthfully that C=75%, and getting paid on the basis of your answer.
-// The logic in these two examples holds for any level of confidence, and demonstrates that you maximize your chance of winning the prize if you state your true confidence.
+                            Info = '<H3 align = "center">' + s
+                                + 'In each round of phase ' + phases[phaseNum] + ' you will be'
+                                + ' presented with the symbols you met in the first phase. You will be asked to indicate in percentages, <br>'
+                                + 'to what extent this symbol rewards you with a +1.<br> 0% means it was not rewarding at all, and gives always a -1, and 100% means this symbol gives always a +1.<br><br>'
+                                + 'You will be able to do this through moving a slider on the screen and then confirm your final answer by clicking on the confirmation button. <br>'
+                                + 'After confirming your choice (denoted C hereafter) the computer will draw a random lottery number (denoted L hereafter) between 0 and 100. If C > L, you win the reward with the probabilities associated to the symbol.<br>'
+                                + ' If C < L, the program will spin a wheel of fortune and you will win a reward of +1 point with a probability of L%, otherwise you will lose -1 point.<br>'
+                                + 'To sum up, the more you are confident in the fact that a symbol rewards you with +1, the more you should put a high percentage. '
+                                + '<br> Conversely, the lower the percentage, the more you choose to rely on a random lottery instead of the symbol in order to win reward.'
+                                + ' <br><br>' + p;
+                            break;
 
 
+                    }
             }
-
-            nextBut = '"Start"';
 
             $('#TextBoxDiv').html(Title + Info);
 
-            var Buttons = '<div align="center"><input align="center" type="button" class="btn btn-default" id="Start" value='
-                + nextBut + ' ></div>';
+            var Buttons = '<div align="center"><input align="center" type="button"  class="btn btn-default" id="Back" value="Back" >\n\
+		        <input align="center" type="button"  class="btn btn-default" id="Next" value="Next" >\n\
+                <input align="center" type="button"  class="btn btn-default" id="Start" value="Start!" ></div>';
 
             $('#Bottom').html(Buttons);
 
-            ready = 'Ready...';
-            steady = 'Steady...';
-            go = 'Go!';
+            if (pageNum === 1) {
+                $('#Back').hide();
+            }
 
-            // if (training) {
-            //     ready = '';
-            //     steady = '';
-            //     go = '';
-            // }
+            if (pageNum === nPages) {
+                $('#Next').hide();
+            }
+
+            if (pageNum < nPages) {
+                $('#Start').hide();
+            }
+
+            $('#Back').click(function () {
+
+                $('#TextBoxDiv').remove();
+                $('#Stage').empty();
+                $('#Bottom').empty();
+
+                if (pageNum === 1) {
+                } else {
+                    startElicitation(sessionNum, training, elicitationType, phaseNum, pageNum - 1);
+                }
+
+            });
+
+            $('#Next').click(function () {
+
+                $('#TextBoxDiv').remove();
+                $('#Stage').empty();
+                $('#Bottom').empty();
+                startElicitation(sessionNum, training, elicitationType, phaseNum, pageNum + 1);
+
+            });
 
             $('#Start').click(function () {
 
                 $('#TextBoxDiv').remove();
                 $('#Stage').empty();
                 $('#Bottom').empty();
-                setTimeout(function () {
-                    $('#Stage').html('<H1 align = "center">' + ready + '</H1>');
+
+                ready = 'Ready...';
+                steady = 'Steady...';
+                go = 'Go!';
+
+                $('#Start').click(function () {
+
+                    $('#TextBoxDiv').remove();
+                    $('#Stage').empty();
+                    $('#Bottom').empty();
                     setTimeout(function () {
-                        $('#Stage').html('<H1 align = "center">' + steady + '</H1>');
+                        $('#Stage').html('<H1 align = "center">' + ready + '</H1>');
                         setTimeout(function () {
-                            $('#Stage').html('<H1 align = "center">' + go + '</H1>');
+                            $('#Stage').html('<H1 align = "center">' + steady + '</H1>');
                             setTimeout(function () {
-                                $('#Stage').empty();
-                                playElicitation(sessionNum, 0, elicitationType, phaseNum);
+                                $('#Stage').html('<H1 align = "center">' + go + '</H1>');
+                                setTimeout(function () {
+                                    $('#Stage').empty();
+                                    playElicitation(sessionNum, 0, elicitationType, phaseNum);
+                                }, 1000);
                             }, 1000);
                         }, 1000);
-                    }, 1000);
-                }, 10);
+                    }, 10);
+                });
             });
         }
 
