@@ -270,6 +270,14 @@ $(document).ready(function () {
                     );
                 }
             }
+
+        }
+
+        for (let i = 0; i < 2; i++) {
+            elicitationsStimEV[i].push([-0.8, 0.8]);
+            elicitationsStimEV[i].push([-0.6, 0.6]);
+            elicitationsStimEV[i].push([-0.4, 0.4]);
+            elicitationsStimEV[i].push([-0.2, 0.2]);
             elicitationsStimEV[i] = shuffle(elicitationsStimEV[i]);
         }
 
