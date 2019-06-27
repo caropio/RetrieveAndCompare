@@ -13,7 +13,7 @@ $(document).ready(function () {
         var nCond = 8;
         nCond--; //because of range function
         var nCondPerSession = 4;
-        var nTrialsPerCondition = 30;
+        var nTrialsPerCondition = 1;
         var nTrialsPerSession = nTrialsPerCondition * ((nCond + 1) / nSessions);
 
         // Single symbols per session
@@ -184,7 +184,7 @@ $(document).ready(function () {
             '0.8': [cont[1], 1]
         };
 
-        var nTrialPerElicitationChoice = nSymbolPerSession*expectedValue.length;
+        var nTrialPerElicitationChoice = 4;//nSymbolPerSession*expectedValue.length;
         var nTrialPerElicitationSlider = nSymbolPerSession;
 
         var choiceBasedOption = [];
