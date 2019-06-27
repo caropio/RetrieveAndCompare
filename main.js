@@ -745,6 +745,7 @@ $(document).ready(function () {
             if ([0, 1].includes(elicitationType)) {
 
                 var ev1 = undefined;
+                var isCatchTrial = 0;
 
                 if ([-1, -2].includes(sessionNum)) {
                     var stimIdx = elicitationsStimEVTraining[trialNum][0];
@@ -755,14 +756,13 @@ $(document).ready(function () {
                     var stimIdx = elicitationsStimEV[sessionNum][trialNum][0];
                     var choiceAgainst = elicitationsStimEV[sessionNum][trialNum][1];
                     var img = images;
-                    var isCatchTrial = false;
                 }
 
                 if (isFloat(stimIdx)) {
                     var img = choiceBasedOption;
                     ev1 = stimIdx;
                     stimIdx += '_' + elicitationType;
-                    var isCatchTrial = true;
+                    var isCatchTrial = 1;
                 }
 
                 var option1 = img[stimIdx];
