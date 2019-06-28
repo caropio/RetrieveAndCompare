@@ -32,8 +32,8 @@
       <file pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/main.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="648">
-              <caret line="1563" column="27" selection-start-line="1563" selection-start-column="27" selection-end-line="1563" selection-end-column="27" />
+            <state relative-caret-position="702">
+              <caret line="1846" column="23" selection-start-line="1846" selection-start-column="23" selection-end-line="1846" selection-end-column="23" />
               <folding>
                 <element signature="n#style#0;n#canvas#0;n#!!top" expanded="true" />
                 <element signature="n#style#0;n#canvas#0;n#!!top" expanded="true" />
@@ -122,6 +122,7 @@
       <find>slider</find>
       <find>playTr</find>
       <find>endSession</find>
+      <find>bold</find>
     </findStrings>
     <replaceStrings>
       <replace>invertedPosition</replace>
@@ -134,6 +135,7 @@
       <replace>c7c7c7</replace>
       <replace>--</replace>
       <replace>endTraining</replace>
+      <replace>b</replace>
     </replaceStrings>
   </component>
   <component name="Git.Settings">
@@ -159,9 +161,9 @@
       </list>
     </option>
   </component>
-  <component name="ProjectFrameBounds" extendedState="5">
+  <component name="ProjectFrameBounds" extendedState="7">
     <option name="y" value="27" />
-    <option name="width" value="1288" />
+    <option name="width" value="1210" />
     <option name="height" value="1173" />
   </component>
   <component name="ProjectLevelVcsManager" settingsEditedManually="true" />
@@ -275,18 +277,18 @@
       <workItem from="1560355059489" duration="4590000" />
       <workItem from="1560418283483" duration="37055000" />
       <workItem from="1560778754125" duration="48715000" />
-      <workItem from="1561542308097" duration="14078000" />
+      <workItem from="1561542308097" duration="25075000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="300229000" />
+    <option name="totallyTimeSpent" value="311226000" />
   </component>
   <component name="ToolWindowManager">
-    <frame x="0" y="27" width="1288" height="1173" extended-state="5" />
+    <frame x="0" y="27" width="1920" height="1173" extended-state="7" />
     <editor active="true" />
     <layout>
-      <window_info content_ui="combo" id="Project" order="0" visible="true" weight="0.16304348" />
+      <window_info content_ui="combo" id="Project" order="0" visible="true" weight="0.109375" />
       <window_info id="Structure" order="1" side_tool="true" weight="0.25" />
       <window_info id="Favorites" order="2" side_tool="true" />
       <window_info id="Project Explorer" order="3" />
@@ -541,8 +543,8 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/main.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="648">
-          <caret line="1563" column="27" selection-start-line="1563" selection-start-column="27" selection-end-line="1563" selection-end-column="27" />
+        <state relative-caret-position="702">
+          <caret line="1846" column="23" selection-start-line="1846" selection-start-column="23" selection-end-line="1846" selection-end-column="23" />
           <folding>
             <element signature="n#style#0;n#canvas#0;n#!!top" expanded="true" />
             <element signature="n#style#0;n#canvas#0;n#!!top" expanded="true" />

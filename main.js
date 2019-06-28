@@ -2,12 +2,13 @@ $(document).ready(function () {
 
         // Initial Experiment Parameters
         // -------------------------------------------------------------------------------------------------- //
-        var offline = 0;
+        var offline = 1;
         var expName = 'RetrieveAndCompare';
         //var language = "en"; // only en is available at the moment
         var compLink = 1;
         var nSessions = 2;
         var questionnaire = 0;
+        var maxPoints = 52;
 
         // Main Exp
         var nCond = 8;
@@ -21,7 +22,7 @@ $(document).ready(function () {
 
         var feedbackDuration = 2000;
         var sumReward = 0;
-        //var totalReward = 0;
+        var totalReward = 0;
 
         // Training
         var nCondTraining = 4;
@@ -485,6 +486,7 @@ $(document).ready(function () {
                 }
 
                 sumReward += thisReward;
+                totalReward += thisReward;
 
                 var fb1 = document.getElementById("feedback1");
                 var fb2 = document.getElementById("feedback2");
@@ -589,7 +591,7 @@ $(document).ready(function () {
                             cf_outcome: otherReward,
                             choice_left_right: leftRight,
                             reaction_time: reactionTime - choiceTime,
-                            reward: sumReward,
+                            reward: totalReward,
                             session: trainSess,
                             p1: P1,
                             p2: P2,
@@ -656,6 +658,7 @@ $(document).ready(function () {
 
             createDiv('Stage', 'TextBoxDiv');
 
+
             var Title = '<H2 align = "center">PHASE ' + phases[phaseNum] + '</H2>';
 
             var instBut;
@@ -671,10 +674,11 @@ $(document).ready(function () {
             var points = sumReward;
             var pence = pointsToPence(points);
             var pounds = pointsToPounds(points);
+            sumReward = 0;
 
-            var wonlost = [' you won ', ' you lost '][+(points < 0)];
+            var wonlost = ['won', 'lost'][+(points < 0)];
 
-            Info += '<H3 align = "center">In this training,' + wonlost + points +
+            Info += '<H3 align = "center">You ' + wonlost + ' ' + points +
                 ' points = ' + pence + ' pence = ' + pounds + ' pounds!</h3><br><br>';
 
             Info += '<H3 align="center">Now, you are about to start the first phase of the test.'
@@ -997,6 +1001,7 @@ $(document).ready(function () {
                 }
 
                 sumReward += thisReward;
+                totalReward += thisReward;
 
                 if (offline === 0) sendLearnDataDB(0);
 
@@ -1073,7 +1078,7 @@ $(document).ready(function () {
                             cf_outcome: otherReward, //tochange
                             choice_left_right: leftRight, //tochange
                             reaction_time: reactionTime - choiceTime,
-                            reward: sumReward, //tochange
+                            reward: totalReward, //tochange
                             session: sessionNum, //tochange
                             p1: p1, //tochange
                             p2: p2, //tochange
@@ -1341,6 +1346,7 @@ $(document).ready(function () {
                 }
 
                 sumReward += thisReward;
+                totalReward += thisReward;
 
                 var fb1 = document.getElementById("feedback1");
                 var fb2 = document.getElementById("feedback2");
@@ -1506,36 +1512,24 @@ $(document).ready(function () {
             }
         }
 
-        function nextSession(sessionNum, trialNum) {
-
-            if (sessionNum < nSessions) {
-                endTraining(sessionNum, trialNum);
-            } else {
-                if (questionnaire) {
-                } else {
-                    endExperiment();
-                }
-            }
-        }
-
-        function startElicitation(sessionNum, training, elicitationType, phaseNum, pageNum) {
+        function startElicitation(sessionNum, training, elicitationType, phaseNum, pageNum=1) {
 
             createDiv('Stage', 'TextBoxDiv');
 
+            var points = sumReward;
+            var pence = pointsToPence(points);
+            var pounds = pointsToPounds(points);
+            sumReward = 0;
+
             if (training) {
                 var Title = '<H2 align = "center">INSTRUCTIONS</H2><br>';
-                var p = '(This is a training phase, the results do not count for the final payoff.)<br><br></h3>';
-                var s = '';
+                var p = '<b>(Note: points won during the training do not count for the final payoff!)<br><br>'
+                    + '<b>The word "ready" will be displayed before the actual game starts.</b></H3><br><br>'
             } else {
                 var Title = '<H2 align = "center">PHASE ' + phases[phaseNum] + '</H2><br>';
                 var p = 'This is the actual game, every point will be included in the final payoff.<br><br>'
                     + 'Ready? <br></H3>';
             }
-
-            if (phaseNum === 5)
-                var s = 'The phase ' + phases[phaseNum] + ' consists in the same task as the second phase of the training.<br>';
-            if (phaseNum === 6)
-                var s = 'The phase ' + phases[phaseNum] + ' consists in the same task as the third phase of the training.<br>';
 
             switch (elicitationType) {
                 case 0:
@@ -1543,113 +1537,161 @@ $(document).ready(function () {
                     var nPages = 3;
 
                     switch (pageNum) {
-                        case 0:
+                        case 1:
+                            var wonlost = ['won', 'lost'][+(points < 0)];
 
-                            Info = '<H3 align = "center">' + s
-                                + 'In each round of phase ' + phases[phaseNum] + ' you have to choose '
-                                + 'between one of two options displayed on either side of the screen<br><br>'
-                                + 'You can select one of the two options with a left-click<br><br> '
-                                + 'In each round, one of the two options will be a symbol<br> you already met during '
-                                + 'the previous phase and that is equally rewarding. '
-                                + 'The other option will display explicitly what chances you have to win by choosing it.<br>'
-                                + 'The green part indicates the chance of winning +1.<br>'
-                                + 'The red part indicates the chance of losing -1.<br>'
-                                + 'Please note that the outcome of your choice will not be displayed.'
-                                + '<br>However, each choice still have an outcome and it will be taken into account for the final payoff.<br><br>' + p;
-                            break;
-                    }
+                            Info = '<H3 align = "center">You ' + wonlost + ' ' + points +
+                                ' points = ' + pence + ' pence = ' + pounds + ' pounds!</h3><br><br>';
 
-                    case 2:
+                            Info += '<H3 align="center"> <b>Instructions for the second test (1/2)</b><br><br>'
+                                + 'In each round you have to choose between one of two items displayed on either side of the screen.<br>'
+                                + 'You can select one of the two items by left-clicking on it.<br><br>'
+                                + 'Please note that the outcome of your choice will not be displayed on each trial.<br>'
+                                + 'However, for each choice an outcome will be calculated and taken into account for the final payoff.<br>'
+                                + 'At the end of the test you will be shown with the final payoff in terms of cumulated points and monetary bonus.<br><br></H3>';
 
-                            Info = '<H3 align = "center">' + s
-                                + 'In each round of phase ' + phases[phaseNum] + ' you will be'
-                                + ' presented with the symbols you met in the first phase. You will be asked to indicate in percentages, <br>'
-                                + 'to what extent this symbol rewards you with a +1.<br> 0% means it was not rewarding at all, and gives always a -1, and 100% means this symbol gives always a +1.<br><br>'
-                                + 'You will be able to do this through moving a slider on the screen and then confirm your final answer by clicking on the confirmation button. <br>'
-                                + 'After confirming your choice (denoted C hereafter) the computer will draw a random lottery number (denoted L hereafter) between 0 and 100. If C > L, you win the reward with the probabilities associated to the symbol.<br>'
-                                + ' If C < L, the program will spin a wheel of fortune and you will win a reward of +1 point with a probability of L%, otherwise you will lose -1 point.<br>'
-                                + 'To sum up, the more you are confident in the fact that a symbol rewards you with +1, the more you should put a high percentage. '
-                                + '<br> Conversely, the lower the percentage, the more you choose to rely on a random lottery instead of the symbol in order to win reward.'
-                                + ' <br><br>' + p;
                             break;
 
+                        case 2:
+                            Info = '<H3 align="center"> <b>Instructions for the second test (2/2)</b><br><br>'
+                                + 'In the second test  there will be two kind of options.<br>'
+                                + 'The first kind of options is represented by the symbols you already met during the previous test.<br><br>'
+                                + '<b>Note</b>: the symbols keep the same outcome as in the first test.<br><br>'
+                                + 'The second kind of options is represented by pie-charts explicitly describing the odds of winning / loosing a point.<br><br></br>'
+                                + 'Specifically, the green area indicates the chance of winning +1 (+10p) ; the red area indicates the chance of losing -1 (-10p).<br><br>'
+                            break;
+
+                        case 3:
+                            if (training) {
+                                var trainstring = "Let's begin with the second training test!<br>";
+                            } else {
+                                var trainstring = "";
+                            }
+
+                            Info = '<H3 align="center">' + trainstring + p;
+                            break;
 
                     }
+                    break;
+
+                case 2:
+
+                    var nPages = 4;
+
+                    switch (pageNum) {
+                        case 1:
+                            var wonlost = ['won', 'lost'][+(points < 0)];
+
+                            Info = '<H3 align = "center">You ' + wonlost + ' ' + points +
+                                ' points = ' + pence + ' pence = ' + pounds + ' pounds!</h3><br><br>';
+
+                            Info += '<H3 align = "center"><b>Instructions for the third test (1/3)</b><br><br>'
+                                + 'In each round of third test you will be presented with the symbols and pie-charts you met in the first and the second test.<br><br>'
+                                + 'You will be asked to indicate (in percentages), what are the odds that a given symbol or pie-chart makes you winning a point (+1=+10p).<br><br>'
+                                + 'You will be able to do this through moving a slider on the screen and then confirm your final answer by clicking on the confirmation button.<br><br>'
+                                + '100%  = the symbol (or pie-chart) always gives +1pt.<br>'
+                                + '50%  = the symbol (or pie-chart) always gives +1pt or -1pt with equal chances.<br>'
+                                + '0% = the symbol (or pie-chart) always gives -1pt.<br><br>';
+                            break;
+
+                        case 2:
+                            Info = '<H3 align = "center"><b>Instructions for the third test (2/3)</b><br><br>'
+                               + 'After confirming your choice (denoted C hereafter) the computer will draw a random lottery number (denoted L hereafter) between 0 and 100.<br>'
+                               + 'If C is bigger than L, you win the reward with the probabilities associated to the symbol.<br>'
+                               + 'If C is smaller than L, the program will spin a wheel of fortune and you will win a reward of +1 point with a probability of L%, otherwise you will lose -1 point.<br><br>'
+                            break;
+
+                        case 3:
+                            Info = '<H3 align = "center"><b>Instructions for the third test (3/3)</b><br><br>'
+                            + 'To sum up, the higher the percentage you give, the higher the chances are the outcome will be determined by the symbol or the pie-chart.<br><br>'
+                            + 'Conversely, the lower the percentage, the higher the chances are the outcome will be determined by the random lottery number.<br><br>'
+                            + 'Please note that the outcome of your choice will not be displayed on each trial.<br><br>'
+                            + 'However, for each choice an outcome will be calculated and taken into account for the final payoff.<br><br>'
+                            + 'At the end of the test you will be shown with the final payoff in terms of cumulated points and monetary bonus.<br><br>'
+                            break;
+
+                        case 4:
+                             if (training) {
+                                 var trainstring = "Let's begin with the third training test!<br>";
+                             } else {
+                                 var trainstring = "";
+                             }
+                            Info = '<H3 align = "center">' + trainstring + p;
+                            break;
+                    }
+                    break;
             }
 
-            $('#TextBoxDiv').html(Title + Info);
+        $('#TextBoxDiv').html(Title + Info);
 
-            var Buttons = '<div align="center"><input align="center" type="button"  class="btn btn-default" id="Back" value="Back" >\n\
-		        <input align="center" type="button"  class="btn btn-default" id="Next" value="Next" >\n\
-                <input align="center" type="button"  class="btn btn-default" id="Start" value="Start!" ></div>';
+        var Buttons = '<div align="center"><input align="center" type="button"  class="btn btn-default" id="Back" value="Back" >\n\
+            <input align="center" type="button"  class="btn btn-default" id="Next" value="Next" >\n\
+            <input align="center" type="button"  class="btn btn-default" id="Start" value="Start!" ></div>';
 
-            $('#Bottom').html(Buttons);
+        $('#Bottom').html(Buttons);
+
+        if (pageNum === 1) {
+            $('#Back').hide();
+        }
+
+        if (pageNum === nPages) {
+            $('#Next').hide();
+        }
+
+        if (pageNum < nPages) {
+            $('#Start').hide();
+        }
+
+        $('#Back').click(function () {
+
+            $('#TextBoxDiv').remove();
+            $('#Stage').empty();
+            $('#Bottom').empty();
 
             if (pageNum === 1) {
-                $('#Back').hide();
+            } else {
+                startElicitation(sessionNum, training, elicitationType, phaseNum, pageNum - 1);
             }
 
-            if (pageNum === nPages) {
-                $('#Next').hide();
-            }
+        });
 
-            if (pageNum < nPages) {
-                $('#Start').hide();
-            }
+        $('#Next').click(function () {
 
-            $('#Back').click(function () {
+            $('#TextBoxDiv').remove();
+            $('#Stage').empty();
+            $('#Bottom').empty();
+            startElicitation(sessionNum, training, elicitationType, phaseNum, pageNum + 1);
 
-                $('#TextBoxDiv').remove();
-                $('#Stage').empty();
-                $('#Bottom').empty();
+        });
 
-                if (pageNum === 1) {
-                } else {
-                    startElicitation(sessionNum, training, elicitationType, phaseNum, pageNum - 1);
-                }
+        $('#Start').click(function () {
 
-            });
+            $('#TextBoxDiv').remove();
+            $('#Stage').empty();
+            $('#Bottom').empty();
 
-            $('#Next').click(function () {
+            ready = 'Ready...';
+            steady = 'Steady...';
+            go = 'Go!';
 
-                $('#TextBoxDiv').remove();
-                $('#Stage').empty();
-                $('#Bottom').empty();
-                startElicitation(sessionNum, training, elicitationType, phaseNum, pageNum + 1);
-
-            });
-
-            $('#Start').click(function () {
-
-                $('#TextBoxDiv').remove();
-                $('#Stage').empty();
-                $('#Bottom').empty();
-
-                ready = 'Ready...';
-                steady = 'Steady...';
-                go = 'Go!';
-
-                $('#Start').click(function () {
-
-                    $('#TextBoxDiv').remove();
-                    $('#Stage').empty();
-                    $('#Bottom').empty();
+            $('#TextBoxDiv').remove();
+            $('#Stage').empty();
+            $('#Bottom').empty();
+            setTimeout(function () {
+                $('#Stage').html('<H1 align = "center">' + ready + '</H1>');
+                setTimeout(function () {
+                    $('#Stage').html('<H1 align = "center">' + steady + '</H1>');
                     setTimeout(function () {
-                        $('#Stage').html('<H1 align = "center">' + ready + '</H1>');
+                        $('#Stage').html('<H1 align = "center">' + go + '</H1>');
                         setTimeout(function () {
-                            $('#Stage').html('<H1 align = "center">' + steady + '</H1>');
-                            setTimeout(function () {
-                                $('#Stage').html('<H1 align = "center">' + go + '</H1>');
-                                setTimeout(function () {
-                                    $('#Stage').empty();
-                                    playElicitation(sessionNum, 0, elicitationType, phaseNum);
-                                }, 1000);
-                            }, 1000);
+                            $('#Stage').empty();
+                            playElicitation(sessionNum, 0, elicitationType, phaseNum);
                         }, 1000);
-                    }, 10);
-                });
-            });
-        }
+                    }, 1000);
+                }, 1000);
+            }, 10);
+        });
+    }
 
         function endExperiment() {
 
@@ -1768,42 +1810,39 @@ $(document).ready(function () {
             switch (pageNum) {
 
                 case 1:
-                    var Info = '<H3 align = "center">This experiment is composed of 3 phases.<br><br>'
-                        + 'All phases consists in a cognitive test<br><br>'
-                        + 'There will be a training session composed of 3 phases before the actual experiment starts.<br>'
+                    var Info = '<H3 align = "center">This experiment is composed of 4 phases.<br><br>'
+                        + 'The first three phases consists in different cognitive tests.<br><br>'
+                        + 'There will be a training session composed of shorter versions of the 3 phases before the actual experiment starts.<br>'
                         + '<br><br> </H3>';
                     break;
 
                 case 2:
-                    var Info = '<H3 align = "center">In addition of the fixed compensation,'
-                        + ' you will receive a bonus depending on your choices.<br><br>'
-                        + 'The training does not count in the final payoff.<br>'
-                        + 'Across the three phases of the cognitive experiment, you can win a bonus up to 52 points = 5 pounds.<br>'
-                        + 'The word "ready" will be displayed before the actual game starts.<br><br></H3>';
+                    var Info = '<H3 align = "center">In addition of the fixed compensation provided by Profilic, you have been been endowed with an additional 2.5£.'
+                        + 'Depending on your choices you can either double this endowement or loose it.<br> Following experimental economics methodological standards, no deception is involved concerning the calculation of the final payoff.'
+                        + 'Across the three phases of the experiment, you can win a bonus up to ' +  maxPoints + ' points = ' + pointsToPounds(maxPoints) + '!';
                     break;
 
                 case 3:
-                    var Info = '<H3 align = "center">In each round of the first phase you have to choose between one of two symbols displayed on either side of the screen.<br><br>'
-                        + 'You can select one of the two symbols with a left-click.'
-                        + 'After a choice, you can win/lose the following outcomes:<br><br>'
-                        + '1 point = +10 pence<br>-1 points = -10 pence<br><br></H3>';
-                    //+ 'Across the two phases of the cognitive experiment, you can win up to ? points = ? pounds.<br><br></H3>';
+                    var Info = '<H3 align = "center"><b>Instructions for the first test (1/2)</b><br><br>'
+                       + 'In each round you have to choose between one of two symbols displayed on either side of the screen.<br><br>'
+                       + 'You can select one of the two symbols by left-clicking on it. <br><br>'
+                       + 'After a choice, you can win/lose the following outcomes:<br><br>'
+                       + '1 point = +10 pence<br>'
+                       + '-1 points = -10 pence<br><br>'
+                       + 'The outcome of your choice will appear in the location of the symbol you chose.<br><br></H3>';
                     break;
 
                 case 4:
-                    var Info = '<H3 align = "center">The outcome of your choice will appear in the location of the symbol you chose.<br><br>'
-                        + 'The different symbols are most of the time not equal in terms of outcome: in most trials of the experiment<br><br>'
-                        + 'one is in average more advantageous (‘lucky’) compared to the other in terms of both points to be won, as well as points not to be lost.<br><br>'
-                        + 'Your task is to find out, by trial and error, which is the most advantageous symbol and win as many points as possible,'
-                        + 'even if it’s not possible to win points on every round.';
+                    var Info = '<H3 align = "center"><b>Instructions for the first test (2/2)</b><br><br>'
+                        + 'The different symbols are not equal in terms of outcome: one is in average more advantageous compared to the other in terms of points to be won.<br><br>'
+                        + 'At the end of the test you will be shown with the final payoff in terms of cumulated points and monetary bonus.<br><br></H3>'
+
                     break;
 
                 case 5:
-                    var Info = '<H3 align = "center">At each step of the experiment you will know the total amount of points you won.<br><br>'
-                        + 'The points won during the experiment will be translated into actual money, which will affect your final payment.<br><br>'
-                        + 'Since the total number of trials is fixed, your final payoff depends only your capacity to identify the advantageous symbol and not on your rapidity.<br><br>'
-                        + 'Let\'s begin with the first training phase!<br><br>'
-                        + '(points won during the training do not count for the final payoff)<br><br></H3>';
+                    var Info = '<H3 align = "center">Let' + "'s " + 'begin with the first training test!<br><br>'
+                        + '<b>(Note : points won during the training do not count for the final payoff !)'
+                        + 'The word "ready" will be displayed before the actual game starts.</H3></b><br><br>';
                     break;
 
                 default:
