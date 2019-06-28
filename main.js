@@ -1,5 +1,12 @@
 $(document).ready(function () {
 
+        // TODO:
+        // catch trials for slider
+        // compensation calculation
+        // endtraining instructions
+        // sentence slider
+        // TRials training
+        // check interim feedback between steps
         // Initial Experiment Parameters
         // -------------------------------------------------------------------------------------------------- //
         var offline = 1;
