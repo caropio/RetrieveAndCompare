@@ -15,7 +15,7 @@ $(document).ready(function () {
         // check reaction times
         // Initial Experiment Parameters
         // -------------------------------------------------------------------------------------------------- //
-        var offline = 1;
+        var offline = 0;
         var expName = 'RetrieveAndCompare';
         //var language = "en"; // only en is available at the moment
         var compLink = 1;
@@ -467,49 +467,46 @@ $(document).ready(function () {
                     leftRight = 1;
                 }
 
-                var P1 = conditions[conditionIdx]['prob'][0][1];
-                var P2 = conditions[conditionIdx]['prob'][1][1];
-                var Mag1 = conditions[conditionIdx]['reward'][0];
-                var Mag2 = conditions[conditionIdx]['reward'][1];
+                // var P1 = conditions[conditionIdx]['prob'][0][1];
+                // var P2 = conditions[conditionIdx]['prob'][1][1];
+                // var Mag1 = conditions[conditionIdx]['reward'][0];
+                // var Mag2 = conditions[conditionIdx]['reward'][1];
+                //
+                // p1 = conditions[conditionIdx]['prob'][0];
+                // p2 = conditions[conditionIdx]['prob'][1];
+                // r1 = conditions[conditionIdx]['reward'][0];
+                // r2 = conditions[conditionIdx]['reward'][1];
 
-                p1 = conditions[conditionIdx]['prob'][0];
-                p2 = conditions[conditionIdx]['prob'][1];
-                r1 = conditions[conditionIdx]['reward'][0];
-                r2 = conditions[conditionIdx]['reward'][1];
+                // if (sum(p1) === 2) {
+                //     var ev1 = p1[0] * r1[0];
+                // } else {
+                //     var ev1 = p1.reduce(
+                //         function (r, a, i) {
+                //             return r + a * r1[i]
+                //         }, 0);
+                // }
 
-                if (sum(p1) === 2) {
-                    var ev1 = p1[0] * r1[0];
-                } else {
-                    var ev1 = p1.reduce(
-                        function (r, a, i) {
-                            return r + a * r1[i]
-                        }, 0);
-                }
+                // if (sum(p2) === 2) {
+                //     var ev2 = p2[0] * r2[0];
+                // } else {
+                //     var ev2 = p2.reduce(
+                //         function (r, a, i) {
+                //             return r + a * r2[i]
+                //         }, 0);
+                // }
 
-                if (sum(p2) === 2) {
-                    var ev2 = p2[0] * r2[0];
-                } else {
-                    var ev2 = p2.reduce(
-                        function (r, a, i) {
-                            return r + a * r2[i]
-                        }, 0);
-                }
+                // if (choice === 1) { /*option1*/
+                //     var thisReward = Mag1[+(Math.random() < P1)];
+                //     var otherReward = Mag2[+(Math.random() < P2)];
+                //     var correctChoice = +(ev1 > ev2);
+                // } else { /*option2*/
+                //     var otherReward = Mag1[+(Math.random() < P1)];
+                //     var thisReward = Mag2[+(Math.random() < P2)];
+                //     var correctChoice = +(ev2 > ev1);
+                // }
+                thisReward = [-1, 1][+(Math.random() > 0.5)];
 
-                if (choice === 1) { /*option1*/
-                    var thisReward = Mag1[+(Math.random() < P1)];
-                    var otherReward = Mag2[+(Math.random() < P2)];
-                    var correctChoice = +(ev1 > ev2);
-                } else { /*option2*/
-                    var otherReward = Mag1[+(Math.random() < P1)];
-                    var thisReward = Mag2[+(Math.random() < P2)];
-                    var correctChoice = +(ev2 > ev1);
-                }
-
-                console.log(phaseNum);
                 sumReward[phaseNum] += thisReward;
-                console.log(sumReward);
-
-                // totalReward += thisReward;
 
                 var fb1 = document.getElementById("feedback1");
                 var fb2 = document.getElementById("feedback2");
@@ -600,28 +597,28 @@ $(document).ready(function () {
                             exp: expName,
                             expID: expID,
                             id: subID,
-                            elicitation_type: elicitationType,
+                            elicitation_type: -1,
                             test: wtest,
                             trial: trialNum,
-                            condition: conditionIdx,
+                            condition: -1,
                             cont_idx_1: -1,
                             cont_idx_2: -1,
                             symL: symbols[0],
                             symR: symbols[1],
                             choice: choice,
-                            correct_choice: correctChoice,
+                            correct_choice: -1,
                             outcome: thisReward,
-                            cf_outcome: otherReward,
+                            cf_outcome: -1,
                             choice_left_right: leftRight,
                             reaction_time: reactionTime - choiceTime,
                             reward: totalReward,
                             session: trainSess,
-                            p1: P1,
-                            p2: P2,
+                            p1: -1,
+                            p2: -1,
                             option1: option1ImgIdx,
                             option2: option2ImgIdx,
-                            ev1: ev1,
-                            ev2: ev2,
+                            ev1: -1,
+                            ev2: -1,
                             iscatch: -1,
                             inverted: invertedPosition,
                             choice_time: choiceTime - initTime
@@ -645,7 +642,7 @@ $(document).ready(function () {
                             }
                         }
                     });
-                };
+                }
                 return thisReward;
             }
 
@@ -914,9 +911,6 @@ $(document).ready(function () {
                     stimIdx += '_' + '0';
                     var isCatchTrial = 1;
                 }
-                console.log('------------------------');
-                console.log(stimIdx);
-                console.log(choiceAgainst);
 
                 var option1 = img[stimIdx];
                 option1.id = "option1";
@@ -1146,14 +1140,20 @@ $(document).ready(function () {
                     }
                 }
 
+                console.log('P1: ' + p1);
+                console.log('P2: ' + p2);
+                console.log('EV1: ' + ev1);
+                console.log('EV2: ' + ev2);
+                console.log('Option 1 is left: ' + !invertedPosition);
+
                 sumReward[phaseNum] += thisReward;
+
                 if (!([-1, -2].includes(sessionNum)))
                     totalReward += thisReward;
 
                 if (offline === 0) sendLearnDataDB(0);
 
                 next();
-
 
                 function slideCard(pic, cv) {  /* faire défiler la carte pour decouvrir le feedback */
 
@@ -1231,8 +1231,8 @@ $(document).ready(function () {
                             p2: p2, //tochange
                             option1: -1, //tochange
                             option2: -1, //tochange
-                            ev1: ev1,
-                            ev2: ev2,
+                            ev1: Math.round(ev1),
+                            ev2: Math.round(ev2),
                             iscatch: isCatchTrial,
                             inverted: invertedPosition,
                             choice_time: choiceTime - initTime
@@ -1490,6 +1490,13 @@ $(document).ready(function () {
                     var correctChoice = +(ev2 > ev1);
                 }
 
+                console.log('contIdx1: ' + contIdx1);
+                console.log('contIdx2: ' + contIdx2);
+                console.log('P1: ' + p1);
+                console.log('P2: ' + p2);
+                console.log('Reward: ' + thisReward);
+                console.log('Option 1 is left: ' + !invertedPosition);
+
                 sumReward[phaseNum] += thisReward;
                 totalReward += thisReward;
 
@@ -1601,8 +1608,8 @@ $(document).ready(function () {
                             p2: P2,
                             option1: option1ImgIdx,
                             option2: option2ImgIdx,
-                            ev1: ev1,
-                            ev2: ev2,
+                            ev1: Math.round(ev1),
+                            ev2: Math.round(ev2),
                             iscatch: -1,
                             inverted: invertedPosition,
                             choice_time: choiceTime - initTime
