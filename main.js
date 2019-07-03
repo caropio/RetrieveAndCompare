@@ -27,7 +27,7 @@ $(document).ready(function () {
         var nCond = 8;
         nCond--; //because of range function
         var nCondPerSession = 4;
-        var nTrialsPerCondition = 4;
+        var nTrialsPerCondition = 2;
         var nTrialsPerSession = nTrialsPerCondition * ((nCond + 1) / nSessions);
 
         // Single symbols per session
@@ -268,37 +268,32 @@ $(document).ready(function () {
         var elicitationsStim = [];
         var elicitationsStimEV = [];
 
-        for (let i = 0; i < nSessions; i++) {
-            var cidx = Array.from(new Set(expCondition[i].flat()));
+        var cidx = Array.from(new Set(expCondition[0].flat()));
 
-            for (let j = 0; j < cidx.length; j++) {
+        for (let j = 0; j < cidx.length; j++) {
 
-                var stim1 = contexts[cidx[j]].flat()[0];
-                var stim2 = contexts[cidx[j]].flat()[1];
+            var stim1 = contexts[cidx[j]].flat()[0];
+            var stim2 = contexts[cidx[j]].flat()[1];
 
-                elicitationsStim.push(stim1);
-                elicitationsStim.push(stim2);
+            elicitationsStim.push(stim1);
+            elicitationsStim.push(stim2);
 
-                for (let k = 0; k < expectedValue.length; k++) {
-                    elicitationsStimEV.push(
-                        [stim1, expectedValue[k]]
-                    );
-                    elicitationsStimEV.push(
-                        [stim2, expectedValue[k]]
-                    );
-                }
+            for (let k = 0; k < expectedValue.length; k++) {
+                elicitationsStimEV.push(
+                    [stim1, expectedValue[k]]
+                );
+                elicitationsStimEV.push(
+                    [stim2, expectedValue[k]]
+                );
             }
-
         }
 
-        for (let i = 0; i < 2; i++) {
-            elicitationsStimEV[i].push(["-0.8", "0.8"]);
-            elicitationsStimEV[i].push(["-0.6", "0.6"]);
-            elicitationsStimEV[i].push(["-0.4", "0.4"]);
-            elicitationsStimEV[i].push(["-0.2", "0.2"]);
-            elicitationsStimEV[i].push(["-1", "1"]);
-            elicitationsStimEV[i] = shuffle(elicitationsStimEV[i]);
-        }
+        elicitationsStimEV.push(["-0.8", "0.8"]);
+        elicitationsStimEV.push(["-0.6", "0.6"]);
+        elicitationsStimEV.push(["-0.4", "0.4"]);
+        elicitationsStimEV.push(["-0.2", "0.2"]);
+        elicitationsStimEV.push(["-1", "1"]);
+        elicitationsStimEV = shuffle(elicitationsStimEV);
 
         var elicitationsStimTraining = shuffle(range(1, nSymbolPerSession));
 
@@ -908,8 +903,8 @@ $(document).ready(function () {
                     var img = trainingImg;
 
                 } else {
-                    var stimIdx = elicitationsStimEV[sessionNum][trialNum][0];
-                    var choiceAgainst = elicitationsStimEV[sessionNum][trialNum][1];
+                    var stimIdx = elicitationsStimEV[trialNum][0];
+                    var choiceAgainst = elicitationsStimEV[trialNum][1];
                     var img = images;
                 }
 
@@ -944,7 +939,7 @@ $(document).ready(function () {
                     var stimIdx = elicitationsStimTraining[trialNum];
                     var img = trainingImg;
                 } else {
-                    var stimIdx = elicitationsStim[sessionNum][trialNum];
+                    var stimIdx = elicitationsStim[trialNum];
                     var img = images;
                 }
 
