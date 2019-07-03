@@ -7,7 +7,7 @@ $(document).ready(function () {
         // sentence slider [X]
         // TRials training
         // check interim feedback between steps [X]
-        // maxTraining
+        // maxTraining [X]
         // expectedValue -1 [X]
         // which catchtrials?
         // questionnaires
@@ -40,7 +40,7 @@ $(document).ready(function () {
 
         // Training
         var nCondTraining = 4;
-        var nTrialTrainingPerCond = 4;
+        var nTrialTrainingPerCond = 2;
         var nTrainingTrials = nTrialTrainingPerCond * nCondTraining;//1;
         var maxTrainingSessions = 1;
         var nTrainingImg = nCondTraining * 2;
@@ -201,7 +201,7 @@ $(document).ready(function () {
             '1': [cont[9], 9],
         };
 
-        var nTrialPerElicitationChoice = 4*4;
+        var nTrialPerElicitationChoice = 4*2;
         var nTrialPerElicitationSlider = nSymbolPerSession + expectedValue.length;
 
         var choiceBasedOption = [];
