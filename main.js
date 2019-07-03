@@ -1,22 +1,25 @@
 $(document).ready(function () {
 
         // TODO:
-        // catch trials for slider
+        // catch trials for slider [X]
         // compensation calculation
         // endtraining instructions [X]
         // sentence slider [X]
         // TRials training
-        // check interim feedback between steps
+        // check interim feedback between steps [X]
         // maxTraining
         // expectedValue -1 [X]
         // which catchtrials?
+        // questionnaires
+        // random outcome
+        // check reaction times
         // Initial Experiment Parameters
         // -------------------------------------------------------------------------------------------------- //
         var offline = 1;
         var expName = 'RetrieveAndCompare';
         //var language = "en"; // only en is available at the moment
         var compLink = 1;
-        var nSessions = 2;
+        var nSessions = 1;
         var questionnaire = 0;
         var maxPoints = 52;
 
@@ -24,7 +27,7 @@ $(document).ready(function () {
         var nCond = 8;
         nCond--; //because of range function
         var nCondPerSession = 4;
-        var nTrialsPerCondition = 1;
+        var nTrialsPerCondition = 4;
         var nTrialsPerSession = nTrialsPerCondition * ((nCond + 1) / nSessions);
 
         // Single symbols per session
@@ -37,7 +40,7 @@ $(document).ready(function () {
 
         // Training
         var nCondTraining = 4;
-        var nTrialTrainingPerCond = 1;
+        var nTrialTrainingPerCond = 4;
         var nTrainingTrials = nTrialTrainingPerCond * nCondTraining;//1;
         var maxTrainingSessions = 1;
         var nTrainingImg = nCondTraining * 2;
@@ -64,8 +67,8 @@ $(document).ready(function () {
 
         // Manage compensations
         // -------------------------------------------------------------------------------------------------- //
-        // one point equals 10 pence
-        var conversionRate = 10;
+        // one point equals 4.82 pence
+        var conversionRate = 4.82;
         var pointsToPence = points => points * conversionRate;
         var penceToPounds = pence => pence / 100;
         var pointsToPounds = points => penceToPounds(pointsToPence(points));
@@ -183,7 +186,7 @@ $(document).ready(function () {
         // Elicitations
         // ------------------------------------------------------------------------------------------------------- //
         var elicitationType = 0;
-        var expectedValue = [-1.0, -0.8, -0.6, -0.4, -0.2, 0., 0.2, 0.4, 0.6, 0.8, 1.0];
+        var expectedValue = ["-1", "-0.8", "-0.6", "-0.4", "-0.2", "0", "0.2", "0.4", "0.6", "0.8", "1"];
         var expectedValueMap = {
             '-1': [cont[10], 10],
             '-0.8': [cont[0], 0],
@@ -198,8 +201,8 @@ $(document).ready(function () {
             '1': [cont[9], 9],
         };
 
-        var nTrialPerElicitationChoice = 4;//nSymbolPerSession*expectedValue.length;
-        var nTrialPerElicitationSlider = nSymbolPerSession;
+        var nTrialPerElicitationChoice = 4*4;
+        var nTrialPerElicitationSlider = nSymbolPerSession + expectedValue.length;
 
         var choiceBasedOption = [];
         for (let i = 0; i < expectedValue.length; i++) {
@@ -230,11 +233,13 @@ $(document).ready(function () {
                 elicitationsStimEVTraining.push([trainingOptions[i + 1], expectedValue[k]]);
             }
         }
-        elicitationsStimEVTraining.push([-0.8, 0.8]);
-        elicitationsStimEVTraining.push([-0.6, 0.6]);
-        elicitationsStimEVTraining.push([-0.4, 0.4]);
-        elicitationsStimEVTraining.push([-0.2, 0.2]);
+        elicitationsStimEVTraining.push(["-0.8", "0.8"]);
+        elicitationsStimEVTraining.push(["-0.6", "0.6"]);
+        elicitationsStimEVTraining.push(["-0.4", "0.4"]);
+        elicitationsStimEVTraining.push(["-0.2", "0.2"]);
+        elicitationsStimEVTraining.push(["-1", "1"]);
 
+        // console.log(elicitationsStimEVTraining);
         trainingContexts = shuffle(trainingContexts);
 
         elicitationsStimEVTraining = shuffle(elicitationsStimEVTraining);
@@ -261,25 +266,24 @@ $(document).ready(function () {
 
         // Elicitation
         var elicitationsStim = [];
-        elicitationsStim[0] = [];
-        elicitationsStim[1] = [];
-        var elicitationsStimEV = [[], []];
+        var elicitationsStimEV = [];
 
         for (let i = 0; i < nSessions; i++) {
-
             var cidx = Array.from(new Set(expCondition[i].flat()));
 
             for (let j = 0; j < cidx.length; j++) {
+
                 var stim1 = contexts[cidx[j]].flat()[0];
                 var stim2 = contexts[cidx[j]].flat()[1];
-                elicitationsStim[i].push(stim1);
-                elicitationsStim[i].push(stim2);
+
+                elicitationsStim.push(stim1);
+                elicitationsStim.push(stim2);
 
                 for (let k = 0; k < expectedValue.length; k++) {
-                    elicitationsStimEV[i].push(
+                    elicitationsStimEV.push(
                         [stim1, expectedValue[k]]
                     );
-                    elicitationsStimEV[i].push(
+                    elicitationsStimEV.push(
                         [stim2, expectedValue[k]]
                     );
                 }
@@ -288,12 +292,11 @@ $(document).ready(function () {
         }
 
         for (let i = 0; i < 2; i++) {
-            elicitationsStimEV[i].push([-0.8, 0.8]);
-            elicitationsStimEV[i].push([-0.6, 0.6]);
-            elicitationsStimEV[i].push([-0.4, 0.4]);
-            elicitationsStimEV[i].push([-0.2, 0.2]);
-            elicitationsStimEV[i].push([-1, 0]);
-            elicitationsStimEV[i].push([0, 1]);
+            elicitationsStimEV[i].push(["-0.8", "0.8"]);
+            elicitationsStimEV[i].push(["-0.6", "0.6"]);
+            elicitationsStimEV[i].push(["-0.4", "0.4"]);
+            elicitationsStimEV[i].push(["-0.2", "0.2"]);
+            elicitationsStimEV[i].push(["-1", "1"]);
             elicitationsStimEV[i] = shuffle(elicitationsStimEV[i]);
         }
 
@@ -305,6 +308,7 @@ $(document).ready(function () {
         }
         elicitationsStimTraining = shuffle(elicitationsStimTraining);
         elicitationsStim = shuffle(elicitationsStim);
+
 
         // Run the experiment
         // ------------------------------------------------------------------------------------------------ //
@@ -506,8 +510,11 @@ $(document).ready(function () {
                     var correctChoice = +(ev2 > ev1);
                 }
 
+                console.log(phaseNum);
                 sumReward[phaseNum] += thisReward;
-                totalReward += thisReward;
+                console.log(sumReward);
+
+                // totalReward += thisReward;
 
                 var fb1 = document.getElementById("feedback1");
                 var fb2 = document.getElementById("feedback2");
@@ -701,7 +708,8 @@ $(document).ready(function () {
                     Info += 'Test 2: ' + sumReward[2] + '<br>';
                     Info += 'Test 3: ' + sumReward[3] + '<br>';
 
-                    Info += 'Now, you are about to start the first phase of the experiment.<br> Note that from now on the points will be counted in your final payoff. Also note that the experiment includes much more trials and more points are at stake, compared to the training.<br>'
+                    Info += 'Now, you are about to start the first phase of the experiment.<br> Note that from now on the points will be counted in your final payoff.'
+                        + ' Also note that the experiment includes much more trials and more points are at stake, compared to the training.<br>'
                         + 'Finally note that the real test will involve different symbols (i.e., not encountered in the training).<br>'
                         + 'If you want you can do the training a second time.</h3><br><br>';
                     break;
@@ -724,6 +732,7 @@ $(document).ready(function () {
             $('#TextBoxDiv').html(Title + Info);
 
             var Buttons = '<div align="center"><input align="center" type="button"  class="btn btn-default" id="Back" value="Back" >\n\
+            <input align="center" type="button"  class="btn btn-default" id="Training" value="Play training again" >\n\
             <input align="center" type="button"  class="btn btn-default" id="Next" value="Next" >\n\
             <input align="center" type="button"  class="btn btn-default" id="Start" value="Start!" ></div>';
 
@@ -731,7 +740,13 @@ $(document).ready(function () {
 
             if (pageNum === 1) {
                 $('#Back').hide();
+            } else {
+                $('#Training').hide();
             }
+
+            if (trainSess === -2)
+                $('#Training').hide();
+
 
             if (pageNum === nPages) {
                 $('#Next').hide();
@@ -751,6 +766,25 @@ $(document).ready(function () {
                 } else {
                     endTraining(sessionNum, phaseNum, pageNum - 1);
                 }
+
+            });
+
+            $('#Training').click(function () {
+
+                $('#TextBoxDiv').remove();
+                $('#Stage').empty();
+                $('#Bottom').empty();
+
+                trainSess--;
+                sumReward[0] = 0;
+                sumReward[1] = 0;
+                sumReward[2] = 0;
+                sumReward[3] = 0;
+                elicitationsStimTraining = shuffle(elicitationsStimTraining);
+                trainingCondition = shuffle(trainingCondition);
+                elicitationsStimEVTraining = shuffle(elicitationsStimEVTraining);
+
+                instructions();
 
             });
 
@@ -879,12 +913,15 @@ $(document).ready(function () {
                     var img = images;
                 }
 
-                if (isFloat(stimIdx)) {
+                if (isString(stimIdx)) {
                     var img = choiceBasedOption;
                     ev1 = stimIdx;
                     stimIdx += '_' + '0';
                     var isCatchTrial = 1;
                 }
+                console.log('------------------------');
+                console.log(stimIdx);
+                console.log(choiceAgainst);
 
                 var option1 = img[stimIdx];
                 option1.id = "option1";
@@ -911,13 +948,13 @@ $(document).ready(function () {
                     var img = images;
                 }
 
-                if (isFloat(stimIdx)) {
+                if (isString(stimIdx)) {
                     var img = choiceBasedOption;
                     ev1 = stimIdx;
                     stimIdx += '_' + '0';
                     var isCatchTrial = 1;
                 }
-
+                console.log(stimIdx);
                 option1 = img[stimIdx];
                 option1.id = "option1";
                 option1 = option1.outerHTML;
@@ -1031,6 +1068,7 @@ $(document).ready(function () {
                 var output = document.getElementById('output');
                 var ok = document.getElementById('ok');
                 var form = document.getElementById('form');
+                var clickDisabled = false;
 
                 form.oninput = function () {
                     output.value = slider.valueAsNumber;
@@ -1038,8 +1076,11 @@ $(document).ready(function () {
                 };
 
                 ok.onclick = function () {
-                    var choice = slider.value;
-                    getReward(choice, true, ev1)
+                    if (!clickDisabled) {
+                        clickDisabled = true;
+                        var choice = slider.value;
+                        getReward(choice, true, ev1)
+                    }
                 };
             }
 
@@ -1111,7 +1152,8 @@ $(document).ready(function () {
                 }
 
                 sumReward[phaseNum] += thisReward;
-                totalReward += thisReward;
+                if ([-1, -2].contains(sessionNum))
+                    totalReward += thisReward;
 
                 if (offline === 0) sendLearnDataDB(0);
 
@@ -1281,7 +1323,6 @@ $(document).ready(function () {
         }
 
         function playOptions(sessionNum, trialNum, phaseNum) {
-            console.log(phaseNum);
 
             if ($('#TextBoxDiv').length === 0) {
                 createDiv('Stage', 'TextBoxDiv');
@@ -1633,8 +1674,15 @@ $(document).ready(function () {
                 var Title = '<H2 align = "center">INSTRUCTIONS</H2><br>';
                 var p = '<b>(Note: points won during the training do not count for the final payoff!)<br><br>'
                     + '<b>The word "ready" will be displayed before the actual game starts.</b></H3><br><br>'
+                var like = '';
             } else {
                 var Title = '<H2 align = "center">PHASE ' + phases[phaseNum] + '</H2><br>';
+                if (phases[phaseNum] === 3)
+                    var like = '<h3 align="center"><b>Note:</b> The test of the phase 3 is like the third test of the training.</h3><br><br>';
+
+                if (phases[phaseNum] === 2)
+                    var like = '<h3 align="center"><b>Note:</b> The test of the phase 2 is like the second test of the training.</h3><br><br>';
+
                 var p = 'This is the actual game, every point will be included in the final payoff.<br><br>'
                     + 'Ready? <br></H3>';
             }
@@ -1651,6 +1699,8 @@ $(document).ready(function () {
                             Info = '<H3 align = "center">You ' + wonlost + ' ' + points +
                                 ' points = ' + pence + ' pence = ' + pounds + ' pounds!</h3><br><br>';
 
+                            Info += like;
+
                             Info += '<H3 align="center"> <b>Instructions for the second test (1/2)</b><br><br>'
                                 + 'In each round you have to choose between one of two items displayed on either side of the screen.<br>'
                                 + 'You can select one of the two items by left-clicking on it.<br><br>'
@@ -1666,7 +1716,7 @@ $(document).ready(function () {
                                 + 'The first kind of options is represented by the symbols you already met during the previous test.<br><br>'
                                 + '<b>Note</b>: the symbols keep the same outcome as in the first test.<br><br>'
                                 + 'The second kind of options is represented by pie-charts explicitly describing the odds of winning / losing a point.<br><br></br>'
-                                + 'Specifically, the green area indicates the chance of winning +1 (+10p) ; the red area indicates the chance of losing -1 (-10p).<br><br>'
+                                + 'Specifically, the green area indicates the chance of winning +1 (+' + pointsToPence(1) + 'p) ; the red area indicates the chance of losing -1 (+' + pointsToPence(1) + 'p).<br><br>';
                             break;
 
                         case 3:
@@ -1693,9 +1743,11 @@ $(document).ready(function () {
                             Info = '<H3 align = "center">You ' + wonlost + ' ' + points +
                                 ' points = ' + pence + ' pence = ' + pounds + ' pounds!</h3><br><br>';
 
+                            Info += like;
+
                             Info += '<H3 align = "center"><b>Instructions for the third test (1/3)</b><br><br>'
                                 + 'In each round of third test you will be presented with the symbols and pie-charts you met in the first and the second test.<br><br>'
-                                + 'You will be asked to indicate (in percentages), what are the odds that a given symbol or pie-chart makes you winning a point (+1=+10p).<br><br>'
+                                + 'You will be asked to indicate (in percentages), what are the odds that a given symbol or pie-chart makes you winning a point (+1=+' + pointsToPence(1) + 'p).<br><br>'
                                 + 'You will be able to do this through moving a slider on the screen and then confirm your final answer by clicking on the confirmation button.<br><br>'
                                 + '100%  = the symbol (or pie-chart) always gives +1pt.<br>'
                                 + '50%  = the symbol (or pie-chart) always gives +1pt or -1pt with equal chances.<br>'
@@ -1778,9 +1830,15 @@ $(document).ready(function () {
             $('#Stage').empty();
             $('#Bottom').empty();
 
-            ready = 'Ready...';
-            steady = 'Steady...';
-            go = 'Go!';
+            if (training) {
+                ready = '3...';
+                steady = '2...';
+                go = '1...';
+            } else {
+                ready = 'Ready...';
+                steady = 'Steady...';
+                go = 'Go!';
+            }
 
             $('#TextBoxDiv').remove();
             $('#Stage').empty();
@@ -1805,7 +1863,7 @@ $(document).ready(function () {
 
             createDiv('Stage', 'TextBoxDiv');
 
-            var points = sumReward[sumReward.length];
+            var points = totalReward;
             var pence = pointsToPence(points);
             var pounds = pointsToPounds(points);
 
@@ -1925,9 +1983,9 @@ $(document).ready(function () {
                     break;
 
                 case 2:
-                    var Info = '<H3 align = "center">In addition of the fixed compensation provided by Profilic, you have been been endowed with an additional 2.5£.'
-                        + 'Depending on your choices you can either double this endowement or loose it.<br> Following experimental economics methodological standards, no deception is involved concerning the calculation of the final payoff.'
-                        + 'Across the three phases of the experiment, you can win a bonus up to ' +  maxPoints + ' points = ' + pointsToPounds(maxPoints) + '!';
+                    var Info = '<H3 align = "center">In addition of the fixed compensation provided by Profilic, you have been been endowed with an additional 2.5 pounds. '
+                        + '<br>Depending on your choices you can either double this endowement or loose it.<br> Following experimental economics methodological standards, no deception is involved concerning the calculation of the final payoff.'
+                        + '<br> Across the three phases of the experiment, you can win a bonus up to ' +  maxPoints + ' points = ' + pointsToPounds(maxPoints) + ' pounds!';
                     break;
 
                 case 3:
@@ -1935,8 +1993,8 @@ $(document).ready(function () {
                        + 'In each round you have to choose between one of two symbols displayed on either side of the screen.<br><br>'
                        + 'You can select one of the two symbols by left-clicking on it. <br><br>'
                        + 'After a choice, you can win/lose the following outcomes:<br><br>'
-                       + '1 point = +10 pence<br>'
-                       + '-1 points = -10 pence<br><br>'
+                       + '1 point = +' + pointsToPence(1) + ' pence<br>'
+                       + '-1 points = -' + pointsToPence(1 )+ ' pence<br><br>'
                        + 'The outcome of your choice will appear in the location of the symbol you chose.<br><br></H3>';
                     break;
 
@@ -2155,6 +2213,10 @@ $(document).ready(function () {
         
         function isFloat(n){
             return Number(n) === n && n % 1 !== 0;
+        }
+        
+        function isString(x) {
+            return Object.prototype.toString.call(x) === "[object String]"
         }
 
         function getBrowser() {

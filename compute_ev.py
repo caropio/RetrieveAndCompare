@@ -55,14 +55,21 @@ def main():
                     max_reward += max([ev1, ev2])
                     rand_reward += np.random.choice([ev1, ev2])
                     i += 1
+
+        expected_values = [[-1, 1], [-.8, .8],  [-.6, .6], [-.4, .4], [-.2, .2]]
+        for ev in expected_values:
+            e1, e2 = ev
+            max_reward += max([e1, e2])
+            rand_reward += np.random.choice([e1, e2])
         max_list.append(max_reward)
         rand_list.append(rand_reward)
 
     symbol = []
-    for r1, p1 in zip(reward, prob):
-        for r2, p2 in zip(r1, p1):
-            if np.all(p2 != [.5, .5]):
-                symbol.append(np.array([r2, p2]))
+    for _ in range(2):
+        for r1, p1 in zip(reward, prob):
+            for r2, p2 in zip(r1, p1):
+                if np.all(p2 != [.5, .5]):
+                    symbol.append(np.array([r2, p2]))
 
     for i in range(1000):
         rand_rew = 0
