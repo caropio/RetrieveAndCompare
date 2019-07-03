@@ -1152,7 +1152,7 @@ $(document).ready(function () {
                 }
 
                 sumReward[phaseNum] += thisReward;
-                if ([-1, -2].contains(sessionNum))
+                if (!([-1, -2].includes(sessionNum)))
                     totalReward += thisReward;
 
                 if (offline === 0) sendLearnDataDB(0);
