@@ -1238,8 +1238,8 @@ $(document).ready(function () {
                             p2: p2, //tochange
                             option1: -1, //tochange
                             option2: -1, //tochange
-                            ev1: Math.round(ev1),
-                            ev2: Math.round(ev2),
+                            ev1: Math.round(ev1 * 100) / 100,
+                            ev2: Math.round(ev2 * 100) / 100,
                             iscatch: isCatchTrial,
                             inverted: invertedPosition,
                             choice_time: choiceTime - initTime
@@ -1623,8 +1623,8 @@ $(document).ready(function () {
                             p2: P2,
                             option1: option1ImgIdx,
                             option2: option2ImgIdx,
-                            ev1: Math.round(ev1),
-                            ev2: Math.round(ev2),
+                            ev1: Math.round(ev1 * 100) / 100,
+                            ev2: Math.round(ev2 * 100) / 100,
                             iscatch: -1,
                             inverted: invertedPosition,
                             choice_time: choiceTime - initTime
