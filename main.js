@@ -27,7 +27,7 @@ $(document).ready(function () {
         var nCond = 8;
         nCond--; //because of range function
         var nCondPerSession = 4;
-        var nTrialsPerCondition = 2;
+        var nTrialsPerCondition = 1;
         var nTrialsPerSession = nTrialsPerCondition * ((nCond + 1) / nSessions);
 
         // Single symbols per session
@@ -40,7 +40,7 @@ $(document).ready(function () {
 
         // Training
         var nCondTraining = 4;
-        var nTrialTrainingPerCond = 2;
+        var nTrialTrainingPerCond = 1;
         var nTrainingTrials = nTrialTrainingPerCond * nCondTraining;//1;
         var maxTrainingSessions = 1;
         var nTrainingImg = nCondTraining * 2;
@@ -202,7 +202,7 @@ $(document).ready(function () {
         };
 
         var nTrialPerElicitationChoice = 4*2;
-        var nTrialPerElicitationSlider = nSymbolPerSession + expectedValue.length;
+        var nTrialPerElicitationChoiceTraining = 10;
 
         var choiceBasedOption = [];
         for (let i = 0; i < expectedValue.length; i++) {
@@ -295,15 +295,22 @@ $(document).ready(function () {
         elicitationsStimEV.push(["-1", "1"]);
         elicitationsStimEV = shuffle(elicitationsStimEV);
 
-        var elicitationsStimTraining = shuffle(range(1, nSymbolPerSession));
+        var elicitationsStimTraining = shuffle(range(1, 4));
+
+        for (let i = 0; i < 2; i++) {
+            elicitationsStimTraining.push(shuffle(expectedValue[i]));
+
+        }
 
         for (let i = 0; i < expectedValue.length; i++) {
-            elicitationsStimTraining.push(expectedValue[i]);
             elicitationsStim.push(expectedValue[i]);
         }
+
         elicitationsStimTraining = shuffle(elicitationsStimTraining);
         elicitationsStim = shuffle(elicitationsStim);
 
+        var nTrialPerElicitationSliderTraining = elicitationsStimTraining.length;
+        var nTrialPerElicitationSlider = elicitationsStim.length;
 
         // Run the experiment
         // ------------------------------------------------------------------------------------------------ //
@@ -1260,9 +1267,17 @@ $(document).ready(function () {
             function next() {
                 trialNum++;
                 if ([0, 1].includes(elicitationType)) {
-                    var nTrialPerElicitation = nTrialPerElicitationChoice;
+                    if ([-1, -2].includes(sessionNum)) {
+                        var nTrialPerElicitation = nTrialPerElicitationChoiceTraining;
+                    } else {
+                        var nTrialPerElicitation = nTrialPerElicitationChoice;
+                    }
                 } else {
-                    var nTrialPerElicitation = nTrialPerElicitationSlider;
+                    if ([-1, -2].includes(sessionNum)) {
+                        var nTrialPerElicitation = nTrialPerElicitationSliderTraining;
+                    } else {
+                        var nTrialPerElicitation = nTrialPerElicitationSlider;
+                    }
                 }
                 if (elicitationType === 2) {
                     var fbdur = 200;
