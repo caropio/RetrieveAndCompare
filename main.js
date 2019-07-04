@@ -27,8 +27,8 @@ $(document).ready(function () {
         var nCond = 8;
         nCond--; //because of range function
         var nCondPerSession = 4;
-        var nTrialsPerCondition = 1;
-        var nTrialsPerSession = nTrialsPerCondition * ((nCond + 1) / nSessions);
+        var nTrialsPerCondition = 30;
+        var nTrialsPerSession = (nTrialsPerCondition * nCondPerSession) * nSessions;
 
         // Single symbols per session
         var nSymbolPerSession = 8;
@@ -40,7 +40,7 @@ $(document).ready(function () {
 
         // Training
         var nCondTraining = 4;
-        var nTrialTrainingPerCond = 1;
+        var nTrialTrainingPerCond = 3;
         var nTrainingTrials = nTrialTrainingPerCond * nCondTraining;//1;
         var maxTrainingSessions = 1;
         var nTrainingImg = nCondTraining * 2;
@@ -201,7 +201,7 @@ $(document).ready(function () {
             '1': [cont[9], 9],
         };
 
-        var nTrialPerElicitationChoice = 4*2;
+
         var nTrialPerElicitationChoiceTraining = 10;
 
         var choiceBasedOption = [];
@@ -298,8 +298,7 @@ $(document).ready(function () {
         var elicitationsStimTraining = shuffle(range(1, 4));
 
         for (let i = 0; i < 2; i++) {
-            elicitationsStimTraining.push(shuffle(expectedValue[i]));
-
+            elicitationsStimTraining.push(expectedValue[i]);
         }
 
         for (let i = 0; i < expectedValue.length; i++) {
@@ -311,6 +310,7 @@ $(document).ready(function () {
 
         var nTrialPerElicitationSliderTraining = elicitationsStimTraining.length;
         var nTrialPerElicitationSlider = elicitationsStim.length;
+        var nTrialPerElicitationChoice = elicitationsStimEV.length;
 
         // Run the experiment
         // ------------------------------------------------------------------------------------------------ //
