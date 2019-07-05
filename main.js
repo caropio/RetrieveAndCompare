@@ -1103,11 +1103,18 @@ $(document).ready(function () {
                         var thisReward = r1[+(Math.random() < pLottery)]
                     }
                     var otherReward = -1;
-                    var correctChoice = -1;
+
+                    if (isCatchTrial) {
+                        var correctChoice =  +(choice/100 === p1[1]);
+                    } else {
+                        var correctChoice = -1;
+                    }
+
                     var ev2 = -1;
                     var contIdx2 = -1;
                     var p2 = -1;
                     var leftRight = -1;
+
                 } else {
 
                     var ev2 = choiceAgainst;
@@ -1604,7 +1611,7 @@ $(document).ready(function () {
                             expID: expID,
                             id: subID,
                             test: wtest,
-                            elicitation_type: elicitationType,
+                            elicitation_type: -1,
                             trial: trialNum,
                             condition: conditionIdx,
                             cont_idx_1: contIdx1,
