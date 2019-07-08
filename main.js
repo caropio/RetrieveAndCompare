@@ -14,8 +14,9 @@ $(document).ready(function () {
         // random outcome
         // check reaction times
         // Initial Experiment Parameters
+        // verifier les rewards
         // -------------------------------------------------------------------------------------------------- //
-        var offline = 0;
+        var offline = 1;
         var expName = 'RetrieveAndCompare';
         //var language = "en"; // only en is available at the moment
         var compLink = 1;
@@ -24,7 +25,7 @@ $(document).ready(function () {
         var maxPoints = 52;
 
         // Main Exp
-        var nCond = 8;
+        var nCond = 4;
         nCond--; //because of range function
         var nCondPerSession = 4;
         var nTrialsPerCondition = 30;
@@ -115,20 +116,17 @@ $(document).ready(function () {
         var conditions = [];
 
         // range cond for each session
-        var cond = [range(0, 3), range(4, 7)];
+        var cond = range(0, nCond);
 
         for (let i = 0; i < nSessions; i++)
             expCondition[i] = shuffle(
                 Array(nTrialsPerSession / nCondPerSession).fill(cond[i]).flat()
             );
 
-        // map cond 0 to 4 twice for 0, 1, 2, ...,8
-        var map = [range(0, 4), range(0, 4)].flat();
-
         for (let i = 0; i <= nCond; i++)
             conditions.push({
-                reward: rewards[map[i]],
-                prob: probs[map[i]]
+                reward: rewards[i],
+                prob: probs[i]
             });
 
         // training conditions
@@ -200,7 +198,6 @@ $(document).ready(function () {
             '0.8': [cont[1], 1],
             '1': [cont[9], 9],
         };
-
 
         var nTrialPerElicitationChoiceTraining = 10;
 
