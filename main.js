@@ -120,7 +120,7 @@ $(document).ready(function () {
 
         for (let i = 0; i < nSessions; i++)
             expCondition[i] = shuffle(
-                Array(nTrialsPerSession / nCondPerSession).fill(cond[i]).flat()
+                Array(nTrialsPerSession / nCondPerSession).fill(cond).flat()
             );
 
         for (let i = 0; i <= nCond; i++)
@@ -245,7 +245,7 @@ $(document).ready(function () {
         availableOptions = shuffle(availableOptions);
         var contexts = [];
 
-        for (let i = 0; i < nImg; i += 2) {
+        for (let i = 0; i <= nCond*2; i += 2) {
             contexts.push([
                 availableOptions[i], availableOptions[i + 1]
             ]);
@@ -471,44 +471,45 @@ $(document).ready(function () {
                     leftRight = 1;
                 }
 
-                // var P1 = conditions[conditionIdx]['prob'][0][1];
-                // var P2 = conditions[conditionIdx]['prob'][1][1];
-                // var Mag1 = conditions[conditionIdx]['reward'][0];
-                // var Mag2 = conditions[conditionIdx]['reward'][1];
-                //
-                // p1 = conditions[conditionIdx]['prob'][0];
-                // p2 = conditions[conditionIdx]['prob'][1];
-                // r1 = conditions[conditionIdx]['reward'][0];
-                // r2 = conditions[conditionIdx]['reward'][1];
+                var P1 = conditions[conditionIdx]['prob'][0][1];
+                var P2 = conditions[conditionIdx]['prob'][1][1];
+                var Mag1 = conditions[conditionIdx]['reward'][0];
+                var Mag2 = conditions[conditionIdx]['reward'][1];
 
-                // if (sum(p1) === 2) {
-                //     var ev1 = p1[0] * r1[0];
-                // } else {
-                //     var ev1 = p1.reduce(
-                //         function (r, a, i) {
-                //             return r + a * r1[i]
-                //         }, 0);
-                // }
+                p1 = conditions[conditionIdx]['prob'][0];
+                p2 = conditions[conditionIdx]['prob'][1];
+                r1 = conditions[conditionIdx]['reward'][0];
+                r2 = conditions[conditionIdx]['reward'][1];
 
-                // if (sum(p2) === 2) {
-                //     var ev2 = p2[0] * r2[0];
-                // } else {
-                //     var ev2 = p2.reduce(
-                //         function (r, a, i) {
-                //             return r + a * r2[i]
-                //         }, 0);
-                // }
+                if (sum(p1) === 2) {
+                    var ev1 = p1[0] * r1[0];
+                } else {
+                    var ev1 = p1.reduce(
+                        function (r, a, i) {
+                            return r + a * r1[i]
+                        }, 0);
+                }
 
-                // if (choice === 1) { /*option1*/
-                //     var thisReward = Mag1[+(Math.random() < P1)];
-                //     var otherReward = Mag2[+(Math.random() < P2)];
-                //     var correctChoice = +(ev1 > ev2);
-                // } else { /*option2*/
-                //     var otherReward = Mag1[+(Math.random() < P1)];
-                //     var thisReward = Mag2[+(Math.random() < P2)];
-                //     var correctChoice = +(ev2 > ev1);
-                // }
-                thisReward = [-1, 1][+(Math.random() > 0.5)];
+                if (sum(p2) === 2) {
+                    var ev2 = p2[0] * r2[0];
+                } else {
+                    var ev2 = p2.reduce(
+                        function (r, a, i) {
+                            return r + a * r2[i]
+                        }, 0);
+                }
+
+                if (choice === 1) { /*option1*/
+                    var thisReward = Mag1[+(Math.random() < P1)];
+                    var otherReward = Mag2[+(Math.random() < P2)];
+                    var correctChoice = +(ev1 > ev2);
+                } else { /*option2*/
+                    var otherReward = Mag1[+(Math.random() < P1)];
+                    var thisReward = Mag2[+(Math.random() < P2)];
+                    var correctChoice = +(ev2 > ev1);
+                }
+
+                // thisReward = [-1, 1][+(Math.random() > 0.5)];
 
                 sumReward[phaseNum] += thisReward;
 
