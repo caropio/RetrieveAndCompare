@@ -15,7 +15,8 @@ $(document).ready(function () {
     //var language = "en"; // only en is available at the moment
     var compLink = 1;
     var nSessions = 1;
-    var questionnaire = 1;
+
+    var questionnaire = 0;
     var maxPoints = 52;
 
     // Main Exp
@@ -35,7 +36,7 @@ $(document).ready(function () {
 
     // Training
     var nCondTraining = 4;
-    var nTrialTrainingPerCond = 3;
+    var nTrialTrainingPerCond = 30;
     var nTrainingTrials = nTrialTrainingPerCond * nCondTraining;//1;
     var maxTrainingSessions = 1;
     var nTrainingImg = nCondTraining * 2;
