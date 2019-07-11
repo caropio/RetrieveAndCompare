@@ -8,6 +8,8 @@ $(document).ready(function () {
     // check reaction times [to check]
     // check endowment [to check]
     // vérifier le slider [to check]
+    // test maxTRaining
+    // test chrome
     // Initial Experiment Parameters
     // -------------------------------------------------------------------------------------------------- //
     var offline = 0;
@@ -698,7 +700,7 @@ $(document).ready(function () {
 
                 var totalPoints = sumReward[1] + sumReward[2] + sumReward[3];
                 var pence = pointsToPence(totalPoints);
-                var pounds = pointsToPounds(totalReward);
+                var pounds = pointsToPounds(totalPoints);
 
                 var wonlost = ['won', 'lost'][+(totalPoints < 0)];
 
@@ -1688,7 +1690,7 @@ $(document).ready(function () {
                             + 'In the second test  there will be two kind of options.<br>'
                             + 'The first kind of options is represented by the symbols you already met during the previous test.<br><br>'
                             + '<b>Note</b>: the symbols keep the same outcome as in the first test.<br><br>'
-                            + 'The second kind of options is represented by pie-charts explicitly describing the odds of winning / losing a point.<br><br></br>'
+                            + 'The second kind of options is represented by pie-charts explicitly describing the odds of winning / losing a point.<br><br>'
                             + 'Specifically, the green area indicates the chance of winning +1 (+' + pointsToPence(1) + 'p) ; the red area indicates the chance of losing -1 (+' + pointsToPence(1) + 'p).<br><br>';
                         break;
 
@@ -1720,7 +1722,7 @@ $(document).ready(function () {
 
                         Info += '<H3 align = "center"><b>Instructions for the third test (1/3)</b><br><br>'
                             + 'In each round of third test you will be presented with the symbols and pie-charts you met in the first and the second test.<br><br>'
-                            + 'You will be asked to indicate (in percentages), what are the odds that a given symbol or pie-chart makes you winning a point (+1=+' + pointsToPence(1) + 'p).<br><br>'
+                            + 'You will be asked to indicate (in percentages), what are the odds that a given symbol or pie-chart makes you win a point (+1=+' + pointsToPence(1) + 'p).<br><br>'
                             + 'You will be able to do this through moving a slider on the screen and then confirm your final answer by clicking on the confirmation button.<br><br>'
                             + '100%  = the symbol (or pie-chart) always gives +1pt.<br>'
                             + '50%  = the symbol (or pie-chart) always gives +1pt or -1pt with equal chances.<br>'
@@ -1950,14 +1952,14 @@ $(document).ready(function () {
 
             case 1:
                 var Info = '<H3 align = "center">This experiment is composed of 4 phases.<br><br>'
-                    + 'The first three phases consists in different cognitive tests.<br><br>'
+                    + 'The first three phases consist in different cognitive tests.<br><br>'
                     + 'There will be a training session composed of shorter versions of the 3 phases before the actual experiment starts.<br>'
                     + '<br><br> </H3>';
                 break;
 
             case 2:
-                var Info = '<H3 align = "center">In addition of the fixed compensation provided by Profilic, you have been been endowed with an additional 2.5 pounds. '
-                    + '<br>Depending on your choices you can either double this endowement or loose it.<br> Following experimental economics methodological standards, no deception is involved concerning the calculation of the final payoff.'
+                var Info = '<H3 align = "center">In addition of the fixed compensation provided by Profilic, you have been endowed with an additional 2.5 pounds. '
+                    + '<br><br>Depending on your choices you can either double this endowment or lose it.<br><br>Following experimental economics methodological standards, no deception is involved concerning the calculation of the final payoff.'
                     + '<br> Across the three phases of the experiment, you can win a bonus up to ' + maxPoints + ' points = ' + pointsToPounds(maxPoints) + ' pounds!';
                 break;
 
@@ -1980,7 +1982,7 @@ $(document).ready(function () {
 
             case 5:
                 var Info = '<H3 align = "center">Let' + "'s " + 'begin with the first training test!<br><br>'
-                    + '<b>(Note : points won during the training do not count for the final payoff !)'
+                    + '<b>(Note : points won during the training do not count for the final payoff !)<br><br>'
                     + 'The word "ready" will be displayed before the actual game starts.</H3></b><br><br>';
                 break;
 
