@@ -23,7 +23,7 @@ $(document).ready(function () {
     var nCond = 4;
     nCond--; //because of range function
     var nCondPerSession = 4;
-    var nTrialsPerCondition = 1;
+    var nTrialsPerCondition = 30;
     var nTrialsPerSession = (nTrialsPerCondition * nCondPerSession) * nSessions;
 
     // Single symbols per session
@@ -36,7 +36,7 @@ $(document).ready(function () {
 
     // Training
     var nCondTraining = 4;
-    var nTrialTrainingPerCond = 30;
+    var nTrialTrainingPerCond = 3;
     var nTrainingTrials = nTrialTrainingPerCond * nCondTraining;//1;
     var maxTrainingSessions = 1;
     var nTrainingImg = nCondTraining * 2;
