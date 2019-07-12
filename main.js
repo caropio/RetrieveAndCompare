@@ -699,8 +699,8 @@ $(document).ready(function () {
                 var Info = '';
 
                 var totalPoints = sumReward[1] + sumReward[2] + sumReward[3];
-                var pence = pointsToPence(totalPoints);
-                var pounds = pointsToPounds(totalPoints);
+                var pence = pointsToPence(totalPoints).toFixed(2);
+                var pounds = pointsToPounds(totalPoints).toFixed(2);
 
                 var wonlost = ['won', 'lost'][+(totalPoints < 0)];
 
@@ -726,8 +726,8 @@ $(document).ready(function () {
                     + 'In each round you have to choose between one of two symbols displayed on either side of the screen.<br>'
                     + 'You can select one of the two symbols by left-clicking on it.<br>'
                     + 'After a choice, you can win/lose the following outcomes:<br><br>'
-                    + '1 point = ' + pointsToPence(1) + ' pence<br>'
-                    + '-1 points = -' + pointsToPence(1) + ' pence<br><br>'
+                    + '1 point = ' + pointsToPence(1).toFixed(2) + ' pence<br>'
+                    + '-1 points = -' + pointsToPence(1).toFixed(2) + ' pence<br><br>'
                     + 'The outcome of your choice will appear in the location of the symbol you chose.<br>'
                     + 'Click on start when you are ready.</h3><br><br>';
                 break;
@@ -1642,8 +1642,8 @@ $(document).ready(function () {
         createDiv('Stage', 'TextBoxDiv');
 
         var points = sumReward[phaseNum - 1];
-        var pence = pointsToPence(points);
-        var pounds = pointsToPounds(points);
+        var pence = pointsToPence(points).toFixed(2);
+        var pounds = pointsToPounds(points).toFixed(2);
 
         if (training) {
             var Title = '<H2 align = "center">INSTRUCTIONS</H2><br>';
@@ -1691,7 +1691,7 @@ $(document).ready(function () {
                             + 'The first kind of options is represented by the symbols you already met during the previous test.<br><br>'
                             + '<b>Note</b>: the symbols keep the same outcome as in the first test.<br><br>'
                             + 'The second kind of options is represented by pie-charts explicitly describing the odds of winning / losing a point.<br><br>'
-                            + 'Specifically, the green area indicates the chance of winning +1 (+' + pointsToPence(1) + 'p) ; the red area indicates the chance of losing -1 (+' + pointsToPence(1) + 'p).<br><br>';
+                            + 'Specifically, the green area indicates the chance of winning +1 (+' + pointsToPence(1).toFixed(2) + 'p) ; the red area indicates the chance of losing -1 (+' + pointsToPence(1).toFixed(2) + 'p).toFixed(2).<br><br>';
                         break;
 
                     case 3:
@@ -1722,7 +1722,7 @@ $(document).ready(function () {
 
                         Info += '<H3 align = "center"><b>Instructions for the third test (1/3)</b><br><br>'
                             + 'In each round of third test you will be presented with the symbols and pie-charts you met in the first and the second test.<br><br>'
-                            + 'You will be asked to indicate (in percentages), what are the odds that a given symbol or pie-chart makes you win a point (+1=+' + pointsToPence(1) + 'p).<br><br>'
+                            + 'You will be asked to indicate (in percentages), what are the odds that a given symbol or pie-chart makes you win a point (+1=+' + pointsToPence(1).toFixed(2) + 'p).toFixed(2).<br><br>'
                             + 'You will be able to do this through moving a slider on the screen and then confirm your final answer by clicking on the confirmation button.<br><br>'
                             + '100%  = the symbol (or pie-chart) always gives +1pt.<br>'
                             + '50%  = the symbol (or pie-chart) always gives +1pt or -1pt with equal chances.<br>'
@@ -1839,8 +1839,8 @@ $(document).ready(function () {
         createDiv('Stage', 'TextBoxDiv');
 
         var points = totalReward;
-        var pence = pointsToPence(points);
-        var pounds = pointsToPounds(points);
+        var pence = pointsToPence(points).toFixed(2);
+        var pounds = pointsToPounds(points).toFixed(2);
 
         var wonlost = [' won ', ' lost '][+(points < 0)];
 
@@ -1960,7 +1960,7 @@ $(document).ready(function () {
             case 2:
                 var Info = '<H3 align = "center">In addition of the fixed compensation provided by Profilic, you have been endowed with an additional 2.5 pounds. '
                     + '<br><br>Depending on your choices you can either double this endowment or lose it.<br><br>Following experimental economics methodological standards, no deception is involved concerning the calculation of the final payoff.'
-                    + '<br> Across the three phases of the experiment, you can win a bonus up to ' + maxPoints + ' points = ' + pointsToPounds(maxPoints) + ' pounds!';
+                    + '<br> Across the three phases of the experiment, you can win a bonus up to ' + maxPoints + ' points = ' + pointsToPounds(maxPoints).toFixed(2) + ' pounds!';
                 break;
 
             case 3:
@@ -1968,8 +1968,8 @@ $(document).ready(function () {
                     + 'In each round you have to choose between one of two symbols displayed on either side of the screen.<br><br>'
                     + 'You can select one of the two symbols by left-clicking on it. <br><br>'
                     + 'After a choice, you can win/lose the following outcomes:<br><br>'
-                    + '1 point = +' + pointsToPence(1) + ' pence<br>'
-                    + '-1 points = -' + pointsToPence(1) + ' pence<br><br>'
+                    + '1 point = +' + pointsToPence(1).toFixed(2) + ' pence<br>'
+                    + '-1 points = -' + pointsToPence(1).toFixed(2) + ' pence<br><br>'
                     + 'The outcome of your choice will appear in the location of the symbol you chose.<br><br></H3>';
                 break;
 
