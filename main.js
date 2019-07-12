@@ -181,7 +181,8 @@ $(document).ready(function () {
     // Elicitations
     // ------------------------------------------------------------------------------------------------------- //
     var elicitationType = 0;
-    var expectedValue = ["-1", "-0.8", "-0.6", "-0.4", "-0.2", "0", "0.2", "0.4", "0.6", "0.8", "1"];
+    var expectedValue = [
+        "-1", "-0.8", "-0.6", "-0.4", "-0.2", "0", "0.2", "0.4", "0.6", "0.8", "1"];
     var expectedValueMap = {
         '-1': [cont[10], 10],
         '-0.8': [cont[1], 1],
@@ -303,9 +304,9 @@ $(document).ready(function () {
     for (let i = 0; i < 2; i++) {
         elicitationsStimTraining.push(expectedValue[i]);
     }
-
-    for (let i = 0; i < expectedValue.length; i++) {
-        elicitationsStim.push(expectedValue[i]);
+    var randExpectedValue = shuffle(expectedValue);
+    for (let i = 0; i < 4; i++) {
+        elicitationsStim.push(randExpectedValue[i]);
     }
 
     elicitationsStimTraining = shuffle(elicitationsStimTraining);
@@ -317,12 +318,7 @@ $(document).ready(function () {
 
     // Run the experiment
     // ------------------------------------------------------------------------------------------------ //
-    // playSessions(0, 0);
-    // getUserID();
     goFullscreen();
-    // playTraining(0, 1);
-
-    // playElicitation(-1, 0, 0, 2);
 
     function sendExpDataDB(call) {
 
@@ -1052,7 +1048,7 @@ $(document).ready(function () {
                 if (isCatchTrial) {
                     var correctChoice = +(choice / 100 === p1[1]);
                 } else {
-                    var correctChoice = -1;
+                    var correctChoice = 0;
                 }
 
                 var ev2 = -1;
