@@ -1090,7 +1090,6 @@ $(document).ready(function () {
                 ev1 = Math.round(ev1 * 100) / 100;
                 ev2 = Math.round(ev2 * 100) / 100;
 
-
                 if (choice === 1) { /*option1*/
                     var thisReward = r1[+(Math.random() < p1[1])];
                     var otherReward = r1[+(Math.random() < p2[1])];
@@ -1209,7 +1208,8 @@ $(document).ready(function () {
                         iscatch: isCatchTrial,
                         inverted: invertedPosition,
                         choice_time: choiceTime - initTime,
-                        elic_distance: elicDistance
+                        elic_distance: elicDistance,
+                        p_lottery: pLottery
                     },
                     async: true,
                     url: 'php/InsertLearningDataDB.php',
