@@ -1698,7 +1698,7 @@ $(document).ready(function () {
                             + 'The first kind of options is represented by the symbols you already met during the previous test.<br><br>'
                             + '<b>Note</b>: the symbols keep the same outcome as in the first test.<br><br>'
                             + 'The second kind of options is represented by pie-charts explicitly describing the odds of winning / losing a point.<br><br>'
-                            + 'Specifically, the green area indicates the chance of winning +1 (+' + pointsToPence(1).toFixed(2) + 'p) ; the red area indicates the chance of losing -1 (+' + pointsToPence(1).toFixed(2) + 'p).toFixed(2).<br><br>';
+                            + 'Specifically, the green area indicates the chance of winning +1 (+' + pointsToPence(1).toFixed(2) + 'p) ; the red area indicates the chance of losing -1 (+' + pointsToPence(1).toFixed(2) + 'p).<br><br>';
                         break;
 
                     case 3:
