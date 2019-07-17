@@ -33,8 +33,8 @@ $CTIME 		= stripslashes(htmlspecialchars($_POST['choice_time']));
 $DIST 		= stripslashes(htmlspecialchars($_POST['elic_distance']));
 $PLOT 		= stripslashes(htmlspecialchars($_POST['p_lottery']));
 
-$stmt = $db->prepare("INSERT INTO learning_data_r_and_c VALUE(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, NOW())");
-$stmt->bind_param("sssiddidiiiiiiiiiiidiiiddiiii",
+$stmt = $db->prepare("INSERT INTO learning_data_r_and_c VALUE(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, NOW())");
+$stmt->bind_param("sssiddidiiiiiiiiiiidiiiddiiiid",
     $EXP,$EXPID,$ID, $ELIC, $P1,$P2, $RTIME, $OUT, $CF_OUT, $CHOICE, $CORRECT_CHOICE, $TEST,$TRIAL,$COND, $CONT1, $CONT2, $SYML,$SYMR,$LR,$REW,$SESSION,$OP1,$OP2, $EV1, $EV2, $CATCH, $INV,$CTIME, $DIST, $PLOT
 );
 $stmt->execute();
