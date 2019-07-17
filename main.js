@@ -822,7 +822,7 @@ $(document).ready(function () {
                         $('#Stage').html('<H1 align = "center">' + go + '</H1>');
                         setTimeout(function () {
                             $('#Stage').empty();
-                            playSessions(sessionNum, 0, phaseNum);
+                            playSessions(0, 0, phaseNum);
                         }, 1000);
                     }, 1000);
                 }, 1000);
@@ -1019,22 +1019,6 @@ $(document).ready(function () {
                 }
             };
 
-            if ([-1, -2].includes(sessionNum)) {
-                var symValueMap = symbolValueMapTraining;
-            } else {
-                var symValueMap = symbolValueMap;
-            }
-
-            if (!isCatchTrial) {
-                var p1 = symValueMap[stimIdx][0];
-                var contIdx1 = symValueMap[stimIdx][1];
-                var r1 = [-1, 1];
-                var ev1 = sum([p1[0] * r1[0], p1[1] * r1[1]]);
-            }
-
-            console.log('PWIN SLIDER:');
-            console.log(p1[1]);
-
         }
 
         function getReward(choice, slider = false, ev1 = null) {
@@ -1056,8 +1040,6 @@ $(document).ready(function () {
             } else {
                 var contIdx1 = expectedValueMap[ev1.toString()][1];
                 var p1 = expectedValueMap[ev1.toString()][0];
-                console.log('Catch slider ' + p1);
-                console.log(p1[1]);
                 var r1 = [-1, 1];
             }
 
