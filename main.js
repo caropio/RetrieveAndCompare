@@ -679,7 +679,7 @@ $(document).ready(function () {
                         $('#Stage').empty();
                         $('#Bottom').empty();
                         clickDisabled = false;
-                        startElicitation(-1, true, 0, 2);
+                        startElicitation(trainSess, true, 0, 2);
                     }, 500);
                 }, feedbackDuration);
             }
