@@ -81,6 +81,7 @@ CREATE TABLE IF NOT EXISTS `learning_data_r_and_c` (
 `CATCH` tinyint(4) NOT NULL,
 `INV` tinyint(4) NOT NULL,
 `CTIME` bigint(20) NOT NULL,
+`DIST` int(11) NOT NULL,
 `DBTIME` time NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 

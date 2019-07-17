@@ -514,6 +514,8 @@ $(document).ready(function () {
                 var correctChoice = +(ev2 >= ev1);
             }
 
+            console.log(P1);
+            console.log(P2);
             // thisReward = [-1, 1][+(Math.random() > 0.5)];
 
             sumReward[phaseNum] += thisReward;
@@ -623,8 +625,8 @@ $(document).ready(function () {
                         reaction_time: reactionTime - choiceTime,
                         reward: totalReward,
                         session: trainSess,
-                        p1: -1,
-                        p2: -1,
+                        p1: P1,
+                        p2: P2,
                         option1: option1ImgIdx,
                         option2: option2ImgIdx,
                         ev1: ev1,
@@ -1044,6 +1046,8 @@ $(document).ready(function () {
                 var symValueMap = symbolValueMap;
             }
 
+            var elicDistance = -1;
+
             if (!isCatchTrial) {
                 var p1 = symValueMap[stimIdx][0];
                 var contIdx1 = symValueMap[stimIdx][1];
@@ -1064,11 +1068,8 @@ $(document).ready(function () {
                 }
                 var otherReward = -1;
 
-                if (isCatchTrial) {
-                    var correctChoice = +((choice / 100) === p1[1]);
-                } else {
-                    var correctChoice = 0;
-                }
+                var correctChoice = +((choice / 100) === p1[1]);
+                var elicDistance = Math.abs(choice/100 - p1[1]*100);
 
                 var ev2 = -1;
                 var contIdx2 = -1;
@@ -1199,15 +1200,16 @@ $(document).ready(function () {
                         reaction_time: reactionTime - choiceTime,
                         reward: totalReward, //tochange
                         session: sessionNum, //tochange
-                        p1: p1, //tochange
-                        p2: p2, //tochange
+                        p1: p1[1], //tochange
+                        p2: p2[1], //tochange
                         option1: -1, //tochange
                         option2: -1, //tochange
                         ev1: Math.round(ev1 * 100) / 100,
                         ev2: Math.round(ev2 * 100) / 100,
                         iscatch: isCatchTrial,
                         inverted: invertedPosition,
-                        choice_time: choiceTime - initTime
+                        choice_time: choiceTime - initTime,
+                        elic_distance: elicDistance
                     },
                     async: true,
                     url: 'php/InsertLearningDataDB.php',
