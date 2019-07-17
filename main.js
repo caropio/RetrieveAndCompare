@@ -227,11 +227,11 @@ $(document).ready(function () {
 
         }
     }
-    elicitationsStimEVTraining.push(["-0.8", "0.8"]);
-    elicitationsStimEVTraining.push(["-0.6", "0.6"]);
-    elicitationsStimEVTraining.push(["-0.4", "0.4"]);
-    elicitationsStimEVTraining.push(["-0.2", "0.2"]);
-    elicitationsStimEVTraining.push(["-1", "1"]);
+    elicitationsStimEVTraining.push(["0.8", "-0.8"]);
+    elicitationsStimEVTraining.push(["0.6", "-0.6"]);
+    elicitationsStimEVTraining.push(["0.4", "-0.4"]);
+    elicitationsStimEVTraining.push(["0.2", "-0.2"]);
+    elicitationsStimEVTraining.push(["1", "-1"]);
 
     elicitationsStimEVTraining = shuffle(elicitationsStimEVTraining);
 
@@ -292,11 +292,11 @@ $(document).ready(function () {
         }
     }
 
-    elicitationsStimEV.push(["-0.8", "0.8"]);
-    elicitationsStimEV.push(["-0.6", "0.6"]);
-    elicitationsStimEV.push(["-0.4", "0.4"]);
-    elicitationsStimEV.push(["-0.2", "0.2"]);
-    elicitationsStimEV.push(["-1", "1"]);
+    elicitationsStimEV.push(["0.8", "-0.8"]);
+    elicitationsStimEV.push(["0.6", "-0.6"]);
+    elicitationsStimEV.push(["0.4", "-0.4"]);
+    elicitationsStimEV.push(["0.2", "-0.2"]);
+    elicitationsStimEV.push(["1", "-1"]);
     elicitationsStimEV = shuffle(elicitationsStimEV);
 
     var elicitationsStimTraining = shuffle(range(1, 4));
@@ -889,7 +889,6 @@ $(document).ready(function () {
                 stimIdx += '_' + '0';
                 var isCatchTrial = 1;
             }
-            console.log(stimIdx);
             option1 = img[stimIdx];
             option1.id = "option1";
             option1 = option1.outerHTML;
@@ -1017,6 +1016,23 @@ $(document).ready(function () {
                     getReward(choice, true, ev1)
                 }
             };
+
+            if ([-1, -2].includes(sessionNum)) {
+                var symValueMap = symbolValueMapTraining;
+            } else {
+                var symValueMap = symbolValueMap;
+            }
+
+            if (!isCatchTrial) {
+                var p1 = symValueMap[stimIdx][0];
+                var contIdx1 = symValueMap[stimIdx][1];
+                var r1 = [-1, 1];
+                var ev1 = sum([p1[0] * r1[0], p1[1] * r1[1]]);
+            }
+
+            console.log('EV SLIDER:');
+            console.log(ev1);
+
         }
 
         function getReward(choice, slider = false, ev1 = null) {
@@ -1060,8 +1076,6 @@ $(document).ready(function () {
                 var leftRight = -1;
 
             } else {
-                console.log('ChoiceAgainst');
-                console.log(choiceAgainst);
 
                 var ev2 = choiceAgainst;
                 var contIdx2 = expectedValueMap[ev2.toString()][1];
@@ -1103,12 +1117,6 @@ $(document).ready(function () {
 
                 }
             }
-
-            console.log('P1: ' + p1);
-            console.log('P2: ' + p2);
-            console.log('EV1: ' + ev1);
-            console.log('EV2: ' + ev2);
-            console.log('Option 1 is left: ' + !invertedPosition);
 
             sumReward[phaseNum] += thisReward;
 
@@ -1468,13 +1476,6 @@ $(document).ready(function () {
                 var thisReward = Mag2[+(Math.random() < P2)];
                 var correctChoice = +(ev2 >= ev1);
             }
-
-            console.log('contIdx1: ' + contIdx1);
-            console.log('contIdx2: ' + contIdx2);
-            console.log('P1: ' + p1);
-            console.log('P2: ' + p2);
-            console.log('Reward: ' + thisReward);
-            console.log('Option 1 is left: ' + !invertedPosition);
 
             sumReward[phaseNum] += thisReward;
             totalReward += thisReward;
