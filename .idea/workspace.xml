@@ -81,7 +81,8 @@
           <file pinned="false" current-in-tab="true">
             <entry file="file://$PROJECT_DIR$/main.js">
               <provider selected="true" editor-type-id="text-editor">
-                <state>
+                <state relative-caret-position="720">
+                  <caret line="1099" column="24" selection-start-line="1099" selection-start-column="24" selection-end-line="1099" selection-end-column="24" />
                   <folding>
                     <element signature="n#style#0;n#canvas#0;n#!!top" expanded="true" />
                     <element signature="n#style#0;n#canvas#0;n#!!top" expanded="true" />
@@ -207,8 +208,8 @@
         <option value="$PROJECT_DIR$/get_citations.py" />
         <option value="$PROJECT_DIR$/php/InsertQuestionnaireDataDB.php" />
         <option value="$PROJECT_DIR$/compute_ev.py" />
-        <option value="$PROJECT_DIR$/main.js" />
         <option value="$PROJECT_DIR$/index.html" />
+        <option value="$PROJECT_DIR$/main.js" />
       </list>
     </option>
   </component>
@@ -320,7 +321,7 @@
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="385837000" />
+    <option name="totallyTimeSpent" value="386108000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="2" y="42" width="1916" height="1036" extended-state="6" />
@@ -555,7 +556,8 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/main.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state>
+        <state relative-caret-position="720">
+          <caret line="1099" column="24" selection-start-line="1099" selection-start-column="24" selection-end-line="1099" selection-end-column="24" />
           <folding>
             <element signature="n#style#0;n#canvas#0;n#!!top" expanded="true" />
             <element signature="n#style#0;n#canvas#0;n#!!top" expanded="true" />

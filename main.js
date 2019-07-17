@@ -1030,8 +1030,8 @@ $(document).ready(function () {
                 var ev1 = sum([p1[0] * r1[0], p1[1] * r1[1]]);
             }
 
-            console.log('EV SLIDER:');
-            console.log(ev1);
+            console.log('PWIN SLIDER:');
+            console.log(p1[1]);
 
         }
 
