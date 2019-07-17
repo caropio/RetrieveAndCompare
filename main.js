@@ -1729,7 +1729,7 @@ $(document).ready(function () {
 
                         Info += '<H3 align = "center"><b>Instructions for the third test (1/3)</b><br><br>'
                             + 'In each round of third test you will be presented with the symbols and pie-charts you met in the first and the second test.<br><br>'
-                            + 'You will be asked to indicate (in percentages), what are the odds that a given symbol or pie-chart makes you win a point (+1=+' + pointsToPence(1).toFixed(2) + 'p).toFixed(2).<br><br>'
+                            + 'You will be asked to indicate (in percentages), what are the odds that a given symbol or pie-chart makes you win a point (+1=+' + pointsToPence(1).toFixed(2) + 'p).<br><br>'
                             + 'You will be able to do this through moving a slider on the screen and then confirm your final answer by clicking on the confirmation button.<br><br>'
                             + '100%  = the symbol (or pie-chart) always gives +1pt.<br>'
                             + '50%  = the symbol (or pie-chart) always gives +1pt or -1pt with equal chances.<br>'
