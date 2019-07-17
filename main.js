@@ -1056,11 +1056,13 @@ $(document).ready(function () {
             } else {
                 var contIdx1 = expectedValueMap[ev1.toString()][1];
                 var p1 = expectedValueMap[ev1.toString()][0];
+                console.log('Catch slider ' + p1);
+                console.log(p1[1]);
                 var r1 = [-1, 1];
             }
 
             if (slider) {
-                var pLottery = Math.random();
+                var pLottery = Math.random().toFixed(2);
                 if (pLottery < (choice / 100)) {
                     var thisReward = r1[+(Math.random() < p1[1])];
                 } else {
