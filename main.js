@@ -1069,7 +1069,7 @@ $(document).ready(function () {
                 var otherReward = -1;
 
                 var correctChoice = +((choice / 100) === p1[1]);
-                var elicDistance = Math.abs(choice/100 - p1[1]*100);
+                var elicDistance = Math.abs(choice - p1[1]*100);
 
                 var ev2 = -1;
                 var contIdx2 = -1;
