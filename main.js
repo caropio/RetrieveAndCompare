@@ -18,8 +18,8 @@ $(document).ready(function () {
     var compLink = 1;
     var nSessions = 1;
 
-    var questionnaire = 0;
-    var maxPoints = 52;
+    var questionnaire = 1;
+    var maxPoints = 98;
 
     // Main Exp
     var nCond = 4;
@@ -65,8 +65,8 @@ $(document).ready(function () {
 
     // Manage compensations
     // -------------------------------------------------------------------------------------------------- //
-    // one point equals 4.82 pence
-    var conversionRate = 4.82;
+    // one point equals 250 pence / maxPoints
+    var conversionRate = (250 / maxPoints).toFixed(2);
     var pointsToPence = points => points * conversionRate;
     var penceToPounds = pence => pence / 100;
     var pointsToPounds = points => penceToPounds(pointsToPence(points));
@@ -501,14 +501,17 @@ $(document).ready(function () {
                     }, 0);
             }
 
+            ev1 = Math.round(ev1 * 100) / 100;
+            ev2 = Math.round(ev2 * 100) / 100;
+
             if (choice === 1) { /*option1*/
                 var thisReward = Mag1[+(Math.random() < P1)];
                 var otherReward = Mag2[+(Math.random() < P2)];
-                var correctChoice = +(ev1 > ev2);
+                var correctChoice = +(ev1 >= ev2);
             } else { /*option2*/
                 var otherReward = Mag1[+(Math.random() < P1)];
                 var thisReward = Mag2[+(Math.random() < P2)];
-                var correctChoice = +(ev2 > ev1);
+                var correctChoice = +(ev2 >= ev1);
             }
 
             // thisReward = [-1, 1][+(Math.random() > 0.5)];
@@ -624,8 +627,8 @@ $(document).ready(function () {
                         p2: -1,
                         option1: option1ImgIdx,
                         option2: option2ImgIdx,
-                        ev1: -1,
-                        ev2: -1,
+                        ev1: ev1,
+                        ev2: ev2,
                         iscatch: -1,
                         inverted: invertedPosition,
                         choice_time: choiceTime - initTime
@@ -1038,7 +1041,7 @@ $(document).ready(function () {
 
             if (slider) {
                 var pLottery = Math.random();
-                if (pLottery < choice / 100) {
+                if (pLottery < (choice / 100)) {
                     var thisReward = r1[+(Math.random() < p1[1])];
                 } else {
                     var thisReward = r1[+(Math.random() < pLottery)]
@@ -1046,7 +1049,7 @@ $(document).ready(function () {
                 var otherReward = -1;
 
                 if (isCatchTrial) {
-                    var correctChoice = +(choice / 100 === p1[1]);
+                    var correctChoice = +((choice / 100) === p1[1]);
                 } else {
                     var correctChoice = 0;
                 }
@@ -1069,14 +1072,18 @@ $(document).ready(function () {
                     leftRight = 1;
                 }
 
+                ev1 = Math.round(ev1 * 100) / 100;
+                ev2 = Math.round(ev2 * 100) / 100;
+
+
                 if (choice === 1) { /*option1*/
                     var thisReward = r1[+(Math.random() < p1[1])];
                     var otherReward = r1[+(Math.random() < p2[1])];
-                    var correctChoice = +(ev1 > ev2);
+                    var correctChoice = +(ev1 >= ev2);
                 } else { /*option2*/
                     var thisReward = r1[+(Math.random() < p2[1])];
                     var otherReward = r1[+(Math.random() < p1[1])];
-                    var correctChoice = +(ev2 > ev1);
+                    var correctChoice = +(ev2 >= ev1);
                 }
                 var pic1 = document.getElementById("option1");
                 var pic2 = document.getElementById("option2");
@@ -1449,14 +1456,17 @@ $(document).ready(function () {
                     }, 0);
             }
 
+            ev1 = Math.round(ev1 * 100) / 100;
+            ev2 = Math.round(ev2 * 100) / 100;
+
             if (choice === 1) { /*option1*/
                 var thisReward = Mag1[+(Math.random() < P1)];
                 var otherReward = Mag2[+(Math.random() < P2)];
-                var correctChoice = +(ev1 > ev2);
+                var correctChoice = +(ev1 >= ev2);
             } else { /*option2*/
                 var otherReward = Mag1[+(Math.random() < P1)];
                 var thisReward = Mag2[+(Math.random() < P2)];
-                var correctChoice = +(ev2 > ev1);
+                var correctChoice = +(ev2 >= ev1);
             }
 
             console.log('contIdx1: ' + contIdx1);
