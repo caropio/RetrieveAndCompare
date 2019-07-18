@@ -318,7 +318,8 @@ $(document).ready(function () {
 
     // Run the experiment
     // ------------------------------------------------------------------------------------------------ //
-    goFullscreen();
+    startQuestionnaire();
+
 
     function sendExpDataDB(call) {
 
@@ -1045,7 +1046,6 @@ $(document).ready(function () {
 
             if (slider) {
                 var pLottery = Math.random().toFixed(2);
-                choice = p1[1] * 100;
                 if (pLottery < (choice / 100)) {
                     var thisReward = r1[+(Math.random() < p1[1])];
                 } else {
@@ -1074,12 +1074,6 @@ $(document).ready(function () {
 
                 ev1 = Math.round(ev1 * 100) / 100;
                 ev2 = Math.round(ev2 * 100) / 100;
-
-                if (ev1 > ev2) {
-                    choice = 1;
-                } else {
-                    choice = 2;
-                }
 
                 if (choice === 1) { /*option1*/
                     var thisReward = r1[+(Math.random() < p1[1])];
@@ -1190,7 +1184,7 @@ $(document).ready(function () {
                         reaction_time: reactionTime - choiceTime,
                         reward: totalReward, //tochange
                         session: sessionNum, //tochange
-                        p1: p1[1], //tochange
+                        p1: p1[1], //tochange//
                         p2: p2[1], //tochange
                         option1: -1, //tochange
                         option2: -1, //tochange
@@ -2303,7 +2297,7 @@ $(document).ready(function () {
                 answer = parseInt($("input:radio:checked").attr('value')); //console.log(answer)
                 answer_value = $("input:radio:checked").val();
 
-                // SendQuestDataDB(0);
+                SendQuestDataDB(0);
 
                 $('#TextBoxDiv').remove();
                 $('#Stage').empty();
@@ -2686,7 +2680,7 @@ $(document).ready(function () {
                 answer = parseInt($("input:radio:checked").attr('id')); //console.log(answer)
                 answer_value = $("input:radio:checked").val();
 
-                // SendQuestDataDB(0);
+                SendQuestDataDB(0);
 
                 $('#TextBoxDiv').remove();
                 $('#Stage').empty();
