@@ -2332,7 +2332,7 @@ $(document).ready(function () {
                     reaction_time: Reaction_time - Question_time
                 },
                 async: true,
-                url: 'InsertQuestionnaireDataDB.php',
+                url: 'php/InsertQuestionnaireDataDB.php',
                 /*dataType: 'json',*/
                 success: function (r) {
 
@@ -2708,7 +2708,7 @@ $(document).ready(function () {
                     reaction_time: Reaction_time - Question_time
                 },
                 async: true,
-                url: 'InsertQuestionnaireDataDB.php',
+                url: 'php/InsertQuestionnaireDataDB.php',
                 /*dataType: 'json',*/
                 success: function (r) {
                     if (r[0].ErrorNo > 0 && call + 1 < maxDBCalls) {
