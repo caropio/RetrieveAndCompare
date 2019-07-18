@@ -1837,7 +1837,7 @@ $(document).ready(function () {
 
         var Title = '<h3 align = "center">The game is over!<br>' +
             'You ' + wonlost + points + ' points in total, which is ' + pence + ' pence = ' + pounds + ' pounds!<br><br>' +
-            'With your initial endowment, you won a total bonus of '  + (pence + 250) + ' pence = ' + (pounds + 2.5) + ' pounds!<br><br>' +
+            'With your initial endowment, you won a total bonus of '  + (parseFloat(pence) + 250) + ' pence = ' + (parseFloat(pounds) + 2.5) + ' pounds!<br><br>' +
             'Thank you for playing!<br><br>Please click the link to complete this study:<br></h3><br>';
         var url = '';
         if (compLink)
