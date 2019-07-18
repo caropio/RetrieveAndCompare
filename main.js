@@ -515,9 +515,6 @@ $(document).ready(function () {
                 var correctChoice = +(ev2 >= ev1);
             }
 
-            console.log(P1);
-            console.log(P2);
-            // thisReward = [-1, 1][+(Math.random() > 0.5)];
 
             sumReward[phaseNum] += thisReward;
 
@@ -2319,7 +2316,6 @@ $(document).ready(function () {
         });
 
         function SendQuestDataDB(call) {
-            clog = 'EXP: ' + expName + ' $ EXPID: ' + expID + ' $ ID: ' + subID + ' $ QUESTIONNAIRE: ' + questID + ' $ NUMBER: ' + 1 + ' $ ITEM: ' + itemNum + ' $ ANSWER: ' + answer + ' $ VAL:' + answer_value + ' $ RTIME: ' + (Reaction_time - Question_time);
             /*console.log(clog)*/
 
             $.ajax({
@@ -2339,16 +2335,12 @@ $(document).ready(function () {
                 url: 'InsertQuestionnaireDataDB.php',
                 /*dataType: 'json',*/
                 success: function (r) {
-                    clog = 'questionnaire_data $ ' + clog + ' $ dbcall success \n';
-                    log += clog;
 
                     if (r[0].ErrorNo > 0 && call + 1 < maxDBCalls) {
                         SendQuestDataDB(call + 1);
                     }
                 },
                 error: function (XMLHttpRequest, textStatus, errorThrown) {
-                    clog = 'questionnaire_data $ ' + clog + ' $ dbcall failure \n';
-                    log += clog;
 
                     if (call + 1 < maxDBCalls) {
                         SendQuestDataDB(call + 1);
@@ -2701,8 +2693,6 @@ $(document).ready(function () {
         });
 
         function SendQuestDataDB(call) {
-            clog = 'EXP: ' + expName + ' $ EXPID: ' + expID + ' $ ID: ' + subID + ' $ QUESTIONNAIRE: ' + questID + ' $ NUMBER: ' + 5 + ' $ ITEM: ' + itemNum + ' $ ANSWER: ' + answer + ' $ VAL:' + answer_value + ' $ RTIME: ' + (Reaction_time - Question_time);
-            /*console.log(clog)*/
 
             $.ajax({
                 type: 'POST',
@@ -2729,8 +2719,6 @@ $(document).ready(function () {
                     }
                 },
                 error: function (XMLHttpRequest, textStatus, errorThrown) {
-                    clog = 'questionnaire_data $ ' + clog + ' $ dbcall failure \n';
-                    log += clog;
 
                     if (call + 1 < maxDBCalls) {
                         SendQuestDataDB(call + 1);
