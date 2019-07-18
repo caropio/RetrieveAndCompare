@@ -2711,9 +2711,6 @@ $(document).ready(function () {
                 url: 'InsertQuestionnaireDataDB.php',
                 /*dataType: 'json',*/
                 success: function (r) {
-                    clog = 'questionnaire_data $ ' + clog + ' $ dbcall success \n';
-                    log += clog;
-
                     if (r[0].ErrorNo > 0 && call + 1 < maxDBCalls) {
                         SendQuestDataDB(call + 1);
                     }
