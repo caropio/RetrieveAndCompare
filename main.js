@@ -61,7 +61,7 @@ $(document).ready(function () {
 
     var subID = expID;
 
-    var link = 'https://app.prolific.ac/submissions/complete?cc=NTKKK3Q9';
+    var link = 'https://app.prolific.ac/submissions/complete?cc=RNFS5HP5';
 
     // Manage compensations
     // -------------------------------------------------------------------------------------------------- //
