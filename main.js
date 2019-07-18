@@ -318,7 +318,7 @@ $(document).ready(function () {
 
     // Run the experiment
     // ------------------------------------------------------------------------------------------------ //
-    goFullscreen();
+    startQuestionnaire();
 
 
     function sendExpDataDB(call) {
