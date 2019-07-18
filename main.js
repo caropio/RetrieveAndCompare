@@ -34,7 +34,7 @@ $(document).ready(function () {
     var feedbackDuration = 2000;
     var sumReward = [0, 0, 0, 0, 0, 0, 0];
 
-    var totalReward = 0;
+    var totalReward = 30;
 
     // Training
     var nCondTraining = 4;
