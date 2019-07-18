@@ -1045,6 +1045,7 @@ $(document).ready(function () {
 
             if (slider) {
                 var pLottery = Math.random().toFixed(2);
+                choice = p1[1] * 100;
                 if (pLottery < (choice / 100)) {
                     var thisReward = r1[+(Math.random() < p1[1])];
                 } else {
@@ -1073,6 +1074,12 @@ $(document).ready(function () {
 
                 ev1 = Math.round(ev1 * 100) / 100;
                 ev2 = Math.round(ev2 * 100) / 100;
+
+                if (ev1 > ev2) {
+                    choice = 1;
+                } else {
+                    choice = 2;
+                }
 
                 if (choice === 1) { /*option1*/
                     var thisReward = r1[+(Math.random() < p1[1])];

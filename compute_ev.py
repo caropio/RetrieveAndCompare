@@ -36,7 +36,8 @@ def main():
             ev2 = sum(r[1] * p[1])
             max_reward += max([ev1, ev2])
             rand_reward += np.random.choice([ev1, ev2])
-
+        #max_list.append(max_reward)
+        #continue
         max_reward = 0
         #expected_values = [-1, -.8, -.6, -.4, -.2, 0, .2, .4, .6, .8, 1]
         cont = [[] for _ in range(11)]
@@ -110,8 +111,8 @@ def main():
         rand_list.append(rand_reward)
     print(i)
     print(np.mean(max_list))
-    print(np.array(max_list) < 20)
-    print(np.mean(rand_list))
+    #print(np.array(max_list) < 20)
+    #print(np.mean(rand_list))
 
 
 if __name__ == "__main__":
