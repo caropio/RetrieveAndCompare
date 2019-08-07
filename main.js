@@ -317,6 +317,7 @@ $(document).ready(function () {
             );
         }
         elicitationsStimEV.push(catchTrials[catchIdx]);
+        catchIdx++;
 
     }
     // elicitationsStimEV.push(["0.6", "-0.6"]);
@@ -810,8 +811,8 @@ $(document).ready(function () {
             sumReward[2] = 0;
             sumReward[3] = 0;
             elicitationsStimTraining = shuffle(elicitationsStimTraining);
-            trainingCondition = shuffle(trainingCondition);
-            elicitationsStimEVTraining = shuffle(elicitationsStimEVTraining);
+            // trainingCondition = shuffle(trainingCondition);
+            // elicitationsStimEVTraining = shuffle(elicitationsStimEVTraining);
 
             instructions();
 
