@@ -226,13 +226,16 @@ $(document).ready(function () {
     (new Set(trainingCondition)).forEach(x => arr.push(x));
     let j = 0;
 
-    var catchTrials = [
+    var catchTrials = shuffle([
         ["0.8", "-0.8"],
         ["0.6", "-0.6"],
+        ["0.6", "-0.4"],
         ["0.4", "-0.4"],
+        ["0.4", "-0.6"],
         ["0.2", "-0.2"],
+        ["0.4", "-0.2"],
         ["1", "-1"],
-    ];
+    ]);
 
     for (let i = 0; i < nTrainingImg; i += 2) {
         trainingContexts[arr[j]] = [
@@ -313,13 +316,9 @@ $(document).ready(function () {
                 [stim2, expectedValue[k]]
             );
         }
-        if (catchIdx < catchTrials.length) {
-            elicitationsStimEV.push(catchTrials[catchIdx]);
-            catchIdx++;
-        }
-    }
+        elicitationsStimEV.push(catchTrials[catchIdx]);
 
-    // elicitationsStimEV.push(["0.8", "-0.8"]);
+    }
     // elicitationsStimEV.push(["0.6", "-0.6"]);
     // elicitationsStimEV.push(["0.4", "-0.4"]);
     // elicitationsStimEV.push(["0.2", "-0.2"]);
