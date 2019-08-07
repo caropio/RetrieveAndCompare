@@ -313,8 +313,10 @@ $(document).ready(function () {
                 [stim2, expectedValue[k]]
             );
         }
-        elicitationsStimEV.push(catchTrials[catchIdx]);
-        catchIdx++;
+        if (catchIdx < catchTrials.length) {
+            elicitationsStimEV.push(catchTrials[catchIdx]);
+            catchIdx++;
+        }
     }
 
     // elicitationsStimEV.push(["0.8", "-0.8"]);
