@@ -109,16 +109,21 @@ $(document).ready(function () {
 
     // Define conditions
     // -------------------------------------------------------------------------------------------------- //
-    var expCondition = [];
+    var expCondition = [[]];
     var conditions = [];
 
     // range cond for each session
-    var cond = range(0, nCond);
+    var cond = shuffle(range(0, nCond));
 
-    for (let i = 0; i < nSessions; i++)
-        expCondition[i] = shuffle(
-            Array(nTrialsPerSession / nCondPerSession).fill(cond).flat()
-        );
+    for (let i = 0; i < nSessions; i++) {
+        for (let j = 0; j < cond.length; j++) {
+            expCondition[i].push(
+                Array(nTrialsPerCondition).fill(cond[j]).flat()
+            );
+        }
+        expCondition[i] = expCondition[i].flat();
+    }
+
 
     for (let i = 0; i <= nCond; i++)
         conditions.push({
@@ -127,9 +132,13 @@ $(document).ready(function () {
         });
 
     // training conditions
-    var trainingCondition = shuffle(
-        Array(nTrialTrainingPerCond).fill([0, 1, 2, 3]).flat()
-    );
+    var trainingCondition = [];
+    for (let i = 0; i < cond.length; i++) {
+        trainingCondition.push(
+            Array(nTrialTrainingPerCond).fill(cond[i]).flat()
+        );
+    }
+    trainingCondition = trainingCondition.flat();
 
     // Get stims, feedbacks, resources
     // -------------------------------------------------------------------------------------------------------- //
@@ -216,6 +225,15 @@ $(document).ready(function () {
     var elicitationsStimEVTraining = [];
     (new Set(trainingCondition)).forEach(x => arr.push(x));
     let j = 0;
+
+    var catchTrials = [
+        ["0.8", "-0.8"],
+        ["0.6", "-0.6"],
+        ["0.4", "-0.4"],
+        ["0.2", "-0.2"],
+        ["1", "-1"],
+    ];
+
     for (let i = 0; i < nTrainingImg; i += 2) {
         trainingContexts[arr[j]] = [
             trainingOptions[i], trainingOptions[i + 1]
@@ -223,17 +241,17 @@ $(document).ready(function () {
         j++;
         for (let k = 0; k < probs.length; k++) {
             elicitationsStimEVTraining.push([trainingOptions[i], expectedValue[k]]);
+
+        }
+        elicitationsStimEVTraining.push(catchTrials[i]);
+        for (let k = 0; k < probs.length; k++) {
             elicitationsStimEVTraining.push([trainingOptions[i + 1], expectedValue[k]]);
 
         }
+        elicitationsStimEVTraining.push(catchTrials[i+1]);
     }
-    elicitationsStimEVTraining.push(["0.8", "-0.8"]);
-    elicitationsStimEVTraining.push(["0.6", "-0.6"]);
-    elicitationsStimEVTraining.push(["0.4", "-0.4"]);
-    elicitationsStimEVTraining.push(["0.2", "-0.2"]);
-    elicitationsStimEVTraining.push(["1", "-1"]);
 
-    elicitationsStimEVTraining = shuffle(elicitationsStimEVTraining);
+    // elicitationsStimEVTraining = shuffle(elicitationsStimEVTraining);
 
     var nTrialPerElicitationChoiceTraining = 12;
 
@@ -272,7 +290,8 @@ $(document).ready(function () {
     var elicitationsStim = [];
     var elicitationsStimEV = [];
 
-    var cidx = Array.from(new Set(expCondition[0].flat()));
+    var cidx = Array.from(new Set(shuffle(expCondition[0].flat())));
+    var catchIdx = 0;
 
     for (let j = 0; j < cidx.length; j++) {
 
@@ -286,20 +305,26 @@ $(document).ready(function () {
             elicitationsStimEV.push(
                 [stim1, expectedValue[k]]
             );
+        }
+        elicitationsStimEV.push(catchTrials[catchIdx]);
+        catchIdx++;
+        for (let k = 0; k < expectedValue.length; k++) {
             elicitationsStimEV.push(
                 [stim2, expectedValue[k]]
             );
         }
+        elicitationsStimEV.push(catchTrials[catchIdx]);
+        catchIdx++;
     }
 
-    elicitationsStimEV.push(["0.8", "-0.8"]);
-    elicitationsStimEV.push(["0.6", "-0.6"]);
-    elicitationsStimEV.push(["0.4", "-0.4"]);
-    elicitationsStimEV.push(["0.2", "-0.2"]);
-    elicitationsStimEV.push(["1", "-1"]);
-    elicitationsStimEV = shuffle(elicitationsStimEV);
+    // elicitationsStimEV.push(["0.8", "-0.8"]);
+    // elicitationsStimEV.push(["0.6", "-0.6"]);
+    // elicitationsStimEV.push(["0.4", "-0.4"]);
+    // elicitationsStimEV.push(["0.2", "-0.2"]);
+    // elicitationsStimEV.push(["1", "-1"]);
+    // elicitationsStimEV = shuffle(elicitationsStimEV);
 
-    var elicitationsStimTraining = shuffle(range(1, 4));
+    var elicitationsStimTraining = range(1, 4);
 
     for (let i = 0; i < 2; i++) {
         elicitationsStimTraining.push(expectedValue[i]);
