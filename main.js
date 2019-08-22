@@ -238,23 +238,27 @@ $(document).ready(function () {
     ]);
 
     for (let i = 0; i < nTrainingImg; i += 2) {
+
         trainingContexts[arr[j]] = [
             trainingOptions[i], trainingOptions[i + 1]
         ];
         j++;
-        for (let k = 0; k < probs.length; k++) {
-            elicitationsStimEVTraining.push([trainingOptions[i], expectedValue[k]]);
 
+        let temp = [];
+        for (let k = 0; k < probs.length; k++) {
+            temp.push([trainingOptions[i], expectedValue[k]]);
         }
+        elicitationsStimEVTraining = elicitationsStimEVTraining.concat(shuffle(temp));
         elicitationsStimEVTraining.push(catchTrials[i]);
+
+        temp = [];
         for (let k = 0; k < probs.length; k++) {
-            elicitationsStimEVTraining.push([trainingOptions[i + 1], expectedValue[k]]);
-
+            temp.push([trainingOptions[i + 1], expectedValue[k]]);
         }
+        elicitationsStimEVTraining = elicitationsStimEVTraining.concat(shuffle(temp));
         elicitationsStimEVTraining.push(catchTrials[i+1]);
-    }
 
-    // elicitationsStimEVTraining = shuffle(elicitationsStimEVTraining);
+    }
 
     var nTrialPerElicitationChoiceTraining = 12;
 
@@ -304,18 +308,23 @@ $(document).ready(function () {
         elicitationsStim.push(stim1);
         elicitationsStim.push(stim2);
 
+        let temp = [];
         for (let k = 0; k < expectedValue.length; k++) {
-            elicitationsStimEV.push(
+            temp.push(
                 [stim1, expectedValue[k]]
             );
         }
+        elicitationsStimEV = elicitationsStimEV.concat(shuffle(temp));
         elicitationsStimEV.push(catchTrials[catchIdx]);
         catchIdx++;
+
+        temp = [];
         for (let k = 0; k < expectedValue.length; k++) {
-            elicitationsStimEV.push(
+            temp.push(
                 [stim2, expectedValue[k]]
             );
         }
+        elicitationsStimEV = elicitationsStimEV.concat(shuffle(temp));
         elicitationsStimEV.push(catchTrials[catchIdx]);
         catchIdx++;
 
