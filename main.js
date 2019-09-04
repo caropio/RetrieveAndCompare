@@ -1,15 +1,6 @@
 $(document).ready(function () {
 
     // TODO:
-    // compensation calculation
-    // maxTraining [X] [to check]
-    // the questionnaires [to check]
-    // outcome training [to check]
-    // check reaction times [to check]
-    // check endowment [to check]
-    // vérifier le slider [to check]
-    // test maxTRaining
-    // test chrome
     // Initial Experiment Parameters
     // -------------------------------------------------------------------------------------------------- //
     var offline = 0;
@@ -357,24 +348,29 @@ $(document).ready(function () {
     goFullscreen();
 
 
-    function sendExpDataDB(call) {
+    function sendToDB(call, url, data) {
 
         $.ajax({
             type: 'POST',
             async: true,
-            url: 'php/InsertExpDetails.php',
-            //contentType: "application/json; charset=utf-8",
-            //dataType: 'json',
+            url: url,
 
-            data: {expID: expID, id: subID, exp: expName, browser: browsInfo},
+            data: data,
 
             success: function (r) {
                 if (r[0].ErrorNo > 0 && call + 1 < maxDBCalls) {
-                    sendExpDataDB(call + 1);
+                    sendToDB(call + 1, url, data);
                 }
             },
-            error: function (xhr, textStatus, err) {
-            },
+            error: function (XMLHttpRequest, textStatus, errorThrown) {
+
+                    // what type of error is it
+                    alert(errorThrown.responseText);
+
+                    if (call + 1 < maxDBCalls) {
+                        sendToDB(call + 1, url, data);
+                    }
+            }
         });
     }
 
@@ -551,7 +547,6 @@ $(document).ready(function () {
                 var correctChoice = +(ev2 >= ev1);
             }
 
-
             sumReward[phaseNum] += thisReward;
 
             var fb1 = document.getElementById("feedback1");
@@ -577,7 +572,39 @@ $(document).ready(function () {
 
             }
 
-            if (offline === 0) sendTrainDataDB(0);
+            if (offline === 0) {
+                sendToDB(0, 'php/InsertLearningDataDB.php',
+                    {
+                        exp: expName,
+                        expID: expID,
+                        id: subID,
+                        elicitation_type: -1,
+                        test: wtest,
+                        trial: trialNum,
+                        condition: conditionIdx,
+                        cont_idx_1: -1,
+                        cont_idx_2: -1,
+                        symL: symbols[0],
+                        symR: symbols[1],
+                        choice: choice,
+                        correct_choice: correctChoice,
+                        outcome: thisReward,
+                        cf_outcome: -1,
+                        choice_left_right: leftRight,
+                        reaction_time: reactionTime - choiceTime,
+                        reward: totalReward,
+                        session: trainSess,
+                        p1: P1,
+                        p2: P2,
+                        option1: option1ImgIdx,
+                        option2: option2ImgIdx,
+                        ev1: ev1,
+                        ev2: ev2,
+                        iscatch: -1,
+                        inverted: invertedPosition,
+                        choice_time: choiceTime - initTime
+                    });
+            }
 
             next();
 
