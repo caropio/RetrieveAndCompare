@@ -659,7 +659,7 @@ $(document).ready(function () {
                         choice: choice,
                         correct_choice: correctChoice,
                         outcome: thisReward,
-                        cf_outcome: -1,
+                        cf_outcome: otherReward,
                         choice_left_right: leftRight,
                         reaction_time: reactionTime - choiceTime,
                         reward: totalReward,
