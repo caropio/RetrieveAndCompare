@@ -1,18 +1,10 @@
 $(document).ready(function () {
 
     // TODO:
-    // compensation calculation
-    // maxTraining [X] [to check]
-    // the questionnaires [to check]
-    // outcome training [to check]
-    // check reaction times [to check]
-    // check endowment [to check]
-    // vérifier le slider [to check]
-    // test maxTRaining
-    // test chrome
     // Initial Experiment Parameters
     // -------------------------------------------------------------------------------------------------- //
-    var offline = 0;
+    var offline = 1;
+    var completeFeedback = 1;
     var expName = 'RetrieveAndCompare';
     //var language = "en"; // only en is available at the moment
     var compLink = 1;
@@ -29,7 +21,7 @@ $(document).ready(function () {
     var nTrialsPerSession = (nTrialsPerCondition * nCondPerSession) * nSessions;
 
     // Single symbols per session
-    var nSymbolPerSession = 8;
+    // var nSymbolPerSession = 8;
 
     var feedbackDuration = 2000;
     var sumReward = [0, 0, 0, 0, 0, 0, 0];
@@ -115,7 +107,7 @@ $(document).ready(function () {
     // range cond for each session
     var cond = shuffle(range(0, nCond));
 
-    for (let i = 0; i < nSessions; i++) {
+    for (let i = 0; i < nSessions; i++) {
         for (let j = 0; j < cond.length; j++) {
             expCondition[i].push(
                 Array(nTrialsPerCondition).fill(cond[j]).flat()
@@ -256,7 +248,7 @@ $(document).ready(function () {
             temp.push([trainingOptions[i + 1], expectedValue[k]]);
         }
         elicitationsStimEVTraining = elicitationsStimEVTraining.concat(shuffle(temp));
-        elicitationsStimEVTraining.push(catchTrials[i+1]);
+        elicitationsStimEVTraining.push(catchTrials[i + 1]);
 
     }
 
@@ -567,13 +559,26 @@ $(document).ready(function () {
                 fb1.src = feedbackImg['' + thisReward].src;
                 setTimeout(function () {
                     slideCard(pic1, cv1);
-                }, 500)
+                }, 500);
+
+                if (completeFeedback) {
+                    fb2.src = feedbackImg['' + otherReward].src;
+                    setTimeout(function () {
+                        slideCard(pic2, cv2);
+                    }, 500);
+                }
 
             } else {
                 fb2.src = feedbackImg['' + thisReward].src;
                 setTimeout(function () {
                     slideCard(pic2, cv2);
-                }, 500)
+                }, 500);
+                if (completeFeedback) {
+                    fb1.src = feedbackImg['' + otherReward].src;
+                    setTimeout(function () {
+                        slideCard(pic1, cv1);
+                    }, 500);
+                }
 
             }
 
@@ -619,10 +624,10 @@ $(document).ready(function () {
                     ctx.clearRect(0, 0, canvas.width, canvas.height); /* clear the canvas*/
 
                     if (y > img.height) {
-                        y = -img.height + y;
+                        y = -img.height;
                     }
 
-                    if (y > 0) {
+                    if (y > 0 - 10) {
                         ctx.drawImage(img, x, -img.height + y, img.width, img.height);
                     }
 
@@ -764,6 +769,8 @@ $(document).ready(function () {
                     + '1 point = ' + pointsToPence(1).toFixed(2) + ' pence<br>'
                     + '-1 points = -' + pointsToPence(1).toFixed(2) + ' pence<br><br>'
                     + 'The outcome of your choice will appear in the location of the symbol you chose.<br>'
+                    + 'The outcome you would have won by choosing the other option will also be displayed.<br><br>'
+                    + 'Please note that only the outcome of your choice will be taken into account in the final payoff.<br><br></H3>'
                     + 'Click on start when you are ready.</h3><br><br>';
                 break;
 
@@ -1087,7 +1094,7 @@ $(document).ready(function () {
                 var otherReward = -1;
 
                 var correctChoice = +((choice / 100) === p1[1]);
-                var elicDistance = Math.abs(choice - p1[1]*100);
+                var elicDistance = Math.abs(choice - p1[1] * 100);
 
                 var ev2 = -1;
                 var contIdx2 = -1;
@@ -1127,6 +1134,7 @@ $(document).ready(function () {
                     setTimeout(function () {
                         slideCard(pic1, cv1);
                     }, 500)
+
 
                 } else {
                     setTimeout(function () {
@@ -1515,11 +1523,25 @@ $(document).ready(function () {
                     slideCard(pic1, cv1);
                 }, 500)
 
+                if (completeFeedback) {
+                    fb2.src = feedbackImg['' + otherReward].src;
+                    setTimeout(function () {
+                        slideCard(pic2, cv2);
+                    }, 500)
+                }
+
             } else {
                 fb2.src = feedbackImg['' + thisReward].src;
                 setTimeout(function () {
                     slideCard(pic2, cv2);
                 }, 500)
+
+                if (completeFeedback) {
+                    fb1.src = feedbackImg['' + otherReward].src;
+                    setTimeout(function () {
+                        slideCard(pic1, cv1);
+                    }, 500)
+                }
 
             }
 
@@ -1873,7 +1895,7 @@ $(document).ready(function () {
 
         var Title = '<h3 align = "center">The game is over!<br>' +
             'You ' + wonlost + points + ' points in total, which is ' + pence + ' pence = ' + pounds + ' pounds!<br><br>' +
-            'With your initial endowment, you won a total bonus of '  + (parseFloat(pence) + 250) + ' pence = ' + (parseFloat(pounds) + 2.5) + ' pounds!<br><br>' +
+            'With your initial endowment, you won a total bonus of ' + (parseFloat(pence) + 250) + ' pence = ' + (parseFloat(pounds) + 2.5) + ' pounds!<br><br>' +
             'Thank you for playing!<br><br>Please click the link to complete this study:<br></h3><br>';
         var url = '';
         if (compLink)
@@ -1998,7 +2020,9 @@ $(document).ready(function () {
                     + 'After a choice, you can win/lose the following outcomes:<br><br>'
                     + '1 point = +' + pointsToPence(1).toFixed(2) + ' pence<br>'
                     + '-1 points = -' + pointsToPence(1).toFixed(2) + ' pence<br><br>'
-                    + 'The outcome of your choice will appear in the location of the symbol you chose.<br><br></H3>';
+                    + 'The outcome of your choice will appear in the location of the symbol you chose.<br><br>'
+                    + 'The outcome you would have won by choosing the other option will also be displayed.<br><br>'
+                    + 'Please note that only the outcome of your choice will be taken into account in the final payoff.<br><br></H3>';
                 break;
 
             case 4:
