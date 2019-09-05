@@ -3,7 +3,7 @@ $(document).ready(function () {
     // TODO:
     // Initial Experiment Parameters
     // -------------------------------------------------------------------------------------------------- //
-    var offline = 1;
+    var offline = 0;
     var completeFeedback = 1;
     var expName = 'RetrieveAndCompare';
     //var language = "en"; // only en is available at the moment
