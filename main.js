@@ -1,19 +1,157 @@
 $(document).ready(main);
 
-function main () {
+
+function main() {
+
+    // let sessionNum = 0;
+    // let phaseNum = 2;
+
+    let instructionPhase = 0;
+
+    let exp = new Experiment();
+    let gui = new GUI();
+    // let quest = new Questionnaire();
+    let inst = new Instructions({
+        exp: exp,
+        gui: gui
+    });
+
+    stateMachineInstruction({instructionPhase, inst, exp, gui});
+
+    //stateMachineGame({sessionNum, phaseNum, exp, gui});
+
+
+}
+
+function stateMachineInstruction({instructionPhase, inst, exp, gui} = {},
+                                 nextFunc=stateMachineGame,
+                                 nextParams={sessionNum:0, phaseNum:2, exp:exp, gui:gui}
+                                 ) {
+    switch (instructionPhase) {
+        case 0:
+            inst.setUserID(
+                stateMachineInstruction,
+                {
+                    instructionPhase: 1, inst: inst, exp: exp, gui: gui
+                }
+            );
+            break;
+        case 1:
+            inst.displayConsent(
+                stateMachineInstruction,
+                {
+                    instructionPhase: 2, inst: inst, exp: exp, gui: gui
+                }
+            );
+            break;
+        case 2:
+           inst.displayInstruction(
+               1,
+               stateMachineInstruction,
+                {
+                    instructionPhase: 'end', inst: inst, exp: exp, gui: gui
+                });
+           break;
+        case 'end':
+            nextFunc(nextParams);
+            break;
+    }
+}
+
+
+function stateMachineGame({sessionNum, phaseNum, exp, gui}={}) {
+
+    switch (sessionNum) {
+        case -1:
+        case -2:
+            switch (phaseNum) {
+                case 1:
+                    break;
+                case 2:
+                    break;
+                case 3:
+                    break;
+            }
+            break;
+        case 0:
+            switch (phaseNum) {
+                case 2:
+                    let elicitation1 = new ElicitationLottery(
+                        {
+                            expName: exp.expName,
+                            expID: exp.expID,
+                            subID: exp.subID,
+                            online: exp.online,
+                            trialObj: exp.elicitationStimEV.slice(0, 3),
+                            feedbackDuration: exp.feedbackDuration,
+                            feedbackObj: exp.feedbackImg,
+                            imgObj: exp.images,
+                            sessionNum: 0,
+                            phaseNum: 2,
+                            Gui: gui,
+                            elicitationType: 0,
+                            nextFunc: stateMachineGame,
+                            nextParams: {
+                                sessionNum: 0,
+                                phaseNum: 3,
+                                exp: exp,
+                                gui: gui
+                            }
+                        }
+                    );
+                    elicitation1.run();
+                    break;
+                case 3:
+                    let elicitation2 = new ElicitationSlider(
+                        {
+                            expName: exp.expName,
+                            expID: exp.expID,
+                            subID: exp.subID,
+                            online: exp.online,
+                            trialObj: exp.elicitationStim.slice(0, 3),
+                            feedbackDuration: exp.feedbackDuration,
+                            feedbackObj: exp.feedbackImg,
+                            imgObj: exp.images,
+                            sessionNum: 0,
+                            phaseNum: 2,
+                            Gui: gui,
+                            elicitationType: 2,
+                            nextFunc: stateMachineGame,
+                            nextParams: {
+                                sessionNum: 0,
+                                phaseNum: 3,
+                                exp: exp,
+                                gui: gui
+                            }
+                        }
+                    );
+                    elicitation2.run();
+                    break;
+            }
+            break;
+    }
+}
+
+
+function Experiment () {
+    /***
+
+    Experiment initializer
+
+    ***/
 
     // TODO:
     // Initial Experiment Parameters
     // -------------------------------------------------------------------------------------------------- //
-    var offline = 1;
-    var completeFeedback = 1;
-    var expName = 'RetrieveAndCompare';
+    this.online = 0;
+    this.completeFeedback = 1;
+    this.expName = 'RetrieveAndCompare';
     //var language = "en"; // only en is available at the moment
     var compLink = 1;
     var nSessions = 1;
 
     var questionnaire = 1;
-    var maxPoints = 98;
+    this.maxPoints = 98;
 
     // Main Exp
     var nCond = 4;
@@ -25,10 +163,10 @@ function main () {
     // Single symbols per session
     // var nSymbolPerSession = 8;
 
-    var feedbackDuration = 2000;
-    var sumReward = [0, 0, 0, 0, 0, 0, 0];
+    this.feedbackDuration = 2000;
+    this.sumReward = [0, 0, 0, 0, 0, 0, 0];
 
-    var totalReward = 0;
+    this.totalReward = 0;
 
     // Training
     var nCondTraining = 4;
@@ -39,31 +177,31 @@ function main () {
     nCondTraining--; // because of range function
 
     // Phase to print
-    var phases = [-1, 1, 2, 3, 1, 2, 3];
+    this.phases = [-1, 1, 2, 3, 1, 2, 3];
 
     // var nTrialsPerConditionLot = 2;
     // var nTrialsLotteries = (nCond + 1) * nTrialsPerConditionLot;
 
     var initTime = (new Date()).getTime();
 
-    var expID = createCode();
+    this.expID = createCode();
 
     var clickDisabled = false;
     var trainSess = -1;
     var maxDBCalls = 1;
-    var browsInfo = getOS() + ' - ' + getBrowser();
+    this.browsInfo = getOS() + ' - ' + getBrowser();
 
-    var subID = expID;
+    this.subID = undefined;
 
-    var link = 'https://app.prolific.ac/submissions/complete?cc=RNFS5HP5';
+    this.link = 'https://app.prolific.ac/submissions/complete?cc=RNFS5HP5';
 
     // Manage compensations
     // -------------------------------------------------------------------------------------------------- //
     // one point equals 250 pence / maxPoints
-    var conversionRate = (250 / maxPoints).toFixed(2);
-    var pointsToPence = points => points * conversionRate;
-    var penceToPounds = pence => pence / 100;
-    var pointsToPounds = points => penceToPounds(pointsToPence(points));
+    let conversionRate = (250 / this.maxPoints).toFixed(2);
+    this.pointsToPence = points => points * conversionRate;
+    this.penceToPounds = pence => pence / 100;
+    this.pointsToPounds = points => this.penceToPounds(this.pointsToPence(points));
 
     // Define conditions
     // -------------------------------------------------------------------------------------------------- //
@@ -141,28 +279,28 @@ function main () {
     var imgExt = 'gif';
     var borderColor = "transparent";
 
-    var images = [];
+    this.images = [];
     var availableOptions = [];
     for (let i = 2; i <= nImg; i++) {
         availableOptions.push(i);
-        images[i] = new Image();
-        images[i].src = imgPath + 'stim_old/' + i + '.' + imgExt;
-        images[i].className = "img-responsive center-block";
-        images[i].style.border = "5px solid " + borderColor;
-        images[i].style.position = "relative";
-        images[i].style.top = "0px";
+        this.images[i] = new Image();
+        this.images[i].src = imgPath + 'stim_old/' + i + '.' + imgExt;
+        this.images[i].className = "img-responsive center-block";
+        this.images[i].style.border = "5px solid " + borderColor;
+        this.images[i].style.position = "relative";
+        this.images[i].style.top = "0px";
     }
 
     var feedbackNames = ["empty", "0", "1", "-1", '-2', '2'];
-    var feedbackImg = [];
+    this.feedbackImg = [];
     for (var i = 0; i < feedbackNames.length; i++) {
         fb = feedbackNames[i];
-        feedbackImg[fb] = new Image();
-        feedbackImg[fb].src = imgPath + 'fb/' + fb + '.' + imgExt;
-        feedbackImg[fb].className = "img-responsive center-block";
-        feedbackImg[fb].style.border = "5px solid " + borderColor;
-        feedbackImg[fb].style.position = "relative";
-        feedbackImg[fb].style.top = "0px";
+        this.feedbackImg[fb] = new Image();
+        this.feedbackImg[fb].src = imgPath + 'fb/' + fb + '.' + imgExt;
+        this.feedbackImg[fb].className = "img-responsive center-block";
+        this.feedbackImg[fb].style.border = "5px solid " + borderColor;
+        this.feedbackImg[fb].style.position = "relative";
+        this.feedbackImg[fb].style.top = "0px";
     }
 
     // Training stims
@@ -201,12 +339,12 @@ function main () {
     };
 
     for (let i = 0; i < expectedValue.length; i++) {
-        images[expectedValue[i]] = new Image();
-        images[expectedValue[i]].src = imgPath + 'lotteries/' + expectedValue[i] + '.png';
-        images[expectedValue[i]].className = "img-responsive center-block";
-        images[expectedValue[i]].style.border = "5px solid " + borderColor;
-        images[expectedValue[i]].style.position = "relative";
-        images[expectedValue[i]].style.top = "0px";
+        this.images[expectedValue[i]] = new Image();
+        this.images[expectedValue[i]].src = imgPath + 'lotteries/' + expectedValue[i] + '.png';
+        this.images[expectedValue[i]].className = "img-responsive center-block";
+        this.images[expectedValue[i]].style.border = "5px solid " + borderColor;
+        this.images[expectedValue[i]].style.position = "relative";
+        this.images[expectedValue[i]].style.top = "0px";
     }
 
     // Define contexts
@@ -242,10 +380,10 @@ function main () {
             expectedValueMap[stim1],
             stim1,
             expectedValueMap[stim2],
-            stim2
+            stim2,
+            true
         ].flat();
     }
-
 
 
     var nTrialPerElicitationChoiceTraining = 12;
@@ -315,7 +453,7 @@ function main () {
 
     // Elicitation
     var elicitationsStim = [];
-    var elicitationsStimEV = [];
+    this.elicitationStimEV = [];
 
     var cidx = Array.from(new Set(shuffle(expCondition[0].flat())));
     var catchIdx = 0;
@@ -325,8 +463,17 @@ function main () {
         var stim1 = contexts[cidx[j]].flat()[0];
         var stim2 = contexts[cidx[j]].flat()[1];
 
-        elicitationsStim.push(stim1);
-        elicitationsStim.push(stim2);
+        elicitationsStim.push([
+            stim1,
+            symbolValueMap[stim1],
+            false
+        ].flat());
+
+        elicitationsStim.push([
+            stim2,
+            symbolValueMap[stim2],
+            false
+        ].flat());
 
         let temp = [];
         for (let k = 0; k < expectedValue.length; k++) {
@@ -335,15 +482,13 @@ function main () {
                     stim1,
                     expectedValue[k],
                     symbolValueMap[stim1],
-                    expectedValueMap[expectedValue[k]]
+                    expectedValueMap[expectedValue[k]],
+                    false
                 ].flat()
             );
-            // temp.push(
-            //     [stim1, stim2, symbolValueMap[stim1], symbolValueMap[stim2]].flat()
-            // )
         }
-        elicitationsStimEV = elicitationsStimEV.concat(shuffle(temp));
-        elicitationsStimEV.push(catchTrials[catchIdx]);
+        this.elicitationStimEV = this.elicitationStimEV.concat(shuffle(temp));
+        this.elicitationStimEV.push(catchTrials[catchIdx]);
         catchIdx++;
 
         temp = [];
@@ -353,26 +498,16 @@ function main () {
                     stim2,
                     expectedValue[k],
                     symbolValueMap[stim2],
-                    expectedValueMap[expectedValue[k]]
+                    expectedValueMap[expectedValue[k]],
+                    false
                 ].flat()
             );
-            // temp.push(
-            //     [stim1, stim2, symbolValueMap[stim1], symbolValueMap[stim2]].flat()
-            // )
-            // temp.push(
-            //     [stim1, stim2]
-            // )
         }
-        elicitationsStimEV = elicitationsStimEV.concat(shuffle(temp));
-        elicitationsStimEV.push(catchTrials[catchIdx]);
+        this.elicitationStimEV = this.elicitationStimEV.concat(shuffle(temp));
+        this.elicitationStimEV.push(catchTrials[catchIdx]);
         catchIdx++;
 
     }
-    // elicitationsStimEV.push(["0.6", "-0.6"]);
-    // elicitationsStimEV.push(["0.4", "-0.4"]);
-    // elicitationsStimEV.push(["0.2", "-0.2"]);
-    // elicitationsStimEV.push(["1", "-1"]);
-    // elicitationsStimEV = shuffle(elicitationsStimEV);
 
     var elicitationsStimTraining = range(1, 4);
 
@@ -381,986 +516,916 @@ function main () {
     }
     var randExpectedValue = shuffle(expectedValue);
     for (let i = 0; i < 4; i++) {
-        elicitationsStim.push(randExpectedValue[i]);
+        elicitationsStim.push([
+            randExpectedValue[i],
+            expectedValueMap[randExpectedValue[i]],
+            false
+        ].flat());
     }
 
     elicitationsStimTraining = shuffle(elicitationsStimTraining);
-    elicitationsStim = shuffle(elicitationsStim);
+    this.elicitationStim = shuffle(elicitationsStim);
 
-    var nTrialPerElicitationSliderTraining = elicitationsStimTraining.length;
-    var nTrialPerElicitationSlider = elicitationsStim.length;
-    var nTrialPerElicitationChoice = elicitationsStimEV.length;
+}
 
-    // Run the experiment
-    // ------------------------------------------------------------------------------------------------ //
-    playElicitation(0, 0, 0, 2);
 
-    function sendExpDataDB(call) {
+function sendToDB(call, data, url) {
 
-        $.ajax({
-            type: 'POST',
-            async: true,
-            url: 'php/InsertExpDetails.php',
-            //contentType: "application/json; charset=utf-8",
-            //dataType: 'json',
+    $.ajax({
+        type: 'POST',
+        data: data,
+        async: true,
+        url: url,
+        success: function (r) {
 
-            data: {expID: expID, id: subID, exp: expName, browser: browsInfo},
+            if (r[0].ErrorNo > 0 && (call + 1) < 2) {
+                sendToDB(call + 1);
+            }
+        },
+        error: function (XMLHttpRequest, textStatus, errorThrown) {
 
-            success: function (r) {
-                if (r[0].ErrorNo > 0 && call + 1 < maxDBCalls) {
-                    sendExpDataDB(call + 1);
-                }
-            },
-            error: function (xhr, textStatus, err) {
-            },
-        });
-    }
+            if ((call + 1) < 2) {
+                sendToDB(call + 1);
+            }
+        }
+    });
+}
 
-    function playTraining(trialNum, phaseNum) {
+    // this.playTraining = function(trialNum, phaseNum) {
+    //
+    //     if ($('#TextBoxDiv').length === 0) {
+    //         createDiv('Stage', 'TextBoxDiv');
+    //         /*document.getElementById("TextBoxDiv").style.backgroundColor = "white";*/
+    //     }
+    //
+    //     var conditionIdx = trainingCondition[trialNum];
+    //     var option1ImgIdx = trainingContexts[conditionIdx][0];
+    //     var option2ImgIdx = trainingContexts[conditionIdx][1];
+    //
+    //     var option1 = trainingImg[option1ImgIdx];
+    //     option1.id = "option1";
+    //     option1 = option1.outerHTML;
+    //
+    //     var option2 = trainingImg[option2ImgIdx];
+    //     option2.id = "option2";
+    //     option2 = option2.outerHTML;
+    //
+    //     var feedback1 = feedbackImg["empty"];
+    //     feedback1.id = "feedback1";
+    //     feedback1 = feedback1.outerHTML;
+    //
+    //     var feedback2 = feedbackImg["empty"];
+    //     feedback2.id = "feedback2";
+    //     feedback2 = feedback2.outerHTML;
+    //
+    //     var Title = '<div id = "Title"><H2 align = "center"> <br><br><br><br></H2></div>';
+    //
+    //     // Create canevas for the slot machine effect, of the size of the images
+    //     var canvas1 = '<canvas id="canvas1" height="620"' +
+    //         ' width="620" class="img-responsive center-block"' +
+    //         ' style="border: 5px solid transparent; position: relative; top: 0px;">';
+    //
+    //     var canvas2 = '<canvas id="canvas2" height="620"' +
+    //         ' width="620" class="img-responsive center-block"' +
+    //         ' style="border: 5px solid transparent; position: relative; top: 0px;">';
+    //
+    //     var Images = '<div id = "stimrow" class="row" style= "transform: translate(0%, -100%);position:relative"> ' +
+    //         '<div class="col-xs-1 col-md-1"></div>  <div class="col-xs-3 col-md-3">'
+    //         + option1 + '</div><div id = "Middle" class="col-xs-4 col-md-4"></div>' +
+    //         '<div class="col-xs-3 col-md-3">' + option2 + '</div><div class="col-xs-1 col-md-1"></div></div>';
+    //     var Feedback = '<div id = "fbrow" class="row" style= "transform: translate(0%, 0%);position:relative"> ' +
+    //         '<div class="col-xs-1 col-md-1"></div>  <div class="col-xs-3 col-md-3">' + feedback1 + '' +
+    //         '</div><div id = "Middle" class="col-xs-4 col-md-4"></div><div class="col-xs-3 col-md-3">'
+    //         + feedback2 + '</div><div class="col-xs-1 col-md-1"></div></div>';
+    //     var myCanvas = '<div id = "cvrow" class="row" style= "transform: translate(0%, -200%);position:relative">' +
+    //         '    <div class="col-xs-1 col-md-1"></div>  <div class="col-xs-3 col-md-3">'
+    //         + canvas1 + '</div><div id = "Middle" class="col-xs-4 col-md-4"></div><div class="col-xs-3 col-md-3">'
+    //         + canvas2 + '</div><div class="col-xs-1 col-md-1"></div></div>';
+    //
+    //     var invertedPosition = +(Math.random() < 0.5);
+    //     var symbols = [option1ImgIdx, option2ImgIdx];
+    //
+    //     if (invertedPosition) {
+    //
+    //         var Images = '<div id = "stimrow" class="row" style= "transform: translate(0%, -100%);position:relative">' +
+    //             ' <div class="col-xs-1 col-md-1"></div>  <div class="col-xs-3 col-md-3">' + option2 + '</div>' +
+    //             '<div id = "Middle" class="col-xs-4 col-md-4"></div><div class="col-xs-3 col-md-3">' + option1 +
+    //             '</div><div class="col-xs-1 col-md-1"></div></div>';
+    //         var Feedback = '<div id = "fbrow" class="row" style= "transform: translate(0%, 0%);position:relative">' +
+    //             ' <div class="col-xs-1 col-md-1"></div>  <div class="col-xs-3 col-md-3">' + feedback2 + '</div><div id = "Middle" class="col-xs-4 col-md-4">' +
+    //             '</div><div class="col-xs-3 col-md-3">' + feedback1 + '</div><div class="col-xs-1 col-md-1"></div></div>';
+    //         var myCanvas = '<div id = "cvrow" class="row" style= "transform: translate(0%, -200%);position:relative">' +
+    //             '    <div class="col-xs-1 col-md-1"></div>  <div class="col-xs-3 col-md-3">' + canvas2 + '</div>' +
+    //             '<div id = "Middle" class="col-xs-4 col-md-4"></div><div class="col-xs-3 col-md-3">' + canvas1 + '</div>' +
+    //             '<div class="col-xs-1 col-md-1"></div></div>';
+    //
+    //         var symbols = [option2ImgIdx, option1ImgIdx];
+    //     }
+    //
+    //     $('#TextBoxDiv').html(Title + Feedback + Images + myCanvas);
+    //
+    //     var choiceTime = (new Date()).getTime();
+    //
+    //     var myEventHandler = function (e) {
+    //
+    //         var key = getKeyCode(e);
+    //
+    //         if ((key === 101 && !invertedPosition) || (key === 112 && invertedPosition)) {
+    //             if (this.clickDisabled)
+    //                 return;
+    //             this.clickDisabled = true;
+    //
+    //             fb = getReward(1);
+    //             color = getColor(fb);
+    //             document.getElementById("option1").style.borderColor = "black";
+    //             targetElement.removeEventListener('keypress', myEventHandler);
+    //
+    //         } else if ((key === 112 && !invertedPosition) || (key === 101 && invertedPosition)) {
+    //
+    //             if (this.clickDisabled)
+    //                 return;
+    //             this.clickDisabled = true;
+    //
+    //             fb = getReward(2);
+    //             color = getColor(fb);
+    //             document.getElementById("option2").style.borderColor = "black";
+    //             targetElement.removeEventListener('keypress', myEventHandler);
+    //
+    //         }
+    //
+    //     };
+    //
+    //     var targetElement = document.body;
+    //
+    //     $('#canvas1').click(function () {
+    //         if (this.clickDisabled)
+    //             return;
+    //         this.clickDisabled = true;
+    //         var fb = this.getReward(1);
+    //         document.getElementById("canvas1").style.borderColor = "black";
+    //     });
+    //
+    //     $('#canvas2').click(function () {
+    //         if (this.clickDisabled)
+    //             return;
+    //         this.clickDisabled = true;
+    //         var fb = this.getReward(2);
+    //         document.getElementById("canvas2").style.borderColor = "black";
+    //     });
+    //
+    //     this.getReward = function (choice) {
+    //
+    //         var reactionTime = (new Date()).getTime();
+    //
+    //         var leftRight = -1;
+    //
+    //         if ((invertedPosition && (choice === 1)) || (!invertedPosition && (choice === 2))) {
+    //             leftRight = 1;
+    //         }
+    //
+    //         var P1 = conditions[conditionIdx]['prob'][0][1];
+    //         var P2 = conditions[conditionIdx]['prob'][1][1];
+    //         var Mag1 = conditions[conditionIdx]['reward'][0];
+    //         var Mag2 = conditions[conditionIdx]['reward'][1];
+    //
+    //         p1 = conditions[conditionIdx]['prob'][0];
+    //         p2 = conditions[conditionIdx]['prob'][1];
+    //         r1 = conditions[conditionIdx]['reward'][0];
+    //         r2 = conditions[conditionIdx]['reward'][1];
+    //
+    //         if (sum(p1) === 2) {
+    //             var ev1 = p1[0] * r1[0];
+    //         } else {
+    //             var ev1 = p1.reduce(
+    //                 function (r, a, i) {
+    //                     return r + a * r1[i]
+    //                 }, 0);
+    //         }
+    //
+    //         if (sum(p2) === 2) {
+    //             var ev2 = p2[0] * r2[0];
+    //         } else {
+    //             var ev2 = p2.reduce(
+    //                 function (r, a, i) {
+    //                     return r + a * r2[i]
+    //                 }, 0);
+    //         }
+    //
+    //         ev1 = Math.round(ev1 * 100) / 100;
+    //         ev2 = Math.round(ev2 * 100) / 100;
+    //
+    //         if (choice === 1) { /*option1*/
+    //             var thisReward = Mag1[+(Math.random() < P1)];
+    //             var otherReward = Mag2[+(Math.random() < P2)];
+    //             var correctChoice = +(ev1 >= ev2);
+    //         } else { /*option2*/
+    //             var otherReward = Mag1[+(Math.random() < P1)];
+    //             var thisReward = Mag2[+(Math.random() < P2)];
+    //             var correctChoice = +(ev2 >= ev1);
+    //         }
+    //
+    //
+    //         sumReward[phaseNum] += thisReward;
+    //
+    //         var fb1 = document.getElementById("feedback1");
+    //         var fb2 = document.getElementById("feedback2");
+    //
+    //         var pic1 = document.getElementById("option1");
+    //         var pic2 = document.getElementById("option2");
+    //
+    //         var cv1 = document.getElementById("canvas1");
+    //         var cv2 = document.getElementById("canvas2");
+    //
+    //         if (choice === 1) {
+    //             fb1.src = feedbackImg['' + thisReward].src;
+    //             setTimeout(function () {
+    //                 slideCard(pic1, cv1);
+    //             }, 500);
+    //
+    //             if (this.completeFeedback) {
+    //                 fb2.src = feedbackImg['' + otherReward].src;
+    //                 setTimeout(function () {
+    //                     slideCard(pic2, cv2);
+    //                 }, 500);
+    //             }
+    //
+    //         } else {
+    //             fb2.src = feedbackImg['' + thisReward].src;
+    //             setTimeout(function () {
+    //                 slideCard(pic2, cv2);
+    //             }, 500);
+    //             if (this.completeFeedback) {
+    //                 fb1.src = feedbackImg['' + otherReward].src;
+    //                 setTimeout(function () {
+    //                     slideCard(pic1, cv1);
+    //                 }, 500);
+    //             }
+    //
+    //         }
+    //
+    //         if (this.online === 0) sendTrainDataDB(0);
+    //
+    //         next();
+    //
+    //         function sendTrainDataDB(call) {
+    //
+    //             var wtest = 0; /* training */
+    //
+    //             $.ajax({
+    //                 type: 'POST',
+    //                 data: {
+    //                     exp: this.expName,
+    //                     expID: expID,
+    //                     id: subID,
+    //                     elicitation_type: -1,
+    //                     test: wtest,
+    //                     trial: trialNum,
+    //                     condition: conditionIdx,
+    //                     cont_idx_1: -1,
+    //                     cont_idx_2: -1,
+    //                     symL: symbols[0],
+    //                     symR: symbols[1],
+    //                     choice: choice,
+    //                     correct_choice: correctChoice,
+    //                     outcome: thisReward,
+    //                     cf_outcome: otherReward,
+    //                     choice_left_right: leftRight,
+    //                     reaction_time: reactionTime - choiceTime,
+    //                     reward: totalReward,
+    //                     session: trainSess,
+    //                     p1: P1,
+    //                     p2: P2,
+    //                     option1: option1ImgIdx,
+    //                     option2: option2ImgIdx,
+    //                     ev1: ev1,
+    //                     ev2: ev2,
+    //                     iscatch: -1,
+    //                     inverted: invertedPosition,
+    //                     choice_time: choiceTime - initTime
+    //                 },
+    //                 async: true,
+    //                 url: 'php/InsertLearningDataDB.php',
+    //
+    //                 success: function (r) {
+    //
+    //                     if (r[0].ErrorNo > 0 && call + 1 < maxDBCalls) {
+    //                         sendTrainDataDB(call + 1);
+    //                     }
+    //                 },
+    //                 error: function (XMLHttpRequest, textStatus, errorThrown) {
+    //
+    //                     // what type of error is it
+    //                     alert(errorThrown.responseText);
+    //
+    //                     if (call + 1 < maxDBCalls) {
+    //                         sendTrainDataDB(call + 1);
+    //                     }
+    //                 }
+    //             });
+    //         }
+    //
+    //         return thisReward;
+    //     }
+    //
+    //     function next() {
+    //
+    //         trialNum++;
+    //         if (trialNum < nTrainingTrials) {
+    //             setTimeout(function () {
+    //                 $('#stimrow').fadeOut(500);
+    //                 $('#fbrow').fadeOut(500);
+    //                 $('#cvrow').fadeOut(500);
+    //                 setTimeout(function () {
+    //                     this.clickDisabled = false;
+    //                     playTraining(trialNum, phaseNum);
+    //                 }, 500);
+    //             }, feedbackDuration);
+    //         } else {
+    //             setTimeout(function () {
+    //                 $('#TextBoxDiv').fadeOut(500);
+    //                 setTimeout(function () {
+    //                     $('#Stage').empty();
+    //                     $('#Bottom').empty();
+    //                     clickDisabled = false;
+    //                     startElicitation(trainSess, true, 0, 2);
+    //                 }, 500);
+    //             }, feedbackDuration);
+    //         }
+    //     }
+    // };
 
+
+function GUI () {
+
+    this.init = function () {
         if ($('#TextBoxDiv').length === 0) {
             createDiv('Stage', 'TextBoxDiv');
-            /*document.getElementById("TextBoxDiv").style.backgroundColor = "white";*/
         }
+    };
 
-        var conditionIdx = trainingCondition[trialNum];
-        var option1ImgIdx = trainingContexts[conditionIdx][0];
-        var option2ImgIdx = trainingContexts[conditionIdx][1];
+    this.getOptions = function (id1, id2, img, feedbackImg) {
 
-        var option1 = trainingImg[option1ImgIdx];
+        let option1 = img[id1];
         option1.id = "option1";
         option1 = option1.outerHTML;
 
-        var option2 = trainingImg[option2ImgIdx];
+        let option2 = img[id2];
         option2.id = "option2";
         option2 = option2.outerHTML;
 
-        var feedback1 = feedbackImg["empty"];
+        let feedback1 = feedbackImg["empty"];
         feedback1.id = "feedback1";
         feedback1 = feedback1.outerHTML;
 
-        var feedback2 = feedbackImg["empty"];
-        feedback2.id = "feedback2";
-        feedback2 = feedback2.outerHTML;
-
-        var Title = '<div id = "Title"><H2 align = "center"> <br><br><br><br></H2></div>';
-
-        // Create canevas for the slot machine effect, of the size of the images
-        var canvas1 = '<canvas id="canvas1" height="620"' +
-            ' width="620" class="img-responsive center-block"' +
-            ' style="border: 5px solid transparent; position: relative; top: 0px;">';
-
-        var canvas2 = '<canvas id="canvas2" height="620"' +
-            ' width="620" class="img-responsive center-block"' +
-            ' style="border: 5px solid transparent; position: relative; top: 0px;">';
-
-        var Images = '<div id = "stimrow" class="row" style= "transform: translate(0%, -100%);position:relative"> ' +
-            '<div class="col-xs-1 col-md-1"></div>  <div class="col-xs-3 col-md-3">'
-            + option1 + '</div><div id = "Middle" class="col-xs-4 col-md-4"></div>' +
-            '<div class="col-xs-3 col-md-3">' + option2 + '</div><div class="col-xs-1 col-md-1"></div></div>';
-        var Feedback = '<div id = "fbrow" class="row" style= "transform: translate(0%, 0%);position:relative"> ' +
-            '<div class="col-xs-1 col-md-1"></div>  <div class="col-xs-3 col-md-3">' + feedback1 + '' +
-            '</div><div id = "Middle" class="col-xs-4 col-md-4"></div><div class="col-xs-3 col-md-3">'
-            + feedback2 + '</div><div class="col-xs-1 col-md-1"></div></div>';
-        var myCanvas = '<div id = "cvrow" class="row" style= "transform: translate(0%, -200%);position:relative">' +
-            '    <div class="col-xs-1 col-md-1"></div>  <div class="col-xs-3 col-md-3">'
-            + canvas1 + '</div><div id = "Middle" class="col-xs-4 col-md-4"></div><div class="col-xs-3 col-md-3">'
-            + canvas2 + '</div><div class="col-xs-1 col-md-1"></div></div>';
-
-        var invertedPosition = +(Math.random() < 0.5);
-        var symbols = [option1ImgIdx, option2ImgIdx];
-
-        if (invertedPosition) {
-
-            var Images = '<div id = "stimrow" class="row" style= "transform: translate(0%, -100%);position:relative">' +
-                ' <div class="col-xs-1 col-md-1"></div>  <div class="col-xs-3 col-md-3">' + option2 + '</div>' +
-                '<div id = "Middle" class="col-xs-4 col-md-4"></div><div class="col-xs-3 col-md-3">' + option1 +
-                '</div><div class="col-xs-1 col-md-1"></div></div>';
-            var Feedback = '<div id = "fbrow" class="row" style= "transform: translate(0%, 0%);position:relative">' +
-                ' <div class="col-xs-1 col-md-1"></div>  <div class="col-xs-3 col-md-3">' + feedback2 + '</div><div id = "Middle" class="col-xs-4 col-md-4">' +
-                '</div><div class="col-xs-3 col-md-3">' + feedback1 + '</div><div class="col-xs-1 col-md-1"></div></div>';
-            var myCanvas = '<div id = "cvrow" class="row" style= "transform: translate(0%, -200%);position:relative">' +
-                '    <div class="col-xs-1 col-md-1"></div>  <div class="col-xs-3 col-md-3">' + canvas2 + '</div>' +
-                '<div id = "Middle" class="col-xs-4 col-md-4"></div><div class="col-xs-3 col-md-3">' + canvas1 + '</div>' +
-                '<div class="col-xs-1 col-md-1"></div></div>';
-
-            var symbols = [option2ImgIdx, option1ImgIdx];
-        }
-
-        $('#TextBoxDiv').html(Title + Feedback + Images + myCanvas);
-
-        var choiceTime = (new Date()).getTime();
-
-        var myEventHandler = function (e) {
-
-            var key = getKeyCode(e);
-
-            if ((key === 101 && !invertedPosition) || (key === 112 && invertedPosition)) {
-                if (clickDisabled)
-                    return;
-                clickDisabled = true;
-
-                fb = getReward(1);
-                color = getColor(fb);
-                document.getElementById("option1").style.borderColor = "black";
-                targetElement.removeEventListener('keypress', myEventHandler);
-
-            } else if ((key === 112 && !invertedPosition) || (key === 101 && invertedPosition)) {
-
-                if (clickDisabled)
-                    return;
-                clickDisabled = true;
-
-                fb = getReward(2);
-                color = getColor(fb);
-                document.getElementById("option2").style.borderColor = "black";
-                targetElement.removeEventListener('keypress', myEventHandler);
-
-            }
-
-        };
-
-        var targetElement = document.body;
-
-        $('#canvas1').click(function () {
-            if (clickDisabled)
-                return;
-            clickDisabled = true;
-            var fb = getReward(1);
-            document.getElementById("canvas1").style.borderColor = "black";
-        });
-
-        $('#canvas2').click(function () {
-            if (clickDisabled)
-                return;
-            clickDisabled = true;
-            var fb = getReward(2);
-            document.getElementById("canvas2").style.borderColor = "black";
-        });
-
-        function getReward(choice) {
-
-            var reactionTime = (new Date()).getTime();
-
-            var leftRight = -1;
-
-            if ((invertedPosition && (choice === 1)) || (!invertedPosition && (choice === 2))) {
-                leftRight = 1;
-            }
-
-            var P1 = conditions[conditionIdx]['prob'][0][1];
-            var P2 = conditions[conditionIdx]['prob'][1][1];
-            var Mag1 = conditions[conditionIdx]['reward'][0];
-            var Mag2 = conditions[conditionIdx]['reward'][1];
-
-            p1 = conditions[conditionIdx]['prob'][0];
-            p2 = conditions[conditionIdx]['prob'][1];
-            r1 = conditions[conditionIdx]['reward'][0];
-            r2 = conditions[conditionIdx]['reward'][1];
-
-            if (sum(p1) === 2) {
-                var ev1 = p1[0] * r1[0];
-            } else {
-                var ev1 = p1.reduce(
-                    function (r, a, i) {
-                        return r + a * r1[i]
-                    }, 0);
-            }
-
-            if (sum(p2) === 2) {
-                var ev2 = p2[0] * r2[0];
-            } else {
-                var ev2 = p2.reduce(
-                    function (r, a, i) {
-                        return r + a * r2[i]
-                    }, 0);
-            }
-
-            ev1 = Math.round(ev1 * 100) / 100;
-            ev2 = Math.round(ev2 * 100) / 100;
-
-            if (choice === 1) { /*option1*/
-                var thisReward = Mag1[+(Math.random() < P1)];
-                var otherReward = Mag2[+(Math.random() < P2)];
-                var correctChoice = +(ev1 >= ev2);
-            } else { /*option2*/
-                var otherReward = Mag1[+(Math.random() < P1)];
-                var thisReward = Mag2[+(Math.random() < P2)];
-                var correctChoice = +(ev2 >= ev1);
-            }
-
-
-            sumReward[phaseNum] += thisReward;
-
-            var fb1 = document.getElementById("feedback1");
-            var fb2 = document.getElementById("feedback2");
-
-            var pic1 = document.getElementById("option1");
-            var pic2 = document.getElementById("option2");
-
-            var cv1 = document.getElementById("canvas1");
-            var cv2 = document.getElementById("canvas2");
-
-            if (choice === 1) {
-                fb1.src = feedbackImg['' + thisReward].src;
-                setTimeout(function () {
-                    slideCard(pic1, cv1);
-                }, 500);
-
-                if (completeFeedback) {
-                    fb2.src = feedbackImg['' + otherReward].src;
-                    setTimeout(function () {
-                        slideCard(pic2, cv2);
-                    }, 500);
-                }
-
-            } else {
-                fb2.src = feedbackImg['' + thisReward].src;
-                setTimeout(function () {
-                    slideCard(pic2, cv2);
-                }, 500);
-                if (completeFeedback) {
-                    fb1.src = feedbackImg['' + otherReward].src;
-                    setTimeout(function () {
-                        slideCard(pic1, cv1);
-                    }, 500);
-                }
-
-            }
-
-            if (offline === 0) sendTrainDataDB(0);
-
-            next();
-
-            function slideCard(pic, cv) {  /* faire défiler la carte pour decouvrir le feedback */
-
-                var img = new Image();
-                img.src = pic.src;
-                img.width = pic.width;
-                img.height = pic.height;
-
-                var speed = 3; /*plus elle est basse, plus c'est rapide*/
-                var y = 0; /*décalage vertical*/
-
-                /*Programme principal*/
-
-                var dy = 10;
-                var x = 0;
-                var ctx;
-
-                img.onload = function () {
-
-                    canvas = cv;
-                    ctx = cv.getContext('2d');
-
-                    canvas.width = img.width;
-                    canvas.height = img.height;
-
-                    var scroll = setInterval(draw, speed);
-
-                    setTimeout(function () {
-                        pic.style.visibility = "hidden";
-                        clearInterval(scroll);
-                        ctx.clearRect(0, 0, canvas.width, canvas.height);
-                    }, 1000);
-                };
-
-                function draw() {
-
-                    ctx.clearRect(0, 0, canvas.width, canvas.height); /* clear the canvas*/
-
-                    if (y > img.height) {
-                        y = -img.height;
-                    }
-
-                    if (y > 0 - 10) {
-                        ctx.drawImage(img, x, -img.height + y, img.width, img.height);
-                    }
-
-                    ctx.drawImage(img, x, y, img.width, img.height);
-
-                    /*quantité à déplacer*/
-                    y += dy;
-                }
-            };
-
-            function sendTrainDataDB(call) {
-
-                var wtest = 0; /* training */
-
-                $.ajax({
-                    type: 'POST',
-                    data: {
-                        exp: expName,
-                        expID: expID,
-                        id: subID,
-                        elicitation_type: -1,
-                        test: wtest,
-                        trial: trialNum,
-                        condition: conditionIdx,
-                        cont_idx_1: -1,
-                        cont_idx_2: -1,
-                        symL: symbols[0],
-                        symR: symbols[1],
-                        choice: choice,
-                        correct_choice: correctChoice,
-                        outcome: thisReward,
-                        cf_outcome: otherReward,
-                        choice_left_right: leftRight,
-                        reaction_time: reactionTime - choiceTime,
-                        reward: totalReward,
-                        session: trainSess,
-                        p1: P1,
-                        p2: P2,
-                        option1: option1ImgIdx,
-                        option2: option2ImgIdx,
-                        ev1: ev1,
-                        ev2: ev2,
-                        iscatch: -1,
-                        inverted: invertedPosition,
-                        choice_time: choiceTime - initTime
-                    },
-                    async: true,
-                    url: 'php/InsertLearningDataDB.php',
-
-                    success: function (r) {
-
-                        if (r[0].ErrorNo > 0 && call + 1 < maxDBCalls) {
-                            sendTrainDataDB(call + 1);
-                        }
-                    },
-                    error: function (XMLHttpRequest, textStatus, errorThrown) {
-
-                        // what type of error is it
-                        alert(errorThrown.responseText);
-
-                        if (call + 1 < maxDBCalls) {
-                            sendTrainDataDB(call + 1);
-                        }
-                    }
-                });
-            }
-
-            return thisReward;
-        }
-
-        function next() {
-
-            trialNum++;
-            if (trialNum < nTrainingTrials) {
-                setTimeout(function () {
-                    $('#stimrow').fadeOut(500);
-                    $('#fbrow').fadeOut(500);
-                    $('#cvrow').fadeOut(500);
-                    setTimeout(function () {
-                        clickDisabled = false;
-                        playTraining(trialNum, phaseNum);
-                    }, 500);
-                }, feedbackDuration);
-            } else {
-                setTimeout(function () {
-                    $('#TextBoxDiv').fadeOut(500);
-                    setTimeout(function () {
-                        $('#Stage').empty();
-                        $('#Bottom').empty();
-                        clickDisabled = false;
-                        startElicitation(trainSess, true, 0, 2);
-                    }, 500);
-                }, feedbackDuration);
-            }
-        }
-    }
-
-    function endTraining(sessionNum, phaseNum, pageNum = 1) {
-
-
-        createDiv('Stage', 'TextBoxDiv');
-
-        var nPages = 2;
-
-        switch (pageNum) {
-
-            case 1:
-                var Title = '<H2 align = "center">END OF THE TRAINING</H2>';
-                var Info = '';
-
-                var totalPoints = sumReward[1] + sumReward[2] + sumReward[3];
-                var pence = pointsToPence(totalPoints).toFixed(2);
-                var pounds = pointsToPounds(totalPoints).toFixed(2);
-
-                var wonlost = ['won', 'lost'][+(totalPoints < 0)];
-
-                Info += '<H3 align="center"> The training is over!<br><br>';
-                Info += 'Overall, in this training, you ' + wonlost + ' ' + totalPoints +
-                    ' points = ' + pence + ' pence = ' + pounds + ' pounds!<br><br>';
-
-                Info += 'Test 1: ' + sumReward[1] + '<br>';
-                Info += 'Test 2: ' + sumReward[2] + '<br>';
-                Info += 'Test 3: ' + sumReward[3] + '<br>';
-
-                Info += 'Now, you are about to start the first phase of the experiment.<br> Note that from now on the points will be counted in your final payoff.'
-                    + ' Also note that the experiment includes much more trials and more points are at stake, compared to the training.<br>'
-                    + 'Finally note that the real test will involve different symbols (i.e., not encountered in the training).<br>'
-                    + 'If you want you can do the training a second time.</h3><br><br>';
-                break;
-
-            case 2:
-
-                var Title = '<H2 align = "center">PHASE 1</H2>';
-
-                Info = '<h3 align="center">The test of the phase 1 is like the first test of the training.<br><br>'
-                    + 'In each round you have to choose between one of two symbols displayed on either side of the screen.<br>'
-                    + 'You can select one of the two symbols by left-clicking on it.<br>'
-                    + 'After a choice, you can win/lose the following outcomes:<br><br>'
-                    + '1 point = ' + pointsToPence(1).toFixed(2) + ' pence<br>'
-                    + '-1 points = -' + pointsToPence(1).toFixed(2) + ' pence<br><br>'
-                    + 'The outcome of your choice will appear in the location of the symbol you chose.<br>'
-                    + 'The outcome you would have won by choosing the other option will also be displayed.<br><br>'
-                    + 'Please note that only the outcome of your choice will be taken into account in the final payoff.<br><br></H3>'
-                    + 'Click on start when you are ready.</h3><br><br>';
-                break;
-
-        }
-        $('#TextBoxDiv').html(Title + Info);
-
-        var Buttons = '<div align="center"><input align="center" type="button"  class="btn btn-default" id="Back" value="Back" >\n\
-            <input align="center" type="button"  class="btn btn-default" id="Training" value="Play training again" >\n\
-            <input align="center" type="button"  class="btn btn-default" id="Next" value="Next" >\n\
-            <input align="center" type="button"  class="btn btn-default" id="Start" value="Start!" ></div>';
-
-        $('#Bottom').html(Buttons);
-
-        if (pageNum === 1) {
-            $('#Back').hide();
-        } else {
-            $('#Training').hide();
-        }
-
-        if (trainSess === -2)
-            $('#Training').hide();
-
-
-        if (pageNum === nPages) {
-            $('#Next').hide();
-        }
-
-        if (pageNum < nPages) {
-            $('#Start').hide();
-        }
-
-        $('#Back').click(function () {
-
-            $('#TextBoxDiv').remove();
-            $('#Stage').empty();
-            $('#Bottom').empty();
-
-            if (pageNum === 1) {
-            } else {
-                endTraining(sessionNum, phaseNum, pageNum - 1);
-            }
-
-        });
-
-        $('#Training').click(function () {
-
-            $('#TextBoxDiv').remove();
-            $('#Stage').empty();
-            $('#Bottom').empty();
-
-            trainSess--;
-            sumReward[0] = 0;
-            sumReward[1] = 0;
-            sumReward[2] = 0;
-            sumReward[3] = 0;
-            elicitationsStimTraining = shuffle(elicitationsStimTraining);
-            // trainingCondition = shuffle(trainingCondition);
-            // elicitationsStimEVTraining = shuffle(elicitationsStimEVTraining);
-
-            instructions();
-
-        });
-
-        $('#Next').click(function () {
-
-            $('#TextBoxDiv').remove();
-            $('#Stage').empty();
-            $('#Bottom').empty();
-            endTraining(sessionNum, phaseNum, pageNum + 1);
-        });
-
-        $('#Start').click(function () {
-
-            $('#TextBoxDiv').remove();
-            $('#Stage').empty();
-            $('#Bottom').empty();
-
-            ready = 'Ready...';
-            steady = 'Steady...';
-            go = 'Go!';
-
-            $('#TextBoxDiv').remove();
-            $('#Stage').empty();
-            $('#Bottom').empty();
-            setTimeout(function () {
-                $('#Stage').html('<H1 align = "center">' + ready + '</H1>');
-                setTimeout(function () {
-                    $('#Stage').html('<H1 align = "center">' + steady + '</H1>');
-                    setTimeout(function () {
-                        $('#Stage').html('<H1 align = "center">' + go + '</H1>');
-                        setTimeout(function () {
-                            $('#Stage').empty();
-                            playSessions(0, 0, phaseNum);
-                        }, 1000);
-                    }, 1000);
-                }, 1000);
-            }, 10);
-        });
-    }
-
-    function getOptions(id1, id2, img) {
-
-        var option1 = img[id1];
-        option1.id = "option1";
-        option1 = option1.outerHTML;
-
-        var option2 = img[id2];
-        option2.id = "option2";
-        option2 = option2.outerHTML;
-
-        var feedback1 = feedbackImg["empty"];
-        feedback1.id = "feedback1";
-        feedback1 = feedback1.outerHTML;
-
-        var feedback2 = feedbackImg["empty"];
+        let feedback2 = feedbackImg["empty"];
         feedback2.id = "feedback2";
         feedback2 = feedback2.outerHTML;
 
         return [option1, option2, feedback1, feedback2]
-    }
+    };
 
-    function displayOptions(option1, option2, feedback1, feedback2, invertedPosition) {
+    this.displayOptions = function (option1, option2, feedback1, feedback2, invertedPosition) {
 
-        var Title = '<div id = "Title"><H2 align = "center"> <br><br><br><br></H2></div>';
+        let Title = '<div id = "Title"><H2 align = "center"> <br><br><br><br></H2></div>';
 
-        var canvas1 = '<canvas id="canvas1" height="620"' +
+        let canvas1 = '<canvas id="canvas1" height="620"' +
             ' width="620" class="img-responsive center-block"' +
             ' style="border: 5px solid transparent; position: relative; top: 0px;">';
 
-        var canvas2 = '<canvas id="canvas2" height="620"' +
+        let canvas2 = '<canvas id="canvas2" height="620"' +
             ' width="620" class="img-responsive center-block"' +
             ' style="border: 5px solid transparent; position: relative; top: 0px;">';
 
-        options = [[option1, option2], [option2, option1]][+(invertedPosition)];
-        feedbacks = [[feedback1, feedback2], [feedback2, feedback1]][+(invertedPosition)];
-        canvas = [[canvas1, canvas2], [canvas2, canvas1]][+(invertedPosition)];
+        let options = [[option1, option2], [option2, option1]][+(invertedPosition)];
+        let feedbacks = [[feedback1, feedback2], [feedback2, feedback1]][+(invertedPosition)];
+        let canvas = [[canvas1, canvas2], [canvas2, canvas1]][+(invertedPosition)];
 
         /* Create canevas for the slot machine effect, of the size of the images */
-        var Images = '<div id = "stimrow" class="row" style= "transform: translate(0%, -100%);position:relative"> ' +
+        let Images = '<div id = "stimrow" class="row" style= "transform: translate(0%, -100%);position:relative"> ' +
             '<div class="col-xs-1 col-md-1"></div>  <div class="col-xs-3 col-md-3">'
             + options[0] + '</div><div id = "Middle" class="col-xs-4 col-md-4"></div>' +
             '<div class="col-xs-3 col-md-3">' + options[1] + '</div><div class="col-xs-1 col-md-1"></div></div>';
 
-        var Feedback = '<div id = "fbrow" class="row" style= "transform: translate(0%, 0%);position:relative"> ' +
+        let Feedback = '<div id = "fbrow" class="row" style= "transform: translate(0%, 0%);position:relative"> ' +
             '<div class="col-xs-1 col-md-1"></div>  <div class="col-xs-3 col-md-3">' + feedbacks[0] + '' +
             '</div><div id = "Middle" class="col-xs-4 col-md-4"></div><div class="col-xs-3 col-md-3">'
             + feedbacks[1] + '</div><div class="col-xs-1 col-md-1"></div></div>';
 
-        var myCanvas = '<div id = "cvrow" class="row" style= "transform: translate(0%, -200%);position:relative">' +
+        let myCanvas = '<div id = "cvrow" class="row" style= "transform: translate(0%, -200%);position:relative">' +
             '    <div class="col-xs-1 col-md-1"></div>  <div class="col-xs-3 col-md-3">'
             + canvas[0] + '</div><div id = "Middle" class="col-xs-4 col-md-4"></div><div class="col-xs-3 col-md-3">'
             + canvas[1] + '</div><div class="col-xs-1 col-md-1"></div></div>';
 
         return Title + Feedback + Images + myCanvas
-    }
+    };
 
-    function playElicitation(sessionNum, trialNum, elicitationType, phaseNum) {
+    this.displayOptionSlider = function(option) {
+        var canvas1 = '<canvas id="canvas1" height="620"' +
+            ' width="620" class="img-responsive center-block"' +
+            ' style="border: 5px solid transparent; position: relative; top: 0px;">';
 
-        if ($('#TextBoxDiv').length === 0) {
-            createDiv('Stage', 'TextBoxDiv');
-        }
+        var canvas2 = '<canvas id="canvas2" height="620"' +
+            ' width="620" class="img-responsive center-block"' +
+            ' style="border: 5px solid transparent; position: relative; top: 0px;">';
 
-        if ([0, 1].includes(elicitationType)) {
+        var myCanvas = '<div id = "cvrow" class="row" style= "transform: translate(0%, -200%);position:relative">' +
+            '    <div class="col-xs-1 col-md-1"></div>  <div class="col-xs-3 col-md-3">'
+            + canvas1 + '</div><div id = "Middle" class="col-xs-4 col-md-4"></div><div class="col-xs-3 col-md-3">'
+            + canvas2 + '</div><div class="col-xs-1 col-md-1"></div></div>';
 
-            var isCatchTrial = 0;
+        var Title = '<div id = "Title"><H2 align = "center">What are the odds this symbol gives a +1?<br><br><br><br></H2></div>';
+        var Images = '<div id = "stimrow" style="transform: translate(0%, -100%);position:relative"> ' +
+            '<div class="col-xs-1 col-md-1"></div>  <div class="col-xs-3 col-md-3">'
+            + '</div><div id = "Middle" class="col-xs-4 col-md-4">' + option + '</div></div>';
 
-            if ([-1, -2].includes(sessionNum)) {
-                var stimIdx1 = elicitationsStimEVTraining[trialNum][0];
-                var stimIdx2 = elicitationsStimEVTraining[trialNum][1];
-                var img = trainingImg;
+        var initvalue = range(25, 75, 5)[Math.floor(Math.random() * 10)];
 
-            } else {
-                var params = {
-                    stimIdx1: elicitationsStimEV[trialNum][0],
-                    stimIdx2: elicitationsStimEV[trialNum][1],
-                    p1: elicitationsStimEV[trialNum][2],
-                    contIdx1: elicitationsStimEV[trialNum][3],
-                    ev1: elicitationsStimEV[trialNum][4],
-                    p2: elicitationsStimEV[trialNum][5],
-                    contIdx2: elicitationsStimEV[trialNum][6],
-                    ev2: elicitationsStimEV[trialNum][7],
-                    r1: [-1, 1],
-                };
-                var img = images;
+        var Slider = '<main>\n' +
+            '  <form id="form">\n' +
+            '    <h2>\n' +
+            '    </h2>\n' +
+            '    <div class="range">\n' +
+            '      <input id="slider" name="range" type="range" value="' + initvalue + '" min="0" max="100" step="5">\n' +
+            '      <div class="range-output">\n' +
+            '        <output id="output" class="output" name="output" for="range">\n' +
+            '          ' + initvalue + '%\n' +
+            '        </output>\n' +
+            '      </div>\n' +
+            '    </div>\n' +
+            '  </form>\n' +
+            '</main>\n' +
+            '<br><br><div align="center"><button id="ok" class="btn btn-default btn-lg">Ok</button></div>';
 
+        return Title + Images + myCanvas + Slider;
+    };
+
+    this.slideCard = function (pic, cv, showFeedback = true) {
+        var img = new Image();
+        img.src = pic.src;
+        img.width = pic.width;
+        img.height = pic.height;
+
+        var speed = 3; /*plus elle est basse, plus c'est rapide*/
+        var y = 0; /*décalage vertical*/
+
+        /*Programme principal*/
+
+        var dy = 10;
+        var x = 0;
+        var ctx;
+
+        img.onload = function () {
+
+            canvas = cv;
+            ctx = cv.getContext('2d');
+
+            canvas.width = img.width;
+            canvas.height = img.height;
+
+            var scroll = setInterval(draw, speed);
+
+            if (showFeedback) {
+                setTimeout(function () {
+                    pic.style.visibility = "hidden";
+                    clearInterval(scroll);
+                    ctx.clearRect(0, 0, canvas.width, canvas.height);
+                }, 1000);
             }
 
-            [option1, option2, feedback1, feedback2] = getOptions(
-                params["stimIdx1"],
-                params["stimIdx2"],
-                img
-            );
+        };
 
-            var invertedPosition = +(Math.random() < 0.5);
+        function draw() {
 
-            var str = displayOptions(option1, option2, feedback1, feedback2, invertedPosition);
+            ctx.clearRect(0, 0, canvas.width, canvas.height); /* clear the canvas*/
 
-            $('#TextBoxDiv').html(str);
-            
-            $('#canvas1').click(function () {
-                if (clickDisabled)
-                    return;
-                clickDisabled = true;
-                var choice = 1;
-                getReward(choice, false, params);
-                document.getElementById("canvas1").style.borderColor = "black";
-            });
+            if (y > img.height) {
+                y = -img.height + y;
+            }
 
-            $('#canvas2').click(function () {
-                if (clickDisabled)
-                    return;
-                clickDisabled = true;
-                var choice = 2;
-                getReward(choice, false, params);
-                document.getElementById("canvas2").style.borderColor = "black";
-            });
+            if (y > 0) {
+                ctx.drawImage(img, x, -img.height + y, img.width, img.height);
+            }
+
+            ctx.drawImage(img, x, y, img.width, img.height);
+
+            y += dy;
+        }
+    }
+}
+
+
+function ElicitationLottery(
+    {
+        expName,
+        expID,
+        subID,
+        online,
+        trialObj,
+        imgObj,
+        sessionNum,
+        phaseNum,
+        feedbackDuration,
+        elicitationType,
+        feedbackObj,
+        totalReward,
+        Gui,
+        nextFunc,
+        nextParams
+    } = {}) {
+
+    // members
+    this.expName = expName;
+    this.expID = expID;
+    this.subID = subID;
+    this.online = online;
+    this.trialObj = trialObj;
+    this.nTrial = trialObj.length;
+    this.feedbackObj = feedbackObj;
+    this.sessionNum = sessionNum;
+    this.phaseNum = phaseNum;
+    this.imgObj = imgObj;
+    this.trialNum = 0;
+    this.gui = Gui;
+    this.invertedPosition = shuffle(
+        Array.from(Array(this.nTrial), x => randint(0, 1))
+    );
+    this.sumReward = [];
+    this.feedbackDuration = feedbackDuration;
+    this.totalReward = totalReward;
+    this.elicitationType = elicitationType;
+
+    this.nextFunc = nextFunc;
+    this.nextParams = nextParams;
+
+    /* =================== public methods ================== */
+
+    this.run = function () {
+
+        this.gui.init();
+
+        trialObj = this.trialObj[this.trialNum];
+
+        var ChoiceTime = (new Date()).getTime();
+
+
+        if ([-1, -2].includes(this.sessionNum)) {
+            let stimIdx1 = trialObj[0];
+            let stimIdx2 = trialObj[1];
 
         } else {
-            if ([-1, -2].includes(sessionNum)) {
-                var stimIdx = elicitationsStimTraining[trialNum];
-                var img = trainingImg;
-            } else {
-                var stimIdx = elicitationsStim[trialNum];
-                var img = images;
-            }
-
-            option1 = img[stimIdx];
-            option1.id = "option1";
-            option1 = option1.outerHTML;
-
-            var Title = '<div id = "Title"><H2 align = "center">What are the odds this symbol gives a +1?<br><br><br><br></H2></div>';
-            var Images = '<div id = "stimrow" style="transform: translate(0%, -100%);position:relative"> ' +
-                '<div class="col-xs-1 col-md-1"></div>  <div class="col-xs-3 col-md-3">'
-                + '</div><div id = "Middle" class="col-xs-4 col-md-4">' + option1 + '</div></div>';
-
-            var initvalue = range(25, 75, 5)[Math.floor(Math.random() * 10)];
-
-            var Slider = '<main>\n' +
-                '  <form id="form">\n' +
-                '    <h2>\n' +
-                '    </h2>\n' +
-                '    <div class="range">\n' +
-                '      <input id="slider" name="range" type="range" value="' + initvalue + '" min="0" max="100" step="5">\n' +
-                '      <div class="range-output">\n' +
-                '        <output id="output" class="output" name="output" for="range">\n' +
-                '          ' + initvalue + '%\n' +
-                '        </output>\n' +
-                '      </div>\n' +
-                '    </div>\n' +
-                '  </form>\n' +
-                '</main>\n' +
-                '<br><br><div align="center"><button id="ok" class="btn btn-default btn-lg">Ok</button></div>';
-            $('#TextBoxDiv').html(Title + Images + myCanvas + Slider);
-
-            rangeInputRun();
-
-            var slider = document.getElementById('slider');
-            var output = document.getElementById('output');
-            var ok = document.getElementById('ok');
-            var form = document.getElementById('form');
-            var clickDisabled = false;
-
-            form.oninput = function () {
-                output.value = slider.valueAsNumber;
-                output.innerHTML += "%";
-            };
-
-            ok.onclick = function () {
-                if (!clickDisabled) {
-                    clickDisabled = true;
-                    var choice = slider.value;
-                    getReward(choice, true, ev1)
-                }
+            params = {
+                stimIdx1: trialObj[0],
+                stimIdx2: trialObj[1],
+                p1: trialObj[2],
+                contIdx1: trialObj[3],
+                ev1: trialObj[4],
+                p2: trialObj[5],
+                contIdx2: trialObj[6],
+                ev2: trialObj[7],
+                isCatchTrial: trialObj[trialObj.length - 1],
+                r1: [-1, 1],
+                choiceTime: ChoiceTime
             };
 
         }
 
-        function getReward(choice, slider = false, params) {
+        [option1, option2, feedback1, feedback2] = this.gui.getOptions(
+            params["stimIdx1"],
+            params["stimIdx2"],
+            this.imgObj,
+            this.feedbackObj
+        );
 
-            var reactionTime = (new Date()).getTime();
-            // if ([-1, -2].includes(sessionNum)) {
-            //     var symValueMap = symbolValueMapTraining;
-            // } else {
-            //     var symValueMap = symbolValueMap;
-            // }
+        let str = this.gui.displayOptions(
+            option1,
+            option2,
+            feedback1,
+            feedback2,
+            this.invertedPosition[this.trialNum]
+        );
 
-            var elicDistance = -1;
+        $('#TextBoxDiv').html(str);
 
-            // if (!isCatchTrial) {
-            //     var p1 = symValueMap[stimIdx][0];
-            //     var contIdx1 = symValueMap[stimIdx][1];
-            //     var r1 = [-1, 1];
-            //     var ev1 = sum([p1[0] * r1[0], p1[1] * r1[1]]);
-            // } else {
-            //     var contIdx1 = expectedValueMap[ev1.toString()][1];
-            //     var p1 = expectedValueMap[ev1.toString()][0];
-            //     var r1 = [-1, 1];
-            // }
+        $('#canvas1').click({obj: this}, function (event) {
+            if (this.clickDisabled)
+                return;
+            this.clickDisabled = true;
+            event.data.obj.getReward(1, params);
+            document.getElementById("canvas1").style.borderColor = "black";
+            event.data.obj.next();
+        });
 
-            if (slider) {
-                var pLottery = Math.random().toFixed(2);
-                if (pLottery < (choice / 100)) {
-                    var thisReward = r1[+(Math.random() < p1[1])];
-                } else {
-                    var thisReward = r1[+(Math.random() < pLottery)]
-                }
-                var otherReward = -1;
+        $('#canvas2').click({obj: this}, function (event) {
+            if (this.clickDisabled)
+                return;
+            this.clickDisabled = true;
+            event.data.obj.getReward(2, params);
+            document.getElementById("canvas2").style.borderColor = "black";
+            event.data.obj.next();
+        });
 
-                var correctChoice = +((choice / 100) === p1[1]);
-                var elicDistance = Math.abs(choice - p1[1] * 100);
+    };
 
-                var ev2 = -1;
-                var contIdx2 = -1;
-                var p2 = -1;
-                var leftRight = -1;
+    /* =================== private methods ================== */
 
-            } else {
-                p1 = params["p1"];
-                p2 = params["p2"];
-                ev1 = params["ev1"];
-                ev2 = params["ev2"];
-                contIdx1 = params["contIdx1"];
-                contIdx2 = params["contIdx2"];
-                r1 = params["r1"];
-                // var ev2 = stimIdx2;
-                // var contIdx2 = expectedValueMap[ev2.toString()][1];
-                // var p2 = expectedValueMap[ev2.toString()][0];
-                var leftRight = -1;
+    this.getReward = function (choice, params) {
 
-                if ((invertedPosition && (choice === 1)) || (!invertedPosition && (choice === 2))) {
-                    leftRight = 1;
-                }
+        let reactionTime = (new Date()).getTime();
+        let invertedPosition = this.invertedPosition[this.trialNum];
+        let elicDistance = -1;
 
-                ev1 = Math.round(ev1 * 100) / 100;
-                ev2 = Math.round(ev2 * 100) / 100;
+        p1 = params["p1"];
+        p2 = params["p2"];
+        ev1 = params["ev1"];
+        ev2 = params["ev2"];
+        contIdx1 = params["contIdx1"];
+        contIdx2 = params["contIdx2"];
+        r1 = params["r1"];
 
-                if (choice === 1) { /*option1*/
-                    var thisReward = r1[+(Math.random() < p1[1])];
-                    var otherReward = r1[+(Math.random() < p2[1])];
-                    var correctChoice = +(ev1 >= ev2);
-                } else { /*option2*/
-                    var thisReward = r1[+(Math.random() < p2[1])];
-                    var otherReward = r1[+(Math.random() < p1[1])];
-                    var correctChoice = +(ev2 >= ev1);
-                }
-                var pic1 = document.getElementById("option1");
-                var pic2 = document.getElementById("option2");
+        var leftRight = -1;
 
-                var cv1 = document.getElementById("canvas1");
-                var cv2 = document.getElementById("canvas2");
-
-                if (choice === 1) {
-                    setTimeout(function () {
-                        slideCard(pic1, cv1);
-                    }, 500)
-
-
-                } else {
-                    setTimeout(function () {
-                        slideCard(pic2, cv2);
-                    }, 500)
-
-                }
-            }
-
-            sumReward[phaseNum] += thisReward;
-
-            if (!([-1, -2].includes(sessionNum)))
-                totalReward += thisReward;
-
-            if (offline === 0) sendLearnDataDB(0);
-
-            next();
-
-            function slideCard(pic, cv) {  /* faire défiler la carte pour decouvrir le feedback */
-
-                var img = new Image();
-                img.src = pic.src;
-                img.width = pic.width;
-                img.height = pic.height;
-
-                var speed = 3; /*plus elle est basse, plus c'est rapide*/
-                var y = 0; /*décalage vertical*/
-
-                /*Programme principal*/
-
-                var dy = 10;
-                var x = 0;
-                var ctx;
-
-                img.onload = function () {
-
-                    canvas = cv;
-                    ctx = cv.getContext('2d');
-
-                    canvas.width = img.width;
-                    canvas.height = img.height;
-
-                    var scroll = setInterval(draw, speed);
-
-                };
-
-                function draw() {
-
-                    ctx.clearRect(0, 0, canvas.width, canvas.height); /* clear the canvas*/
-
-                    if (y > img.height) {
-                        y = -img.height + y;
-                    }
-
-                    if (y > 0) {
-                        ctx.drawImage(img, x, -img.height + y, img.width, img.height);
-                    }
-
-                    ctx.drawImage(img, x, y, img.width, img.height);
-
-                    /*quantité à déplacer*/
-                    y += dy;
-                }
-            }
-
-            function sendLearnDataDB(call) {
-                wtest = 1;
-
-                $.ajax({
-                    type: 'POST',
-                    data: {
-                        exp: expName,
-                        expID: expID,
-                        id: subID,
-                        test: wtest,
-                        trial: trialNum,
-                        elicitation_type: elicitationType,
-                        cont_idx_1: contIdx1,
-                        cont_idx_2: contIdx2,
-                        condition: -1,
-                        symL: -1, //tochange
-                        symR: -1, //tochange
-                        choice: choice, //tochange
-                        correct_choice: correctChoice, //tochange
-                        outcome: thisReward, //tochange
-                        cf_outcome: otherReward, //tochange
-                        choice_left_right: leftRight, //tochange
-                        reaction_time: reactionTime - choiceTime,
-                        reward: totalReward, //tochange
-                        session: sessionNum, //tochange
-                        p1: p1[1], //tochange//
-                        p2: p2[1], //tochange
-                        option1: -1, //tochange
-                        option2: -1, //tochange
-                        ev1: Math.round(ev1 * 100) / 100,
-                        ev2: Math.round(ev2 * 100) / 100,
-                        iscatch: isCatchTrial,
-                        inverted: invertedPosition,
-                        choice_time: choiceTime - initTime,
-                        elic_distance: elicDistance,
-                        p_lottery: pLottery
-                    },
-                    async: true,
-                    url: 'php/InsertLearningDataDB.php',
-                    success: function (r) {
-
-                        if (r[0].ErrorNo > 0 && call + 1 < maxDBCalls) {
-                            sendLearnDataDB(call + 1);
-                        }
-                    },
-                    error: function (XMLHttpRequest, textStatus, errorThrown) {
-
-                        if (call + 1 < maxDBCalls) {
-                            sendLearnDataDB(call + 1);
-                        }
-                    }
-                });
-            }
-
-            return thisReward;
+        if ((invertedPosition && (choice === 1)) || (!invertedPosition && (choice === 2))) {
+            leftRight = 1;
         }
 
-        function next() {
-            trialNum++;
-            if ([0, 1].includes(elicitationType)) {
-                if ([-1, -2].includes(sessionNum)) {
-                    var nTrialPerElicitation = nTrialPerElicitationChoiceTraining;
-                } else {
-                    var nTrialPerElicitation = nTrialPerElicitationChoice;
-                }
-            } else {
-                if ([-1, -2].includes(sessionNum)) {
-                    var nTrialPerElicitation = nTrialPerElicitationSliderTraining;
-                } else {
-                    var nTrialPerElicitation = nTrialPerElicitationSlider;
-                }
-            }
-            if (elicitationType === 2) {
-                var fbdur = 200;
-            } else {
-                var fbdur = feedbackDuration;
-            }
-            if (trialNum < nTrialPerElicitation) {
-                setTimeout(function () {
-                    $('#stimrow').fadeOut(500);
-                    $('#fbrow').fadeOut(500);
-                    $('#cvrow').fadeOut(500);
-                    $('main').fadeOut(500);
+        ev1 = Math.round(ev1 * 100) / 100;
+        ev2 = Math.round(ev2 * 100) / 100;
 
-                    setTimeout(function () {
-                        clickDisabled = false;
-                        playElicitation(sessionNum, trialNum, elicitationType, phaseNum);
-                    }, 500);
-                }, fbdur);
-            } else {
-                trialNum = 0;
-                setTimeout(function () {
+        if (choice === 1) { /*option1*/
+            var thisReward = r1[+(Math.random() < p1[1])];
+            var otherReward = r1[+(Math.random() < p2[1])];
+            var correctChoice = +(ev1 >= ev2);
+        } else { /*option2*/
+            var thisReward = r1[+(Math.random() < p2[1])];
+            var otherReward = r1[+(Math.random() < p1[1])];
+            var correctChoice = +(ev2 >= ev1);
+        }
+
+        let pic1 = document.getElementById("option1");
+        let pic2 = document.getElementById("option2");
+
+        let cv1 = document.getElementById("canvas1");
+        let cv2 = document.getElementById("canvas2");
+
+        let pic = [pic2, pic1][+(choice === 1)];
+        let cv = [cv2, cv1][+(choice === 1)];
+
+        setTimeout(function (event) {
+            event.obj.gui.slideCard(pic, cv, false);
+        }, 500, {obj: this});
+
+        this.sumReward[this.phaseNum] += thisReward;
+
+        if (!([-1, -2].includes(this.sessionNum)))
+            this.totalReward += thisReward;
+
+        if (this.online) {
+            sendToDB(0,
+                {
+                    exp: this.expName,
+                    expID: this.expID,
+                    id: this.subID,
+                    test: 0,
+                    trial: this.trialNum,
+                    elicitation_type: this.elicitationType,
+                    cont_idx_1: contIdx1,
+                    cont_idx_2: contIdx2,
+                    condition: -1,
+                    symL: -1,
+                    symR: -1,
+                    choice: choice,
+                    correct_choice: correctChoice,
+                    outcome: thisReward,
+                    cf_outcome: otherReward,
+                    choice_left_right: leftRight,
+                    reaction_time: reactionTime - params["choiceTime"],
+                    reward: totalReward,
+                    session: this.sessionNum,
+                    p1: p1[1],
+                    p2: p2[1],
+                    option1: -1,
+                    option2: -1,
+                    ev1: Math.round(ev1 * 100) / 100,
+                    ev2: Math.round(ev2 * 100) / 100,
+                    iscatch: params["isCatchTrial"],
+                    inverted: invertedPosition,
+                    choice_time: -1,
+                    elic_distance: elicDistance,
+                    p_lottery: -1
+                },
+                'php/InsertLearningDataDB.php'
+            );
+        }
+    };
+
+    this.next = function () {
+        this.trialNum++;
+        let fbdur = 2000;
+        if (this.trialNum < this.nTrial) {
+            setTimeout(function (event) {
+                $('#stimrow').fadeOut(500);
+                $('#fbrow').fadeOut(500);
+                $('#cvrow').fadeOut(500);
+                $('main').fadeOut(500);
+                setTimeout(function (event) {
+                    event.obj.run();
+                }, 500, {obj: event.obj});
+            }, fbdur, {obj: this});
+        } else {
+            setTimeout(function (event) {
                     $('#TextBoxDiv').fadeOut(500);
-                    setTimeout(function () {
+                    setTimeout(function (event) {
                         $('#Stage').empty();
                         $('#Bottom').empty();
-                        clickDisabled = false;
-                        switch (phaseNum) {
-                            case 2:
-                                phaseNum++;
-                                startElicitation(sessionNum, true, 2, phaseNum);
-                                break;
-                            case 3:
-                                phaseNum++;
-                                endTraining(0, phaseNum);
-                                break;
-                            case 5:
-                                phaseNum++;
-                                startElicitation(sessionNum, false, 2, phaseNum);
-                                break;
-                            case 6:
-                                if (questionnaire) {
-                                    startQuestionnaire();
-                                } else {
-                                    endExperiment();
-                                }
-                                break;
-                        }
-                    }, 500);
-                }, fbdur);
-            }
+                        event.obj.nextFunc(event.obj.nextParams);
+                    }, event.obj.feedbackDuration, {obj: event.obj})
+                }, this.feedbackDuration, {obj: this}
+            );
         }
-    }
+    };
+}
+
+function ElicitationSlider(
+    {
+        expName,
+        expID,
+        subID,
+        online,
+        trialObj,
+        imgObj,
+        sessionNum,
+        phaseNum,
+        feedbackDuration,
+        feedbackObj,
+        totalReward,
+        Gui,
+        elicitationType,
+        nextFunc,
+        nextParams
+    } = {}) {
+
+    // members
+    this.expName = expName;
+    this.expID = expID;
+    this.subID = subID;
+    this.online = online;
+    this.trialObj = trialObj;
+    this.nTrial = trialObj.length;
+    this.feedbackObj = feedbackObj;
+    this.sessionNum = sessionNum;
+    this.phaseNum = phaseNum;
+    this.imgObj = imgObj;
+    this.trialNum = 0;
+    this.gui = Gui;
+    this.invertedPosition = shuffle(
+        Array.from(Array(this.nTrial), x => randint(0, 1))
+    );
+    this.sumReward = [];
+    this.feedbackDuration = feedbackDuration;
+    this.totalReward = totalReward;
+    this.elicitationType = elicitationType;
+    this.nextFunc = nextFunc;
+    this.nextParams= nextParams;
+
+    /* =================== public methods ================== */
+
+    this.run = function () {
+
+        this.gui.init();
+
+        trialObj = this.trialObj[this.trialNum];
+
+        ChoiceTime = (new Date()).getTime();
+
+        params = {
+            stimIdx: trialObj[0],
+            p1: trialObj[1],
+            ev1: trialObj[2],
+            r1: [-1, 1],
+            isCatchTrial: trialObj[trialObj.length - 1],
+            choiceTime: ChoiceTime
+        };
+
+        option1 = this.imgObj[params["stimIdx"]];
+        option1.id = "option1";
+        option1 = option1.outerHTML;
+
+        let str = this.gui.displayOptionSlider(option1);
+
+        $('#TextBoxDiv').html(str);
+
+        rangeInputRun();
+
+        let slider = document.getElementById('slider');
+        let output = document.getElementById('output');
+        let form = document.getElementById('form');
+        this.clickDisabled = false;
+
+        form.oninput = function () {
+            output.value = slider.valueAsNumber;
+            output.innerHTML += "%";
+        };
+
+        $('#ok').click({obj: this}, function (event) {
+            if (!event.data.obj.clickDisabled) {
+                event.data.obj.clickDisabled = true;
+                let choice = slider.value;
+                event.data.obj.getReward(choice,  params);
+                event.data.obj.next();
+            }
+        });
+
+    };
+
+    /* =================== private methods ================== */
+
+    this.getReward = function (choice, params) {
+
+        let reactionTime = (new Date()).getTime();
+        let invertedPosition = this.invertedPosition[this.trialNum];
+
+        ev1 = params["ev1"];
+        p1 = params["p1"];
+        r1 = params["r1"];
+
+        var pLottery = Math.random().toFixed(2);
+        if (pLottery < (choice / 100)) {
+            var thisReward = r1[+(Math.random() < p1[1])];
+        } else {
+            var thisReward = r1[+(Math.random() < pLottery)]
+        }
+        var otherReward = -1;
+
+        var correctChoice = +((choice / 100) === p1[1]);
+        let elicDistance = Math.abs(choice - p1[1] * 100);
+
+        var ev2 = -1;
+        var contIdx2 = -1;
+        var p2 = -1;
+        var leftRight = -1;
+
+        this.sumReward[this.phaseNum] += thisReward;
+
+        if (!([-1, -2].includes(this.sessionNum)))
+            this.totalReward += thisReward;
+
+        if (this.online) {
+            sendToDB(0,
+                {
+                    exp: this.expName,
+                    expID: this.expID,
+                    id: this.subID,
+                    test: 0,
+                    trial: this.trialNum,
+                    elicitation_type: this.elicitationType,
+                    cont_idx_1: contIdx1,
+                    cont_idx_2: contIdx2,
+                    condition: -1,
+                    symL: -1,
+                    symR: -1,
+                    choice: choice,
+                    correct_choice: correctChoice,
+                    outcome: thisReward,
+                    cf_outcome: otherReward,
+                    choice_left_right: leftRight,
+                    reaction_time: reactionTime - params["choiceTime"],
+                    reward: totalReward,
+                    session: this.sessionNum,
+                    p1: p1[1],
+                    p2: p2[1],
+                    option1: -1,
+                    option2: -1,
+                    ev1: Math.round(ev1 * 100) / 100,
+                    ev2: Math.round(ev2 * 100) / 100,
+                    iscatch: params["isCatchTrial"],
+                    inverted: invertedPosition,
+                    choice_time: -1,
+                    elic_distance: elicDistance,
+                    p_lottery: pLottery
+                },
+                'php/InsertLearningDataDB.php'
+            );
+        }
+    };
+
+    this.next = function () {
+        this.trialNum++;
+        let fbdur = this.feedbackDuration;
+        if (this.trialNum < this.nTrial) {
+            setTimeout(function (event) {
+                $('#stimrow').fadeOut(500);
+                $('#fbrow').fadeOut(500);
+                $('#cvrow').fadeOut(500);
+                $('main').fadeOut(500);
+                setTimeout(function (event) {
+                    event.obj.run();
+                }, 500, {obj: event.obj});
+            }, fbdur, {obj: this});
+        } else {
+
+        }
+    };
+}
 
     function playSessions(sessionNum, trialNum, phaseNum) {
 
@@ -1561,7 +1626,7 @@ function main () {
                     slideCard(pic1, cv1);
                 }, 500)
 
-                if (completeFeedback) {
+                if (this.completeFeedback) {
                     fb2.src = feedbackImg['' + otherReward].src;
                     setTimeout(function () {
                         slideCard(pic2, cv2);
@@ -1574,7 +1639,7 @@ function main () {
                     slideCard(pic2, cv2);
                 }, 500)
 
-                if (completeFeedback) {
+                if (this.completeFeedback) {
                     fb1.src = feedbackImg['' + otherReward].src;
                     setTimeout(function () {
                         slideCard(pic1, cv1);
@@ -1587,65 +1652,13 @@ function main () {
 
             next();
 
-            function slideCard(pic, cv) {  /* faire défiler la carte pour decouvrir le feedback */
-
-                var img = new Image();
-                img.src = pic.src;
-                img.width = pic.width;
-                img.height = pic.height;
-
-                var speed = 3; /*plus elle est basse, plus c'est rapide*/
-                var y = 0; /*décalage vertical*/
-
-                /*Programme principal*/
-
-                var dy = 10;
-                var x = 0;
-                var ctx;
-
-                img.onload = function () {
-
-                    canvas = cv;
-                    ctx = cv.getContext('2d');
-
-                    canvas.width = img.width;
-                    canvas.height = img.height;
-
-                    var scroll = setInterval(draw, speed);
-
-                    setTimeout(function () {
-                        pic.style.visibility = "hidden";
-                        clearInterval(scroll);
-                        ctx.clearRect(0, 0, canvas.width, canvas.height);
-                    }, 1000);
-                };
-
-                function draw() {
-
-                    ctx.clearRect(0, 0, canvas.width, canvas.height); /* clear the canvas*/
-
-                    if (y > img.height) {
-                        y = -img.height + y;
-                    }
-
-                    if (y > 0) {
-                        ctx.drawImage(img, x, -img.height + y, img.width, img.height);
-                    }
-
-                    ctx.drawImage(img, x, y, img.width, img.height);
-
-                    /*quantité à déplacer*/
-                    y += dy;
-                }
-            }
-
             function sendLearnDataDB(call) {
                 wtest = 1;
 
                 $.ajax({
                     type: 'POST',
                     data: {
-                        exp: expName,
+                        exp: this.expName,
                         expID: expID,
                         id: subID,
                         test: wtest,
@@ -1724,7 +1737,7 @@ function main () {
         }
     }
 
-    function startElicitation(sessionNum, training, elicitationType, phaseNum, pageNum = 1) {
+    this.startElicitation = function(sessionNum, training, elicitationType, phaseNum, pageNum = 1) {
 
         createDiv('Stage', 'TextBoxDiv');
 
@@ -1872,7 +1885,7 @@ function main () {
 
             if (pageNum === 1) {
             } else {
-                startElicitation(sessionNum, training, elicitationType, phaseNum, pageNum - 1);
+                this.startElicitation(sessionNum, training, elicitationType, phaseNum, pageNum - 1);
             }
 
         });
@@ -1882,7 +1895,7 @@ function main () {
             $('#TextBoxDiv').remove();
             $('#Stage').empty();
             $('#Bottom').empty();
-            startElicitation(sessionNum, training, elicitationType, phaseNum, pageNum + 1);
+            this.startElicitation(sessionNum, training, elicitationType, phaseNum, pageNum + 1);
 
         });
 
@@ -1913,7 +1926,152 @@ function main () {
                         $('#Stage').html('<H1 align = "center">' + go + '</H1>');
                         setTimeout(function () {
                             $('#Stage').empty();
-                            playElicitation(sessionNum, 0, elicitationType, phaseNum);
+                            this.playElicitation(sessionNum, 0, elicitationType, phaseNum);
+                        }, 1000);
+                    }, 1000);
+                }, 1000);
+            }, 10);
+        });
+    };
+    function endTraining(sessionNum, phaseNum, pageNum = 1) {
+
+
+        createDiv('Stage', 'TextBoxDiv');
+
+        var nPages = 2;
+
+        switch (pageNum) {
+
+            case 1:
+                var Title = '<H2 align = "center">END OF THE TRAINING</H2>';
+                var Info = '';
+
+                var totalPoints = sumReward[1] + sumReward[2] + sumReward[3];
+                var pence = pointsToPence(totalPoints).toFixed(2);
+                var pounds = pointsToPounds(totalPoints).toFixed(2);
+
+                var wonlost = ['won', 'lost'][+(totalPoints < 0)];
+
+                Info += '<H3 align="center"> The training is over!<br><br>';
+                Info += 'Overall, in this training, you ' + wonlost + ' ' + totalPoints +
+                    ' points = ' + pence + ' pence = ' + pounds + ' pounds!<br><br>';
+
+                Info += 'Test 1: ' + sumReward[1] + '<br>';
+                Info += 'Test 2: ' + sumReward[2] + '<br>';
+                Info += 'Test 3: ' + sumReward[3] + '<br>';
+
+                Info += 'Now, you are about to start the first phase of the experiment.<br> Note that from now on the points will be counted in your final payoff.'
+                    + ' Also note that the experiment includes much more trials and more points are at stake, compared to the training.<br>'
+                    + 'Finally note that the real test will involve different symbols (i.e., not encountered in the training).<br>'
+                    + 'If you want you can do the training a second time.</h3><br><br>';
+                break;
+
+            case 2:
+
+                var Title = '<H2 align = "center">PHASE 1</H2>';
+
+                Info = '<h3 align="center">The test of the phase 1 is like the first test of the training.<br><br>'
+                    + 'In each round you have to choose between one of two symbols displayed on either side of the screen.<br>'
+                    + 'You can select one of the two symbols by left-clicking on it.<br>'
+                    + 'After a choice, you can win/lose the following outcomes:<br><br>'
+                    + '1 point = ' + pointsToPence(1).toFixed(2) + ' pence<br>'
+                    + '-1 points = -' + pointsToPence(1).toFixed(2) + ' pence<br><br>'
+                    + 'The outcome of your choice will appear in the location of the symbol you chose.<br>'
+                    + 'The outcome you would have won by choosing the other option will also be displayed.<br><br>'
+                    + 'Please note that only the outcome of your choice will be taken into account in the final payoff.<br><br></H3>'
+                    + 'Click on start when you are ready.</h3><br><br>';
+                break;
+
+        }
+        $('#TextBoxDiv').html(Title + Info);
+
+        var Buttons = '<div align="center"><input align="center" type="button"  class="btn btn-default" id="Back" value="Back" >\n\
+            <input align="center" type="button"  class="btn btn-default" id="Training" value="Play training again" >\n\
+            <input align="center" type="button"  class="btn btn-default" id="Next" value="Next" >\n\
+            <input align="center" type="button"  class="btn btn-default" id="Start" value="Start!" ></div>';
+
+        $('#Bottom').html(Buttons);
+
+        if (pageNum === 1) {
+            $('#Back').hide();
+        } else {
+            $('#Training').hide();
+        }
+
+        if (trainSess === -2)
+            $('#Training').hide();
+
+
+        if (pageNum === nPages) {
+            $('#Next').hide();
+        }
+
+        if (pageNum < nPages) {
+            $('#Start').hide();
+        }
+
+        $('#Back').click(function () {
+
+            $('#TextBoxDiv').remove();
+            $('#Stage').empty();
+            $('#Bottom').empty();
+
+            if (pageNum === 1) {
+            } else {
+                endTraining(sessionNum, phaseNum, pageNum - 1);
+            }
+
+        });
+
+        $('#Training').click(function () {
+
+            $('#TextBoxDiv').remove();
+            $('#Stage').empty();
+            $('#Bottom').empty();
+
+            trainSess--;
+            sumReward[0] = 0;
+            sumReward[1] = 0;
+            sumReward[2] = 0;
+            sumReward[3] = 0;
+            elicitationsStimTraining = shuffle(elicitationsStimTraining);
+            // trainingCondition = shuffle(trainingCondition);
+            // elicitationsStimEVTraining = shuffle(elicitationsStimEVTraining);
+
+            instructions();
+
+        });
+
+        $('#Next').click(function () {
+
+            $('#TextBoxDiv').remove();
+            $('#Stage').empty();
+            $('#Bottom').empty();
+            endTraining(sessionNum, phaseNum, pageNum + 1);
+        });
+
+        $('#Start').click(function () {
+
+            $('#TextBoxDiv').remove();
+            $('#Stage').empty();
+            $('#Bottom').empty();
+
+            ready = 'Ready...';
+            steady = 'Steady...';
+            go = 'Go!';
+
+            $('#TextBoxDiv').remove();
+            $('#Stage').empty();
+            $('#Bottom').empty();
+            setTimeout(function () {
+                $('#Stage').html('<H1 align = "center">' + ready + '</H1>');
+                setTimeout(function () {
+                    $('#Stage').html('<H1 align = "center">' + steady + '</H1>');
+                    setTimeout(function () {
+                        $('#Stage').html('<H1 align = "center">' + go + '</H1>');
+                        setTimeout(function () {
+                            $('#Stage').empty();
+                            playSessions(0, 0, phaseNum);
                         }, 1000);
                     }, 1000);
                 }, 1000);
@@ -1945,35 +2103,38 @@ function main () {
     //  Non-game / display text functions
     // ------------------------------------------------------------------------------------------------------------------------------------------ //
 
-    function getUserID() {
+function Instructions({exp, gui}) {
+    this.exp = exp;
+    this.gui = gui;
+
+    this.setUserID = function (nextFunc, nextParams) {
 
         createDiv('Stage', 'TextBoxDiv');
 
-        var Title = '<H3 align = "center">Please enter your Prolific ID: <input type="text" id = "textbox_id" name="ID"></H3>';
-        var Buttons = '<div align="center"><input align="center" type="button"  class="btn btn-default" id="toConsent" value="Next" ></div>';
+        let Title = '<H3 align = "center">Please enter your Prolific ID: <input type="text" id = "textbox_id" name="ID"></H3>';
+        let Buttons = '<div align="center"><input align="center" type="button"  class="btn btn-default" id="toConsent" value="Next" ></div>';
 
-        var TextInput = '';
+        let TextInput = '';
+
         $('#TextBoxDiv').html(Title + TextInput);
 
         $('#Bottom').html(Buttons);
 
-        $('#toConsent').click(function () {
+        $('#toConsent').click({obj: this}, function (event) {
 
             if (document.getElementById('textbox_id').value !== '') {
-
-                subID = document.getElementById('textbox_id').value;
+                event.data.obj.exp.subID = document.getElementById('textbox_id').value;
                 $('#TextBoxDiv').remove();
                 $('#Stage').empty();
                 $('#Bottom').empty();
-                consent();
+                nextFunc(nextParams);
             } else {
                 alert('You must enter your Prolific ID.');
             }
         });
+    };
 
-    }
-
-    function consent() {
+    this.displayConsent = function (nextFunc, nextParams) {
 
         createDiv('Stage', 'TextBoxDiv');
 
@@ -2023,68 +2184,67 @@ function main () {
                 $('#TextBoxDiv').remove();
                 $('#Stage').empty();
                 $('#Bottom').empty();
-                instructions();
+                nextFunc(nextParams);
             }
         });
-    }  /* function consent() */
+    };  /* function consent() */
 
-    function instructions(pageNum = 1) {
+    this.displayInstruction = function (pageNum, nextFunc, nextParams) {
 
-        var nPages = 5;
+        let nPages = 5;
 
         createDiv('Stage', 'TextBoxDiv');
 
-        var Title = '<H2 align = "center">INSTRUCTIONS</H2>';
+        Title = '<H2 align = "center">INSTRUCTIONS</H2>';
 
         switch (pageNum) {
 
             case 1:
-                var Info = '<H3 align = "center">This experiment is composed of 4 phases.<br><br>'
+                Info = '<H3 align = "center">This experiment is composed of 4 phases.<br><br>'
                     + 'The first three phases consist in different cognitive tests.<br><br>'
                     + 'There will be a training session composed of shorter versions of the 3 phases before the actual experiment starts.<br>'
                     + '<br><br> </H3>';
                 break;
 
             case 2:
-                var Info = '<H3 align = "center">In addition of the fixed compensation provided by Profilic, you have been endowed with an additional 2.5 pounds. '
+                Info = '<H3 align = "center">In addition of the fixed compensation provided by Profilic, you have been endowed with an additional 2.5 pounds. '
                     + '<br><br>Depending on your choices you can either double this endowment or lose it.<br><br>Following experimental economics methodological standards, no deception is involved concerning the calculation of the final payoff.'
-                    + '<br> Across the three phases of the experiment, you can win a bonus up to ' + maxPoints + ' points = ' + pointsToPounds(maxPoints).toFixed(2) + ' pounds!';
+                    + '<br> Across the three phases of the experiment, you can win a bonus up to ' + this.exp.maxPoints + ' points = ' + this.exp.pointsToPounds(this.exp.maxPoints).toFixed(2) + ' pounds!';
                 break;
 
             case 3:
-                var Info = '<H3 align = "center"><b>Instructions for the first test (1/2)</b><br><br>'
+                Info = '<H3 align = "center"><b>Instructions for the first test (1/2)</b><br><br>'
                     + 'In each round you have to choose between one of two symbols displayed on either side of the screen.<br><br>'
                     + 'You can select one of the two symbols by left-clicking on it. <br><br>'
                     + 'After a choice, you can win/lose the following outcomes:<br><br>'
-                    + '1 point = +' + pointsToPence(1).toFixed(2) + ' pence<br>'
-                    + '-1 points = -' + pointsToPence(1).toFixed(2) + ' pence<br><br>'
+                    + '1 point = +' + this.exp.pointsToPence(1).toFixed(2) + ' pence<br>'
+                    + '-1 points = -' + this.exp.pointsToPence(1).toFixed(2) + ' pence<br><br>'
                     + 'The outcome of your choice will appear in the location of the symbol you chose.<br><br>'
                     + 'The outcome you would have won by choosing the other option will also be displayed.<br><br>'
                     + 'Please note that only the outcome of your choice will be taken into account in the final payoff.<br><br></H3>';
                 break;
 
             case 4:
-                var Info = '<H3 align = "center"><b>Instructions for the first test (2/2)</b><br><br>'
+                Info = '<H3 align = "center"><b>Instructions for the first test (2/2)</b><br><br>'
                     + 'The different symbols are not equal in terms of outcome: one is in average more advantageous compared to the other in terms of points to be won.<br><br>'
                     + 'At the end of the test you will be shown with the final payoff in terms of cumulated points and monetary bonus.<br><br></H3>'
 
                 break;
 
             case 5:
-                var Info = '<H3 align = "center">Let' + "'s " + 'begin with the first training test!<br><br>'
+                Info = '<H3 align = "center">Let' + "'s " + 'begin with the first training test!<br><br>'
                     + '<b>(Note : points won during the training do not count for the final payoff !)<br><br>'
                     + 'The word "ready" will be displayed before the actual game starts.</H3></b><br><br>';
                 break;
 
             default:
-                var Info;
+                Info;
                 break;
-
         }
 
         $('#TextBoxDiv').html(Title + Info);
 
-        var Buttons = '<div align="center"><input align="center" type="button"  class="btn btn-default" id="Back" value="Back" >\n\
+        let Buttons = '<div align="center"><input align="center" type="button"  class="btn btn-default" id="Back" value="Back" >\n\
 		<input align="center" type="button"  class="btn btn-default" id="Next" value="Next" >\n\
 		<input align="center" type="button"  class="btn btn-default" id="Start" value="Start the first phase!" ></div>';
 
@@ -2102,7 +2262,7 @@ function main () {
             $('#Start').hide();
         }
 
-        $('#Back').click(function () {
+        $('#Back').click({obj: this}, function (event) {
 
             $('#TextBoxDiv').remove();
             $('#Stage').empty();
@@ -2110,717 +2270,731 @@ function main () {
 
             if (pageNum === 1) {
             } else {
-                instructions(pageNum - 1);
+                event.data.obj.displayInstruction(pageNum - 1, nextFunc, nextParams);
             }
 
         });
-        $('#Next').click(function () {
+        $('#Next').click({obj: this}, function (event) {
 
             $('#TextBoxDiv').remove();
             $('#Stage').empty();
             $('#Bottom').empty();
-            instructions(pageNum + 1);
-
+            event.data.obj.displayInstruction(pageNum + 1, nextFunc, nextParams);
         });
-        $('#Start').click(function () {
+
+        $('#Start').click({obj: this}, function (event) {
 
             $('#TextBoxDiv').remove();
             $('#Stage').empty();
             $('#Bottom').empty();
 
-            if (offline === 0) sendExpDataDB(0);
-            playTraining(0, 1);
+            if (event.data.obj.exp.online) {
+                sendToDB(0,
+                    {
+                        expID: event.data.obj.expID,
+                        id: event.data.obj.subID,
+                        exp: event.data.obj.expName,
+                        browser: event.data.obj.browsInfo
+                    },
+                    'php/InsertExpDetails.php'
+                );
 
-        });
-    }
-
-    function GetUserInfo() {
-
-        createDiv('Stage', 'TextBoxDiv');
-        var Title = '<H3 align = "center">Please indicate your</H3><br>';
-        var Age = '<div align="center">Age: <input type="text" id = "age_id" name="age"><br></div>';
-        var Gender = '<div align="center">Gender: <input type= "radio" id="m" name= "gender" >Male'
-            + '<input type= "radio" id="f" name= "gender">Female<br></div>';
-
-        $('#TextBoxDiv').html(Title + Age + '<br><br>' + Gender);
-
-        var Buttons = '<div align="center"><input align="center" type="button"'
-            + 'class="btn btn-default" id="toQuestions" value="Next" ></div>';
-        $('#Bottom').html(Buttons);
-
-        $('#toQuestions').click(function () {
-            age_val = parseInt(document.getElementById('age_id').value);
-
-            if (($("input:radio:checked").length < 1)
-                || isNaN(age_val) || (age_val < 0) || (age_val > 100)) {
-                alert('Please fill the required fields.');
-            } else {
-                gender_val = $("input:radio:checked").attr('id');
-                if (offline == 0) sendUserDataDB(0);
-
-                $('#TextBoxDiv').remove();
-                $('#Stage').empty();
-                $('#Bottom').empty();
-
-                // playQuestionnaire(1);
             }
+            nextFunc(nextParams);
         });
+    };
 
-        function sendUserDataDB() {
-            $.ajax({
-                type: 'POST',
-                data: {id: subID, age: age_val, gender: gender_val},
-                async: true,
-                url: 'php/InsertSubDetails.php',
-                /*dataType: 'json',*/
-                success: function (r) {
-                    if (r[0].ErrorNo > 0) {
-                        /*subID = createCode();*/
-                        /*RunExperiment(thisAge, thisEdu, thisSex);*/
-                        /*DisplayError();*/
-                    } else {
-                        /*playSessions(0);*/
-                    }
-                    ;
-                }, error: function (XMLHttpRequest, textStatus, errorThrown) {
-                    alert("Status: " + textStatus);
-                    alert("Error: " + errorThrown);
-                }
-            });
-        }
-    }
+    // this.getUserInfo = function () {
+    //
+    //     createDiv('Stage', 'TextBoxDiv');
+    //     var Title = '<H3 align = "center">Please indicate your</H3><br>';
+    //     var Age = '<div align="center">Age: <input type="text" id = "age_id" name="age"><br></div>';
+    //     var Gender = '<div align="center">Gender: <input type= "radio" id="m" name= "gender" >Male'
+    //         + '<input type= "radio" id="f" name= "gender">Female<br></div>';
+    //
+    //     $('#TextBoxDiv').html(Title + Age + '<br><br>' + Gender);
+    //
+    //     var Buttons = '<div align="center"><input align="center" type="button"'
+    //         + 'class="btn btn-default" id="toQuestions" value="Next" ></div>';
+    //     $('#Bottom').html(Buttons);
+    //
+    //     $('#toQuestions').click(function () {
+    //         age_val = parseInt(document.getElementById('age_id').value);
+    //
+    //         if (($("input:radio:checked").length < 1)
+    //             || isNaN(age_val) || (age_val < 0) || (age_val > 100)) {
+    //             alert('Please fill the required fields.');
+    //         } else {
+    //             gender_val = $("input:radio:checked").attr('id');
+    //             if (offline == 0) sendUserDataDB(0);
+    //
+    //             $('#TextBoxDiv').remove();
+    //             $('#Stage').empty();
+    //             $('#Bottom').empty();
+    //
+    //             playQuestionnaire(1);
+            // }
+        // });
+        //
+        // function sendUserDataDB() {
+        //     $.ajax({
+        //         type: 'POST',
+        //         data: {id: subID, age: age_val, gender: gender_val},
+        //         async: true,
+        //         url: 'php/InsertSubDetails.php',
+        //         /*dataType: 'json',*/
+        //         success: function (r) {
+        //             if (r[0].ErrorNo > 0) {
+        //                 /*subID = createCode();*/
+        //                 /*RunExperiment(thisAge, thisEdu, thisSex);*/
+        //                 /*DisplayError();*/
+        //             } else {
+        //                 /*playSessions(0);*/
+        //             }
+        //             ;
+        //         }, error: function (XMLHttpRequest, textStatus, errorThrown) {
+        //             alert("Status: " + textStatus);
+        //             alert("Error: " + errorThrown);
+        //         }
+        //     });
+        // }
+    // }
+}
 
     // Questionnaires
     // ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ //
-
-    function startQuestionnaire() {
-
-        createDiv('Stage', 'TextBoxDiv');
-
-        var Title = '<H3 align = "center">QUESTIONNAIRE</H3>';
-
-        var startBut;
-        startBut = '"Start"';
-        var Info = '<H3 align = "center">You will now have to answer a few questions.<br><br>This won\'t take more than a few more minutes.<br><br>Your answers remain anonymous and will not be disclosed.<br><br>' +
-            'Note that the experiment will be considered completed (and the payment issued) only if the questionnaires are correctly filled.<br><br>' +
-            'Please click "Start" when you are ready.</H3><br><br>';
-
-        $('#TextBoxDiv').html(Title + Info);
-
-        var Buttons = '<div align="center"><input align="center" type="button"  class="btn btn-default" id="Start" value=' + startBut + ' ></div>';
-
-        $('#Bottom').html(Buttons);
-
-        $('#Start').click(function () {
-
-            $('#TextBoxDiv').remove();
-            $('#Stage').empty();
-            $('#Bottom').empty();
-            playQuestionnaire_CRT(1);
-        });
-    }
-
-    function playQuestionnaire_CRT(QuestNum) {
-
-        var NumQuestions = 7; /*mettre a jour le nombre de pages (questions) via le script*/
-
-        createDiv('Stage', 'TextBoxDiv');
-
-        var Title = '<H2 align = "center"></H2>';
-        var Info;
-        var questID;
-        var itemNum;
-        var answer;
-        var answer_value;
-
-        var Question_time;
-        var Reaction_time;
-
-        var nb_skip = 7;
+    function Questionnaire() {
 
 
-        switch (QuestNum) {
+        function run() {
 
-            case 1:
-                var Info = '<div class="row"><div class="col-xs-3 col-md-3"></div><div id = "Middle" class="col-xs-7 col-md-7"><H3>' +
-                    'A bat and a ball cost £1.10 in total. The bat costs £1.00 more than the ball. How much does the ball cost?' +
-                    '</h3><br><br></div><div class="col-xs-1 col-md-1"></div></div>';
-                var contents = new Array();
-                contents[0] = '<input type= "radio" id="3" name= "answer" value= 2> <label for="3"> 5 pence </label><br>';
-                contents[1] = '<input type= "radio" id="2" name= "answer" value= 1> <label for="2"> 10 pence </label><br>';
-                contents[2] = '<input type= "radio" id="1" name= "answer" value= 0> <label for="1"> 9 pence </label><br>';
-                contents[3] = '<input type= "radio" id="0" name= "answer" value= 0> <label for="0"> 1 pence </label><br>';
-                contents = shuffle(contents);
-                var Ticks = '<div class="row"><div class="col-xs-3 col-md-3"></div><div id = "Middle" class="col-xs-7 col-md-7">' +
-                    contents[0] + contents[1] + contents[2] + contents[3] + '<br><br><br>' +
-                    '</div><div class="col-xs-1 col-md-1"></div></div>';
-                questID = "CRT-7";
-                itemNum = 1;
+            createDiv('Stage', 'TextBoxDiv');
 
-                break;
+            var Title = '<H3 align = "center">QUESTIONNAIRE</H3>';
 
-            case 2:
-                var Info = '<div class="row"><div class="col-xs-3 col-md-3"></div><div id = "Middle" class="col-xs-7 col-md-7"><H3>' +
-                    'If it takes 5 machines 5 minutes to make 5 widgets, how long would it take 100 machines to make 100 widgets?' +
-                    '</h3><br><br></div><div class="col-xs-1 col-md-1"></div></div>';
-                var contents = new Array();
-                contents[0] = '<input type= "radio" id="3" name= "answer" value= 2> <label for="3"> 5 minutes </label><br>';
-                contents[1] = '<input type= "radio" id="2" name= "answer" value= 1> <label for="2"> 100 minutes </label><br>';
-                contents[2] = '<input type= "radio" id="1" name= "answer" value= 0> <label for="1"> 20 minutes </label><br>';
-                contents[3] = '<input type= "radio" id="0" name= "answer" value= 0> <label for="0"> 500 minutes </label><br>';
-                contents = shuffle(contents);
-                var Ticks = '<div class="row"><div class="col-xs-3 col-md-3"></div><div id = "Middle" class="col-xs-7 col-md-7">' +
-                    contents[0] + contents[1] + contents[2] + contents[3] + '<br><br><br>' +
-                    '</div><div class="col-xs-1 col-md-1"></div></div>';
-                questID = "CRT-7";
-                itemNum = 2;
+            var startBut;
+            startBut = '"Start"';
+            var Info = '<H3 align = "center">You will now have to answer a few questions.<br><br>This won\'t take more than a few more minutes.<br><br>Your answers remain anonymous and will not be disclosed.<br><br>' +
+                'Note that the experiment will be considered completed (and the payment issued) only if the questionnaires are correctly filled.<br><br>' +
+                'Please click "Start" when you are ready.</H3><br><br>';
 
-                break;
+            $('#TextBoxDiv').html(Title + Info);
 
-            case 3:
-                var Info = '<div class="row"><div class="col-xs-3 col-md-3"></div><div id = "Middle" class="col-xs-7 col-md-7"><H3>' +
-                    'In a lake, there is a patch of lily pads. Every day, the patch doubles in size. If it takes 48 days for the patch to cover the entire lake, how long would it take for the patch to cover half of the lake?' +
-                    '</h3><br><br></div><div class="col-xs-1 col-md-1"></div></div>';
-                var contents = new Array();
-                contents[0] = '<input type= "radio" id="3" name= "answer" value= 2> <label for="3"> 47 days </label><br>';
-                contents[1] = '<input type= "radio" id="2" name= "answer" value= 1> <label for="2"> 24 days </label><br>';
-                contents[2] = '<input type= "radio" id="1" name= "answer" value= 0> <label for="1"> 12 days </label><br>';
-                contents[3] = '<input type= "radio" id="0" name= "answer" value= 0> <label for="0"> 36 days </label><br>';
-                contents = shuffle(contents);
-                var Ticks = '<div class="row"><div class="col-xs-3 col-md-3"></div><div id = "Middle" class="col-xs-7 col-md-7">' +
-                    contents[0] + contents[1] + contents[2] + contents[3] + '<br><br><br>' +
-                    '</div><div class="col-xs-1 col-md-1"></div></div>';
-                questID = "CRT-7";
-                itemNum = 3;
+            var Buttons = '<div align="center"><input align="center" type="button"  class="btn btn-default" id="Start" value=' + startBut + ' ></div>';
 
-                break;
+            $('#Bottom').html(Buttons);
 
-            case 4:
-                var Info = '<div class="row"><div class="col-xs-3 col-md-3"></div><div id = "Middle" class="col-xs-7 col-md-7"><H3>' +
-                    'If John can drink one barrel of water in 6 days, and Mary can drink one barrel of water in 12 days, how long would it take them to drink one barrel of water together?' +
-                    '</h3><br><br></div><div class="col-xs-1 col-md-1"></div></div>';
-                var contents = new Array();
-                contents[0] = '<input type= "radio" id="3" name= "answer" value= 2> <label for="3"> 4 days </label><br>';
-                contents[1] = '<input type= "radio" id="2" name= "answer" value= 1> <label for="2"> 9 days </label><br>';
-                contents[2] = '<input type= "radio" id="1" name= "answer" value= 0> <label for="1"> 12 days </label><br>';
-                contents[3] = '<input type= "radio" id="0" name= "answer" value= 0> <label for="0"> 3 days </label><br>';
-                contents = shuffle(contents);
-                var Ticks = '<div class="row"><div class="col-xs-3 col-md-3"></div><div id = "Middle" class="col-xs-7 col-md-7">' +
-                    contents[0] + contents[1] + contents[2] + contents[3] + '<br><br><br>' +
-                    '</div><div class="col-xs-1 col-md-1"></div></div>';
-                questID = "CRT-7";
-                itemNum = 4;
-
-                break;
-
-            case 5:
-                var Info = '<div class="row"><div class="col-xs-3 col-md-3"></div><div id = "Middle" class="col-xs-7 col-md-7"><H3>' +
-                    'Jerry received both the 15th highest and the 15th lowest mark in the class. How many students are in the class?' +
-                    '</h3><br><br></div><div class="col-xs-1 col-md-1"></div></div>';
-                var contents = new Array();
-                contents[0] = '<input type= "radio" id="3" name= "answer" value= 2> <label for="3"> 29 students </label><br>';
-                contents[1] = '<input type= "radio" id="2" name= "answer" value= 1> <label for="2"> 30 students </label><br>';
-                contents[2] = '<input type= "radio" id="1" name= "answer" value= 0> <label for="1"> 1 student </label><br>';
-                contents[3] = '<input type= "radio" id="0" name= "answer" value= 0> <label for="0"> 15 students </label><br>';
-                contents = shuffle(contents);
-                var Ticks = '<div class="row"><div class="col-xs-3 col-md-3"></div><div id = "Middle" class="col-xs-7 col-md-7">' +
-                    contents[0] + contents[1] + contents[2] + contents[3] + '<br><br><br>' +
-                    '</div><div class="col-xs-1 col-md-1"></div></div>';
-                questID = "CRT-7";
-                itemNum = 5;
-
-                break;
-
-            case 6:
-                var Info = '<div class="row"><div class="col-xs-3 col-md-3"></div><div id = "Middle" class="col-xs-7 col-md-7"><H3>' +
-                    'A man buys a pig for £60, sells it for £70, buys it back for £80, and sells it finally for £90. How much has he made?' +
-                    '</h3><br><br></div><div class="col-xs-1 col-md-1"></div></div>';
-                var contents = new Array();
-                contents[0] = '<input type= "radio" id="3" name= "answer" value= 2> <label for="3"> 20 pounds </label><br>';
-                contents[1] = '<input type= "radio" id="2" name= "answer" value= 1> <label for="2"> 10 pounds </label><br>';
-                contents[2] = '<input type= "radio" id="1" name= "answer" value= 0> <label for="1"> 0 pounds </label><br>';
-                contents[3] = '<input type= "radio" id="0" name= "answer" value= 0> <label for="0"> 30 pounds </label><br>';
-                contents = shuffle(contents);
-                var Ticks = '<div class="row"><div class="col-xs-3 col-md-3"></div><div id = "Middle" class="col-xs-7 col-md-7">' +
-                    contents[0] + contents[1] + contents[2] + contents[3] + '<br><br><br>' +
-                    '</div><div class="col-xs-1 col-md-1"></div></div>';
-                questID = "CRT-7";
-                itemNum = 6;
-
-                break;
-
-            case 7:
-                var Info = '<div class="row"><div class="col-xs-3 col-md-3"></div><div id = "Middle" class="col-xs-7 col-md-7"><H3>' +
-                    'Simon decided to invest £8,000 in the stock market one day early in 2008.  Six months after he invested, on July 17, the stocks he had purchased were down 50%. ' +
-                    'Fortunately for Simon, from July 17 to October 17, the stocks he had purchased went up 75%. At this point, Simon:' +
-                    '</h3><br><br></div><div class="col-xs-1 col-md-1"></div></div>';
-                var contents = new Array();
-                contents[0] = '<input type= "radio" id="3" name= "answer" value= 2> <label for="3"> has lost money. </label><br>';
-                contents[1] = '<input type= "radio" id="2" name= "answer" value= 1> <label for="2"> is ahead of where he began. </label><br>';
-                contents[2] = '<input type= "radio" id="1" name= "answer" value= 0> <label for="1"> has broken even in the stock market. </label><br>';
-                contents[3] = '<input type= "radio" id="0" name= "answer" value= 0> <label for="0"> it cannot be determined. </label><br>';
-                contents = shuffle(contents);
-                var Ticks = '<div class="row"><div class="col-xs-3 col-md-3"></div><div id = "Middle" class="col-xs-7 col-md-7">' +
-                    contents[0] + contents[1] + contents[2] + contents[3] + '<br><br><br>' +
-                    '</div><div class="col-xs-1 col-md-1"></div></div>';
-                questID = "CRT-7";
-                itemNum = 7;
-
-                break;
-
-            default:
-                break;
-        }
-
-        var Buttons = '<div class="row"><div class="col-xs-3 col-md-3"></div><div id = "Middle" class="col-xs-7 col-md-7"> <input type="button"  class="btn btn-default" id="Next" value="Next" > </div><div class="col-xs-1 col-md-1"></div></div>';
-
-
-        $('#TextBoxDiv').html(Title + Info + Ticks);
-
-        Question_time = (new Date()).getTime();
-
-        $('#Bottom').html(Buttons);
-
-
-        $('#Next').click(function () {
-
-            if ($("input:radio:checked").length < 1) {
-                alert('Please select one answer.');
-
-            } else {
-
-                Reaction_time = (new Date()).getTime();
-                answer = parseInt($("input:radio:checked").attr('value')); //console.log(answer)
-                answer_value = $("input:radio:checked").val();
-
-                SendQuestDataDB(0);
+            $('#Start').click(function () {
 
                 $('#TextBoxDiv').remove();
                 $('#Stage').empty();
                 $('#Bottom').empty();
+                playQuestionnaire_CRT(1);
+            });
+        }
 
-                if (answer == -1) {
-                    QuestNum += nb_skip + 1;
-                } else {
-                    QuestNum++;
-                }
+        function playQuestionnaire_CRT(QuestNum) {
 
-                if (QuestNum <= NumQuestions) {
-                    playQuestionnaire_CRT(QuestNum);
-                } else {
-                    playQuestionnaire_SES(1);
-                }
+            var NumQuestions = 7; /*mettre a jour le nombre de pages (questions) via le script*/
+
+            createDiv('Stage', 'TextBoxDiv');
+
+            var Title = '<H2 align = "center"></H2>';
+            var Info;
+            var questID;
+            var itemNum;
+            var answer;
+            var answer_value;
+
+            var Question_time;
+            var Reaction_time;
+
+            var nb_skip = 7;
+
+
+            switch (QuestNum) {
+
+                case 1:
+                    var Info = '<div class="row"><div class="col-xs-3 col-md-3"></div><div id = "Middle" class="col-xs-7 col-md-7"><H3>' +
+                        'A bat and a ball cost £1.10 in total. The bat costs £1.00 more than the ball. How much does the ball cost?' +
+                        '</h3><br><br></div><div class="col-xs-1 col-md-1"></div></div>';
+                    var contents = new Array();
+                    contents[0] = '<input type= "radio" id="3" name= "answer" value= 2> <label for="3"> 5 pence </label><br>';
+                    contents[1] = '<input type= "radio" id="2" name= "answer" value= 1> <label for="2"> 10 pence </label><br>';
+                    contents[2] = '<input type= "radio" id="1" name= "answer" value= 0> <label for="1"> 9 pence </label><br>';
+                    contents[3] = '<input type= "radio" id="0" name= "answer" value= 0> <label for="0"> 1 pence </label><br>';
+                    contents = shuffle(contents);
+                    var Ticks = '<div class="row"><div class="col-xs-3 col-md-3"></div><div id = "Middle" class="col-xs-7 col-md-7">' +
+                        contents[0] + contents[1] + contents[2] + contents[3] + '<br><br><br>' +
+                        '</div><div class="col-xs-1 col-md-1"></div></div>';
+                    questID = "CRT-7";
+                    itemNum = 1;
+
+                    break;
+
+                case 2:
+                    var Info = '<div class="row"><div class="col-xs-3 col-md-3"></div><div id = "Middle" class="col-xs-7 col-md-7"><H3>' +
+                        'If it takes 5 machines 5 minutes to make 5 widgets, how long would it take 100 machines to make 100 widgets?' +
+                        '</h3><br><br></div><div class="col-xs-1 col-md-1"></div></div>';
+                    var contents = new Array();
+                    contents[0] = '<input type= "radio" id="3" name= "answer" value= 2> <label for="3"> 5 minutes </label><br>';
+                    contents[1] = '<input type= "radio" id="2" name= "answer" value= 1> <label for="2"> 100 minutes </label><br>';
+                    contents[2] = '<input type= "radio" id="1" name= "answer" value= 0> <label for="1"> 20 minutes </label><br>';
+                    contents[3] = '<input type= "radio" id="0" name= "answer" value= 0> <label for="0"> 500 minutes </label><br>';
+                    contents = shuffle(contents);
+                    var Ticks = '<div class="row"><div class="col-xs-3 col-md-3"></div><div id = "Middle" class="col-xs-7 col-md-7">' +
+                        contents[0] + contents[1] + contents[2] + contents[3] + '<br><br><br>' +
+                        '</div><div class="col-xs-1 col-md-1"></div></div>';
+                    questID = "CRT-7";
+                    itemNum = 2;
+
+                    break;
+
+                case 3:
+                    var Info = '<div class="row"><div class="col-xs-3 col-md-3"></div><div id = "Middle" class="col-xs-7 col-md-7"><H3>' +
+                        'In a lake, there is a patch of lily pads. Every day, the patch doubles in size. If it takes 48 days for the patch to cover the entire lake, how long would it take for the patch to cover half of the lake?' +
+                        '</h3><br><br></div><div class="col-xs-1 col-md-1"></div></div>';
+                    var contents = new Array();
+                    contents[0] = '<input type= "radio" id="3" name= "answer" value= 2> <label for="3"> 47 days </label><br>';
+                    contents[1] = '<input type= "radio" id="2" name= "answer" value= 1> <label for="2"> 24 days </label><br>';
+                    contents[2] = '<input type= "radio" id="1" name= "answer" value= 0> <label for="1"> 12 days </label><br>';
+                    contents[3] = '<input type= "radio" id="0" name= "answer" value= 0> <label for="0"> 36 days </label><br>';
+                    contents = shuffle(contents);
+                    var Ticks = '<div class="row"><div class="col-xs-3 col-md-3"></div><div id = "Middle" class="col-xs-7 col-md-7">' +
+                        contents[0] + contents[1] + contents[2] + contents[3] + '<br><br><br>' +
+                        '</div><div class="col-xs-1 col-md-1"></div></div>';
+                    questID = "CRT-7";
+                    itemNum = 3;
+
+                    break;
+
+                case 4:
+                    var Info = '<div class="row"><div class="col-xs-3 col-md-3"></div><div id = "Middle" class="col-xs-7 col-md-7"><H3>' +
+                        'If John can drink one barrel of water in 6 days, and Mary can drink one barrel of water in 12 days, how long would it take them to drink one barrel of water together?' +
+                        '</h3><br><br></div><div class="col-xs-1 col-md-1"></div></div>';
+                    var contents = new Array();
+                    contents[0] = '<input type= "radio" id="3" name= "answer" value= 2> <label for="3"> 4 days </label><br>';
+                    contents[1] = '<input type= "radio" id="2" name= "answer" value= 1> <label for="2"> 9 days </label><br>';
+                    contents[2] = '<input type= "radio" id="1" name= "answer" value= 0> <label for="1"> 12 days </label><br>';
+                    contents[3] = '<input type= "radio" id="0" name= "answer" value= 0> <label for="0"> 3 days </label><br>';
+                    contents = shuffle(contents);
+                    var Ticks = '<div class="row"><div class="col-xs-3 col-md-3"></div><div id = "Middle" class="col-xs-7 col-md-7">' +
+                        contents[0] + contents[1] + contents[2] + contents[3] + '<br><br><br>' +
+                        '</div><div class="col-xs-1 col-md-1"></div></div>';
+                    questID = "CRT-7";
+                    itemNum = 4;
+
+                    break;
+
+                case 5:
+                    var Info = '<div class="row"><div class="col-xs-3 col-md-3"></div><div id = "Middle" class="col-xs-7 col-md-7"><H3>' +
+                        'Jerry received both the 15th highest and the 15th lowest mark in the class. How many students are in the class?' +
+                        '</h3><br><br></div><div class="col-xs-1 col-md-1"></div></div>';
+                    var contents = new Array();
+                    contents[0] = '<input type= "radio" id="3" name= "answer" value= 2> <label for="3"> 29 students </label><br>';
+                    contents[1] = '<input type= "radio" id="2" name= "answer" value= 1> <label for="2"> 30 students </label><br>';
+                    contents[2] = '<input type= "radio" id="1" name= "answer" value= 0> <label for="1"> 1 student </label><br>';
+                    contents[3] = '<input type= "radio" id="0" name= "answer" value= 0> <label for="0"> 15 students </label><br>';
+                    contents = shuffle(contents);
+                    var Ticks = '<div class="row"><div class="col-xs-3 col-md-3"></div><div id = "Middle" class="col-xs-7 col-md-7">' +
+                        contents[0] + contents[1] + contents[2] + contents[3] + '<br><br><br>' +
+                        '</div><div class="col-xs-1 col-md-1"></div></div>';
+                    questID = "CRT-7";
+                    itemNum = 5;
+
+                    break;
+
+                case 6:
+                    var Info = '<div class="row"><div class="col-xs-3 col-md-3"></div><div id = "Middle" class="col-xs-7 col-md-7"><H3>' +
+                        'A man buys a pig for £60, sells it for £70, buys it back for £80, and sells it finally for £90. How much has he made?' +
+                        '</h3><br><br></div><div class="col-xs-1 col-md-1"></div></div>';
+                    var contents = new Array();
+                    contents[0] = '<input type= "radio" id="3" name= "answer" value= 2> <label for="3"> 20 pounds </label><br>';
+                    contents[1] = '<input type= "radio" id="2" name= "answer" value= 1> <label for="2"> 10 pounds </label><br>';
+                    contents[2] = '<input type= "radio" id="1" name= "answer" value= 0> <label for="1"> 0 pounds </label><br>';
+                    contents[3] = '<input type= "radio" id="0" name= "answer" value= 0> <label for="0"> 30 pounds </label><br>';
+                    contents = shuffle(contents);
+                    var Ticks = '<div class="row"><div class="col-xs-3 col-md-3"></div><div id = "Middle" class="col-xs-7 col-md-7">' +
+                        contents[0] + contents[1] + contents[2] + contents[3] + '<br><br><br>' +
+                        '</div><div class="col-xs-1 col-md-1"></div></div>';
+                    questID = "CRT-7";
+                    itemNum = 6;
+
+                    break;
+
+                case 7:
+                    var Info = '<div class="row"><div class="col-xs-3 col-md-3"></div><div id = "Middle" class="col-xs-7 col-md-7"><H3>' +
+                        'Simon decided to invest £8,000 in the stock market one day early in 2008.  Six months after he invested, on July 17, the stocks he had purchased were down 50%. ' +
+                        'Fortunately for Simon, from July 17 to October 17, the stocks he had purchased went up 75%. At this point, Simon:' +
+                        '</h3><br><br></div><div class="col-xs-1 col-md-1"></div></div>';
+                    var contents = new Array();
+                    contents[0] = '<input type= "radio" id="3" name= "answer" value= 2> <label for="3"> has lost money. </label><br>';
+                    contents[1] = '<input type= "radio" id="2" name= "answer" value= 1> <label for="2"> is ahead of where he began. </label><br>';
+                    contents[2] = '<input type= "radio" id="1" name= "answer" value= 0> <label for="1"> has broken even in the stock market. </label><br>';
+                    contents[3] = '<input type= "radio" id="0" name= "answer" value= 0> <label for="0"> it cannot be determined. </label><br>';
+                    contents = shuffle(contents);
+                    var Ticks = '<div class="row"><div class="col-xs-3 col-md-3"></div><div id = "Middle" class="col-xs-7 col-md-7">' +
+                        contents[0] + contents[1] + contents[2] + contents[3] + '<br><br><br>' +
+                        '</div><div class="col-xs-1 col-md-1"></div></div>';
+                    questID = "CRT-7";
+                    itemNum = 7;
+
+                    break;
+
+                default:
+                    break;
             }
-            ;
-        });
 
-        function SendQuestDataDB(call) {
-            /*console.log(clog)*/
+            var Buttons = '<div class="row"><div class="col-xs-3 col-md-3"></div><div id = "Middle" class="col-xs-7 col-md-7"> <input type="button"  class="btn btn-default" id="Next" value="Next" > </div><div class="col-xs-1 col-md-1"></div></div>';
 
-            $.ajax({
-                type: 'POST',
-                data: {
-                    exp: expName,
-                    expID: expID,
-                    id: subID,
-                    qid: questID,
-                    qnum: 1,
-                    item: itemNum,
-                    ans: answer,
-                    val: answer_value,
-                    reaction_time: Reaction_time - Question_time
-                },
-                async: true,
-                url: 'php/InsertQuestionnaireDataDB.php',
-                /*dataType: 'json',*/
-                success: function (r) {
 
-                    if (r[0].ErrorNo > 0 && call + 1 < maxDBCalls) {
-                        SendQuestDataDB(call + 1);
+            $('#TextBoxDiv').html(Title + Info + Ticks);
+
+            Question_time = (new Date()).getTime();
+
+            $('#Bottom').html(Buttons);
+
+
+            $('#Next').click(function () {
+
+                if ($("input:radio:checked").length < 1) {
+                    alert('Please select one answer.');
+
+                } else {
+
+                    Reaction_time = (new Date()).getTime();
+                    answer = parseInt($("input:radio:checked").attr('value')); //console.log(answer)
+                    answer_value = $("input:radio:checked").val();
+
+                    SendQuestDataDB(0);
+
+                    $('#TextBoxDiv').remove();
+                    $('#Stage').empty();
+                    $('#Bottom').empty();
+
+                    if (answer == -1) {
+                        QuestNum += nb_skip + 1;
+                    } else {
+                        QuestNum++;
                     }
-                },
-                error: function (XMLHttpRequest, textStatus, errorThrown) {
 
-                    if (call + 1 < maxDBCalls) {
-                        SendQuestDataDB(call + 1);
+                    if (QuestNum <= NumQuestions) {
+                        playQuestionnaire_CRT(QuestNum);
+                    } else {
+                        playQuestionnaire_SES(1);
+                    }
+                }
+                ;
+            });
+
+            function SendQuestDataDB(call) {
+                /*console.log(clog)*/
+
+                $.ajax({
+                    type: 'POST',
+                    data: {
+                        exp: this.expName,
+                        expID: expID,
+                        id: subID,
+                        qid: questID,
+                        qnum: 1,
+                        item: itemNum,
+                        ans: answer,
+                        val: answer_value,
+                        reaction_time: Reaction_time - Question_time
+                    },
+                    async: true,
+                    url: 'php/InsertQuestionnaireDataDB.php',
+                    /*dataType: 'json',*/
+                    success: function (r) {
+
+                        if (r[0].ErrorNo > 0 && call + 1 < maxDBCalls) {
+                            SendQuestDataDB(call + 1);
+                        }
+                    },
+                    error: function (XMLHttpRequest, textStatus, errorThrown) {
+
+                        if (call + 1 < maxDBCalls) {
+                            SendQuestDataDB(call + 1);
+                        }
+                    }
+                });
+            }
+        }
+
+        function playQuestionnaire_SES(QuestNum) {
+
+            var NumQuestions = 13;
+
+            createDiv('Stage', 'TextBoxDiv');
+
+            var Title = '<H2 align = "center"></H2>';
+            var Info;
+            var questID;
+            var itemNum;
+            var answer;
+            var answer_value;
+
+            var Question_time;
+            var Reaction_time;
+
+            var nb_skip = 0;
+
+            var Buttons = '<div class="row"><div class="col-xs-3 col-md-3"></div><div id = "Middle" class="col-xs-7 col-md-7"> <input type="button"  class="btn btn-default" id="Next" value="Next" > </div><div class="col-xs-1 col-md-1"></div></div>';
+
+            switch (QuestNum) {
+
+                case 1:
+                    var Info = '<div class="row"><div class="col-xs-3 col-md-3"></div><div id = "Middle" class="col-xs-7 col-md-7"><H3>' +
+                        'The following questions measure your perception of your childhood and your current adult life. Please indicate your agreement with these statements. Please read each statement carefully, and then indicate how much you agree with the statement.' +
+                        '</h3><br><br></div><div class="col-xs-1 col-md-1"></div></div>';
+                    var Ticks = '<div class="row"><div class="col-xs-3 col-md-3"></div><div id = "Middle" class="col-xs-7 col-md-7">' +
+                        '<input type= "radio" id="1" name= "answer" value= 1> <label for="1"> I am ready. </label><br><br><br><br>' +
+                        '</div><div class="col-xs-1 col-md-1"></div></div>';
+                    questID = "SES-13_instruction";
+                    itemNum = 1;
+
+                    break;
+
+                case 2:
+                    var Info = '<div class="row"><div class="col-xs-3 col-md-3"></div><div id = "Middle" class="col-xs-7 col-md-7"><H3>' +
+                        'When I was growing up, someone in my house was always yelling at someone else.' +
+                        '</h3><br><br></div><div class="col-xs-1 col-md-1"></div></div>';
+                    var Ticks = '<div class="row"><div class="col-xs-3 col-md-3"></div><div id = "Middle" class="col-xs-7 col-md-7">' +
+                        '<input type= "radio" id="1" name= "answer" value= 1> <label for="1"> 1 Strongly disagree </label><br>' +
+                        '<input type= "radio" id="2" name= "answer" value= 2> <label for="2"> 2 </label><br>' +
+                        '<input type= "radio" id="3" name= "answer" value= 3> <label for="3"> 3 </label><br>' +
+                        '<input type= "radio" id="4" name= "answer" value= 4> <label for="4"> 4 </label><br>' +
+                        '<input type= "radio" id="5" name= "answer" value= 5> <label for="5"> 5 </label><br>' +
+                        '<input type= "radio" id="6" name= "answer" value= 6> <label for="6"> 6 </label><br>' +
+                        '<input type= "radio" id="7" name= "answer" value= 7> <label for="7"> 7 </label><br>' +
+                        '<input type= "radio" id="8" name= "answer" value= 8> <label for="8"> 8 </label><br>' +
+                        '<input type= "radio" id="9" name= "answer" value= 9> <label for="9"> 9 Strongly agree </label><br><br><br><br>' +
+                        '</div><div class="col-xs-1 col-md-1"></div></div>';
+                    questID = "SES-13";
+                    itemNum = 1;
+
+                    break;
+
+                case 3:
+                    var Info = '<div class="row"><div class="col-xs-3 col-md-3"></div><div id = "Middle" class="col-xs-7 col-md-7"><H3>' +
+                        'Some of the punishments I received when I was a child now seem too harsh to me.' +
+                        '</h3><br><br></div><div class="col-xs-1 col-md-1"></div></div>';
+                    var Ticks = '<div class="row"><div class="col-xs-3 col-md-3"></div><div id = "Middle" class="col-xs-7 col-md-7">' +
+                        '<input type= "radio" id="1" name= "answer" value= 1> <label for="1"> 1 Strongly disagree </label><br>' +
+                        '<input type= "radio" id="2" name= "answer" value= 2> <label for="2"> 2 </label><br>' +
+                        '<input type= "radio" id="3" name= "answer" value= 3> <label for="3"> 3 </label><br>' +
+                        '<input type= "radio" id="4" name= "answer" value= 4> <label for="4"> 4 </label><br>' +
+                        '<input type= "radio" id="5" name= "answer" value= 5> <label for="5"> 5 </label><br>' +
+                        '<input type= "radio" id="6" name= "answer" value= 6> <label for="6"> 6 </label><br>' +
+                        '<input type= "radio" id="7" name= "answer" value= 7> <label for="7"> 7 </label><br>' +
+                        '<input type= "radio" id="8" name= "answer" value= 8> <label for="8"> 8 </label><br>' +
+                        '<input type= "radio" id="9" name= "answer" value= 9> <label for="9"> 9 Strongly agree </label><br><br><br><br>' +
+                        '</div><div class="col-xs-1 col-md-1"></div></div>';
+                    questID = "SES-13";
+                    itemNum = 2;
+
+                    break;
+
+                case 4:
+                    var Info = '<div class="row"><div class="col-xs-3 col-md-3"></div><div id = "Middle" class="col-xs-7 col-md-7"><H3>' +
+                        'I guess you could say that I wasn’t treated as well as I should have been at home.' +
+                        '</h3><br><br></div><div class="col-xs-1 col-md-1"></div></div>';
+                    var Ticks = '<div class="row"><div class="col-xs-3 col-md-3"></div><div id = "Middle" class="col-xs-7 col-md-7">' +
+                        '<input type= "radio" id="1" name= "answer" value= 1> <label for="1"> 1 Strongly disagree </label><br>' +
+                        '<input type= "radio" id="2" name= "answer" value= 2> <label for="2"> 2 </label><br>' +
+                        '<input type= "radio" id="3" name= "answer" value= 3> <label for="3"> 3 </label><br>' +
+                        '<input type= "radio" id="4" name= "answer" value= 4> <label for="4"> 4 </label><br>' +
+                        '<input type= "radio" id="5" name= "answer" value= 5> <label for="5"> 5 </label><br>' +
+                        '<input type= "radio" id="6" name= "answer" value= 6> <label for="6"> 6 </label><br>' +
+                        '<input type= "radio" id="7" name= "answer" value= 7> <label for="7"> 7 </label><br>' +
+                        '<input type= "radio" id="8" name= "answer" value= 8> <label for="8"> 8 </label><br>' +
+                        '<input type= "radio" id="9" name= "answer" value= 9> <label for="9"> 9 Strongly agree </label><br><br><br><br>' +
+                        '</div><div class="col-xs-1 col-md-1"></div></div>';
+                    questID = "SES-13";
+                    itemNum = 3;
+
+                    break;
+
+                case 5:
+                    var Info = '<div class="row"><div class="col-xs-3 col-md-3"></div><div id = "Middle" class="col-xs-7 col-md-7"><H3>' +
+                        'When I was younger than 10, things were often chaotic in my house.' +
+                        '</h3><br><br></div><div class="col-xs-1 col-md-1"></div></div>';
+                    var Ticks = '<div class="row"><div class="col-xs-3 col-md-3"></div><div id = "Middle" class="col-xs-7 col-md-7">' +
+                        '<input type= "radio" id="1" name= "answer" value= 1> <label for="1"> 1 Strongly disagree </label><br>' +
+                        '<input type= "radio" id="2" name= "answer" value= 2> <label for="2"> 2 </label><br>' +
+                        '<input type= "radio" id="3" name= "answer" value= 3> <label for="3"> 3 </label><br>' +
+                        '<input type= "radio" id="4" name= "answer" value= 4> <label for="4"> 4 </label><br>' +
+                        '<input type= "radio" id="5" name= "answer" value= 5> <label for="5"> 5 </label><br>' +
+                        '<input type= "radio" id="6" name= "answer" value= 6> <label for="6"> 6 </label><br>' +
+                        '<input type= "radio" id="7" name= "answer" value= 7> <label for="7"> 7 </label><br>' +
+                        '<input type= "radio" id="8" name= "answer" value= 8> <label for="8"> 8 </label><br>' +
+                        '<input type= "radio" id="9" name= "answer" value= 9> <label for="9"> 9 Strongly agree </label><br><br><br><br>' +
+                        '</div><div class="col-xs-1 col-md-1"></div></div>';
+                    questID = "SES-13";
+                    itemNum = 4;
+
+                    break;
+
+                case 6:
+                    var Info = '<div class="row"><div class="col-xs-3 col-md-3"></div><div id = "Middle" class="col-xs-7 col-md-7"><H3>' +
+                        'When I was younger than 10, people often moved in and out of my house on a pretty random basis.' +
+                        '</h3><br><br></div><div class="col-xs-1 col-md-1"></div></div>';
+                    var Ticks = '<div class="row"><div class="col-xs-3 col-md-3"></div><div id = "Middle" class="col-xs-7 col-md-7">' +
+                        '<input type= "radio" id="1" name= "answer" value= 1> <label for="1"> 1 Strongly disagree </label><br>' +
+                        '<input type= "radio" id="2" name= "answer" value= 2> <label for="2"> 2 </label><br>' +
+                        '<input type= "radio" id="3" name= "answer" value= 3> <label for="3"> 3 </label><br>' +
+                        '<input type= "radio" id="4" name= "answer" value= 4> <label for="4"> 4 </label><br>' +
+                        '<input type= "radio" id="5" name= "answer" value= 5> <label for="5"> 5 </label><br>' +
+                        '<input type= "radio" id="6" name= "answer" value= 6> <label for="6"> 6 </label><br>' +
+                        '<input type= "radio" id="7" name= "answer" value= 7> <label for="7"> 7 </label><br>' +
+                        '<input type= "radio" id="8" name= "answer" value= 8> <label for="8"> 8 </label><br>' +
+                        '<input type= "radio" id="9" name= "answer" value= 9> <label for="9"> 9 Strongly agree </label><br><br><br><br>' +
+                        '</div><div class="col-xs-1 col-md-1"></div></div>';
+                    questID = "SES-13";
+                    itemNum = 5;
+
+                    break;
+
+                case 7:
+                    var Info = '<div class="row"><div class="col-xs-3 col-md-3"></div><div id = "Middle" class="col-xs-7 col-md-7"><H3>' +
+                        'When I was younger than 10, I had a hard time knowing what my parents or other people in my house were going to say or do from day-to-day.' +
+                        '</h3><br><br></div><div class="col-xs-1 col-md-1"></div></div>';
+                    var Ticks = '<div class="row"><div class="col-xs-3 col-md-3"></div><div id = "Middle" class="col-xs-7 col-md-7">' +
+                        '<input type= "radio" id="1" name= "answer" value= 1> <label for="1"> 1 Strongly disagree </label><br>' +
+                        '<input type= "radio" id="2" name= "answer" value= 2> <label for="2"> 2 </label><br>' +
+                        '<input type= "radio" id="3" name= "answer" value= 3> <label for="3"> 3 </label><br>' +
+                        '<input type= "radio" id="4" name= "answer" value= 4> <label for="4"> 4 </label><br>' +
+                        '<input type= "radio" id="5" name= "answer" value= 5> <label for="5"> 5 </label><br>' +
+                        '<input type= "radio" id="6" name= "answer" value= 6> <label for="6"> 6 </label><br>' +
+                        '<input type= "radio" id="7" name= "answer" value= 7> <label for="7"> 7 </label><br>' +
+                        '<input type= "radio" id="8" name= "answer" value= 8> <label for="8"> 8 </label><br>' +
+                        '<input type= "radio" id="9" name= "answer" value= 9> <label for="9"> 9 Strongly agree </label><br><br><br><br>' +
+                        '</div><div class="col-xs-1 col-md-1"></div></div>';
+                    questID = "SES-13";
+                    itemNum = 6;
+
+                    break;
+
+                case 8:
+                    var Info = '<div class="row"><div class="col-xs-3 col-md-3"></div><div id = "Middle" class="col-xs-7 col-md-7"><H3>' +
+                        'When I was younger than 10, my family usually had enough money for things when I was growing up.' +
+                        '</h3><br><br></div><div class="col-xs-1 col-md-1"></div></div>';
+                    var Ticks = '<div class="row"><div class="col-xs-3 col-md-3"></div><div id = "Middle" class="col-xs-7 col-md-7">' +
+                        '<input type= "radio" id="1" name= "answer" value= 1> <label for="1"> 1 Strongly disagree </label><br>' +
+                        '<input type= "radio" id="2" name= "answer" value= 2> <label for="2"> 2 </label><br>' +
+                        '<input type= "radio" id="3" name= "answer" value= 3> <label for="3"> 3 </label><br>' +
+                        '<input type= "radio" id="4" name= "answer" value= 4> <label for="4"> 4 </label><br>' +
+                        '<input type= "radio" id="5" name= "answer" value= 5> <label for="5"> 5 </label><br>' +
+                        '<input type= "radio" id="6" name= "answer" value= 6> <label for="6"> 6 </label><br>' +
+                        '<input type= "radio" id="7" name= "answer" value= 7> <label for="7"> 7 </label><br>' +
+                        '<input type= "radio" id="8" name= "answer" value= 8> <label for="8"> 8 </label><br>' +
+                        '<input type= "radio" id="9" name= "answer" value= 9> <label for="9"> 9 Strongly agree </label><br><br><br><br>' +
+                        '</div><div class="col-xs-1 col-md-1"></div></div>';
+                    questID = "SES-13";
+                    itemNum = 7;
+
+                    break;
+
+                case 9:
+                    var Info = '<div class="row"><div class="col-xs-3 col-md-3"></div><div id = "Middle" class="col-xs-7 col-md-7"><H3>' +
+                        'When I was younger than 10, I grew up in a relatively wealthy neighborhood.' +
+                        '</h3><br><br></div><div class="col-xs-1 col-md-1"></div></div>';
+                    var Ticks = '<div class="row"><div class="col-xs-3 col-md-3"></div><div id = "Middle" class="col-xs-7 col-md-7">' +
+                        '<input type= "radio" id="1" name= "answer" value= 1> <label for="1"> 1 Strongly disagree </label><br>' +
+                        '<input type= "radio" id="2" name= "answer" value= 2> <label for="2"> 2 </label><br>' +
+                        '<input type= "radio" id="3" name= "answer" value= 3> <label for="3"> 3 </label><br>' +
+                        '<input type= "radio" id="4" name= "answer" value= 4> <label for="4"> 4 </label><br>' +
+                        '<input type= "radio" id="5" name= "answer" value= 5> <label for="5"> 5 </label><br>' +
+                        '<input type= "radio" id="6" name= "answer" value= 6> <label for="6"> 6 </label><br>' +
+                        '<input type= "radio" id="7" name= "answer" value= 7> <label for="7"> 7 </label><br>' +
+                        '<input type= "radio" id="8" name= "answer" value= 8> <label for="8"> 8 </label><br>' +
+                        '<input type= "radio" id="9" name= "answer" value= 9> <label for="9"> 9 Strongly agree </label><br><br><br><br>' +
+                        '</div><div class="col-xs-1 col-md-1"></div></div>';
+                    questID = "SES-13";
+                    itemNum = 8;
+
+                    break;
+
+                case 10:
+                    var Info = '<div class="row"><div class="col-xs-3 col-md-3"></div><div id = "Middle" class="col-xs-7 col-md-7"><H3>' +
+                        'When I was younger than 10, I felt relatively wealthy compared to the other kids in my school.' +
+                        '</h3><br><br></div><div class="col-xs-1 col-md-1"></div></div>';
+                    var Ticks = '<div class="row"><div class="col-xs-3 col-md-3"></div><div id = "Middle" class="col-xs-7 col-md-7">' +
+                        '<input type= "radio" id="1" name= "answer" value= 1> <label for="1"> 1 Strongly disagree </label><br>' +
+                        '<input type= "radio" id="2" name= "answer" value= 2> <label for="2"> 2 </label><br>' +
+                        '<input type= "radio" id="3" name= "answer" value= 3> <label for="3"> 3 </label><br>' +
+                        '<input type= "radio" id="4" name= "answer" value= 4> <label for="4"> 4 </label><br>' +
+                        '<input type= "radio" id="5" name= "answer" value= 5> <label for="5"> 5 </label><br>' +
+                        '<input type= "radio" id="6" name= "answer" value= 6> <label for="6"> 6 </label><br>' +
+                        '<input type= "radio" id="7" name= "answer" value= 7> <label for="7"> 7 </label><br>' +
+                        '<input type= "radio" id="8" name= "answer" value= 8> <label for="8"> 8 </label><br>' +
+                        '<input type= "radio" id="9" name= "answer" value= 9> <label for="9"> 9 Strongly agree </label><br><br><br><br>' +
+                        '</div><div class="col-xs-1 col-md-1"></div></div>';
+                    questID = "SES-13";
+                    itemNum = 9;
+
+                    break;
+
+                case 11:
+                    var Info = '<div class="row"><div class="col-xs-3 col-md-3"></div><div id = "Middle" class="col-xs-7 col-md-7"><H3>' +
+                        'Now as an adult, I have enough money to buy things I want.' +
+                        '</h3><br><br></div><div class="col-xs-1 col-md-1"></div></div>';
+                    var Ticks = '<div class="row"><div class="col-xs-3 col-md-3"></div><div id = "Middle" class="col-xs-7 col-md-7">' +
+                        '<input type= "radio" id="1" name= "answer" value= 1> <label for="1"> 1 Strongly disagree </label><br>' +
+                        '<input type= "radio" id="2" name= "answer" value= 2> <label for="2"> 2 </label><br>' +
+                        '<input type= "radio" id="3" name= "answer" value= 3> <label for="3"> 3 </label><br>' +
+                        '<input type= "radio" id="4" name= "answer" value= 4> <label for="4"> 4 </label><br>' +
+                        '<input type= "radio" id="5" name= "answer" value= 5> <label for="5"> 5 </label><br>' +
+                        '<input type= "radio" id="6" name= "answer" value= 6> <label for="6"> 6 </label><br>' +
+                        '<input type= "radio" id="7" name= "answer" value= 7> <label for="7"> 7 </label><br>' +
+                        '<input type= "radio" id="8" name= "answer" value= 8> <label for="8"> 8 </label><br>' +
+                        '<input type= "radio" id="9" name= "answer" value= 9> <label for="9"> 9 Strongly agree </label><br><br><br><br>' +
+                        '</div><div class="col-xs-1 col-md-1"></div></div>';
+                    questID = "SES-13";
+                    itemNum = 10;
+
+                    break;
+
+                case 12:
+                    var Info = '<div class="row"><div class="col-xs-3 col-md-3"></div><div id = "Middle" class="col-xs-7 col-md-7"><H3>' +
+                        'Now as an adult, I don\'t need to worry too much about paying my bills.' +
+                        '</h3><br><br></div><div class="col-xs-1 col-md-1"></div></div>';
+                    var Ticks = '<div class="row"><div class="col-xs-3 col-md-3"></div><div id = "Middle" class="col-xs-7 col-md-7">' +
+                        '<input type= "radio" id="1" name= "answer" value= 1> <label for="1"> 1 Strongly disagree </label><br>' +
+                        '<input type= "radio" id="2" name= "answer" value= 2> <label for="2"> 2 </label><br>' +
+                        '<input type= "radio" id="3" name= "answer" value= 3> <label for="3"> 3 </label><br>' +
+                        '<input type= "radio" id="4" name= "answer" value= 4> <label for="4"> 4 </label><br>' +
+                        '<input type= "radio" id="5" name= "answer" value= 5> <label for="5"> 5 </label><br>' +
+                        '<input type= "radio" id="6" name= "answer" value= 6> <label for="6"> 6 </label><br>' +
+                        '<input type= "radio" id="7" name= "answer" value= 7> <label for="7"> 7 </label><br>' +
+                        '<input type= "radio" id="8" name= "answer" value= 8> <label for="8"> 8 </label><br>' +
+                        '<input type= "radio" id="9" name= "answer" value= 9> <label for="9"> 9 Strongly agree </label><br><br><br><br>' +
+                        '</div><div class="col-xs-1 col-md-1"></div></div>';
+                    questID = "SES-13";
+                    itemNum = 11;
+
+                    break;
+
+                case 13:
+                    var Info = '<div class="row"><div class="col-xs-3 col-md-3"></div><div id = "Middle" class="col-xs-7 col-md-7"><H3>' +
+                        'Now as an adult, I don\'t think I\'ll have to worry about money too much in the future.' +
+                        '</h3><br><br></div><div class="col-xs-1 col-md-1"></div></div>';
+                    var Ticks = '<div class="row"><div class="col-xs-3 col-md-3"></div><div id = "Middle" class="col-xs-7 col-md-7">' +
+                        '<input type= "radio" id="1" name= "answer" value= 1> <label for="1"> 1 Strongly disagree </label><br>' +
+                        '<input type= "radio" id="2" name= "answer" value= 2> <label for="2"> 2 </label><br>' +
+                        '<input type= "radio" id="3" name= "answer" value= 3> <label for="3"> 3 </label><br>' +
+                        '<input type= "radio" id="4" name= "answer" value= 4> <label for="4"> 4 </label><br>' +
+                        '<input type= "radio" id="5" name= "answer" value= 5> <label for="5"> 5 </label><br>' +
+                        '<input type= "radio" id="6" name= "answer" value= 6> <label for="6"> 6 </label><br>' +
+                        '<input type= "radio" id="7" name= "answer" value= 7> <label for="7"> 7 </label><br>' +
+                        '<input type= "radio" id="8" name= "answer" value= 8> <label for="8"> 8 </label><br>' +
+                        '<input type= "radio" id="9" name= "answer" value= 9> <label for="9"> 9 Strongly agree </label><br><br><br><br>' +
+                        '</div><div class="col-xs-1 col-md-1"></div></div>';
+                    questID = "SES-13";
+                    itemNum = 12;
+
+                    break;
+
+                case 14:
+                    var Info = '<div class="row"><div class="col-xs-3 col-md-3"></div><div id = "Middle" class="col-xs-7 col-md-7"><H3>' +
+                        'Think of this ladder as representing where people stand in their communities. ' +
+                        'People define community in different ways: please define it in whatever way is most meaningful to you.<br>' +
+                        'At the top of the ladder are the people who have the highest standing in their community. At the bottom are the people who have the lowest standing in their community.<br><br>' +
+                        'Where would you place yourself on this ladder?' +
+                        '</h3><br><br></div><div class="col-xs-1 col-md-1"></div></div>';
+                    var Ticks = '<div class="row"><div class="col-xs-3 col-md-3"></div><div id = "Middle" class="col-xs-7 col-md-7">' +
+                        '<input type= "radio" id="10" name= "answer" value= 10> <label for="10"> 10 Top - highest standing </label><br>' +
+                        '<input type= "radio" id="9"  name= "answer" value= 9>  <label for="9"> 9 </label><br>' +
+                        '<input type= "radio" id="8"  name= "answer" value= 8>  <label for="8"> 8 </label><br>' +
+                        '<input type= "radio" id="7"  name= "answer" value= 7>  <label for="7"> 7 </label><br>' +
+                        '<input type= "radio" id="6"  name= "answer" value= 6>  <label for="6"> 6 </label><br>' +
+                        '<input type= "radio" id="5"  name= "answer" value= 5>  <label for="5"> 5 </label><br>' +
+                        '<input type= "radio" id="4"  name= "answer" value= 4>  <label for="4"> 4 </label><br>' +
+                        '<input type= "radio" id="3"  name= "answer" value= 3>  <label for="3"> 3 </label><br>' +
+                        '<input type= "radio" id="2"  name= "answer" value= 2>  <label for="2"> 2 </label><br>' +
+                        '<input type= "radio" id="1"  name= "answer" value= 1>  <label for="1"> 1 Bottom - lower standing </label><br><br><br><br>' +
+                        '</div><div class="col-xs-1 col-md-1"></div></div>';
+                    questID = "SES-13";
+                    itemNum = 13;
+
+                    break;
+                default:
+
+                    break;
+
+            }
+
+            $('#TextBoxDiv').html(Title + Info + Ticks);
+
+            Question_time = (new Date()).getTime();
+
+            $('#Bottom').html(Buttons);
+
+
+            $('#Next').click(function () {
+
+                if ($("input:radio:checked").length < 1) {
+
+                    alert('Please select one answer.');
+
+                } else {
+
+                    Reaction_time = (new Date()).getTime();
+                    answer = parseInt($("input:radio:checked").attr('id')); //console.log(answer)
+                    answer_value = $("input:radio:checked").val();
+
+                    SendQuestDataDB(0);
+
+                    $('#TextBoxDiv').remove();
+                    $('#Stage').empty();
+                    $('#Bottom').empty();
+
+                    if (answer == -1) {
+                        QuestNum += nb_skip + 1;
+                    } else {
+                        QuestNum++;
+                    }
+
+                    if (QuestNum <= NumQuestions + 1) {
+                        playQuestionnaire_SES(QuestNum);
+                    } else {
+                        endExperiment();
                     }
                 }
             });
-        }
-    }
 
-    function playQuestionnaire_SES(QuestNum) {
+            function SendQuestDataDB(call) {
 
-        var NumQuestions = 13;
+                $.ajax({
+                    type: 'POST',
+                    data: {
+                        exp: this.expName,
+                        expID: expID,
+                        id: subID,
+                        qid: questID,
+                        qnum: 5,
+                        item: itemNum,
+                        ans: answer,
+                        val: answer_value,
+                        reaction_time: Reaction_time - Question_time
+                    },
+                    async: true,
+                    url: 'php/InsertQuestionnaireDataDB.php',
+                    /*dataType: 'json',*/
+                    success: function (r) {
+                        if (r[0].ErrorNo > 0 && call + 1 < maxDBCalls) {
+                            SendQuestDataDB(call + 1);
+                        }
+                    },
+                    error: function (XMLHttpRequest, textStatus, errorThrown) {
 
-        createDiv('Stage', 'TextBoxDiv');
-
-        var Title = '<H2 align = "center"></H2>';
-        var Info;
-        var questID;
-        var itemNum;
-        var answer;
-        var answer_value;
-
-        var Question_time;
-        var Reaction_time;
-
-        var nb_skip = 0;
-
-        var Buttons = '<div class="row"><div class="col-xs-3 col-md-3"></div><div id = "Middle" class="col-xs-7 col-md-7"> <input type="button"  class="btn btn-default" id="Next" value="Next" > </div><div class="col-xs-1 col-md-1"></div></div>';
-
-        switch (QuestNum) {
-
-            case 1:
-                var Info = '<div class="row"><div class="col-xs-3 col-md-3"></div><div id = "Middle" class="col-xs-7 col-md-7"><H3>' +
-                    'The following questions measure your perception of your childhood and your current adult life. Please indicate your agreement with these statements. Please read each statement carefully, and then indicate how much you agree with the statement.' +
-                    '</h3><br><br></div><div class="col-xs-1 col-md-1"></div></div>';
-                var Ticks = '<div class="row"><div class="col-xs-3 col-md-3"></div><div id = "Middle" class="col-xs-7 col-md-7">' +
-                    '<input type= "radio" id="1" name= "answer" value= 1> <label for="1"> I am ready. </label><br><br><br><br>' +
-                    '</div><div class="col-xs-1 col-md-1"></div></div>';
-                questID = "SES-13_instruction";
-                itemNum = 1;
-
-                break;
-
-            case 2:
-                var Info = '<div class="row"><div class="col-xs-3 col-md-3"></div><div id = "Middle" class="col-xs-7 col-md-7"><H3>' +
-                    'When I was growing up, someone in my house was always yelling at someone else.' +
-                    '</h3><br><br></div><div class="col-xs-1 col-md-1"></div></div>';
-                var Ticks = '<div class="row"><div class="col-xs-3 col-md-3"></div><div id = "Middle" class="col-xs-7 col-md-7">' +
-                    '<input type= "radio" id="1" name= "answer" value= 1> <label for="1"> 1 Strongly disagree </label><br>' +
-                    '<input type= "radio" id="2" name= "answer" value= 2> <label for="2"> 2 </label><br>' +
-                    '<input type= "radio" id="3" name= "answer" value= 3> <label for="3"> 3 </label><br>' +
-                    '<input type= "radio" id="4" name= "answer" value= 4> <label for="4"> 4 </label><br>' +
-                    '<input type= "radio" id="5" name= "answer" value= 5> <label for="5"> 5 </label><br>' +
-                    '<input type= "radio" id="6" name= "answer" value= 6> <label for="6"> 6 </label><br>' +
-                    '<input type= "radio" id="7" name= "answer" value= 7> <label for="7"> 7 </label><br>' +
-                    '<input type= "radio" id="8" name= "answer" value= 8> <label for="8"> 8 </label><br>' +
-                    '<input type= "radio" id="9" name= "answer" value= 9> <label for="9"> 9 Strongly agree </label><br><br><br><br>' +
-                    '</div><div class="col-xs-1 col-md-1"></div></div>';
-                questID = "SES-13";
-                itemNum = 1;
-
-                break;
-
-            case 3:
-                var Info = '<div class="row"><div class="col-xs-3 col-md-3"></div><div id = "Middle" class="col-xs-7 col-md-7"><H3>' +
-                    'Some of the punishments I received when I was a child now seem too harsh to me.' +
-                    '</h3><br><br></div><div class="col-xs-1 col-md-1"></div></div>';
-                var Ticks = '<div class="row"><div class="col-xs-3 col-md-3"></div><div id = "Middle" class="col-xs-7 col-md-7">' +
-                    '<input type= "radio" id="1" name= "answer" value= 1> <label for="1"> 1 Strongly disagree </label><br>' +
-                    '<input type= "radio" id="2" name= "answer" value= 2> <label for="2"> 2 </label><br>' +
-                    '<input type= "radio" id="3" name= "answer" value= 3> <label for="3"> 3 </label><br>' +
-                    '<input type= "radio" id="4" name= "answer" value= 4> <label for="4"> 4 </label><br>' +
-                    '<input type= "radio" id="5" name= "answer" value= 5> <label for="5"> 5 </label><br>' +
-                    '<input type= "radio" id="6" name= "answer" value= 6> <label for="6"> 6 </label><br>' +
-                    '<input type= "radio" id="7" name= "answer" value= 7> <label for="7"> 7 </label><br>' +
-                    '<input type= "radio" id="8" name= "answer" value= 8> <label for="8"> 8 </label><br>' +
-                    '<input type= "radio" id="9" name= "answer" value= 9> <label for="9"> 9 Strongly agree </label><br><br><br><br>' +
-                    '</div><div class="col-xs-1 col-md-1"></div></div>';
-                questID = "SES-13";
-                itemNum = 2;
-
-                break;
-
-            case 4:
-                var Info = '<div class="row"><div class="col-xs-3 col-md-3"></div><div id = "Middle" class="col-xs-7 col-md-7"><H3>' +
-                    'I guess you could say that I wasn’t treated as well as I should have been at home.' +
-                    '</h3><br><br></div><div class="col-xs-1 col-md-1"></div></div>';
-                var Ticks = '<div class="row"><div class="col-xs-3 col-md-3"></div><div id = "Middle" class="col-xs-7 col-md-7">' +
-                    '<input type= "radio" id="1" name= "answer" value= 1> <label for="1"> 1 Strongly disagree </label><br>' +
-                    '<input type= "radio" id="2" name= "answer" value= 2> <label for="2"> 2 </label><br>' +
-                    '<input type= "radio" id="3" name= "answer" value= 3> <label for="3"> 3 </label><br>' +
-                    '<input type= "radio" id="4" name= "answer" value= 4> <label for="4"> 4 </label><br>' +
-                    '<input type= "radio" id="5" name= "answer" value= 5> <label for="5"> 5 </label><br>' +
-                    '<input type= "radio" id="6" name= "answer" value= 6> <label for="6"> 6 </label><br>' +
-                    '<input type= "radio" id="7" name= "answer" value= 7> <label for="7"> 7 </label><br>' +
-                    '<input type= "radio" id="8" name= "answer" value= 8> <label for="8"> 8 </label><br>' +
-                    '<input type= "radio" id="9" name= "answer" value= 9> <label for="9"> 9 Strongly agree </label><br><br><br><br>' +
-                    '</div><div class="col-xs-1 col-md-1"></div></div>';
-                questID = "SES-13";
-                itemNum = 3;
-
-                break;
-
-            case 5:
-                var Info = '<div class="row"><div class="col-xs-3 col-md-3"></div><div id = "Middle" class="col-xs-7 col-md-7"><H3>' +
-                    'When I was younger than 10, things were often chaotic in my house.' +
-                    '</h3><br><br></div><div class="col-xs-1 col-md-1"></div></div>';
-                var Ticks = '<div class="row"><div class="col-xs-3 col-md-3"></div><div id = "Middle" class="col-xs-7 col-md-7">' +
-                    '<input type= "radio" id="1" name= "answer" value= 1> <label for="1"> 1 Strongly disagree </label><br>' +
-                    '<input type= "radio" id="2" name= "answer" value= 2> <label for="2"> 2 </label><br>' +
-                    '<input type= "radio" id="3" name= "answer" value= 3> <label for="3"> 3 </label><br>' +
-                    '<input type= "radio" id="4" name= "answer" value= 4> <label for="4"> 4 </label><br>' +
-                    '<input type= "radio" id="5" name= "answer" value= 5> <label for="5"> 5 </label><br>' +
-                    '<input type= "radio" id="6" name= "answer" value= 6> <label for="6"> 6 </label><br>' +
-                    '<input type= "radio" id="7" name= "answer" value= 7> <label for="7"> 7 </label><br>' +
-                    '<input type= "radio" id="8" name= "answer" value= 8> <label for="8"> 8 </label><br>' +
-                    '<input type= "radio" id="9" name= "answer" value= 9> <label for="9"> 9 Strongly agree </label><br><br><br><br>' +
-                    '</div><div class="col-xs-1 col-md-1"></div></div>';
-                questID = "SES-13";
-                itemNum = 4;
-
-                break;
-
-            case 6:
-                var Info = '<div class="row"><div class="col-xs-3 col-md-3"></div><div id = "Middle" class="col-xs-7 col-md-7"><H3>' +
-                    'When I was younger than 10, people often moved in and out of my house on a pretty random basis.' +
-                    '</h3><br><br></div><div class="col-xs-1 col-md-1"></div></div>';
-                var Ticks = '<div class="row"><div class="col-xs-3 col-md-3"></div><div id = "Middle" class="col-xs-7 col-md-7">' +
-                    '<input type= "radio" id="1" name= "answer" value= 1> <label for="1"> 1 Strongly disagree </label><br>' +
-                    '<input type= "radio" id="2" name= "answer" value= 2> <label for="2"> 2 </label><br>' +
-                    '<input type= "radio" id="3" name= "answer" value= 3> <label for="3"> 3 </label><br>' +
-                    '<input type= "radio" id="4" name= "answer" value= 4> <label for="4"> 4 </label><br>' +
-                    '<input type= "radio" id="5" name= "answer" value= 5> <label for="5"> 5 </label><br>' +
-                    '<input type= "radio" id="6" name= "answer" value= 6> <label for="6"> 6 </label><br>' +
-                    '<input type= "radio" id="7" name= "answer" value= 7> <label for="7"> 7 </label><br>' +
-                    '<input type= "radio" id="8" name= "answer" value= 8> <label for="8"> 8 </label><br>' +
-                    '<input type= "radio" id="9" name= "answer" value= 9> <label for="9"> 9 Strongly agree </label><br><br><br><br>' +
-                    '</div><div class="col-xs-1 col-md-1"></div></div>';
-                questID = "SES-13";
-                itemNum = 5;
-
-                break;
-
-            case 7:
-                var Info = '<div class="row"><div class="col-xs-3 col-md-3"></div><div id = "Middle" class="col-xs-7 col-md-7"><H3>' +
-                    'When I was younger than 10, I had a hard time knowing what my parents or other people in my house were going to say or do from day-to-day.' +
-                    '</h3><br><br></div><div class="col-xs-1 col-md-1"></div></div>';
-                var Ticks = '<div class="row"><div class="col-xs-3 col-md-3"></div><div id = "Middle" class="col-xs-7 col-md-7">' +
-                    '<input type= "radio" id="1" name= "answer" value= 1> <label for="1"> 1 Strongly disagree </label><br>' +
-                    '<input type= "radio" id="2" name= "answer" value= 2> <label for="2"> 2 </label><br>' +
-                    '<input type= "radio" id="3" name= "answer" value= 3> <label for="3"> 3 </label><br>' +
-                    '<input type= "radio" id="4" name= "answer" value= 4> <label for="4"> 4 </label><br>' +
-                    '<input type= "radio" id="5" name= "answer" value= 5> <label for="5"> 5 </label><br>' +
-                    '<input type= "radio" id="6" name= "answer" value= 6> <label for="6"> 6 </label><br>' +
-                    '<input type= "radio" id="7" name= "answer" value= 7> <label for="7"> 7 </label><br>' +
-                    '<input type= "radio" id="8" name= "answer" value= 8> <label for="8"> 8 </label><br>' +
-                    '<input type= "radio" id="9" name= "answer" value= 9> <label for="9"> 9 Strongly agree </label><br><br><br><br>' +
-                    '</div><div class="col-xs-1 col-md-1"></div></div>';
-                questID = "SES-13";
-                itemNum = 6;
-
-                break;
-
-            case 8:
-                var Info = '<div class="row"><div class="col-xs-3 col-md-3"></div><div id = "Middle" class="col-xs-7 col-md-7"><H3>' +
-                    'When I was younger than 10, my family usually had enough money for things when I was growing up.' +
-                    '</h3><br><br></div><div class="col-xs-1 col-md-1"></div></div>';
-                var Ticks = '<div class="row"><div class="col-xs-3 col-md-3"></div><div id = "Middle" class="col-xs-7 col-md-7">' +
-                    '<input type= "radio" id="1" name= "answer" value= 1> <label for="1"> 1 Strongly disagree </label><br>' +
-                    '<input type= "radio" id="2" name= "answer" value= 2> <label for="2"> 2 </label><br>' +
-                    '<input type= "radio" id="3" name= "answer" value= 3> <label for="3"> 3 </label><br>' +
-                    '<input type= "radio" id="4" name= "answer" value= 4> <label for="4"> 4 </label><br>' +
-                    '<input type= "radio" id="5" name= "answer" value= 5> <label for="5"> 5 </label><br>' +
-                    '<input type= "radio" id="6" name= "answer" value= 6> <label for="6"> 6 </label><br>' +
-                    '<input type= "radio" id="7" name= "answer" value= 7> <label for="7"> 7 </label><br>' +
-                    '<input type= "radio" id="8" name= "answer" value= 8> <label for="8"> 8 </label><br>' +
-                    '<input type= "radio" id="9" name= "answer" value= 9> <label for="9"> 9 Strongly agree </label><br><br><br><br>' +
-                    '</div><div class="col-xs-1 col-md-1"></div></div>';
-                questID = "SES-13";
-                itemNum = 7;
-
-                break;
-
-            case 9:
-                var Info = '<div class="row"><div class="col-xs-3 col-md-3"></div><div id = "Middle" class="col-xs-7 col-md-7"><H3>' +
-                    'When I was younger than 10, I grew up in a relatively wealthy neighborhood.' +
-                    '</h3><br><br></div><div class="col-xs-1 col-md-1"></div></div>';
-                var Ticks = '<div class="row"><div class="col-xs-3 col-md-3"></div><div id = "Middle" class="col-xs-7 col-md-7">' +
-                    '<input type= "radio" id="1" name= "answer" value= 1> <label for="1"> 1 Strongly disagree </label><br>' +
-                    '<input type= "radio" id="2" name= "answer" value= 2> <label for="2"> 2 </label><br>' +
-                    '<input type= "radio" id="3" name= "answer" value= 3> <label for="3"> 3 </label><br>' +
-                    '<input type= "radio" id="4" name= "answer" value= 4> <label for="4"> 4 </label><br>' +
-                    '<input type= "radio" id="5" name= "answer" value= 5> <label for="5"> 5 </label><br>' +
-                    '<input type= "radio" id="6" name= "answer" value= 6> <label for="6"> 6 </label><br>' +
-                    '<input type= "radio" id="7" name= "answer" value= 7> <label for="7"> 7 </label><br>' +
-                    '<input type= "radio" id="8" name= "answer" value= 8> <label for="8"> 8 </label><br>' +
-                    '<input type= "radio" id="9" name= "answer" value= 9> <label for="9"> 9 Strongly agree </label><br><br><br><br>' +
-                    '</div><div class="col-xs-1 col-md-1"></div></div>';
-                questID = "SES-13";
-                itemNum = 8;
-
-                break;
-
-            case 10:
-                var Info = '<div class="row"><div class="col-xs-3 col-md-3"></div><div id = "Middle" class="col-xs-7 col-md-7"><H3>' +
-                    'When I was younger than 10, I felt relatively wealthy compared to the other kids in my school.' +
-                    '</h3><br><br></div><div class="col-xs-1 col-md-1"></div></div>';
-                var Ticks = '<div class="row"><div class="col-xs-3 col-md-3"></div><div id = "Middle" class="col-xs-7 col-md-7">' +
-                    '<input type= "radio" id="1" name= "answer" value= 1> <label for="1"> 1 Strongly disagree </label><br>' +
-                    '<input type= "radio" id="2" name= "answer" value= 2> <label for="2"> 2 </label><br>' +
-                    '<input type= "radio" id="3" name= "answer" value= 3> <label for="3"> 3 </label><br>' +
-                    '<input type= "radio" id="4" name= "answer" value= 4> <label for="4"> 4 </label><br>' +
-                    '<input type= "radio" id="5" name= "answer" value= 5> <label for="5"> 5 </label><br>' +
-                    '<input type= "radio" id="6" name= "answer" value= 6> <label for="6"> 6 </label><br>' +
-                    '<input type= "radio" id="7" name= "answer" value= 7> <label for="7"> 7 </label><br>' +
-                    '<input type= "radio" id="8" name= "answer" value= 8> <label for="8"> 8 </label><br>' +
-                    '<input type= "radio" id="9" name= "answer" value= 9> <label for="9"> 9 Strongly agree </label><br><br><br><br>' +
-                    '</div><div class="col-xs-1 col-md-1"></div></div>';
-                questID = "SES-13";
-                itemNum = 9;
-
-                break;
-
-            case 11:
-                var Info = '<div class="row"><div class="col-xs-3 col-md-3"></div><div id = "Middle" class="col-xs-7 col-md-7"><H3>' +
-                    'Now as an adult, I have enough money to buy things I want.' +
-                    '</h3><br><br></div><div class="col-xs-1 col-md-1"></div></div>';
-                var Ticks = '<div class="row"><div class="col-xs-3 col-md-3"></div><div id = "Middle" class="col-xs-7 col-md-7">' +
-                    '<input type= "radio" id="1" name= "answer" value= 1> <label for="1"> 1 Strongly disagree </label><br>' +
-                    '<input type= "radio" id="2" name= "answer" value= 2> <label for="2"> 2 </label><br>' +
-                    '<input type= "radio" id="3" name= "answer" value= 3> <label for="3"> 3 </label><br>' +
-                    '<input type= "radio" id="4" name= "answer" value= 4> <label for="4"> 4 </label><br>' +
-                    '<input type= "radio" id="5" name= "answer" value= 5> <label for="5"> 5 </label><br>' +
-                    '<input type= "radio" id="6" name= "answer" value= 6> <label for="6"> 6 </label><br>' +
-                    '<input type= "radio" id="7" name= "answer" value= 7> <label for="7"> 7 </label><br>' +
-                    '<input type= "radio" id="8" name= "answer" value= 8> <label for="8"> 8 </label><br>' +
-                    '<input type= "radio" id="9" name= "answer" value= 9> <label for="9"> 9 Strongly agree </label><br><br><br><br>' +
-                    '</div><div class="col-xs-1 col-md-1"></div></div>';
-                questID = "SES-13";
-                itemNum = 10;
-
-                break;
-
-            case 12:
-                var Info = '<div class="row"><div class="col-xs-3 col-md-3"></div><div id = "Middle" class="col-xs-7 col-md-7"><H3>' +
-                    'Now as an adult, I don\'t need to worry too much about paying my bills.' +
-                    '</h3><br><br></div><div class="col-xs-1 col-md-1"></div></div>';
-                var Ticks = '<div class="row"><div class="col-xs-3 col-md-3"></div><div id = "Middle" class="col-xs-7 col-md-7">' +
-                    '<input type= "radio" id="1" name= "answer" value= 1> <label for="1"> 1 Strongly disagree </label><br>' +
-                    '<input type= "radio" id="2" name= "answer" value= 2> <label for="2"> 2 </label><br>' +
-                    '<input type= "radio" id="3" name= "answer" value= 3> <label for="3"> 3 </label><br>' +
-                    '<input type= "radio" id="4" name= "answer" value= 4> <label for="4"> 4 </label><br>' +
-                    '<input type= "radio" id="5" name= "answer" value= 5> <label for="5"> 5 </label><br>' +
-                    '<input type= "radio" id="6" name= "answer" value= 6> <label for="6"> 6 </label><br>' +
-                    '<input type= "radio" id="7" name= "answer" value= 7> <label for="7"> 7 </label><br>' +
-                    '<input type= "radio" id="8" name= "answer" value= 8> <label for="8"> 8 </label><br>' +
-                    '<input type= "radio" id="9" name= "answer" value= 9> <label for="9"> 9 Strongly agree </label><br><br><br><br>' +
-                    '</div><div class="col-xs-1 col-md-1"></div></div>';
-                questID = "SES-13";
-                itemNum = 11;
-
-                break;
-
-            case 13:
-                var Info = '<div class="row"><div class="col-xs-3 col-md-3"></div><div id = "Middle" class="col-xs-7 col-md-7"><H3>' +
-                    'Now as an adult, I don\'t think I\'ll have to worry about money too much in the future.' +
-                    '</h3><br><br></div><div class="col-xs-1 col-md-1"></div></div>';
-                var Ticks = '<div class="row"><div class="col-xs-3 col-md-3"></div><div id = "Middle" class="col-xs-7 col-md-7">' +
-                    '<input type= "radio" id="1" name= "answer" value= 1> <label for="1"> 1 Strongly disagree </label><br>' +
-                    '<input type= "radio" id="2" name= "answer" value= 2> <label for="2"> 2 </label><br>' +
-                    '<input type= "radio" id="3" name= "answer" value= 3> <label for="3"> 3 </label><br>' +
-                    '<input type= "radio" id="4" name= "answer" value= 4> <label for="4"> 4 </label><br>' +
-                    '<input type= "radio" id="5" name= "answer" value= 5> <label for="5"> 5 </label><br>' +
-                    '<input type= "radio" id="6" name= "answer" value= 6> <label for="6"> 6 </label><br>' +
-                    '<input type= "radio" id="7" name= "answer" value= 7> <label for="7"> 7 </label><br>' +
-                    '<input type= "radio" id="8" name= "answer" value= 8> <label for="8"> 8 </label><br>' +
-                    '<input type= "radio" id="9" name= "answer" value= 9> <label for="9"> 9 Strongly agree </label><br><br><br><br>' +
-                    '</div><div class="col-xs-1 col-md-1"></div></div>';
-                questID = "SES-13";
-                itemNum = 12;
-
-                break;
-
-            case 14:
-                var Info = '<div class="row"><div class="col-xs-3 col-md-3"></div><div id = "Middle" class="col-xs-7 col-md-7"><H3>' +
-                    'Think of this ladder as representing where people stand in their communities. ' +
-                    'People define community in different ways: please define it in whatever way is most meaningful to you.<br>' +
-                    'At the top of the ladder are the people who have the highest standing in their community. At the bottom are the people who have the lowest standing in their community.<br><br>' +
-                    'Where would you place yourself on this ladder?' +
-                    '</h3><br><br></div><div class="col-xs-1 col-md-1"></div></div>';
-                var Ticks = '<div class="row"><div class="col-xs-3 col-md-3"></div><div id = "Middle" class="col-xs-7 col-md-7">' +
-                    '<input type= "radio" id="10" name= "answer" value= 10> <label for="10"> 10 Top - highest standing </label><br>' +
-                    '<input type= "radio" id="9"  name= "answer" value= 9>  <label for="9"> 9 </label><br>' +
-                    '<input type= "radio" id="8"  name= "answer" value= 8>  <label for="8"> 8 </label><br>' +
-                    '<input type= "radio" id="7"  name= "answer" value= 7>  <label for="7"> 7 </label><br>' +
-                    '<input type= "radio" id="6"  name= "answer" value= 6>  <label for="6"> 6 </label><br>' +
-                    '<input type= "radio" id="5"  name= "answer" value= 5>  <label for="5"> 5 </label><br>' +
-                    '<input type= "radio" id="4"  name= "answer" value= 4>  <label for="4"> 4 </label><br>' +
-                    '<input type= "radio" id="3"  name= "answer" value= 3>  <label for="3"> 3 </label><br>' +
-                    '<input type= "radio" id="2"  name= "answer" value= 2>  <label for="2"> 2 </label><br>' +
-                    '<input type= "radio" id="1"  name= "answer" value= 1>  <label for="1"> 1 Bottom - lower standing </label><br><br><br><br>' +
-                    '</div><div class="col-xs-1 col-md-1"></div></div>';
-                questID = "SES-13";
-                itemNum = 13;
-
-                break;
-            default:
-
-                break;
-
-        }
-
-        $('#TextBoxDiv').html(Title + Info + Ticks);
-
-        Question_time = (new Date()).getTime();
-
-        $('#Bottom').html(Buttons);
-
-
-        $('#Next').click(function () {
-
-            if ($("input:radio:checked").length < 1) {
-
-                alert('Please select one answer.');
-
-            } else {
-
-                Reaction_time = (new Date()).getTime();
-                answer = parseInt($("input:radio:checked").attr('id')); //console.log(answer)
-                answer_value = $("input:radio:checked").val();
-
-                SendQuestDataDB(0);
-
-                $('#TextBoxDiv').remove();
-                $('#Stage').empty();
-                $('#Bottom').empty();
-
-                if (answer == -1) {
-                    QuestNum += nb_skip + 1;
-                } else {
-                    QuestNum++;
-                }
-
-                if (QuestNum <= NumQuestions + 1) {
-                    playQuestionnaire_SES(QuestNum);
-                } else {
-                    endExperiment();
-                }
+                        if (call + 1 < maxDBCalls) {
+                            SendQuestDataDB(call + 1);
+                        }
+                    }
+                });
             }
-        });
-
-        function SendQuestDataDB(call) {
-
-            $.ajax({
-                type: 'POST',
-                data: {
-                    exp: expName,
-                    expID: expID,
-                    id: subID,
-                    qid: questID,
-                    qnum: 5,
-                    item: itemNum,
-                    ans: answer,
-                    val: answer_value,
-                    reaction_time: Reaction_time - Question_time
-                },
-                async: true,
-                url: 'php/InsertQuestionnaireDataDB.php',
-                /*dataType: 'json',*/
-                success: function (r) {
-                    if (r[0].ErrorNo > 0 && call + 1 < maxDBCalls) {
-                        SendQuestDataDB(call + 1);
-                    }
-                },
-                error: function (XMLHttpRequest, textStatus, errorThrown) {
-
-                    if (call + 1 < maxDBCalls) {
-                        SendQuestDataDB(call + 1);
-                    }
-                }
-            });
         }
     }
 
@@ -3018,4 +3192,4 @@ function main () {
             getUserID();
         }
     }
-}
+
