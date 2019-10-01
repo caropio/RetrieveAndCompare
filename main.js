@@ -3,10 +3,10 @@ $(document).ready(main);
 
 function main() {
 
-    // let sessionNum = 0;
-    // let phaseNum = 2;
+    let sessionNum = -1;
+    let phaseNum = 1;
 
-    let instructionPhase = 0;
+    let instructionNum= 0;
 
     let exp = new Experiment();
     let gui = new GUI();
@@ -16,44 +16,41 @@ function main() {
         gui: gui
     });
 
-    stateMachineInstruction({instructionPhase, inst, exp, gui});
+    stateMachine({instructionNum, sessionNum, phaseNum, inst, exp, gui});
 
     //stateMachineGame({sessionNum, phaseNum, exp, gui});
 
 
 }
 
-function stateMachineInstruction({instructionPhase, inst, exp, gui} = {},
-                                 nextFunc=stateMachineGame,
-                                 nextParams={sessionNum:0, phaseNum:2, exp:exp, gui:gui}
-                                 ) {
-    switch (instructionPhase) {
+function stateMachine({instructionNum, sessionNum, phaseNum, inst, exp, gui} = {}) {
+
+    switch (instructionNum) {
         case 0:
             inst.setUserID(
-                stateMachineInstruction,
+                stateMachine,
                 {
-                    instructionPhase: 1, inst: inst, exp: exp, gui: gui
+                    instructionNum: 1, inst: inst, exp: exp, gui: gui
                 }
             );
             break;
         case 1:
             inst.displayConsent(
-                stateMachineInstruction,
+                stateMachine,
                 {
-                    instructionPhase: 2, inst: inst, exp: exp, gui: gui
+                    instructionNum: 2, inst: inst, exp: exp, gui: gui
                 }
             );
             break;
         case 2:
            inst.displayInstruction(
                1,
-               stateMachineInstruction,
+               stateMachine,
                 {
-                    instructionPhase: 'end', inst: inst, exp: exp, gui: gui
+                    instructionNum: 'end', inst: inst, exp: exp, gui: gui
                 });
            break;
         case 'end':
-            nextFunc(nextParams);
             break;
     }
 }
@@ -76,7 +73,7 @@ function stateMachineGame({sessionNum, phaseNum, exp, gui}={}) {
         case 0:
             switch (phaseNum) {
                 case 2:
-                    let elicitation1 = new ElicitationLottery(
+                    let elicitation1 = new ChoiceManager(
                         {
                             expName: exp.expName,
                             expID: exp.expID,
@@ -102,7 +99,7 @@ function stateMachineGame({sessionNum, phaseNum, exp, gui}={}) {
                     elicitation1.run();
                     break;
                 case 3:
-                    let elicitation2 = new ElicitationSlider(
+                    let elicitation2 = new ChoiceManager(
                         {
                             expName: exp.expName,
                             expID: exp.expID,
@@ -130,402 +127,8 @@ function stateMachineGame({sessionNum, phaseNum, exp, gui}={}) {
             }
             break;
     }
-}
-
-
-function Experiment () {
-    /***
-
-    Experiment initializer
-
-    ***/
-
-    // TODO:
-    // Initial Experiment Parameters
-    // -------------------------------------------------------------------------------------------------- //
-    this.online = 0;
-    this.completeFeedback = 1;
-    this.expName = 'RetrieveAndCompare';
-    //var language = "en"; // only en is available at the moment
-    var compLink = 1;
-    var nSessions = 1;
-
-    var questionnaire = 1;
-    this.maxPoints = 98;
-
-    // Main Exp
-    var nCond = 4;
-    nCond--; //because of range function
-    var nCondPerSession = 4;
-    var nTrialsPerCondition = 30;
-    var nTrialsPerSession = (nTrialsPerCondition * nCondPerSession) * nSessions;
-
-    // Single symbols per session
-    // var nSymbolPerSession = 8;
-
-    this.feedbackDuration = 2000;
-    this.sumReward = [0, 0, 0, 0, 0, 0, 0];
-
-    this.totalReward = 0;
-
-    // Training
-    var nCondTraining = 4;
-    var nTrialTrainingPerCond = 3;
-    var nTrainingTrials = nTrialTrainingPerCond * nCondTraining;//1;
-    var maxTrainingSessions = 1;
-    var nTrainingImg = nCondTraining * 2;
-    nCondTraining--; // because of range function
-
-    // Phase to print
-    this.phases = [-1, 1, 2, 3, 1, 2, 3];
-
-    // var nTrialsPerConditionLot = 2;
-    // var nTrialsLotteries = (nCond + 1) * nTrialsPerConditionLot;
-
-    var initTime = (new Date()).getTime();
-
-    this.expID = createCode();
-
-    var clickDisabled = false;
-    var trainSess = -1;
-    var maxDBCalls = 1;
-    this.browsInfo = getOS() + ' - ' + getBrowser();
-
-    this.subID = undefined;
-
-    this.link = 'https://app.prolific.ac/submissions/complete?cc=RNFS5HP5';
-
-    // Manage compensations
-    // -------------------------------------------------------------------------------------------------- //
-    // one point equals 250 pence / maxPoints
-    let conversionRate = (250 / this.maxPoints).toFixed(2);
-    this.pointsToPence = points => points * conversionRate;
-    this.penceToPounds = pence => pence / 100;
-    this.pointsToPounds = points => this.penceToPounds(this.pointsToPence(points));
-
-    // Define conditions
-    // -------------------------------------------------------------------------------------------------- //
-    var probs = [];
-    var rewards = [];
-    var cont = [];
-
-    // Define ind cont
-    // -------------------------------------------------------------------------------------------------- //
-    cont[0] = [1., 0.];
-    cont[1] = [0.9, 0.1];
-    cont[2] = [0.8, 0.2];
-    cont[3] = [0.7, 0.3];
-    cont[4] = [0.6, 0.4];
-    cont[5] = [0.5, 0.5];
-    cont[6] = [0.4, 0.6];
-    cont[7] = [0.3, 0.7];
-    cont[8] = [0.2, 0.8];
-    cont[9] = [0.1, 0.9];
-    cont[10] = [0., 1.];
-
-    rewards[0] = [[-1, 1], [-1, 1]];
-    probs[0] = [[0.1, 0.9], [0.9, 0.1]];
-
-    rewards[1] = [[-1, 1], [-1, 1]];
-    probs[1] = [[0.2, 0.8], [0.8, 0.2]];
-
-    rewards[2] = [[-1, 1], [-1, 1]];
-    probs[2] = [[0.3, 0.7], [0.7, 0.3]];
-
-    rewards[3] = [[-1, 1], [-1, 1]];
-    probs[3] = [[0.4, 0.6], [0.6, 0.4]];
-
-    // only for lotteries
-    // rewards[4] = [[-1, 1], [-1, 1]];
-    // probs[4] = [[0.5, 0.5], [0.5, 0.5]];
-
-    // Define conditions
-    // -------------------------------------------------------------------------------------------------- //
-    var expCondition = [[]];
-    var conditions = [];
-
-    // range cond for each session
-    var cond = shuffle(range(0, nCond));
-
-    for (let i = 0; i < nSessions; i++) {
-        for (let j = 0; j < cond.length; j++) {
-            expCondition[i].push(
-                Array(nTrialsPerCondition).fill(cond[j]).flat()
-            );
-        }
-        expCondition[i] = expCondition[i].flat();
-    }
-
-
-    for (let i = 0; i <= nCond; i++)
-        conditions.push({
-            reward: rewards[i],
-            prob: probs[i]
-        });
-
-    // training conditions
-    var trainingCondition = [];
-    for (let i = 0; i < cond.length; i++) {
-        trainingCondition.push(
-            Array(nTrialTrainingPerCond).fill(cond[i]).flat()
-        );
-    }
-    trainingCondition = trainingCondition.flat();
-
-    // Get stims, feedbacks, resources
-    // -------------------------------------------------------------------------------------------------------- //
-    var imgPath = 'images/cards_gif/';
-    var nImg = 16;
-    var imgExt = 'gif';
-    var borderColor = "transparent";
-
-    this.images = [];
-    var availableOptions = [];
-    for (let i = 2; i <= nImg; i++) {
-        availableOptions.push(i);
-        this.images[i] = new Image();
-        this.images[i].src = imgPath + 'stim_old/' + i + '.' + imgExt;
-        this.images[i].className = "img-responsive center-block";
-        this.images[i].style.border = "5px solid " + borderColor;
-        this.images[i].style.position = "relative";
-        this.images[i].style.top = "0px";
-    }
-
-    var feedbackNames = ["empty", "0", "1", "-1", '-2', '2'];
-    this.feedbackImg = [];
-    for (var i = 0; i < feedbackNames.length; i++) {
-        fb = feedbackNames[i];
-        this.feedbackImg[fb] = new Image();
-        this.feedbackImg[fb].src = imgPath + 'fb/' + fb + '.' + imgExt;
-        this.feedbackImg[fb].className = "img-responsive center-block";
-        this.feedbackImg[fb].style.border = "5px solid " + borderColor;
-        this.feedbackImg[fb].style.position = "relative";
-        this.feedbackImg[fb].style.top = "0px";
-    }
-
-    // Training stims
-    var imgExt = 'jpg';
-    var trainingImg = [];
-    var trainingOptions = [];
-    var letters = [null, 'A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L',
-        'M', 'N', 'O', 'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z'];
-    for (let i = 1; i <= nTrainingImg; i++) {
-        trainingOptions.push(i);
-        trainingImg[i] = new Image();
-        trainingImg[i].src = imgPath + 'stim/' + letters[i] + '.' + imgExt;
-        trainingImg[i].className = "img-responsive center-block";
-        trainingImg[i].style.border = "5px solid " + borderColor;
-        trainingImg[i].style.position = "relative";
-        trainingImg[i].style.top = "0px";
-    }
-
-    // Elicitations
-    // ------------------------------------------------------------------------------------------------------- //
-    var elicitationType = 0;
-    var expectedValue = [
-        "-1", "-0.8", "-0.6", "-0.4", "-0.2", "0", "0.2", "0.4", "0.6", "0.8", "1"];
-    var expectedValueMap = {
-        '-1': [cont[0], 0],
-        '-0.8': [cont[1], 1],
-        '-0.6': [cont[2], 2],
-        '-0.4': [cont[3], 3],
-        '-0.2': [cont[4], 4],
-        '0': [cont[5], 5],
-        '0.2': [cont[6], 6],
-        '0.4': [cont[7], 7],
-        '0.6': [cont[8], 8],
-        '0.8': [cont[9], 9],
-        '1': [cont[10], 10],
-    };
-
-    for (let i = 0; i < expectedValue.length; i++) {
-        this.images[expectedValue[i]] = new Image();
-        this.images[expectedValue[i]].src = imgPath + 'lotteries/' + expectedValue[i] + '.png';
-        this.images[expectedValue[i]].className = "img-responsive center-block";
-        this.images[expectedValue[i]].style.border = "5px solid " + borderColor;
-        this.images[expectedValue[i]].style.position = "relative";
-        this.images[expectedValue[i]].style.top = "0px";
-    }
-
-    // Define contexts
-    // ------------------------------------------------------------------------------------------------------- //
-    // training
-    trainingOptions = shuffle(trainingOptions);
-    var trainingContexts = [];
-    var arr = [];
-    var elicitationsStimEVTraining = [];
-    (new Set(trainingCondition)).forEach(x => arr.push(x));
-    let j = 0;
-
-    var catchTrialsTemp = shuffle([
-        ["0.8", "-0.8"],
-        ["0.6", "-0.6"],
-        ["0.6", "-0.4"],
-        ["0.4", "-0.4"],
-        ["0.4", "-0.6"],
-        ["0.2", "-0.2"],
-        ["0.4", "-0.2"],
-        ["1", "-1"],
-    ]);
-
-    var catchTrials = [];
-    for (let i = 0; i < catchTrialsTemp.length; i++) {
-
-        var stim1 = catchTrialsTemp[i][0];
-        var stim2 = catchTrialsTemp[i][1];
-
-        catchTrials[i] = [
-            stim1,
-            stim2,
-            expectedValueMap[stim1],
-            stim1,
-            expectedValueMap[stim2],
-            stim2,
-            true
-        ].flat();
-    }
-
-
-    var nTrialPerElicitationChoiceTraining = 12;
-
-    trainingContexts = shuffle(trainingContexts);
-
-    var symbolValueMapTraining = [];
-
-    for (let i = 0; i < trainingContexts.length; i++) {
-        v1 = conditions[i]['prob'][0];
-        v2 = conditions[i]['prob'][1];
-        symbolValueMapTraining[trainingContexts[i][0]] = [v1, cont.findIndex(x => x.toString() === v1.toString())];
-        symbolValueMapTraining[trainingContexts[i][1]] = [v2, cont.findIndex(x => x.toString() === v2.toString())];
-    }
-
-    // EXP
-    availableOptions = shuffle(availableOptions);
-    var contexts = [];
-
-    for (let i = 0; i <= nCond * 2; i += 2) {
-        contexts.push([
-            availableOptions[i], availableOptions[i + 1]
-        ]);
-    }
-    contexts = shuffle(contexts);
-
-    var symbolValueMap = [];
-
-    for (let i = 0; i < contexts.length; i++) {
-        v1 = conditions[i]['prob'][0];
-        v2 = conditions[i]['prob'][1];
-        r = [-1, 1];
-        symbolValueMap[contexts[i][0]] = [
-            v1,
-            cont.findIndex(x => x.toString() === v1.toString()),
-            v1[0] * r[0] + v1[1] * r[1]
-        ];
-        symbolValueMap[contexts[i][1]] = [
-            v2,
-            cont.findIndex(x => x.toString() === v2.toString()),
-            v2[0] * r[0] + v2[1] * r[1]
-        ];
-    }
-
-    for (let i = 0; i < nTrainingImg; i += 2) {
-
-        trainingContexts[arr[j]] = [
-            trainingOptions[i], trainingOptions[i + 1]
-        ];
-        j++;
-
-        let temp = [];
-        for (let k = 0; k < probs.length; k++) {
-            temp.push([trainingOptions[i], expectedValue[k]]);
-        }
-        elicitationsStimEVTraining = elicitationsStimEVTraining.concat(shuffle(temp));
-        elicitationsStimEVTraining.push(catchTrials[i]);
-
-        temp = [];
-        for (let k = 0; k < probs.length; k++) {
-            temp.push([trainingOptions[i + 1], expectedValue[k]]);
-        }
-        elicitationsStimEVTraining = elicitationsStimEVTraining.concat(shuffle(temp));
-        elicitationsStimEVTraining.push(catchTrials[i + 1]);
-
-    }
-
-    // Elicitation
-    var elicitationsStim = [];
-    this.elicitationStimEV = [];
-
-    var cidx = Array.from(new Set(shuffle(expCondition[0].flat())));
-    var catchIdx = 0;
-
-    for (let j = 0; j < cidx.length; j++) {
-
-        var stim1 = contexts[cidx[j]].flat()[0];
-        var stim2 = contexts[cidx[j]].flat()[1];
-
-        elicitationsStim.push([
-            stim1,
-            symbolValueMap[stim1],
-            false
-        ].flat());
-
-        elicitationsStim.push([
-            stim2,
-            symbolValueMap[stim2],
-            false
-        ].flat());
-
-        let temp = [];
-        for (let k = 0; k < expectedValue.length; k++) {
-            temp.push(
-                [
-                    stim1,
-                    expectedValue[k],
-                    symbolValueMap[stim1],
-                    expectedValueMap[expectedValue[k]],
-                    false
-                ].flat()
-            );
-        }
-        this.elicitationStimEV = this.elicitationStimEV.concat(shuffle(temp));
-        this.elicitationStimEV.push(catchTrials[catchIdx]);
-        catchIdx++;
-
-        temp = [];
-        for (let k = 0; k < expectedValue.length; k++) {
-            temp.push(
-                [
-                    stim2,
-                    expectedValue[k],
-                    symbolValueMap[stim2],
-                    expectedValueMap[expectedValue[k]],
-                    false
-                ].flat()
-            );
-        }
-        this.elicitationStimEV = this.elicitationStimEV.concat(shuffle(temp));
-        this.elicitationStimEV.push(catchTrials[catchIdx]);
-        catchIdx++;
-
-    }
-
-    var elicitationsStimTraining = range(1, 4);
-
-    for (let i = 0; i < 2; i++) {
-        elicitationsStimTraining.push(expectedValue[i]);
-    }
-    var randExpectedValue = shuffle(expectedValue);
-    for (let i = 0; i < 4; i++) {
-        elicitationsStim.push([
-            randExpectedValue[i],
-            expectedValueMap[randExpectedValue[i]],
-            false
-        ].flat());
-    }
-
-    elicitationsStimTraining = shuffle(elicitationsStimTraining);
-    this.elicitationStim = shuffle(elicitationsStim);
-
+    phaseNum++;
+    sessionNum++;
 }
 
 
@@ -920,27 +523,28 @@ function GUI () {
     };
 
     this.displayOptionSlider = function(option) {
-        var canvas1 = '<canvas id="canvas1" height="620"' +
+
+        let canvas1 = '<canvas id="canvas1" height="620"' +
             ' width="620" class="img-responsive center-block"' +
             ' style="border: 5px solid transparent; position: relative; top: 0px;">';
 
-        var canvas2 = '<canvas id="canvas2" height="620"' +
+        let canvas2 = '<canvas id="canvas2" height="620"' +
             ' width="620" class="img-responsive center-block"' +
             ' style="border: 5px solid transparent; position: relative; top: 0px;">';
 
-        var myCanvas = '<div id = "cvrow" class="row" style= "transform: translate(0%, -200%);position:relative">' +
+        let myCanvas = '<div id = "cvrow" class="row" style= "transform: translate(0%, -200%);position:relative">' +
             '    <div class="col-xs-1 col-md-1"></div>  <div class="col-xs-3 col-md-3">'
             + canvas1 + '</div><div id = "Middle" class="col-xs-4 col-md-4"></div><div class="col-xs-3 col-md-3">'
             + canvas2 + '</div><div class="col-xs-1 col-md-1"></div></div>';
 
-        var Title = '<div id = "Title"><H2 align = "center">What are the odds this symbol gives a +1?<br><br><br><br></H2></div>';
-        var Images = '<div id = "stimrow" style="transform: translate(0%, -100%);position:relative"> ' +
+        let Title = '<div id = "Title"><H2 align = "center">What are the odds this symbol gives a +1?<br><br><br><br></H2></div>';
+        let Images = '<div id = "stimrow" style="transform: translate(0%, -100%);position:relative"> ' +
             '<div class="col-xs-1 col-md-1"></div>  <div class="col-xs-3 col-md-3">'
             + '</div><div id = "Middle" class="col-xs-4 col-md-4">' + option + '</div></div>';
 
-        var initvalue = range(25, 75, 5)[Math.floor(Math.random() * 10)];
+        let initvalue = range(25, 75, 5)[Math.floor(Math.random() * 10)];
 
-        var Slider = '<main>\n' +
+        let Slider = '<main>\n' +
             '  <form id="form">\n' +
             '    <h2>\n' +
             '    </h2>\n' +
@@ -960,6 +564,7 @@ function GUI () {
     };
 
     this.slideCard = function (pic, cv, showFeedback = true) {
+
         var img = new Image();
         img.src = pic.src;
         img.width = pic.width;
@@ -1014,7 +619,7 @@ function GUI () {
 }
 
 
-function ElicitationLottery(
+function ChoiceManager(
     {
         expName,
         expID,
@@ -1065,29 +670,21 @@ function ElicitationLottery(
 
         trialObj = this.trialObj[this.trialNum];
 
-        var ChoiceTime = (new Date()).getTime();
+        let choiceTime = (new Date()).getTime();
 
-
-        if ([-1, -2].includes(this.sessionNum)) {
-            let stimIdx1 = trialObj[0];
-            let stimIdx2 = trialObj[1];
-
-        } else {
-            params = {
-                stimIdx1: trialObj[0],
-                stimIdx2: trialObj[1],
-                p1: trialObj[2],
-                contIdx1: trialObj[3],
-                ev1: trialObj[4],
-                p2: trialObj[5],
-                contIdx2: trialObj[6],
-                ev2: trialObj[7],
-                isCatchTrial: trialObj[trialObj.length - 1],
-                r1: [-1, 1],
-                choiceTime: ChoiceTime
-            };
-
-        }
+        params = {
+            stimIdx1: trialObj[0],
+            stimIdx2: trialObj[1],
+            p1: trialObj[2],
+            contIdx1: trialObj[3],
+            ev1: trialObj[4],
+            p2: trialObj[5],
+            contIdx2: trialObj[6],
+            ev2: trialObj[7],
+            isCatchTrial: trialObj[trialObj.length - 1],
+            r1: [-1, 1],
+            choiceTime: choiceTime
+        };
 
         [option1, option2, feedback1, feedback2] = this.gui.getOptions(
             params["stimIdx1"],
@@ -1220,7 +817,6 @@ function ElicitationLottery(
 
     this.next = function () {
         this.trialNum++;
-        let fbdur = 2000;
         if (this.trialNum < this.nTrial) {
             setTimeout(function (event) {
                 $('#stimrow').fadeOut(500);
@@ -1230,7 +826,7 @@ function ElicitationLottery(
                 setTimeout(function (event) {
                     event.obj.run();
                 }, 500, {obj: event.obj});
-            }, fbdur, {obj: this});
+            }, this.feedbackDuration, {obj: this});
         } else {
             setTimeout(function (event) {
                     $('#TextBoxDiv').fadeOut(500);
@@ -1245,7 +841,7 @@ function ElicitationLottery(
     };
 }
 
-function ElicitationSlider(
+function SliderManager(
     {
         expName,
         expID,
@@ -1410,7 +1006,6 @@ function ElicitationSlider(
 
     this.next = function () {
         this.trialNum++;
-        let fbdur = this.feedbackDuration;
         if (this.trialNum < this.nTrial) {
             setTimeout(function (event) {
                 $('#stimrow').fadeOut(500);
@@ -1420,690 +1015,327 @@ function ElicitationSlider(
                 setTimeout(function (event) {
                     event.obj.run();
                 }, 500, {obj: event.obj});
-            }, fbdur, {obj: this});
+            }, this.feedbackDuration, {obj: this});
         } else {
 
         }
     };
 }
 
-    function playSessions(sessionNum, trialNum, phaseNum) {
+    // function playSessions(sessionNum, trialNum, phaseNum) {
+    //
+    //     playOptions(sessionNum, trialNum, phaseNum);
+    // }
+    //
+    // function playOptions(sessionNum, trialNum, phaseNum) {
+    //
+    //     if ($('#TextBoxDiv').length === 0) {
+    //         createDiv('Stage', 'TextBoxDiv');
+    //     }
+    //
+    //     var conditionIdx = expCondition[sessionNum][trialNum];
+    //
+    //     var option1ImgIdx = contexts[conditionIdx][0];
+    //     var option2ImgIdx = contexts[conditionIdx][1];
+    //
+    //     var option1 = images[option1ImgIdx];
+    //     option1.id = "option1";
+    //     option1 = option1.outerHTML;
+    //
+    //     var option2 = images[option2ImgIdx];
+    //     option2.id = "option2";
+    //     option2 = option2.outerHTML;
+    //
+    //     var feedback1 = feedbackImg["empty"];
+    //     feedback1.id = "feedback1";
+    //     feedback1 = feedback1.outerHTML;
+    //
+    //     var feedback2 = feedbackImg["empty"];
+    //     feedback2.id = "feedback2";
+    //     feedback2 = feedback2.outerHTML;
+    //
+    //     var Title = '<div id = "Title"><H2 align = "center"> <br><br><br><br></H2></div>';
+    //
+    //     // Create canevas for the slot machine effect, of the size of the images
+    //     var canvas1 = '<canvas id="canvas1" height="620"' +
+    //         ' width="620" class="img-responsive center-block"' +
+    //         ' style="border: 5px solid transparent; position: relative; top: 0px;">';
+    //
+    //     var canvas2 = '<canvas id="canvas2" height="620"' +
+    //         ' width="620" class="img-responsive center-block"' +
+    //         ' style="border: 5px solid transparent; position: relative; top: 0px;">';
+    //     /* Create canevas for the slot machine effect, of the size of the images */
+    //
+    //     var Images = '<div id = "stimrow" class="row" style= "transform: translate(0%, -100%);position:relative"> ' +
+    //         '<div class="col-xs-1 col-md-1"></div>  <div class="col-xs-3 col-md-3">'
+    //         + option1 + '</div><div id = "Middle" class="col-xs-4 col-md-4"></div>' +
+    //         '<div class="col-xs-3 col-md-3">' + option2 + '</div><div class="col-xs-1 col-md-1"></div></div>';
+    //     var Feedback = '<div id = "fbrow" class="row" style= "transform: translate(0%, 0%);position:relative"> ' +
+    //         '<div class="col-xs-1 col-md-1"></div>  <div class="col-xs-3 col-md-3">' + feedback1 + '' +
+    //         '</div><div id = "Middle" class="col-xs-4 col-md-4"></div><div class="col-xs-3 col-md-3">'
+    //         + feedback2 + '</div><div class="col-xs-1 col-md-1"></div></div>';
+    //     var myCanvas = '<div id = "cvrow" class="row" style= "transform: translate(0%, -200%);position:relative">' +
+    //         '    <div class="col-xs-1 col-md-1"></div>  <div class="col-xs-3 col-md-3">'
+    //         + canvas1 + '</div><div id = "Middle" class="col-xs-4 col-md-4"></div><div class="col-xs-3 col-md-3">'
+    //         + canvas2 + '</div><div class="col-xs-1 col-md-1"></div></div>';
+    //
+    //     var invertedPosition = +(Math.random() < 0.5);
+    //     var symbols = [option1ImgIdx, option2ImgIdx];
+    //
+    //     if (invertedPosition) {
+    //
+    //         var Images = '<div id = "stimrow" class="row" style= "transform: translate(0%, -100%);position:relative">' +
+    //             ' <div class="col-xs-1 col-md-1"></div>  <div class="col-xs-3 col-md-3">' + option2 + '</div>' +
+    //             '<div id = "Middle" class="col-xs-4 col-md-4"></div><div class="col-xs-3 col-md-3">' + option1 +
+    //             '</div><div class="col-xs-1 col-md-1"></div></div>';
+    //         var Feedback = '<div id = "fbrow" class="row" style= "transform: translate(0%, 0%);position:relative">' +
+    //             ' <div class="col-xs-1 col-md-1"></div>  <div class="col-xs-3 col-md-3">' + feedback2 + '</div><div id = "Middle" class="col-xs-4 col-md-4">' +
+    //             '</div><div class="col-xs-3 col-md-3">' + feedback1 + '</div><div class="col-xs-1 col-md-1"></div></div>';
+    //         var myCanvas = '<div id = "cvrow" class="row" style= "transform: translate(0%, -200%);position:relative">' +
+    //             '    <div class="col-xs-1 col-md-1"></div>  <div class="col-xs-3 col-md-3">' + canvas2 + '</div>' +
+    //             '<div id = "Middle" class="col-xs-4 col-md-4"></div><div class="col-xs-3 col-md-3">' + canvas1 + '</div>' +
+    //             '<div class="col-xs-1 col-md-1"></div></div>';
+    //
+    //         var symbols = [option2ImgIdx, option1ImgIdx];
+    //     }
+    //
+    //     $('#TextBoxDiv').html(Title + Feedback + Images + myCanvas);
+    //
+    //     var choiceTime = (new Date()).getTime();
+    //
+    //     var myEventHandler = function (e) {
+    //
+    //         var key = getKeyCode(e);
+    //
+    //         if ((key === 101 && !invertedPosition) || (key === 112 && invertedPosition)) {
+    //             if (clickDisabled)
+    //                 return;
+    //             clickDisabled = true;
+    //
+    //             fb = getReward(1);
+    //             color = getColor(fb);
+    //             document.getElementById("option1").style.borderColor = "black";
+    //             targetElement.removeEventListener('keypress', myEventHandler);
+    //
+    //         } else if ((key === 112 && !invertedPosition) || (key === 101 && invertedPosition)) {
+    //
+    //             if (clickDisabled)
+    //                 return;
+    //             clickDisabled = true;
+    //
+    //             fb = getReward(2);
+    //             color = getColor(fb);
+    //             document.getElementById("option2").style.borderColor = "black";
+    //             targetElement.removeEventListener('keypress', myEventHandler);
+    //
+    //         }
+    //
+    //     };
+    //
+    //     var targetElement = document.body;
+    //
+    //     $('#canvas1').click(function () {
+    //         if (clickDisabled)
+    //             return;
+    //         clickDisabled = true;
+    //         fb = getReward(1);
+    //         document.getElementById("canvas1").style.borderColor = "black";
+    //     });
+    //
+    //     $('#canvas2').click(function () {
+    //         if (clickDisabled)
+    //             return;
+    //         clickDisabled = true;
+    //         fb = getReward(2);
+    //         document.getElementById("canvas2").style.borderColor = "black";
+    //     });
+    //
+    //     function getReward(choice) {
+    //
+    //         var reactionTime = (new Date()).getTime();
+    //
+    //         var leftRight = -1;
+    //
+    //         if ((invertedPosition && (choice === 1)) || (!invertedPosition && (choice === 2))) {
+    //             leftRight = 1;
+    //         }
+    //
+    //         var P1 = conditions[conditionIdx]['prob'][0][1];
+    //         var P2 = conditions[conditionIdx]['prob'][1][1];
+    //         var Mag1 = conditions[conditionIdx]['reward'][0];
+    //         var Mag2 = conditions[conditionIdx]['reward'][1];
+    //
+    //         p1 = conditions[conditionIdx]['prob'][0];
+    //         p2 = conditions[conditionIdx]['prob'][1];
+    //         contIdx1 = cont.findIndex(x => x.toString() === p1.toString());
+    //         contIdx2 = cont.findIndex(x => x.toString() === p2.toString());
+    //         r1 = conditions[conditionIdx]['reward'][0];
+    //         r2 = conditions[conditionIdx]['reward'][1];
+    //
+    //         if (sum(p1) === 2) {
+    //             var ev1 = p1[0] * r1[0];
+    //         } else {
+    //             var ev1 = p1.reduce(
+    //                 function (r, a, i) {
+    //                     return r + a * r1[i]
+    //                 }, 0);
+    //         }
+    //
+    //         if (sum(p2) === 2) {
+    //             var ev2 = p2[0] * r2[0];
+    //         } else {
+    //             var ev2 = p2.reduce(
+    //                 function (r, a, i) {
+    //                     return r + a * r2[i]
+    //                 }, 0);
+    //         }
+    //
+    //         ev1 = Math.round(ev1 * 100) / 100;
+    //         ev2 = Math.round(ev2 * 100) / 100;
+    //
+    //         if (choice === 1) { /*option1*/
+    //             var thisReward = Mag1[+(Math.random() < P1)];
+    //             var otherReward = Mag2[+(Math.random() < P2)];
+    //             var correctChoice = +(ev1 >= ev2);
+    //         } else { /*option2*/
+    //             var otherReward = Mag1[+(Math.random() < P1)];
+    //             var thisReward = Mag2[+(Math.random() < P2)];
+    //             var correctChoice = +(ev2 >= ev1);
+    //         }
+    //
+    //         sumReward[phaseNum] += thisReward;
+    //         totalReward += thisReward;
+    //
+    //         var fb1 = document.getElementById("feedback1");
+    //         var fb2 = document.getElementById("feedback2");
+    //
+    //         var pic1 = document.getElementById("option1");
+    //         var pic2 = document.getElementById("option2");
+    //
+    //         var cv1 = document.getElementById("canvas1");
+    //         var cv2 = document.getElementById("canvas2");
+    //
+    //         if (choice === 1) {
+    //             fb1.src = feedbackImg['' + thisReward].src;
+    //             setTimeout(function () {
+    //                 slideCard(pic1, cv1);
+    //             }, 500)
+    //
+    //             if (this.completeFeedback) {
+    //                 fb2.src = feedbackImg['' + otherReward].src;
+    //                 setTimeout(function () {
+    //                     slideCard(pic2, cv2);
+    //                 }, 500)
+    //             }
+    //
+    //         } else {
+    //             fb2.src = feedbackImg['' + thisReward].src;
+    //             setTimeout(function () {
+    //                 slideCard(pic2, cv2);
+    //             }, 500)
+    //
+    //             if (this.completeFeedback) {
+    //                 fb1.src = feedbackImg['' + otherReward].src;
+    //                 setTimeout(function () {
+    //                     slideCard(pic1, cv1);
+    //                 }, 500)
+    //             }
+    //
+    //         }
+    //
+    //         if (offline === 0) sendLearnDataDB(0);
+    //
+    //         next();
+    //
+    //         function sendLearnDataDB(call) {
+    //             wtest = 1;
+    //
+    //             $.ajax({
+    //                 type: 'POST',
+    //                 data: {
+    //                     exp: this.expName,
+    //                     expID: expID,
+    //                     id: subID,
+    //                     test: wtest,
+    //                     elicitation_type: -1,
+    //                     trial: trialNum,
+    //                     condition: conditionIdx,
+    //                     cont_idx_1: contIdx1,
+    //                     cont_idx_2: contIdx2,
+    //                     symL: symbols[0],
+    //                     symR: symbols[1],
+    //                     choice: choice,
+    //                     correct_choice: correctChoice,
+    //                     outcome: thisReward,
+    //                     cf_outcome: otherReward,
+    //                     choice_left_right: leftRight,
+    //                     reaction_time: reactionTime - choiceTime,
+    //                     reward: totalReward,
+    //                     session: sessionNum,
+    //                     p1: P1,
+    //                     p2: P2,
+    //                     option1: option1ImgIdx,
+    //                     option2: option2ImgIdx,
+    //                     ev1: Math.round(ev1 * 100) / 100,
+    //                     ev2: Math.round(ev2 * 100) / 100,
+    //                     iscatch: -1,
+    //                     inverted: invertedPosition,
+    //                     choice_time: choiceTime - initTime
+    //                 },
+    //                 async: true,
+    //                 url: 'php/InsertLearningDataDB.php',
+    //                 /*dataType: 'json',*/
+    //                 success: function (r) {
+    //
+    //                     if (r[0].ErrorNo > 0 && call + 1 < maxDBCalls) {
+    //                         sendLearnDataDB(call + 1);
+    //                     }
+    //                 },
+    //                 error: function (XMLHttpRequest, textStatus, errorThrown) {
+    //
+    //                     if (call + 1 < maxDBCalls) {
+    //                         sendLearnDataDB(call + 1);
+    //                     }
+    //                 }
+    //             });
+    //         }
+    //
+    //         return thisReward;
+    //     }
+    //
+    //     function next() {
+    //         trialNum++;
+    //         if (trialNum < nTrialsPerSession) {
+    //             setTimeout(function () {
+    //                 $('#stimrow').fadeOut(500);
+    //                 $('#fbrow').fadeOut(500);
+    //                 $('#cvrow').fadeOut(500);
+    //                 setTimeout(function () {
+    //                     clickDisabled = false;
+    //                     playOptions(sessionNum, trialNum, phaseNum);
+    //                 }, 500);
+    //             }, feedbackDuration);
+    //
+    //         } else {
+    //             trialNum = 0;
+    //             setTimeout(function () {
+    //                 $('#TextBoxDiv').fadeOut(500);
+    //                 setTimeout(function () {
+    //                     $('#Stage').empty();
+    //                     $('#Bottom').empty();
+    //                     clickDisabled = false;
+    //                     phaseNum++;
+    //                     startElicitation(sessionNum, false, 0, phaseNum);
+    //                 }, 500);
+    //             }, feedbackDuration);
+    //         }
+    //     }
+    // }
 
-        playOptions(sessionNum, trialNum, phaseNum);
-    }
 
-    function playOptions(sessionNum, trialNum, phaseNum) {
-
-        if ($('#TextBoxDiv').length === 0) {
-            createDiv('Stage', 'TextBoxDiv');
-        }
-
-        var conditionIdx = expCondition[sessionNum][trialNum];
-
-        var option1ImgIdx = contexts[conditionIdx][0];
-        var option2ImgIdx = contexts[conditionIdx][1];
-
-        var option1 = images[option1ImgIdx];
-        option1.id = "option1";
-        option1 = option1.outerHTML;
-
-        var option2 = images[option2ImgIdx];
-        option2.id = "option2";
-        option2 = option2.outerHTML;
-
-        var feedback1 = feedbackImg["empty"];
-        feedback1.id = "feedback1";
-        feedback1 = feedback1.outerHTML;
-
-        var feedback2 = feedbackImg["empty"];
-        feedback2.id = "feedback2";
-        feedback2 = feedback2.outerHTML;
-
-        var Title = '<div id = "Title"><H2 align = "center"> <br><br><br><br></H2></div>';
-
-        // Create canevas for the slot machine effect, of the size of the images
-        var canvas1 = '<canvas id="canvas1" height="620"' +
-            ' width="620" class="img-responsive center-block"' +
-            ' style="border: 5px solid transparent; position: relative; top: 0px;">';
-
-        var canvas2 = '<canvas id="canvas2" height="620"' +
-            ' width="620" class="img-responsive center-block"' +
-            ' style="border: 5px solid transparent; position: relative; top: 0px;">';
-        /* Create canevas for the slot machine effect, of the size of the images */
-
-        var Images = '<div id = "stimrow" class="row" style= "transform: translate(0%, -100%);position:relative"> ' +
-            '<div class="col-xs-1 col-md-1"></div>  <div class="col-xs-3 col-md-3">'
-            + option1 + '</div><div id = "Middle" class="col-xs-4 col-md-4"></div>' +
-            '<div class="col-xs-3 col-md-3">' + option2 + '</div><div class="col-xs-1 col-md-1"></div></div>';
-        var Feedback = '<div id = "fbrow" class="row" style= "transform: translate(0%, 0%);position:relative"> ' +
-            '<div class="col-xs-1 col-md-1"></div>  <div class="col-xs-3 col-md-3">' + feedback1 + '' +
-            '</div><div id = "Middle" class="col-xs-4 col-md-4"></div><div class="col-xs-3 col-md-3">'
-            + feedback2 + '</div><div class="col-xs-1 col-md-1"></div></div>';
-        var myCanvas = '<div id = "cvrow" class="row" style= "transform: translate(0%, -200%);position:relative">' +
-            '    <div class="col-xs-1 col-md-1"></div>  <div class="col-xs-3 col-md-3">'
-            + canvas1 + '</div><div id = "Middle" class="col-xs-4 col-md-4"></div><div class="col-xs-3 col-md-3">'
-            + canvas2 + '</div><div class="col-xs-1 col-md-1"></div></div>';
-
-        var invertedPosition = +(Math.random() < 0.5);
-        var symbols = [option1ImgIdx, option2ImgIdx];
-
-        if (invertedPosition) {
-
-            var Images = '<div id = "stimrow" class="row" style= "transform: translate(0%, -100%);position:relative">' +
-                ' <div class="col-xs-1 col-md-1"></div>  <div class="col-xs-3 col-md-3">' + option2 + '</div>' +
-                '<div id = "Middle" class="col-xs-4 col-md-4"></div><div class="col-xs-3 col-md-3">' + option1 +
-                '</div><div class="col-xs-1 col-md-1"></div></div>';
-            var Feedback = '<div id = "fbrow" class="row" style= "transform: translate(0%, 0%);position:relative">' +
-                ' <div class="col-xs-1 col-md-1"></div>  <div class="col-xs-3 col-md-3">' + feedback2 + '</div><div id = "Middle" class="col-xs-4 col-md-4">' +
-                '</div><div class="col-xs-3 col-md-3">' + feedback1 + '</div><div class="col-xs-1 col-md-1"></div></div>';
-            var myCanvas = '<div id = "cvrow" class="row" style= "transform: translate(0%, -200%);position:relative">' +
-                '    <div class="col-xs-1 col-md-1"></div>  <div class="col-xs-3 col-md-3">' + canvas2 + '</div>' +
-                '<div id = "Middle" class="col-xs-4 col-md-4"></div><div class="col-xs-3 col-md-3">' + canvas1 + '</div>' +
-                '<div class="col-xs-1 col-md-1"></div></div>';
-
-            var symbols = [option2ImgIdx, option1ImgIdx];
-        }
-
-        $('#TextBoxDiv').html(Title + Feedback + Images + myCanvas);
-
-        var choiceTime = (new Date()).getTime();
-
-        var myEventHandler = function (e) {
-
-            var key = getKeyCode(e);
-
-            if ((key === 101 && !invertedPosition) || (key === 112 && invertedPosition)) {
-                if (clickDisabled)
-                    return;
-                clickDisabled = true;
-
-                fb = getReward(1);
-                color = getColor(fb);
-                document.getElementById("option1").style.borderColor = "black";
-                targetElement.removeEventListener('keypress', myEventHandler);
-
-            } else if ((key === 112 && !invertedPosition) || (key === 101 && invertedPosition)) {
-
-                if (clickDisabled)
-                    return;
-                clickDisabled = true;
-
-                fb = getReward(2);
-                color = getColor(fb);
-                document.getElementById("option2").style.borderColor = "black";
-                targetElement.removeEventListener('keypress', myEventHandler);
-
-            }
-
-        };
-
-        var targetElement = document.body;
-
-        $('#canvas1').click(function () {
-            if (clickDisabled)
-                return;
-            clickDisabled = true;
-            fb = getReward(1);
-            document.getElementById("canvas1").style.borderColor = "black";
-        });
-
-        $('#canvas2').click(function () {
-            if (clickDisabled)
-                return;
-            clickDisabled = true;
-            fb = getReward(2);
-            document.getElementById("canvas2").style.borderColor = "black";
-        });
-
-        function getReward(choice) {
-
-            var reactionTime = (new Date()).getTime();
-
-            var leftRight = -1;
-
-            if ((invertedPosition && (choice === 1)) || (!invertedPosition && (choice === 2))) {
-                leftRight = 1;
-            }
-
-            var P1 = conditions[conditionIdx]['prob'][0][1];
-            var P2 = conditions[conditionIdx]['prob'][1][1];
-            var Mag1 = conditions[conditionIdx]['reward'][0];
-            var Mag2 = conditions[conditionIdx]['reward'][1];
-
-            p1 = conditions[conditionIdx]['prob'][0];
-            p2 = conditions[conditionIdx]['prob'][1];
-            contIdx1 = cont.findIndex(x => x.toString() === p1.toString());
-            contIdx2 = cont.findIndex(x => x.toString() === p2.toString());
-            r1 = conditions[conditionIdx]['reward'][0];
-            r2 = conditions[conditionIdx]['reward'][1];
-
-            if (sum(p1) === 2) {
-                var ev1 = p1[0] * r1[0];
-            } else {
-                var ev1 = p1.reduce(
-                    function (r, a, i) {
-                        return r + a * r1[i]
-                    }, 0);
-            }
-
-            if (sum(p2) === 2) {
-                var ev2 = p2[0] * r2[0];
-            } else {
-                var ev2 = p2.reduce(
-                    function (r, a, i) {
-                        return r + a * r2[i]
-                    }, 0);
-            }
-
-            ev1 = Math.round(ev1 * 100) / 100;
-            ev2 = Math.round(ev2 * 100) / 100;
-
-            if (choice === 1) { /*option1*/
-                var thisReward = Mag1[+(Math.random() < P1)];
-                var otherReward = Mag2[+(Math.random() < P2)];
-                var correctChoice = +(ev1 >= ev2);
-            } else { /*option2*/
-                var otherReward = Mag1[+(Math.random() < P1)];
-                var thisReward = Mag2[+(Math.random() < P2)];
-                var correctChoice = +(ev2 >= ev1);
-            }
-
-            sumReward[phaseNum] += thisReward;
-            totalReward += thisReward;
-
-            var fb1 = document.getElementById("feedback1");
-            var fb2 = document.getElementById("feedback2");
-
-            var pic1 = document.getElementById("option1");
-            var pic2 = document.getElementById("option2");
-
-            var cv1 = document.getElementById("canvas1");
-            var cv2 = document.getElementById("canvas2");
-
-            if (choice === 1) {
-                fb1.src = feedbackImg['' + thisReward].src;
-                setTimeout(function () {
-                    slideCard(pic1, cv1);
-                }, 500)
-
-                if (this.completeFeedback) {
-                    fb2.src = feedbackImg['' + otherReward].src;
-                    setTimeout(function () {
-                        slideCard(pic2, cv2);
-                    }, 500)
-                }
-
-            } else {
-                fb2.src = feedbackImg['' + thisReward].src;
-                setTimeout(function () {
-                    slideCard(pic2, cv2);
-                }, 500)
-
-                if (this.completeFeedback) {
-                    fb1.src = feedbackImg['' + otherReward].src;
-                    setTimeout(function () {
-                        slideCard(pic1, cv1);
-                    }, 500)
-                }
-
-            }
-
-            if (offline === 0) sendLearnDataDB(0);
-
-            next();
-
-            function sendLearnDataDB(call) {
-                wtest = 1;
-
-                $.ajax({
-                    type: 'POST',
-                    data: {
-                        exp: this.expName,
-                        expID: expID,
-                        id: subID,
-                        test: wtest,
-                        elicitation_type: -1,
-                        trial: trialNum,
-                        condition: conditionIdx,
-                        cont_idx_1: contIdx1,
-                        cont_idx_2: contIdx2,
-                        symL: symbols[0],
-                        symR: symbols[1],
-                        choice: choice,
-                        correct_choice: correctChoice,
-                        outcome: thisReward,
-                        cf_outcome: otherReward,
-                        choice_left_right: leftRight,
-                        reaction_time: reactionTime - choiceTime,
-                        reward: totalReward,
-                        session: sessionNum,
-                        p1: P1,
-                        p2: P2,
-                        option1: option1ImgIdx,
-                        option2: option2ImgIdx,
-                        ev1: Math.round(ev1 * 100) / 100,
-                        ev2: Math.round(ev2 * 100) / 100,
-                        iscatch: -1,
-                        inverted: invertedPosition,
-                        choice_time: choiceTime - initTime
-                    },
-                    async: true,
-                    url: 'php/InsertLearningDataDB.php',
-                    /*dataType: 'json',*/
-                    success: function (r) {
-
-                        if (r[0].ErrorNo > 0 && call + 1 < maxDBCalls) {
-                            sendLearnDataDB(call + 1);
-                        }
-                    },
-                    error: function (XMLHttpRequest, textStatus, errorThrown) {
-
-                        if (call + 1 < maxDBCalls) {
-                            sendLearnDataDB(call + 1);
-                        }
-                    }
-                });
-            }
-
-            return thisReward;
-        }
-
-        function next() {
-            trialNum++;
-            if (trialNum < nTrialsPerSession) {
-                setTimeout(function () {
-                    $('#stimrow').fadeOut(500);
-                    $('#fbrow').fadeOut(500);
-                    $('#cvrow').fadeOut(500);
-                    setTimeout(function () {
-                        clickDisabled = false;
-                        playOptions(sessionNum, trialNum, phaseNum);
-                    }, 500);
-                }, feedbackDuration);
-
-            } else {
-                trialNum = 0;
-                setTimeout(function () {
-                    $('#TextBoxDiv').fadeOut(500);
-                    setTimeout(function () {
-                        $('#Stage').empty();
-                        $('#Bottom').empty();
-                        clickDisabled = false;
-                        phaseNum++;
-                        startElicitation(sessionNum, false, 0, phaseNum);
-                    }, 500);
-                }, feedbackDuration);
-            }
-        }
-    }
-
-    this.startElicitation = function(sessionNum, training, elicitationType, phaseNum, pageNum = 1) {
-
-        createDiv('Stage', 'TextBoxDiv');
-
-        var points = sumReward[phaseNum - 1];
-        var pence = pointsToPence(points).toFixed(2);
-        var pounds = pointsToPounds(points).toFixed(2);
-
-        if (training) {
-            var Title = '<H2 align = "center">INSTRUCTIONS</H2><br>';
-            var p = '<b>(Note: points won during the training do not count for the final payoff!)<br><br>'
-                + '<b>The word "ready" will be displayed before the actual game starts.</b></H3><br><br>'
-            var like = '';
-        } else {
-            var Title = '<H2 align = "center">PHASE ' + phases[phaseNum] + '</H2><br>';
-            if (phases[phaseNum] === 3)
-                var like = '<h3 align="center"><b>Note:</b> The test of the phase 3 is like the third test of the training.</h3><br><br>';
-
-            if (phases[phaseNum] === 2)
-                var like = '<h3 align="center"><b>Note:</b> The test of the phase 2 is like the second test of the training.</h3><br><br>';
-
-            var p = 'This is the actual game, every point will be included in the final payoff.<br><br>'
-                + 'Ready? <br></H3>';
-        }
-
-        switch (elicitationType) {
-            case 0:
-
-                var nPages = 3;
-
-                switch (pageNum) {
-                    case 1:
-                        var wonlost = ['won', 'lost'][+(points < 0)];
-
-                        Info = '<H3 align = "center">You ' + wonlost + ' ' + points +
-                            ' points = ' + pence + ' pence = ' + pounds + ' pounds!</h3><br><br>';
-
-                        Info += like;
-
-                        Info += '<H3 align="center"> <b>Instructions for the second test (1/2)</b><br><br>'
-                            + 'In each round you have to choose between one of two items displayed on either side of the screen.<br>'
-                            + 'You can select one of the two items by left-clicking on it.<br><br>'
-                            + 'Please note that the outcome of your choice will not be displayed on each trial.<br>'
-                            + 'However, for each choice an outcome will be calculated and taken into account for the final payoff.<br>'
-                            + 'At the end of the test you will be shown with the final payoff in terms of cumulated points and monetary bonus.<br><br></H3>';
-
-                        break;
-
-                    case 2:
-                        Info = '<H3 align="center"> <b>Instructions for the second test (2/2)</b><br><br>'
-                            + 'In the second test  there will be two kind of options.<br>'
-                            + 'The first kind of options is represented by the symbols you already met during the previous test.<br><br>'
-                            + '<b>Note</b>: the symbols keep the same outcome as in the first test.<br><br>'
-                            + 'The second kind of options is represented by pie-charts explicitly describing the odds of winning / losing a point.<br><br>'
-                            + 'Specifically, the green area indicates the chance of winning +1 (+' + pointsToPence(1).toFixed(2) + 'p) ; the red area indicates the chance of losing -1 (+' + pointsToPence(1).toFixed(2) + 'p).<br><br>';
-                        break;
-
-                    case 3:
-                        if (training) {
-                            var trainstring = "Let's begin with the second training test!<br>";
-                        } else {
-                            var trainstring = "";
-                        }
-
-                        Info = '<H3 align="center">' + trainstring + p;
-                        break;
-
-                }
-                break;
-
-            case 2:
-
-                var nPages = 4;
-
-                switch (pageNum) {
-                    case 1:
-                        var wonlost = ['won', 'lost'][+(points < 0)];
-
-                        Info = '<H3 align = "center">You ' + wonlost + ' ' + points +
-                            ' points = ' + pence + ' pence = ' + pounds + ' pounds!</h3><br><br>';
-
-                        Info += like;
-
-                        Info += '<H3 align = "center"><b>Instructions for the third test (1/3)</b><br><br>'
-                            + 'In each round of third test you will be presented with the symbols and pie-charts you met in the first and the second test.<br><br>'
-                            + 'You will be asked to indicate (in percentages), what are the odds that a given symbol or pie-chart makes you win a point (+1=+' + pointsToPence(1).toFixed(2) + 'p).<br><br>'
-                            + 'You will be able to do this through moving a slider on the screen and then confirm your final answer by clicking on the confirmation button.<br><br>'
-                            + '100%  = the symbol (or pie-chart) always gives +1pt.<br>'
-                            + '50%  = the symbol (or pie-chart) always gives +1pt or -1pt with equal chances.<br>'
-                            + '0% = the symbol (or pie-chart) always gives -1pt.<br><br>';
-                        break;
-
-                    case 2:
-                        Info = '<H3 align = "center"><b>Instructions for the third test (2/3)</b><br><br>'
-                            + 'After confirming your choice (denoted C hereafter) the computer will draw a random lottery number (denoted L hereafter) between 0 and 100.<br>'
-                            + 'If C is bigger than L, you win the reward with the probabilities associated to the symbol.<br>'
-                            + 'If C is smaller than L, the program will spin a wheel of fortune and you will win a reward of +1 point with a probability of L%, otherwise you will lose -1 point.<br><br>'
-                        break;
-
-                    case 3:
-                        Info = '<H3 align = "center"><b>Instructions for the third test (3/3)</b><br><br>'
-                            + 'To sum up, the higher the percentage you give, the higher the chances are the outcome will be determined by the symbol or the pie-chart.<br><br>'
-                            + 'Conversely, the lower the percentage, the higher the chances are the outcome will be determined by the random lottery number.<br><br>'
-                            + 'Please note that the outcome of your choice will not be displayed on each trial.<br><br>'
-                            + 'However, for each choice an outcome will be calculated and taken into account for the final payoff.<br><br>'
-                            + 'At the end of the test you will be shown with the final payoff in terms of cumulated points and monetary bonus.<br><br>'
-                        break;
-
-                    case 4:
-                        if (training) {
-                            var trainstring = "Let's begin with the third training test!<br>";
-                        } else {
-                            var trainstring = "";
-                        }
-                        Info = '<H3 align = "center">' + trainstring + p;
-                        break;
-                }
-                break;
-        }
-
-        $('#TextBoxDiv').html(Title + Info);
-
-        var Buttons = '<div align="center"><input align="center" type="button"  class="btn btn-default" id="Back" value="Back" >\n\
-            <input align="center" type="button"  class="btn btn-default" id="Next" value="Next" >\n\
-            <input align="center" type="button"  class="btn btn-default" id="Start" value="Start!" ></div>';
-
-        $('#Bottom').html(Buttons);
-
-        if (pageNum === 1) {
-            $('#Back').hide();
-        }
-
-        if (pageNum === nPages) {
-            $('#Next').hide();
-        }
-
-        if (pageNum < nPages) {
-            $('#Start').hide();
-        }
-
-        $('#Back').click(function () {
-
-            $('#TextBoxDiv').remove();
-            $('#Stage').empty();
-            $('#Bottom').empty();
-
-            if (pageNum === 1) {
-            } else {
-                this.startElicitation(sessionNum, training, elicitationType, phaseNum, pageNum - 1);
-            }
-
-        });
-
-        $('#Next').click(function () {
-
-            $('#TextBoxDiv').remove();
-            $('#Stage').empty();
-            $('#Bottom').empty();
-            this.startElicitation(sessionNum, training, elicitationType, phaseNum, pageNum + 1);
-
-        });
-
-        $('#Start').click(function () {
-
-            $('#TextBoxDiv').remove();
-            $('#Stage').empty();
-            $('#Bottom').empty();
-
-            if (training) {
-                ready = '3...';
-                steady = '2...';
-                go = '1...';
-            } else {
-                ready = 'Ready...';
-                steady = 'Steady...';
-                go = 'Go!';
-            }
-
-            $('#TextBoxDiv').remove();
-            $('#Stage').empty();
-            $('#Bottom').empty();
-            setTimeout(function () {
-                $('#Stage').html('<H1 align = "center">' + ready + '</H1>');
-                setTimeout(function () {
-                    $('#Stage').html('<H1 align = "center">' + steady + '</H1>');
-                    setTimeout(function () {
-                        $('#Stage').html('<H1 align = "center">' + go + '</H1>');
-                        setTimeout(function () {
-                            $('#Stage').empty();
-                            this.playElicitation(sessionNum, 0, elicitationType, phaseNum);
-                        }, 1000);
-                    }, 1000);
-                }, 1000);
-            }, 10);
-        });
-    };
-    function endTraining(sessionNum, phaseNum, pageNum = 1) {
-
-
-        createDiv('Stage', 'TextBoxDiv');
-
-        var nPages = 2;
-
-        switch (pageNum) {
-
-            case 1:
-                var Title = '<H2 align = "center">END OF THE TRAINING</H2>';
-                var Info = '';
-
-                var totalPoints = sumReward[1] + sumReward[2] + sumReward[3];
-                var pence = pointsToPence(totalPoints).toFixed(2);
-                var pounds = pointsToPounds(totalPoints).toFixed(2);
-
-                var wonlost = ['won', 'lost'][+(totalPoints < 0)];
-
-                Info += '<H3 align="center"> The training is over!<br><br>';
-                Info += 'Overall, in this training, you ' + wonlost + ' ' + totalPoints +
-                    ' points = ' + pence + ' pence = ' + pounds + ' pounds!<br><br>';
-
-                Info += 'Test 1: ' + sumReward[1] + '<br>';
-                Info += 'Test 2: ' + sumReward[2] + '<br>';
-                Info += 'Test 3: ' + sumReward[3] + '<br>';
-
-                Info += 'Now, you are about to start the first phase of the experiment.<br> Note that from now on the points will be counted in your final payoff.'
-                    + ' Also note that the experiment includes much more trials and more points are at stake, compared to the training.<br>'
-                    + 'Finally note that the real test will involve different symbols (i.e., not encountered in the training).<br>'
-                    + 'If you want you can do the training a second time.</h3><br><br>';
-                break;
-
-            case 2:
-
-                var Title = '<H2 align = "center">PHASE 1</H2>';
-
-                Info = '<h3 align="center">The test of the phase 1 is like the first test of the training.<br><br>'
-                    + 'In each round you have to choose between one of two symbols displayed on either side of the screen.<br>'
-                    + 'You can select one of the two symbols by left-clicking on it.<br>'
-                    + 'After a choice, you can win/lose the following outcomes:<br><br>'
-                    + '1 point = ' + pointsToPence(1).toFixed(2) + ' pence<br>'
-                    + '-1 points = -' + pointsToPence(1).toFixed(2) + ' pence<br><br>'
-                    + 'The outcome of your choice will appear in the location of the symbol you chose.<br>'
-                    + 'The outcome you would have won by choosing the other option will also be displayed.<br><br>'
-                    + 'Please note that only the outcome of your choice will be taken into account in the final payoff.<br><br></H3>'
-                    + 'Click on start when you are ready.</h3><br><br>';
-                break;
-
-        }
-        $('#TextBoxDiv').html(Title + Info);
-
-        var Buttons = '<div align="center"><input align="center" type="button"  class="btn btn-default" id="Back" value="Back" >\n\
-            <input align="center" type="button"  class="btn btn-default" id="Training" value="Play training again" >\n\
-            <input align="center" type="button"  class="btn btn-default" id="Next" value="Next" >\n\
-            <input align="center" type="button"  class="btn btn-default" id="Start" value="Start!" ></div>';
-
-        $('#Bottom').html(Buttons);
-
-        if (pageNum === 1) {
-            $('#Back').hide();
-        } else {
-            $('#Training').hide();
-        }
-
-        if (trainSess === -2)
-            $('#Training').hide();
-
-
-        if (pageNum === nPages) {
-            $('#Next').hide();
-        }
-
-        if (pageNum < nPages) {
-            $('#Start').hide();
-        }
-
-        $('#Back').click(function () {
-
-            $('#TextBoxDiv').remove();
-            $('#Stage').empty();
-            $('#Bottom').empty();
-
-            if (pageNum === 1) {
-            } else {
-                endTraining(sessionNum, phaseNum, pageNum - 1);
-            }
-
-        });
-
-        $('#Training').click(function () {
-
-            $('#TextBoxDiv').remove();
-            $('#Stage').empty();
-            $('#Bottom').empty();
-
-            trainSess--;
-            sumReward[0] = 0;
-            sumReward[1] = 0;
-            sumReward[2] = 0;
-            sumReward[3] = 0;
-            elicitationsStimTraining = shuffle(elicitationsStimTraining);
-            // trainingCondition = shuffle(trainingCondition);
-            // elicitationsStimEVTraining = shuffle(elicitationsStimEVTraining);
-
-            instructions();
-
-        });
-
-        $('#Next').click(function () {
-
-            $('#TextBoxDiv').remove();
-            $('#Stage').empty();
-            $('#Bottom').empty();
-            endTraining(sessionNum, phaseNum, pageNum + 1);
-        });
-
-        $('#Start').click(function () {
-
-            $('#TextBoxDiv').remove();
-            $('#Stage').empty();
-            $('#Bottom').empty();
-
-            ready = 'Ready...';
-            steady = 'Steady...';
-            go = 'Go!';
-
-            $('#TextBoxDiv').remove();
-            $('#Stage').empty();
-            $('#Bottom').empty();
-            setTimeout(function () {
-                $('#Stage').html('<H1 align = "center">' + ready + '</H1>');
-                setTimeout(function () {
-                    $('#Stage').html('<H1 align = "center">' + steady + '</H1>');
-                    setTimeout(function () {
-                        $('#Stage').html('<H1 align = "center">' + go + '</H1>');
-                        setTimeout(function () {
-                            $('#Stage').empty();
-                            playSessions(0, 0, phaseNum);
-                        }, 1000);
-                    }, 1000);
-                }, 1000);
-            }, 10);
-        });
-    }
-
-    function endExperiment() {
-
-        createDiv('Stage', 'TextBoxDiv');
-
-        var points = totalReward;
-        var pence = pointsToPence(points).toFixed(2);
-        var pounds = pointsToPounds(points).toFixed(2);
-
-        var wonlost = [' won ', ' lost '][+(points < 0)];
-
-        var Title = '<h3 align = "center">The game is over!<br>' +
-            'You ' + wonlost + points + ' points in total, which is ' + pence + ' pence = ' + pounds + ' pounds!<br><br>' +
-            'With your initial endowment, you won a total bonus of ' + (parseFloat(pence) + 250) + ' pence = ' + (parseFloat(pounds) + 2.5) + ' pounds!<br><br>' +
-            'Thank you for playing!<br><br>Please click the link to complete this study:<br></h3><br>';
-        var url = '';
-        if (compLink)
-            url = '<center><a href="' + link + '">Click here.</a></center>';
-
-        $('#TextBoxDiv').html(Title + url);
-    }
-
-    //  Non-game / display text functions
-    // ------------------------------------------------------------------------------------------------------------------------------------------ //
 
 function Instructions({exp, gui}) {
+
     this.exp = exp;
     this.gui = gui;
 
@@ -2359,6 +1591,371 @@ function Instructions({exp, gui}) {
         //     });
         // }
     // }
+
+    this.startElicitation = function(
+        sessionNum, training, elicitationType, phaseNum, pageNum, nextFunc, nextParams) {
+
+        this.gui.init();
+
+        var points = this.exp.sumReward[phaseNum - 1];
+        var pence = this.exp.pointsToPence(points).toFixed(2);
+        var pounds = this.exp.pointsToPounds(points).toFixed(2);
+
+        if (training) {
+            Title = '<H2 align = "center">INSTRUCTIONS</H2><br>';
+            p = '<b>(Note: points won during the training do not count for the final payoff!)<br><br>'
+                + '<b>The word "ready" will be displayed before the actual game starts.</b></H3><br><br>'
+            like = '';
+        } else {
+            Title = '<H2 align = "center">PHASE ' + this.exp.phases[phaseNum] + '</H2><br>';
+            if (this.exp.phases[phaseNum] === 3)
+                like = '<h3 align="center"><b>Note:</b> The test of the phase 3 is like the third test of the training.</h3><br><br>';
+
+            if (this.exp.phases[phaseNum] === 2)
+                like = '<h3 align="center"><b>Note:</b> The test of the phase 2 is like the second test of the training.</h3><br><br>';
+
+            p = 'This is the actual game, every point will be included in the final payoff.<br><br>'
+                + 'Ready? <br></H3>';
+        }
+
+        switch (elicitationType) {
+            case 0:
+
+                nPages = 3;
+
+                switch (pageNum) {
+                    case 1:
+                        wonlost = ['won', 'lost'][+(points < 0)];
+
+                        Info = '<H3 align = "center">You ' + wonlost + ' ' + points +
+                            ' points = ' + pence + ' pence = ' + pounds + ' pounds!</h3><br><br>';
+
+                        Info += like;
+
+                        Info += '<H3 align="center"> <b>Instructions for the second test (1/2)</b><br><br>'
+                            + 'In each round you have to choose between one of two items displayed on either side of the screen.<br>'
+                            + 'You can select one of the two items by left-clicking on it.<br><br>'
+                            + 'Please note that the outcome of your choice will not be displayed on each trial.<br>'
+                            + 'However, for each choice an outcome will be calculated and taken into account for the final payoff.<br>'
+                            + 'At the end of the test you will be shown with the final payoff in terms of cumulated points and monetary bonus.<br><br></H3>';
+
+                        break;
+
+                    case 2:
+                        Info = '<H3 align="center"> <b>Instructions for the second test (2/2)</b><br><br>'
+                            + 'In the second test  there will be two kind of options.<br>'
+                            + 'The first kind of options is represented by the symbols you already met during the previous test.<br><br>'
+                            + '<b>Note</b>: the symbols keep the same outcome as in the first test.<br><br>'
+                            + 'The second kind of options is represented by pie-charts explicitly describing the odds of winning / losing a point.<br><br>'
+                            + 'Specifically, the green area indicates the chance of winning +1 (+' + pointsToPence(1).toFixed(2) + 'p) ; the red area indicates the chance of losing -1 (+' + pointsToPence(1).toFixed(2) + 'p).<br><br>';
+                        break;
+
+                    case 3:
+                        if (training) {
+                            trainstring = "Let's begin with the second training test!<br>";
+                        } else {
+                            trainstring = "";
+                        }
+
+                        Info = '<H3 align="center">' + trainstring + p;
+                        break;
+
+                }
+                break;
+
+            case 2:
+
+                nPages = 4;
+
+                switch (pageNum) {
+                    case 1:
+                        wonlost = ['won', 'lost'][+(points < 0)];
+
+                        Info = '<H3 align = "center">You ' + wonlost + ' ' + points +
+                            ' points = ' + pence + ' pence = ' + pounds + ' pounds!</h3><br><br>';
+
+                        Info += like;
+
+                        Info += '<H3 align = "center"><b>Instructions for the third test (1/3)</b><br><br>'
+                            + 'In each round of third test you will be presented with the symbols and pie-charts you met in the first and the second test.<br><br>'
+                            + 'You will be asked to indicate (in percentages), what are the odds that a given symbol or pie-chart makes you win a point (+1=+' + pointsToPence(1).toFixed(2) + 'p).<br><br>'
+                            + 'You will be able to do this through moving a slider on the screen and then confirm your final answer by clicking on the confirmation button.<br><br>'
+                            + '100%  = the symbol (or pie-chart) always gives +1pt.<br>'
+                            + '50%  = the symbol (or pie-chart) always gives +1pt or -1pt with equal chances.<br>'
+                            + '0% = the symbol (or pie-chart) always gives -1pt.<br><br>';
+                        break;
+
+                    case 2:
+                        Info = '<H3 align = "center"><b>Instructions for the third test (2/3)</b><br><br>'
+                            + 'After confirming your choice (denoted C hereafter) the computer will draw a random lottery number (denoted L hereafter) between 0 and 100.<br>'
+                            + 'If C is bigger than L, you win the reward with the probabilities associated to the symbol.<br>'
+                            + 'If C is smaller than L, the program will spin a wheel of fortune and you will win a reward of +1 point with a probability of L%, otherwise you will lose -1 point.<br><br>'
+                        break;
+
+                    case 3:
+                        Info = '<H3 align = "center"><b>Instructions for the third test (3/3)</b><br><br>'
+                            + 'To sum up, the higher the percentage you give, the higher the chances are the outcome will be determined by the symbol or the pie-chart.<br><br>'
+                            + 'Conversely, the lower the percentage, the higher the chances are the outcome will be determined by the random lottery number.<br><br>'
+                            + 'Please note that the outcome of your choice will not be displayed on each trial.<br><br>'
+                            + 'However, for each choice an outcome will be calculated and taken into account for the final payoff.<br><br>'
+                            + 'At the end of the test you will be shown with the final payoff in terms of cumulated points and monetary bonus.<br><br>'
+                        break;
+
+                    case 4:
+                        if (training) {
+                            trainstring = "Let's begin with the third training test!<br>";
+                        } else {
+                            trainstring = "";
+                        }
+                        Info = '<H3 align = "center">' + trainstring + p;
+                        break;
+                }
+                break;
+        }
+
+        $('#TextBoxDiv').html(Title + Info);
+
+        let Buttons = '<div align="center"><input align="center" type="button"  class="btn btn-default" id="Back" value="Back" >\n\
+            <input align="center" type="button"  class="btn btn-default" id="Next" value="Next" >\n\
+            <input align="center" type="button"  class="btn btn-default" id="Start" value="Start!" ></div>';
+
+        $('#Bottom').html(Buttons);
+
+        if (pageNum === 1) {
+            $('#Back').hide();
+        }
+
+        if (pageNum === nPages) {
+            $('#Next').hide();
+        }
+
+        if (pageNum < nPages) {
+            $('#Start').hide();
+        }
+
+        $('#Back').click({obj: this}, function (event) {
+
+            $('#TextBoxDiv').remove();
+            $('#Stage').empty();
+            $('#Bottom').empty();
+
+            if (pageNum === 1) {
+            } else {
+                event.data.obj.startElicitation(
+                    sessionNum, training, elicitationType, phaseNum, pageNum - 1);
+            }
+        });
+
+        $('#Next').click({obj: this}, function (event) {
+
+            $('#TextBoxDiv').remove();
+            $('#Stage').empty();
+            $('#Bottom').empty();
+            event.data.obj.startElicitation(
+                sessionNum, training, elicitationType, phaseNum, pageNum + 1);
+
+        });
+
+        $('#Start').click({obj: this}, function (event) {
+
+            $('#TextBoxDiv').remove();
+            $('#Stage').empty();
+            $('#Bottom').empty();
+
+            if (training) {
+                ready = '3...';
+                steady = '2...';
+                go = '1...';
+            } else {
+                ready = 'Ready...';
+                steady = 'Steady...';
+                go = 'Go!';
+            }
+
+            $('#TextBoxDiv').remove();
+            $('#Stage').empty();
+            $('#Bottom').empty();
+
+            setTimeout(function () {
+                $('#Stage').html('<H1 align = "center">' + ready + '</H1>');
+                setTimeout(function () {
+                    $('#Stage').html('<H1 align = "center">' + steady + '</H1>');
+                    setTimeout(function () {
+                        $('#Stage').html('<H1 align = "center">' + go + '</H1>');
+                        setTimeout(function () {
+                            $('#Stage').empty();
+                                nextFunc(nextParams);
+                        }, 1000);
+                    }, 1000);
+                }, 1000);
+            }, 10);
+        });
+    };
+
+    this.endTraining = function (sessionNum, phaseNum, pageNum, nextFunc, nextParams) {
+
+
+        this.gui.init();
+
+        nPages = 2;
+
+        switch (pageNum) {
+
+            case 1:
+                Title = '<H2 align = "center">END OF THE TRAINING</H2>';
+                Info = '';
+
+                totalPoints = this.exp.sumReward[1] + this.exp.sumReward[2] + this.exp.sumReward[3];
+                pence = this.exp.pointsToPence(totalPoints).toFixed(2);
+                pounds = this.exp.pointsToPounds(totalPoints).toFixed(2);
+
+                wonlost = ['won', 'lost'][+(totalPoints < 0)];
+
+                Info += '<H3 align="center"> The training is over!<br><br>';
+                Info += 'Overall, in this training, you ' + wonlost + ' ' + totalPoints +
+                    ' points = ' + pence + ' pence = ' + pounds + ' pounds!<br><br>';
+
+                Info += 'Test 1: ' + this.exp.sumReward[1] + '<br>';
+                Info += 'Test 2: ' + this.exp.sumReward[2] + '<br>';
+                Info += 'Test 3: ' + this.exp.sumReward[3] + '<br>';
+
+                Info += 'Now, you are about to start the first phase of the experiment.<br> Note that from now on the points will be counted in your final payoff.'
+                    + ' Also note that the experiment includes much more trials and more points are at stake, compared to the training.<br>'
+                    + 'Finally note that the real test will involve different symbols (i.e., not encountered in the training).<br>'
+                    + 'If you want you can do the training a second time.</h3><br><br>';
+                break;
+
+            case 2:
+
+                Title = '<H2 align = "center">PHASE 1</H2>';
+
+                Info = '<h3 align="center">The test of the phase 1 is like the first test of the training.<br><br>'
+                    + 'In each round you have to choose between one of two symbols displayed on either side of the screen.<br>'
+                    + 'You can select one of the two symbols by left-clicking on it.<br>'
+                    + 'After a choice, you can win/lose the following outcomes:<br><br>'
+                    + '1 point = ' + this.exp.pointsToPence(1).toFixed(2) + ' pence<br>'
+                    + '-1 points = -' + this.exp.pointsToPence(1).toFixed(2) + ' pence<br><br>'
+                    + 'The outcome of your choice will appear in the location of the symbol you chose.<br>'
+                    + 'The outcome you would have won by choosing the other option will also be displayed.<br><br>'
+                    + 'Please note that only the outcome of your choice will be taken into account in the final payoff.<br><br></H3>'
+                    + 'Click on start when you are ready.</h3><br><br>';
+                break;
+
+        }
+        $('#TextBoxDiv').html(Title + Info);
+
+        let Buttons = '<div align="center"><input align="center" type="button"  class="btn btn-default" id="Back" value="Back" >\n\
+            <input align="center" type="button"  class="btn btn-default" id="Training" value="Play training again" >\n\
+            <input align="center" type="button"  class="btn btn-default" id="Next" value="Next" >\n\
+            <input align="center" type="button"  class="btn btn-default" id="Start" value="Start!" ></div>';
+
+        $('#Bottom').html(Buttons);
+
+        if (pageNum === 1) {
+            $('#Back').hide();
+        } else {
+            $('#Training').hide();
+        }
+
+        if (sessionNum === -2)
+            $('#Training').hide();
+
+
+        if (pageNum === nPages) {
+            $('#Next').hide();
+        }
+
+        if (pageNum < nPages) {
+            $('#Start').hide();
+        }
+
+        $('#Back').click({obj: this}, function (event) {
+
+            $('#TextBoxDiv').remove();
+            $('#Stage').empty();
+            $('#Bottom').empty();
+
+            if (pageNum === 1) {
+            } else {
+                event.data.obj.endTraining(
+                    sessionNum, phaseNum, pageNum - 1, nextFunc, nextParams);
+            }
+
+        });
+
+        $('#Training').click({obj: this}, function (event) {
+
+            $('#TextBoxDiv').remove();
+            $('#Stage').empty();
+            $('#Bottom').empty();
+
+            event.data.obj.exp.sumReward[0] = 0;
+            event.data.obj.exp.sumReward[1] = 0;
+            event.data.obj.exp.sumReward[2] = 0;
+            event.data.obj.exp.sumReward[3] = 0;
+            // TODO: restart training
+            // nextParams
+
+        });
+
+        $('#Next').click({obj: this}, function (event) {
+
+            $('#TextBoxDiv').remove();
+            $('#Stage').empty();
+            $('#Bottom').empty();
+            event.data.obj.exp.endTraining(
+                sessionNum, phaseNum, pageNum + 1, nextFunc, nextParams);
+
+        });
+
+        $('#Start').click(function () {
+
+            $('#TextBoxDiv').remove();
+            $('#Stage').empty();
+            $('#Bottom').empty();
+
+            ready = 'Ready...';
+            steady = 'Steady...';
+            go = 'Go!';
+
+            $('#TextBoxDiv').remove();
+            $('#Stage').empty();
+            $('#Bottom').empty();
+            setTimeout(function () {
+                $('#Stage').html('<H1 align = "center">' + ready + '</H1>');
+                setTimeout(function () {
+                    $('#Stage').html('<H1 align = "center">' + steady + '</H1>');
+                    setTimeout(function () {
+                        $('#Stage').html('<H1 align = "center">' + go + '</H1>');
+                        setTimeout(function () {
+                            $('#Stage').empty();
+                            nextFunc(nextParams);
+                        }, 1000);
+                    }, 1000);
+                }, 1000);
+            }, 10);
+        });
+    }
+
+    this.endExperiment = function () {
+
+        this.gui.init();
+
+        let points = this.exp.totalReward;
+        let pence = this.exp.pointsToPence(points).toFixed(2);
+        let pounds = this.exp.pointsToPounds(points).toFixed(2);
+
+        let wonlost = [' won ', ' lost '][+(points < 0)];
+
+        let Title = '<h3 align = "center">The game is over!<br>' +
+            'You ' + wonlost + points + ' points in total, which is ' + pence + ' pence = ' + pounds + ' pounds!<br><br>' +
+            'With your initial endowment, you won a total bonus of ' + (parseFloat(pence) + 250) + ' pence = ' + (parseFloat(pounds) + 2.5) + ' pounds!<br><br>' +
+            'Thank you for playing!<br><br>Please click the link to complete this study:<br></h3><br>';
+
+        let url = '<center><a href="' + this.exp.link + '">Click here.</a></center>';
+
+        $('#TextBoxDiv').html(Title + url);
+    }
 }
 
     // Questionnaires
@@ -3192,4 +2789,400 @@ function Instructions({exp, gui}) {
             getUserID();
         }
     }
+}
 
+
+function Experiment () {
+    /***
+
+    Experiment initializer
+
+    ***/
+
+    // TODO:
+    // Initial Experiment Parameters
+    // -------------------------------------------------------------------------------------------------- //
+    this.online = 0;
+    this.completeFeedback = 1;
+    this.expName = 'RetrieveAndCompare';
+    //var language = "en"; // only en is available at the moment
+    var compLink = 1;
+    var nSessions = 1;
+
+    var questionnaire = 1;
+    this.maxPoints = 98;
+
+    // Main Exp
+    var nCond = 4;
+    nCond--; //because of range function
+    var nCondPerSession = 4;
+    var nTrialsPerCondition = 30;
+    var nTrialsPerSession = (nTrialsPerCondition * nCondPerSession) * nSessions;
+
+    // Single symbols per session
+    // var nSymbolPerSession = 8;
+
+    this.feedbackDuration = 2000;
+    this.sumReward = [0, 0, 0, 0, 0, 0, 0];
+
+    this.totalReward = 0;
+
+    // Training
+    var nCondTraining = 4;
+    var nTrialTrainingPerCond = 3;
+    var nTrainingTrials = nTrialTrainingPerCond * nCondTraining;//1;
+    var maxTrainingSessions = 1;
+    var nTrainingImg = nCondTraining * 2;
+    nCondTraining--; // because of range function
+
+    // Phase to print
+    this.phases = [-1, 1, 2, 3, 1, 2, 3];
+
+    // var nTrialsPerConditionLot = 2;
+    // var nTrialsLotteries = (nCond + 1) * nTrialsPerConditionLot;
+
+    var initTime = (new Date()).getTime();
+
+    this.expID = createCode();
+
+    var clickDisabled = false;
+    var trainSess = -1;
+    var maxDBCalls = 1;
+    this.browsInfo = getOS() + ' - ' + getBrowser();
+
+    this.subID = undefined;
+
+    this.link = 'https://app.prolific.ac/submissions/complete?cc=RNFS5HP5';
+
+    // Manage compensations
+    // -------------------------------------------------------------------------------------------------- //
+    // one point equals 250 pence / maxPoints
+    let conversionRate = (250 / this.maxPoints).toFixed(2);
+    this.pointsToPence = points => points * conversionRate;
+    this.penceToPounds = pence => pence / 100;
+    this.pointsToPounds = points => this.penceToPounds(this.pointsToPence(points));
+
+    // Define conditions
+    // -------------------------------------------------------------------------------------------------- //
+    var probs = [];
+    var rewards = [];
+    var cont = [];
+
+    // Define ind cont
+    // -------------------------------------------------------------------------------------------------- //
+    cont[0] = [1., 0.];
+    cont[1] = [0.9, 0.1];
+    cont[2] = [0.8, 0.2];
+    cont[3] = [0.7, 0.3];
+    cont[4] = [0.6, 0.4];
+    cont[5] = [0.5, 0.5];
+    cont[6] = [0.4, 0.6];
+    cont[7] = [0.3, 0.7];
+    cont[8] = [0.2, 0.8];
+    cont[9] = [0.1, 0.9];
+    cont[10] = [0., 1.];
+
+    rewards[0] = [[-1, 1], [-1, 1]];
+    probs[0] = [[0.1, 0.9], [0.9, 0.1]];
+
+    rewards[1] = [[-1, 1], [-1, 1]];
+    probs[1] = [[0.2, 0.8], [0.8, 0.2]];
+
+    rewards[2] = [[-1, 1], [-1, 1]];
+    probs[2] = [[0.3, 0.7], [0.7, 0.3]];
+
+    rewards[3] = [[-1, 1], [-1, 1]];
+    probs[3] = [[0.4, 0.6], [0.6, 0.4]];
+
+    // only for lotteries
+    // rewards[4] = [[-1, 1], [-1, 1]];
+    // probs[4] = [[0.5, 0.5], [0.5, 0.5]];
+
+    // Define conditions
+    // -------------------------------------------------------------------------------------------------- //
+    var expCondition = [[]];
+    var conditions = [];
+
+    // range cond for each session
+    var cond = shuffle(range(0, nCond));
+
+    for (let i = 0; i < nSessions; i++) {
+        for (let j = 0; j < cond.length; j++) {
+            expCondition[i].push(
+                Array(nTrialsPerCondition).fill(cond[j]).flat()
+            );
+        }
+        expCondition[i] = expCondition[i].flat();
+    }
+
+
+    for (let i = 0; i <= nCond; i++)
+        conditions.push({
+            reward: rewards[i],
+            prob: probs[i]
+        });
+
+    // training conditions
+    var trainingCondition = [];
+    for (let i = 0; i < cond.length; i++) {
+        trainingCondition.push(
+            Array(nTrialTrainingPerCond).fill(cond[i]).flat()
+        );
+    }
+    trainingCondition = trainingCondition.flat();
+
+    // Get stims, feedbacks, resources
+    // -------------------------------------------------------------------------------------------------------- //
+    var imgPath = 'images/cards_gif/';
+    var nImg = 16;
+    var imgExt = 'gif';
+    var borderColor = "transparent";
+
+    this.images = [];
+    var availableOptions = [];
+    for (let i = 2; i <= nImg; i++) {
+        availableOptions.push(i);
+        this.images[i] = new Image();
+        this.images[i].src = imgPath + 'stim_old/' + i + '.' + imgExt;
+        this.images[i].className = "img-responsive center-block";
+        this.images[i].style.border = "5px solid " + borderColor;
+        this.images[i].style.position = "relative";
+        this.images[i].style.top = "0px";
+    }
+
+    var feedbackNames = ["empty", "0", "1", "-1", '-2', '2'];
+    this.feedbackImg = [];
+    for (var i = 0; i < feedbackNames.length; i++) {
+        fb = feedbackNames[i];
+        this.feedbackImg[fb] = new Image();
+        this.feedbackImg[fb].src = imgPath + 'fb/' + fb + '.' + imgExt;
+        this.feedbackImg[fb].className = "img-responsive center-block";
+        this.feedbackImg[fb].style.border = "5px solid " + borderColor;
+        this.feedbackImg[fb].style.position = "relative";
+        this.feedbackImg[fb].style.top = "0px";
+    }
+
+    // Training stims
+    var imgExt = 'jpg';
+    var trainingImg = [];
+    var trainingOptions = [];
+    var letters = [null, 'A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L',
+        'M', 'N', 'O', 'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z'];
+    for (let i = 1; i <= nTrainingImg; i++) {
+        trainingOptions.push(i);
+        trainingImg[i] = new Image();
+        trainingImg[i].src = imgPath + 'stim/' + letters[i] + '.' + imgExt;
+        trainingImg[i].className = "img-responsive center-block";
+        trainingImg[i].style.border = "5px solid " + borderColor;
+        trainingImg[i].style.position = "relative";
+        trainingImg[i].style.top = "0px";
+    }
+
+    // Elicitations
+    // ------------------------------------------------------------------------------------------------------- //
+    var elicitationType = 0;
+    var expectedValue = [
+        "-1", "-0.8", "-0.6", "-0.4", "-0.2", "0", "0.2", "0.4", "0.6", "0.8", "1"];
+    var expectedValueMap = {
+        '-1': [cont[0], 0],
+        '-0.8': [cont[1], 1],
+        '-0.6': [cont[2], 2],
+        '-0.4': [cont[3], 3],
+        '-0.2': [cont[4], 4],
+        '0': [cont[5], 5],
+        '0.2': [cont[6], 6],
+        '0.4': [cont[7], 7],
+        '0.6': [cont[8], 8],
+        '0.8': [cont[9], 9],
+        '1': [cont[10], 10],
+    };
+
+    for (let i = 0; i < expectedValue.length; i++) {
+        this.images[expectedValue[i]] = new Image();
+        this.images[expectedValue[i]].src = imgPath + 'lotteries/' + expectedValue[i] + '.png';
+        this.images[expectedValue[i]].className = "img-responsive center-block";
+        this.images[expectedValue[i]].style.border = "5px solid " + borderColor;
+        this.images[expectedValue[i]].style.position = "relative";
+        this.images[expectedValue[i]].style.top = "0px";
+    }
+
+    // Define contexts
+    // ------------------------------------------------------------------------------------------------------- //
+    // training
+    trainingOptions = shuffle(trainingOptions);
+    var trainingContexts = [];
+    var arr = [];
+    var elicitationsStimEVTraining = [];
+    (new Set(trainingCondition)).forEach(x => arr.push(x));
+    let j = 0;
+
+    var catchTrialsTemp = shuffle([
+        ["0.8", "-0.8"],
+        ["0.6", "-0.6"],
+        ["0.6", "-0.4"],
+        ["0.4", "-0.4"],
+        ["0.4", "-0.6"],
+        ["0.2", "-0.2"],
+        ["0.4", "-0.2"],
+        ["1", "-1"],
+    ]);
+
+    var catchTrials = [];
+    for (let i = 0; i < catchTrialsTemp.length; i++) {
+
+        var stim1 = catchTrialsTemp[i][0];
+        var stim2 = catchTrialsTemp[i][1];
+
+        catchTrials[i] = [
+            stim1,
+            stim2,
+            expectedValueMap[stim1],
+            stim1,
+            expectedValueMap[stim2],
+            stim2,
+            true
+        ].flat();
+    }
+
+
+    var nTrialPerElicitationChoiceTraining = 12;
+
+    trainingContexts = shuffle(trainingContexts);
+
+    var symbolValueMapTraining = [];
+
+    for (let i = 0; i < trainingContexts.length; i++) {
+        v1 = conditions[i]['prob'][0];
+        v2 = conditions[i]['prob'][1];
+        symbolValueMapTraining[trainingContexts[i][0]] = [v1, cont.findIndex(x => x.toString() === v1.toString())];
+        symbolValueMapTraining[trainingContexts[i][1]] = [v2, cont.findIndex(x => x.toString() === v2.toString())];
+    }
+
+    // EXP
+    availableOptions = shuffle(availableOptions);
+    var contexts = [];
+
+    for (let i = 0; i <= nCond * 2; i += 2) {
+        contexts.push([
+            availableOptions[i], availableOptions[i + 1]
+        ]);
+    }
+    contexts = shuffle(contexts);
+
+    var symbolValueMap = [];
+
+    for (let i = 0; i < contexts.length; i++) {
+        v1 = conditions[i]['prob'][0];
+        v2 = conditions[i]['prob'][1];
+        r = [-1, 1];
+        symbolValueMap[contexts[i][0]] = [
+            v1,
+            cont.findIndex(x => x.toString() === v1.toString()),
+            v1[0] * r[0] + v1[1] * r[1]
+        ];
+        symbolValueMap[contexts[i][1]] = [
+            v2,
+            cont.findIndex(x => x.toString() === v2.toString()),
+            v2[0] * r[0] + v2[1] * r[1]
+        ];
+    }
+
+    for (let i = 0; i < nTrainingImg; i += 2) {
+
+        trainingContexts[arr[j]] = [
+            trainingOptions[i], trainingOptions[i + 1]
+        ];
+        j++;
+
+        let temp = [];
+        for (let k = 0; k < probs.length; k++) {
+            temp.push([trainingOptions[i], expectedValue[k]]);
+        }
+        elicitationsStimEVTraining = elicitationsStimEVTraining.concat(shuffle(temp));
+        elicitationsStimEVTraining.push(catchTrials[i]);
+
+        temp = [];
+        for (let k = 0; k < probs.length; k++) {
+            temp.push([trainingOptions[i + 1], expectedValue[k]]);
+        }
+        elicitationsStimEVTraining = elicitationsStimEVTraining.concat(shuffle(temp));
+        elicitationsStimEVTraining.push(catchTrials[i + 1]);
+
+    }
+
+    // Elicitation
+    var elicitationsStim = [];
+    this.elicitationStimEV = [];
+
+    var cidx = Array.from(new Set(shuffle(expCondition[0].flat())));
+    var catchIdx = 0;
+
+    for (let j = 0; j < cidx.length; j++) {
+
+        var stim1 = contexts[cidx[j]].flat()[0];
+        var stim2 = contexts[cidx[j]].flat()[1];
+
+        elicitationsStim.push([
+            stim1,
+            symbolValueMap[stim1],
+            false
+        ].flat());
+
+        elicitationsStim.push([
+            stim2,
+            symbolValueMap[stim2],
+            false
+        ].flat());
+
+        let temp = [];
+        for (let k = 0; k < expectedValue.length; k++) {
+            temp.push(
+                [
+                    stim1,
+                    expectedValue[k],
+                    symbolValueMap[stim1],
+                    expectedValueMap[expectedValue[k]],
+                    false
+                ].flat()
+            );
+        }
+        this.elicitationStimEV = this.elicitationStimEV.concat(shuffle(temp));
+        this.elicitationStimEV.push(catchTrials[catchIdx]);
+        catchIdx++;
+
+        temp = [];
+        for (let k = 0; k < expectedValue.length; k++) {
+            temp.push(
+                [
+                    stim2,
+                    expectedValue[k],
+                    symbolValueMap[stim2],
+                    expectedValueMap[expectedValue[k]],
+                    false
+                ].flat()
+            );
+        }
+        this.elicitationStimEV = this.elicitationStimEV.concat(shuffle(temp));
+        this.elicitationStimEV.push(catchTrials[catchIdx]);
+        catchIdx++;
+
+    }
+
+    var elicitationsStimTraining = range(1, 4);
+
+    for (let i = 0; i < 2; i++) {
+        elicitationsStimTraining.push(expectedValue[i]);
+    }
+    var randExpectedValue = shuffle(expectedValue);
+    for (let i = 0; i < 4; i++) {
+        elicitationsStim.push([
+            randExpectedValue[i],
+            expectedValueMap[randExpectedValue[i]],
+            false
+        ].flat());
+    }
+
+    elicitationsStimTraining = shuffle(elicitationsStimTraining);
+    this.elicitationStim = shuffle(elicitationsStim);
+
+}
