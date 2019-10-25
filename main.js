@@ -2,12 +2,17 @@ $(document).ready(main);
 
 
 function main() {
+    /*
+    Main function where
+    we instantiate main component, in order to maintain
+    their attributes throught the whole experiment scope
+     */
 
     // init main parameters
     let sessionNum = -1;
     let phaseNum = 1;
 
-    let instructionNum = 0;
+    let instructionNum = 3;
 
     let exp = new Experiment();
     let inst = new Instructions(exp);
@@ -21,12 +26,14 @@ function stateMachine({instructionNum, sessionNum, phaseNum, inst, exp} = {}) {
 
     /* ============================ Instructions Management ========================== */
 
+    let isTraining = +(sessionNum < 0);
+
     switch (instructionNum) {
         case 0:
             inst.goFullscreen(
                 stateMachine,
                 {
-                    instructionNum: 1, inst: inst, exp: exp
+                    instructionNum: 1, inst: inst, exp: exp, sessionNum: sessionNum, phaseNum: 1
                 }
             );
             return;
@@ -35,7 +42,7 @@ function stateMachine({instructionNum, sessionNum, phaseNum, inst, exp} = {}) {
             inst.setUserID(
                 stateMachine,
                 {
-                    instructionNum: 2, inst: inst, exp: exp
+                    instructionNum: 2, inst: inst, exp: exp, sessionNum: sessionNum, phaseNum: 1
                 }
             );
             return;
@@ -44,36 +51,45 @@ function stateMachine({instructionNum, sessionNum, phaseNum, inst, exp} = {}) {
             inst.displayConsent(
                 stateMachine,
                 {
-                    instructionNum: 3, inst: inst, exp: exp
+                    instructionNum: 3, inst: inst, exp: exp, sessionNum: sessionNum, phaseNum: 1
                 }
 
             );
             return;
 
         case 3:
-            inst.displayInstructionLearning(
-                1,
+            inst.displayInitialInstruction(
+                {pageNum: 1},
                 stateMachine,
                 {
-                    instructionNum: 'end', inst: inst, exp: exp, sessionNum: -1, phaseNum: 1
+                    instructionNum: 'end', inst: inst, exp: exp, sessionNum: sessionNum, phaseNum: 1
                 });
             return;
 
         case 4:
-            inst.displayInstructionElicitation(
-                1,
+            inst.displayInstructionLearning(
+                {pageNum: 1, isTraining: isTraining, phaseNum: 1},
                 stateMachine,
                 {
-                    instructionNum: 'end', inst: inst, exp: exp
+                    instructionNum: 'end', inst: inst, exp: exp, sessionNum: sessionNum, phaseNum: 2
                 });
             return;
 
         case 5:
-            inst.displayInstructionElicitation(
-                1,
+            inst.displayInstructionChoiceElicitation(
+                {pageNum: 1, isTraining: isTraining, phaseNum: 2},
                 stateMachine,
                 {
-                    instructionNum: 'end', inst: inst, exp: exp
+                    instructionNum: 'end', inst: inst, exp: exp, sessionNum: sessionNum, phaseNum: 3
+                });
+            return;
+
+        case 6:
+            inst.displayInstructionSliderElicitation(
+                {pageNum: 1, isTraining: isTraining, phaseNum: 3},
+                stateMachine,
+                {
+                    instructionNum: 'end', inst: inst, exp: exp, sessionNum: sessionNum, phaseNum: 4
                 });
             return;
 
@@ -85,7 +101,8 @@ function stateMachine({instructionNum, sessionNum, phaseNum, inst, exp} = {}) {
     /* ============================ Game Management ================================ */
 
     let trialObj;
-    let isTraining = +(sessionNum < 0);
+    let imgObj;
+
 
     switch (phaseNum) {
 
@@ -100,23 +117,25 @@ function stateMachine({instructionNum, sessionNum, phaseNum, inst, exp} = {}) {
                 [exp.learningStimTraining, exp.elicitationStimEVTraining][isElicitation],
             ][isTraining];
 
+            imgObj = [exp.images, exp.trainingImg][isTraining];
+
             let choice = new ChoiceManager(
                 {
                     trialObj: trialObj,
                     feedbackDuration: exp.feedbackDuration,
                     completeFeedback: exp.completeFeedback,
                     feedbackObj: exp.feedbackImg,
-                    imgObj: exp.images,
+                    imgObj: imgObj,
                     sessionNum: sessionNum,
                     phaseNum: phaseNum,
                     exp: exp,
-                    elicitationType: -1,
+                    elicitationType: [-1, 0][isElicitation],
                     showFeedback: true,
                     nextFunc: stateMachine,
                     nextParams: {
-                        instructionNum: 4,
-                        sessionNum: 0,
-                        phaseNum: 3,
+                        instructionNum: [4, 5][isElicitation],
+                        sessionNum: sessionNum,
+                        phaseNum: phaseNum,
                         exp: exp,
                         inst: inst
                     }
@@ -904,9 +923,10 @@ class Instructions {
         });
     }
 
-    displayInstructionLearning(pageNum, nextFunc, nextParams) {
+    displayInitialInstruction(funcParams, nextFunc, nextParams) {
 
-        let nPages = 5;
+        let nPages = 2;
+        let pageNum = funcParams["pageNum"];
 
         GUI.init();
 
@@ -926,6 +946,83 @@ class Instructions {
                     + '<br><br>Depending on your choices you can either double this endowment or lose it.<br><br>Following experimental economics methodological standards, no deception is involved concerning the calculation of the final payoff.'
                     + '<br> Across the three phases of the experiment, you can win a bonus up to ' + this.exp.maxPoints + ' points = ' + this.exp.pointsToPounds(this.exp.maxPoints).toFixed(2) + ' pounds!';
                 break;
+        }
+        $('#TextBoxDiv').html(Title + Info);
+
+        let Buttons = '<div align="center"><input align="center" type="button"  class="btn btn-default" id="Back" value="Back" >\n\
+		<input align="center" type="button"  class="btn btn-default" id="Next" value="Next" >\n\
+		<input align="center" type="button"  class="btn btn-default" id="Start" value="Start the first phase!" ></div>';
+
+        $('#Bottom').html(Buttons);
+
+        if (pageNum === 1) {
+            $('#Back').hide();
+        }
+
+        if (pageNum === nPages) {
+            $('#Next').hide();
+        }
+
+        if (pageNum < nPages) {
+            $('#Start').hide();
+        }
+
+        $('#Back').click({obj: this}, function (event) {
+
+            $('#TextBoxDiv').remove();
+            $('#Stage').empty();
+            $('#Bottom').empty();
+
+            if (pageNum === 1) {
+            } else {
+                event.data.obj.displayInitialInstruction({pageNum: pageNum - 1}, nextFunc, nextParams);
+            }
+
+        });
+
+        $('#Next').click({obj: this}, function (event) {
+
+            $('#TextBoxDiv').remove();
+            $('#Stage').empty();
+            $('#Bottom').empty();
+            event.data.obj.displayInitialInstruction({pageNum: pageNum + 1}, nextFunc, nextParams);
+        });
+
+        $('#Start').click({obj: this}, function (event) {
+
+            $('#TextBoxDiv').remove();
+            $('#Stage').empty();
+            $('#Bottom').empty();
+
+            if (event.data.obj.exp.online) {
+                sendToDB(0,
+                    {
+                        expID: event.data.obj.expID,
+                        id: event.data.obj.subID,
+                        exp: event.data.obj.expName,
+                        browser: event.data.obj.browsInfo
+                    },
+                    'php/InsertExpDetails.php'
+                );
+
+            }
+            nextFunc(nextParams);
+        });
+    }
+
+    displayInstructionLearning(funcParams, nextFunc, nextParams) {
+
+        GUI.init();
+
+        let nPages = 2;
+        let pageNum = funcParams["pageNum"];
+        let isTraining = funcParams["isTraining"];
+
+        let Title = '<H2 align = "center">INSTRUCTIONS</H2>';
+        let Info;
+
+        switch (pageNum) {
+
 
             case 3:
                 Info = '<H3 align = "center"><b>Instructions for the first test (1/2)</b><br><br>'
@@ -947,9 +1044,13 @@ class Instructions {
                 break;
 
             case 5:
-                Info = '<H3 align = "center">Let' + "'s " + 'begin with the first training test!<br><br>'
+                let Info1;
+                let Info2;
+                Info1 = '<H3 align = "center">Let' + "'s " + 'begin with the first training test!<br><br>'
                     + '<b>(Note : points won during the training do not count for the final payoff !)<br><br>'
                     + 'The word "ready" will be displayed before the actual game starts.</H3></b><br><br>';
+    //            Info2 =
+
                 break;
 
             default:
@@ -1019,7 +1120,7 @@ class Instructions {
         });
     }
 
-    displayInstructionElicitation(
+    displayInstructionChoiceElicitation(
         sessionNum, training, elicitationType, phaseNum, pageNum, nextFunc, nextParams) {
 
         GUI.init();
@@ -1174,7 +1275,7 @@ class Instructions {
 
             if (pageNum === 1) {
             } else {
-                event.data.obj.displayInstructionElicitation(
+                event.data.obj.displayInstructionChoiceElicitation(
                     sessionNum, training, elicitationType, phaseNum, pageNum - 1);
             }
         });
@@ -1184,7 +1285,7 @@ class Instructions {
             $('#TextBoxDiv').remove();
             $('#Stage').empty();
             $('#Bottom').empty();
-            event.data.obj.displayInstructionElicitation(
+            event.data.obj.displayInstructionChoiceElicitation(
                 sessionNum, training, elicitationType, phaseNum, pageNum + 1);
 
         });
@@ -2237,7 +2338,7 @@ function Experiment() {
     let nCond = 4;
     nCond--; //because of range function
     let nCondPerSession = 4;
-    let nTrialsPerCondition = 30;
+    let nTrialsPerCondition = 2;
 
     // Single symbols per session
     // var nSymbolPerSession = 8;
@@ -2249,7 +2350,7 @@ function Experiment() {
 
     // Training
     let nCondTraining = 4;
-    let nTrialTrainingPerCond = 3;
+    let nTrialTrainingPerCond = 2;
     let nTrainingTrials = nTrialTrainingPerCond * nCondTraining;//1;
     let maxTrainingSessions = 1;
     let nTrainingImg = nCondTraining * 2;
@@ -2315,6 +2416,7 @@ function Experiment() {
     // -------------------------------------------------------------------------------------------------- //
     let expCondition = [];
     this.learningStim = [];
+    this.learningStimTraining = [];
     let conditions = [];
 
     // range cond for each session
@@ -2377,18 +2479,18 @@ function Experiment() {
 
     // Training stims
     imgExt = 'jpg';
-    let trainingImg = [];
+    this.trainingImg = [];
     let trainingOptions = [];
     let letters = [null, 'A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L',
         'M', 'N', 'O', 'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z'];
     for (let i = 1; i <= nTrainingImg; i++) {
         trainingOptions.push(i);
-        trainingImg[i] = new Image();
-        trainingImg[i].src = imgPath + 'stim/' + letters[i] + '.' + imgExt;
-        trainingImg[i].className = "img-responsive center-block";
-        trainingImg[i].style.border = "5px solid " + borderColor;
-        trainingImg[i].style.position = "relative";
-        trainingImg[i].style.top = "0px";
+        this.trainingImg[i] = new Image();
+        this.trainingImg[i].src = imgPath + 'stim/' + letters[i] + '.' + imgExt;
+        this.trainingImg[i].className = "img-responsive center-block";
+        this.trainingImg[i].style.border = "5px solid " + borderColor;
+        this.trainingImg[i].style.position = "relative";
+        this.trainingImg[i].style.top = "0px";
     }
 
     // Elicitations
@@ -2442,8 +2544,8 @@ function Experiment() {
     let catchTrials = [];
     for (let i = 0; i < catchTrialsTemp.length; i++) {
 
-        stim1 = catchTrialsTemp[i][0];
-        stim2 = catchTrialsTemp[i][1];
+        let stim1 = catchTrialsTemp[i][0];
+        let stim2 = catchTrialsTemp[i][1];
 
         catchTrials[i] = [
             stim1,
@@ -2456,15 +2558,32 @@ function Experiment() {
         ].flat();
     }
 
+    for (let i = 0; i < nTrainingImg; i += 2) {
+
+        trainingContexts[arr[j]] = [
+            trainingOptions[i], trainingOptions[i + 1]
+        ];
+        j++;
+    }
+
     trainingContexts = shuffle(trainingContexts);
 
     let symbolValueMapTraining = [];
 
     for (let i = 0; i < trainingContexts.length; i++) {
-        v1 = conditions[i]['prob'][0];
-        v2 = conditions[i]['prob'][1];
-        symbolValueMapTraining[trainingContexts[i][0]] = [v1, cont.findIndex(x => x.toString() === v1.toString())];
-        symbolValueMapTraining[trainingContexts[i][1]] = [v2, cont.findIndex(x => x.toString() === v2.toString())];
+        let v1 = conditions[i]['prob'][0];
+        let v2 = conditions[i]['prob'][1];
+        let r = [-1, 1];
+        symbolValueMapTraining[trainingContexts[i][0]] = [
+            v1,
+            cont.findIndex(x => x.toString() === v1.toString()),
+            v1[0] * r[0] + v1[1] * r[1],
+        ];
+        symbolValueMapTraining[trainingContexts[i][1]] = [
+            v2,
+            cont.findIndex(x => x.toString() === v2.toString()),
+            v2[0] * r[0] + v2[1] * r[1]
+        ];
     }
 
     // EXP
@@ -2481,9 +2600,9 @@ function Experiment() {
     let symbolValueMap = [];
 
     for (let i = 0; i < contexts.length; i++) {
-        v1 = conditions[i]['prob'][0];
-        v2 = conditions[i]['prob'][1];
-        r = [-1, 1];
+        let v1 = conditions[i]['prob'][0];
+        let v2 = conditions[i]['prob'][1];
+        let r = [-1, 1];
         symbolValueMap[contexts[i][0]] = [
             v1,
             cont.findIndex(x => x.toString() === v1.toString()),
@@ -2495,18 +2614,6 @@ function Experiment() {
             v2[0] * r[0] + v2[1] * r[1]
         ];
     }
-
-    for (let i = 0; i < expCondition.length; i++) {
-
-        let idx = expCondition[i];
-
-        let [stimIdx1, stimIdx2] = contexts[idx];
-
-        this.learningStim.push(
-           [stimIdx1, stimIdx2, symbolValueMap[stimIdx1], symbolValueMap[stimIdx2], false].flat()
-        );
-    }
-
 
     for (let i = 0; i < nTrainingImg; i += 2) {
 
@@ -2521,9 +2628,9 @@ function Experiment() {
                 trainingOptions[i],
                 expectedValue[k],
                 symbolValueMapTraining[trainingOptions[i]],
-                expectedValueMapTraining[expectedValue[k]],
+                expectedValueMap[expectedValue[k]],
                 false
-            ]);
+            ].flat());
         }
         elicitationsStimEVTraining = elicitationsStimEVTraining.concat(shuffle(temp));
         elicitationsStimEVTraining.push(catchTrials[i]);
@@ -2536,7 +2643,7 @@ function Experiment() {
                 symbolValueMap[trainingOptions[i + 1]],
                 expectedValueMap[expectedValue[k]],
                 false
-            ]);
+            ].flat());
         }
         elicitationsStimEVTraining = elicitationsStimEVTraining.concat(shuffle(temp));
         elicitationsStimEVTraining.push(catchTrials[i + 1]);
@@ -2544,6 +2651,30 @@ function Experiment() {
     }
 
     this.elicitationStimEVTraining = elicitationsStimEVTraining;
+
+    for (let i = 0; i < expCondition.length; i++) {
+
+        let idx = expCondition[i];
+
+        let [stimIdx1, stimIdx2] = contexts[idx];
+
+        this.learningStim.push(
+           [stimIdx1, stimIdx2, symbolValueMap[stimIdx1], symbolValueMap[stimIdx2], false].flat()
+        );
+
+    }
+
+    for (let i = 0; i < trainingCondition.length; i++) {
+
+        let idx = trainingCondition[i];
+
+        let [stimIdx1, stimIdx2] = trainingContexts[idx];
+
+        this.learningStimTraining.push(
+            [stimIdx1, stimIdx2, symbolValueMapTraining[stimIdx1], symbolValueMapTraining[stimIdx2], false].flat()
+        );
+
+    }
 
     // Elicitation
     let elicitationsStim = [];
