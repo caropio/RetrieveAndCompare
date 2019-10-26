@@ -9,10 +9,10 @@ function main() {
      */
 
     // init main parameters
-    let sessionNum = -1;
-    let phaseNum = 1;
+    let sessionNum = 0;
+    let phaseNum = 3;
 
-    let instructionNum = 3;
+    let instructionNum = 'end';
 
     let exp = new Experiment();
     let inst = new Instructions(exp);
@@ -109,7 +109,7 @@ function stateMachine({instructionNum, sessionNum, phaseNum, inst, exp} = {}) {
         case 1:
         case 2:
 
-            let isElicitation = +(phaseNum > 2);
+            let isElicitation = +(phaseNum > 1);
 
             // select stims depending on phaseNum and sessionNum;
             trialObj = [
@@ -130,7 +130,7 @@ function stateMachine({instructionNum, sessionNum, phaseNum, inst, exp} = {}) {
                     phaseNum: phaseNum,
                     exp: exp,
                     elicitationType: [-1, 0][isElicitation],
-                    showFeedback: true,
+                    showFeedback: [true, false][isElicitation],
                     nextFunc: stateMachine,
                     nextParams: {
                         instructionNum: [4, 5][isElicitation],
