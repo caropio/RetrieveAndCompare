@@ -10,7 +10,7 @@ function main() {
 
     // init main parameters
     let sessionNum = -1;
-    let phaseNum = 2;
+    let phaseNum = 1;
 
     let instructionNum = 'end';
 
@@ -92,17 +92,32 @@ function stateMachine({instructionNum, sessionNum, phaseNum, inst, exp} = {}) {
                     instructionNum: 'end', inst: inst, exp: exp, sessionNum: sessionNum, phaseNum: 3
                 });
             return;
+        case 7:
+            inst.endTraining(
+                {pageNum: 1, isTraining: 1, phaseNum: 3, sessionNum: sessionNum},
+                stateMachine,
+                {
+                    instructionNum: 4, inst: inst, exp: exp, sessionNum: 0, phaseNum: 1
+                });
+            return;
+        case 8:
+            inst.endExperiment(
+                {pageNum: 1, isTraining: 1, phaseNum: 3},
+                stateMachine,
+                {
+                    instructionNum: 'end', inst: inst, exp: exp, sessionNum: 0, phaseNum: 'end'
+                });
+            return;
 
 
         case 'end':
             break;
     }
 
-    /* ============================ Game Management ================================ */
+    /* ============================ Test Management ================================ */
 
     let trialObj;
-    let imgObj;
-
+    let imgObj = [exp.images, exp.trainingImg][isTraining];
 
     switch (phaseNum) {
 
@@ -111,13 +126,11 @@ function stateMachine({instructionNum, sessionNum, phaseNum, inst, exp} = {}) {
 
             let isElicitation = +(phaseNum > 1);
 
-            // select stims depending on phaseNum and sessionNum;
+            // select stimuli depending on sessionNum;
             trialObj = [
                 [exp.learningStim, exp.elicitationStimEV][isElicitation],
                 [exp.learningStimTraining, exp.elicitationStimEVTraining][isElicitation],
             ][isTraining];
-
-            imgObj = [exp.images, exp.trainingImg][isTraining];
 
             let choice = new ChoiceManager(
                 {
@@ -147,8 +160,8 @@ function stateMachine({instructionNum, sessionNum, phaseNum, inst, exp} = {}) {
 
         case 3:
 
-            // select stims depending on phaseNum and sessionNum;
-            trialObj = [exp.elicitationStim, exp.elicitationsStimTraining][isTraining];
+            // select stimuli depending on sessionNum;
+            trialObj = [exp.elicitationStim, exp.elicitationStimTraining][isTraining];
 
             let slider = new SliderManager(
                 {
@@ -156,23 +169,26 @@ function stateMachine({instructionNum, sessionNum, phaseNum, inst, exp} = {}) {
                     feedbackDuration: exp.feedbackDuration-1500,
                     completeFeedback: exp.completeFeedback,
                     feedbackObj: exp.feedbackImg,
-                    imgObj: exp.images,
+                    imgObj: imgObj,
                     sessionNum: sessionNum,
                     phaseNum: phaseNum,
                     exp: exp,
-                    elicitationType: -1,
-                    showFeedback: true,
+                    elicitationType: 2,
+                    showFeedback: exp.showFeedback,
                     nextFunc: stateMachine,
                     nextParams: {
-                        instructionNum: 4,
-                        sessionNum: 0,
-                        phaseNum: 3,
+                        instructionNum: [8, 7][isTraining],
+                        sessionNum: sessionNum,
+                        phaseNum: ['end', 1][isTraining],
                         exp: exp,
                         inst: inst
                     }
                 }
             );
             slider.run();
+            break;
+
+        case 'end':
             break;
     }
 
@@ -1128,7 +1144,7 @@ class Instructions {
         let isTraining = funcParams['isTraining'];
         let phaseNum = funcParams['phaseNum'];
         let pageNum = funcParams['pageNum'];
-        let points = this.exp.sumReward[phaseNum - 1];
+        let points = this.exp.sumReward[phaseNum];
         let pence = this.exp.pointsToPence(points).toFixed(2);
         let pounds = this.exp.pointsToPounds(points).toFixed(2);
         let nPages = 3;
@@ -1288,9 +1304,9 @@ class Instructions {
         let trainstring;
         let wonlost;
 
-        let points = this.exp.sumReward[phaseNum - 1];
-        let pence = this.exp.pointsToPence(points);
-        let pounds = this.exp.pointsToPounds(points);
+        let points = this.exp.sumReward[phaseNum];
+        let pence = this.exp.pointsToPence(points).toFixed(2);
+        let pounds = this.exp.pointsToPounds(points).toFixed(2);
 
         let nPages = 4;
 
@@ -1439,11 +1455,8 @@ class Instructions {
 
         GUI.init();
 
-        let phaseNum = funcParams['phaseNum'];
-        let pageNum = funcParams['pageNum'];
         let sessionNum = funcParams['sessionNum'];
 
-        let nPages = 2;
         let Title;
         let Info;
         let totalPoints;
@@ -1482,7 +1495,7 @@ class Instructions {
 
         $('#Bottom').html(Buttons);
 
-        if (sessionNum === this.exp.maxTraining)
+        if (sessionNum === this.exp.maxTrainingNum)
             $('#Training').hide();
 
         $('#Training').click({obj: this}, function (event) {
@@ -1495,6 +1508,10 @@ class Instructions {
             event.data.obj.exp.sumReward[1] = 0;
             event.data.obj.exp.sumReward[2] = 0;
             event.data.obj.exp.sumReward[3] = 0;
+            nextParams['phaseNum'] = 1;
+            nextParams['sessionNum'] = -2;
+            nextParams['instructionNum'] = 4;
+            nextFunc(nextParams);
             // TODO: restart training
             // nextParams
 
@@ -2373,6 +2390,8 @@ function Experiment() {
 
     this.totalReward = 0;
 
+    this.maxTrainingNum = -2;
+
     // Training
     let nCondTraining = 4;
     let nTrialTrainingPerCond = 2;
@@ -2543,6 +2562,12 @@ function Experiment() {
         this.images[expectedValue[i]].style.border = "5px solid " + borderColor;
         this.images[expectedValue[i]].style.position = "relative";
         this.images[expectedValue[i]].style.top = "0px";
+        this.trainingImg[expectedValue[i]] = new Image();
+        this.trainingImg[expectedValue[i]].src = imgPath + 'lotteries/' + expectedValue[i] + '.png';
+        this.trainingImg[expectedValue[i]].className = "img-responsive center-block";
+        this.trainingImg[expectedValue[i]].style.border = "5px solid " + borderColor;
+        this.trainingImg[expectedValue[i]].style.position = "relative";
+        this.trainingImg[expectedValue[i]].style.top = "0px";
     }
 
     // Define contexts
@@ -2552,6 +2577,7 @@ function Experiment() {
     let trainingContexts = [];
     let arr = [];
     let elicitationsStimEVTraining = [];
+    let elicitationStimTraining = [];
     (new Set(trainingCondition)).forEach(x => arr.push(x));
     let j = 0;
 
@@ -2644,6 +2670,17 @@ function Experiment() {
             trainingOptions[i], trainingOptions[i + 1]
         ];
         j++;
+
+        let stim1 = trainingOptions[i];
+        let stim2 = trainingOptions[i+1];
+
+        elicitationStimTraining.push(
+            [stim1, symbolValueMapTraining[stim1], false].flat()
+        );
+
+        elicitationStimTraining.push(
+            [stim2, symbolValueMapTraining[stim2], false].flat()
+        );
 
         let temp = [];
         for (let k = 0; k < probs.length; k++) {
@@ -2757,11 +2794,6 @@ function Experiment() {
 
     }
 
-    let elicitationsStimTraining = range(1, 4);
-
-    for (let i = 0; i < 2; i++) {
-        elicitationsStimTraining.push(expectedValue[i]);
-    }
     let randExpectedValue = shuffle(expectedValue);
     for (let i = 0; i < 4; i++) {
         elicitationsStim.push([
@@ -2769,9 +2801,18 @@ function Experiment() {
             expectedValueMap[randExpectedValue[i]],
             false
         ].flat());
+
+    }
+    randExpectedValue = shuffle(expectedValue);
+    for (let i = 0; i < 2; i++) {
+        elicitationStimTraining.push([
+            randExpectedValue[i],
+            expectedValueMap[randExpectedValue[i]],
+            false
+        ].flat());
     }
 
-    this.elicitationsStimTraining = shuffle(elicitationsStimTraining);
+    this.elicitationStimTraining = shuffle(elicitationStimTraining);
     this.elicitationStim = shuffle(elicitationsStim);
 
 }
