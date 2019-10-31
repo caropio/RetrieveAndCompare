@@ -220,8 +220,6 @@ class GUI {
 
     static getOptions(id1, id2, img, feedbackImg){
 
-        debugger;
-
         let option1 = img[id1];
         option1.id = "option1";
         option1 = option1.outerHTML;
@@ -276,7 +274,181 @@ class GUI {
         $('#TextBoxDiv').html(Title + Feedback + Images + myCanvas);
     }
 
-    static         GUI.displayOptions(
+    static displayOptionSlider(option) {
+
+        let canvas1 = '<canvas id="canvas1" height="620"' +
+            ' width="620" class="img-responsive center-block"' +
+            ' style="border: 5px solid transparent; position: relative; top: 0px;">';
+
+        let canvas2 = '<canvas id="canvas2" height="620"' +
+            ' width="620" class="img-responsive center-block"' +
+            ' style="border: 5px solid transparent; position: relative; top: 0px;">';
+
+        let myCanvas = '<div id = "cvrow" class="row" style= "transform: translate(0%, -200%);position:relative">' +
+            '    <div class="col-xs-1 col-md-1"></div>  <div class="col-xs-3 col-md-3">'
+            + canvas1 + '</div><div id = "Middle" class="col-xs-4 col-md-4"></div><div class="col-xs-3 col-md-3">'
+            + canvas2 + '</div><div class="col-xs-1 col-md-1"></div></div>';
+
+        let Title = '<div id = "Title"><H2 align = "center">What are the odds this symbol gives a +1?<br><br><br><br></H2></div>';
+        let Images = '<div id = "stimrow" style="transform: translate(0%, -100%);position:relative"> ' +
+            '<div class="col-xs-1 col-md-1"></div>  <div class="col-xs-3 col-md-3">'
+            + '</div><div id = "Middle" class="col-xs-4 col-md-4">' + option + '</div></div>';
+
+        let initValue = range(25, 75, 5)[Math.floor(Math.random() * 10)];
+
+        let Slider = '<main>\n' +
+            '  <form id="form">\n' +
+            '    <h2>\n' +
+            '    </h2>\n' +
+            '    <div class="range">\n' +
+            '      <input id="slider" name="range" type="range" value="' + initValue + '" min="0" max="100" step="5">\n' +
+            '      <div class="range-output">\n' +
+            '        <output id="output" class="output" name="output" for="range">\n' +
+            '          ' + initValue + '%\n' +
+            '        </output>\n' +
+            '      </div>\n' +
+            '    </div>\n' +
+            '  </form>\n' +
+            '</main>\n' +
+            '<br><br><div align="center"><button id="ok" class="btn btn-default btn-lg">Ok</button></div>';
+
+        return Title + Images + myCanvas + Slider;
+    }
+
+    static slideCard(pic, cv, showFeedback) {
+
+        let img = new Image();
+        let canvas;
+        img.src = pic.src;
+        img.width = pic.width;
+        img.height = pic.height;
+
+        let speed = 3;
+        let y = 0;
+
+        let dy = 10;
+        let x = 0;
+        let ctx;
+
+        img.onload = function () {
+
+            canvas = cv;
+            ctx = cv.getContext('2d');
+
+            canvas.width = img.width;
+            canvas.height = img.height;
+
+            let scroll = setInterval(draw, speed);
+
+            if (showFeedback) {
+                setTimeout(function () {
+                    pic.style.visibility = "hidden";
+                    clearInterval(scroll);
+                    ctx.clearRect(0, 0, canvas.width, canvas.height);
+                }, 1000);
+            }
+
+        };
+
+        function draw() {
+
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+            if (y > img.height) {
+                y = -img.height + y;
+            }
+
+            if (y > 0) {
+                ctx.drawImage(img, x, -img.height + y, img.width, img.height);
+            }
+
+            ctx.drawImage(img, x, y, img.width, img.height);
+
+            y += dy;
+        }
+    }
+}
+
+
+class ChoiceManager {
+    /*
+    Manage trials with 2 options
+    Private methods are prefixed with _
+     */
+    constructor({
+        exp,
+        trialObj,
+        imgObj,
+        sessionNum,
+        phaseNum,
+        feedbackDuration,
+        completeFeedback,
+        showFeedback,
+        elicitationType,
+        feedbackObj,
+        maxTrials,
+        nextFunc,
+        nextParams
+    } = {}) {
+
+        // members
+        this.exp = exp;
+
+        this.trialObj = trialObj;
+        this.feedbackObj = feedbackObj;
+        this.imgObj = imgObj;
+
+        this.sessionNum = sessionNum;
+        this.phaseNum = phaseNum;
+
+        this.feedbackDuration = feedbackDuration;
+        this.completeFeedback = completeFeedback;
+        this.showFeedback = showFeedback;
+        this.elicitationType = elicitationType;
+
+        this.nextFunc = nextFunc;
+        this.nextParams = nextParams;
+
+        // init non parametric variables
+        this.trialNum = 0;
+
+        if (!maxTrials) {
+            this.nTrial = trialObj.length;
+        } else {
+            this.nTrial = maxTrials;
+        }
+
+        this.invertedPosition = shuffle(
+            Array.from(Array(this.nTrial), x => randint(0, 1))
+        );
+
+    }
+
+    /* =========================================== public methods =========================================== */
+
+    run() {
+
+        GUI.init();
+
+        let trialObj = this.trialObj[this.trialNum];
+
+        let choiceTime = (new Date()).getTime();
+
+        let params = {
+            stimIdx1: trialObj[0],
+            stimIdx2: trialObj[1],
+            p1: trialObj[2],
+            contIdx1: trialObj[3],
+            ev1: trialObj[4],
+            p2: trialObj[5],
+            contIdx2: trialObj[6],
+            ev2: trialObj[7],
+            isCatchTrial: trialObj[8],
+            r1: [-1, 1],
+            choiceTime: choiceTime
+        };
+
+        GUI.displayOptions(
             params["stimIdx1"],
             params["stimIdx2"],
             this.imgObj,
