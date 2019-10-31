@@ -6,7 +6,8 @@ class ExperimentParameters {
     /***
 
      Experiment initializer
-
+     All the parameters for
+     the experiment are defined here
      ***/
 
     constructor ({
@@ -467,8 +468,6 @@ class ExperimentParameters {
         }
 
     }
-
-
 
 }
 

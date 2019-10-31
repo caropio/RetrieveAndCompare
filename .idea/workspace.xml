@@ -2,19 +2,9 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="ee13ee03-398f-45ad-ac72-fc244a54d0c8" name="Default Changelist" comment="">
-      <change afterPath="$PROJECT_DIR$/js/app.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/js/exp.mjs" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/js/gui.mjs" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/js/inst.mjs" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/js/request.mjs" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/js/trial_manager.mjs" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/js/utils.mjs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/codeStyles/Project.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/codeStyles/Project.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/compute_ev.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/get_citations.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/index.html" beforeDir="false" afterPath="$PROJECT_DIR$/index.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/main.js" beforeDir="false" afterPath="$PROJECT_DIR$/main.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/js/app.js" beforeDir="false" afterPath="$PROJECT_DIR$/js/app.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/js/exp.mjs" beforeDir="false" afterPath="$PROJECT_DIR$/js/exp.mjs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/js/inst.mjs" beforeDir="false" afterPath="$PROJECT_DIR$/js/inst.mjs" afterDir="false" />
     </list>
     <ignored path="$PROJECT_DIR$/.tmp/" />
     <ignored path="$PROJECT_DIR$/temp/" />
@@ -122,11 +112,11 @@
               </provider>
             </entry>
           </file>
-          <file pinned="false" current-in-tab="false">
+          <file pinned="false" current-in-tab="true">
             <entry file="file://$PROJECT_DIR$/js/inst.mjs">
               <provider selected="true" editor-type-id="text-editor">
-                <state relative-caret-position="162">
-                  <caret line="9" lean-forward="true" selection-start-line="9" selection-end-line="9" />
+                <state relative-caret-position="869">
+                  <caret line="718" column="42" selection-start-line="718" selection-start-column="42" selection-end-line="718" selection-end-column="42" />
                   <folding>
                     <element signature="e#0#26#0" expanded="true" />
                   </folding>
@@ -134,11 +124,11 @@
               </provider>
             </entry>
           </file>
-          <file pinned="false" current-in-tab="true">
+          <file pinned="false" current-in-tab="false">
             <entry file="file://$PROJECT_DIR$/js/app.js">
               <provider selected="true" editor-type-id="text-editor">
-                <state relative-caret-position="558">
-                  <caret line="31" column="41" selection-start-line="31" selection-start-column="41" selection-end-line="31" selection-end-column="41" />
+                <state relative-caret-position="504">
+                  <caret line="28" column="40" selection-start-line="28" selection-start-column="40" selection-end-line="28" selection-end-column="40" />
                   <folding>
                     <element signature="e#0#33#0" expanded="true" />
                   </folding>
@@ -171,8 +161,8 @@
           <file pinned="false" current-in-tab="true">
             <entry file="file://$PROJECT_DIR$/js/exp.mjs">
               <provider selected="true" editor-type-id="text-editor">
-                <state relative-caret-position="437">
-                  <caret line="298" lean-forward="true" selection-start-line="298" selection-end-line="298" />
+                <state relative-caret-position="504">
+                  <caret line="52" column="19" lean-forward="true" selection-start-line="52" selection-start-column="19" selection-end-line="52" selection-end-column="19" />
                 </state>
               </provider>
             </entry>
@@ -274,12 +264,12 @@
         <option value="$PROJECT_DIR$/js/request.js" />
         <option value="$PROJECT_DIR$/js/app_old.js" />
         <option value="$PROJECT_DIR$/index.html" />
-        <option value="$PROJECT_DIR$/js/inst.mjs" />
         <option value="$PROJECT_DIR$/js/utils.mjs" />
         <option value="$PROJECT_DIR$/js/trial_manager.mjs" />
         <option value="$PROJECT_DIR$/js/gui.mjs" />
-        <option value="$PROJECT_DIR$/js/app.js" />
         <option value="$PROJECT_DIR$/js/exp.mjs" />
+        <option value="$PROJECT_DIR$/js/app.js" />
+        <option value="$PROJECT_DIR$/js/inst.mjs" />
       </list>
     </option>
   </component>
@@ -396,12 +386,13 @@
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="563385000" />
+    <option name="totallyTimeSpent" value="564006000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="0" y="27" width="1920" height="1173" extended-state="6" />
+    <editor active="true" />
     <layout>
-      <window_info content_ui="combo" id="Project" order="0" weight="0.1390625" />
+      <window_info active="true" content_ui="combo" id="Project" order="0" visible="true" weight="0.1390625" />
       <window_info id="Structure" order="1" side_tool="true" weight="0.25" />
       <window_info id="Favorites" order="2" side_tool="true" />
       <window_info id="Project Explorer" order="3" />
@@ -654,16 +645,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/js/inst.mjs">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="162">
-          <caret line="9" lean-forward="true" selection-start-line="9" selection-end-line="9" />
-          <folding>
-            <element signature="e#0#26#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/js/utils.mjs">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="713">
@@ -706,20 +687,30 @@
         </state>
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/js/exp.mjs">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="36">
+          <caret line="2" selection-start-line="2" selection-end-line="2" />
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/js/app.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="558">
-          <caret line="31" column="41" selection-start-line="31" selection-start-column="41" selection-end-line="31" selection-end-column="41" />
+        <state relative-caret-position="504">
+          <caret line="28" column="40" selection-start-line="28" selection-start-column="40" selection-end-line="28" selection-end-column="40" />
           <folding>
             <element signature="e#0#33#0" expanded="true" />
           </folding>
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/js/exp.mjs">
+    <entry file="file://$PROJECT_DIR$/js/inst.mjs">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="437">
-          <caret line="298" lean-forward="true" selection-start-line="298" selection-end-line="298" />
+        <state relative-caret-position="869">
+          <caret line="718" column="42" selection-start-line="718" selection-start-column="42" selection-end-line="718" selection-end-column="42" />
+          <folding>
+            <element signature="e#0#26#0" expanded="true" />
+          </folding>
         </state>
       </provider>
     </entry>

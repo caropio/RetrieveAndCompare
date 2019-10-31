@@ -6,6 +6,7 @@ import {ChoiceManager, SliderManager} from "./trial_manager.mjs";
 // When the page is fully loaded, the function main will be called
 $(document).ready(main);
 
+
 function main() {
     /*
     Main function where
@@ -16,9 +17,9 @@ function main() {
     // init main parameters
     let sessionNum = -1;
     let phaseNum = 1;
+    let instructionNum = 0;
 
-    let instructionNum = 'end';
-
+    // instantiate experiment parameters
     let exp = new ExperimentParameters(
         {
             expName: 'RetrieveAndCompare',
@@ -32,8 +33,8 @@ function main() {
             nTrialPerConditionTraining: 5,
             nTrialPerCondition: 30,
             nCond: 4,
-            imgPath: 'images/cards_gif/'
-
+            imgPath: 'images/cards_gif/',
+            compLink: 'https://app.prolific.ac/submissions/complete?cc=RNFS5HP5'
         }
     );
     let inst = new Instructions(exp);

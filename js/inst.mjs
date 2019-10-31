@@ -714,7 +714,7 @@ class Instructions {
             'With your initial endowment, you won a total bonus of ' + (parseFloat(pence) + 250) + ' pence = ' + (parseFloat(pounds) + 2.5) + ' pounds!<br><br>' +
             'Thank you for playing!<br><br>Please click the link to complete this study:<br></h3><br>';
 
-        let url = '<center><a href="' + this.exp.link + '">Click here.</a></center>';
+        let url = '<center><a href="' + this.exp.compLink + '">Click here.</a></center>';
 
         $('#TextBoxDiv').html(Title + url);
     }
