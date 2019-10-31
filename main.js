@@ -4,13 +4,13 @@ $(document).ready(main);
 function main() {
     /*
     Main function where
-    we instantiate main component, in order to maintain
+    we instantiate main components, in order to maintain
     their attributes throught the whole experiment scope
      */
 
     // init main parameters
-    let sessionNum = 0;
-    let phaseNum = 3;
+    let sessionNum = -1;
+    let phaseNum = 2;
 
     let instructionNum = 'end';
 
@@ -62,7 +62,7 @@ function stateMachine({instructionNum, sessionNum, phaseNum, inst, exp} = {}) {
                 {pageNum: 1},
                 stateMachine,
                 {
-                    instructionNum: 'end', inst: inst, exp: exp, sessionNum: sessionNum, phaseNum: 1
+                    instructionNum: 4, inst: inst, exp: exp, sessionNum: sessionNum, phaseNum: 1
                 });
             return;
 
@@ -71,7 +71,7 @@ function stateMachine({instructionNum, sessionNum, phaseNum, inst, exp} = {}) {
                 {pageNum: 1, isTraining: isTraining, phaseNum: 1},
                 stateMachine,
                 {
-                    instructionNum: 'end', inst: inst, exp: exp, sessionNum: sessionNum, phaseNum: 2
+                    instructionNum: 'end', inst: inst, exp: exp, sessionNum: sessionNum, phaseNum: 1
                 });
             return;
 
@@ -80,7 +80,7 @@ function stateMachine({instructionNum, sessionNum, phaseNum, inst, exp} = {}) {
                 {pageNum: 1, isTraining: isTraining, phaseNum: 2},
                 stateMachine,
                 {
-                    instructionNum: 'end', inst: inst, exp: exp, sessionNum: sessionNum, phaseNum: 3
+                    instructionNum: 'end', inst: inst, exp: exp, sessionNum: sessionNum, phaseNum: 2
                 });
             return;
 
@@ -89,7 +89,7 @@ function stateMachine({instructionNum, sessionNum, phaseNum, inst, exp} = {}) {
                 {pageNum: 1, isTraining: isTraining, phaseNum: 3},
                 stateMachine,
                 {
-                    instructionNum: 'end', inst: inst, exp: exp, sessionNum: sessionNum, phaseNum: 4
+                    instructionNum: 'end', inst: inst, exp: exp, sessionNum: sessionNum, phaseNum: 3
                 });
             return;
 
@@ -131,11 +131,12 @@ function stateMachine({instructionNum, sessionNum, phaseNum, inst, exp} = {}) {
                     exp: exp,
                     elicitationType: [-1, 0][isElicitation],
                     showFeedback: [true, false][isElicitation],
+                    maxTrials: 3,
                     nextFunc: stateMachine,
                     nextParams: {
-                        instructionNum: [4, 5][isElicitation],
+                        instructionNum: [5, 6][isElicitation],
                         sessionNum: sessionNum,
-                        phaseNum: phaseNum,
+                        phaseNum: [2, 3][isElicitation],
                         exp: exp,
                         inst: inst
                     }
@@ -152,7 +153,7 @@ function stateMachine({instructionNum, sessionNum, phaseNum, inst, exp} = {}) {
             let slider = new SliderManager(
                 {
                     trialObj: trialObj,
-                    feedbackDuration: exp.feedbackDuration,
+                    feedbackDuration: exp.feedbackDuration-1500,
                     completeFeedback: exp.completeFeedback,
                     feedbackObj: exp.feedbackImg,
                     imgObj: exp.images,
@@ -219,6 +220,8 @@ class GUI {
 
     static getOptions(id1, id2, img, feedbackImg){
 
+        debugger;
+
         let option1 = img[id1];
         option1.id = "option1";
         option1 = option1.outerHTML;
@@ -273,175 +276,7 @@ class GUI {
         $('#TextBoxDiv').html(Title + Feedback + Images + myCanvas);
     }
 
-    static displayOptionSlider(option) {
-
-        let canvas1 = '<canvas id="canvas1" height="620"' +
-            ' width="620" class="img-responsive center-block"' +
-            ' style="border: 5px solid transparent; position: relative; top: 0px;">';
-
-        let canvas2 = '<canvas id="canvas2" height="620"' +
-            ' width="620" class="img-responsive center-block"' +
-            ' style="border: 5px solid transparent; position: relative; top: 0px;">';
-
-        let myCanvas = '<div id = "cvrow" class="row" style= "transform: translate(0%, -200%);position:relative">' +
-            '    <div class="col-xs-1 col-md-1"></div>  <div class="col-xs-3 col-md-3">'
-            + canvas1 + '</div><div id = "Middle" class="col-xs-4 col-md-4"></div><div class="col-xs-3 col-md-3">'
-            + canvas2 + '</div><div class="col-xs-1 col-md-1"></div></div>';
-
-        let Title = '<div id = "Title"><H2 align = "center">What are the odds this symbol gives a +1?<br><br><br><br></H2></div>';
-        let Images = '<div id = "stimrow" style="transform: translate(0%, -100%);position:relative"> ' +
-            '<div class="col-xs-1 col-md-1"></div>  <div class="col-xs-3 col-md-3">'
-            + '</div><div id = "Middle" class="col-xs-4 col-md-4">' + option + '</div></div>';
-
-        let initValue = range(25, 75, 5)[Math.floor(Math.random() * 10)];
-
-        let Slider = '<main>\n' +
-            '  <form id="form">\n' +
-            '    <h2>\n' +
-            '    </h2>\n' +
-            '    <div class="range">\n' +
-            '      <input id="slider" name="range" type="range" value="' + initValue + '" min="0" max="100" step="5">\n' +
-            '      <div class="range-output">\n' +
-            '        <output id="output" class="output" name="output" for="range">\n' +
-            '          ' + initValue + '%\n' +
-            '        </output>\n' +
-            '      </div>\n' +
-            '    </div>\n' +
-            '  </form>\n' +
-            '</main>\n' +
-            '<br><br><div align="center"><button id="ok" class="btn btn-default btn-lg">Ok</button></div>';
-
-        return Title + Images + myCanvas + Slider;
-    }
-
-    static slideCard(pic, cv, showFeedback) {
-
-        let img = new Image();
-        let canvas;
-        img.src = pic.src;
-        img.width = pic.width;
-        img.height = pic.height;
-
-        let speed = 3;
-        let y = 0;
-
-        let dy = 10;
-        let x = 0;
-        let ctx;
-
-        img.onload = function () {
-
-            canvas = cv;
-            ctx = cv.getContext('2d');
-
-            canvas.width = img.width;
-            canvas.height = img.height;
-
-            let scroll = setInterval(draw, speed);
-
-            if (showFeedback) {
-                setTimeout(function () {
-                    pic.style.visibility = "hidden";
-                    clearInterval(scroll);
-                    ctx.clearRect(0, 0, canvas.width, canvas.height);
-                }, 1000);
-            }
-
-        };
-
-        function draw() {
-
-            ctx.clearRect(0, 0, canvas.width, canvas.height);
-
-            if (y > img.height) {
-                y = -img.height + y;
-            }
-
-            if (y > 0) {
-                ctx.drawImage(img, x, -img.height + y, img.width, img.height);
-            }
-
-            ctx.drawImage(img, x, y, img.width, img.height);
-
-            y += dy;
-        }
-    }
-}
-
-
-class ChoiceManager {
-    /*
-    Manage trials with 2 options
-    Private methods are prefixed with _
-     */
-    constructor({
-        exp,
-        trialObj,
-        imgObj,
-        sessionNum,
-        phaseNum,
-        feedbackDuration,
-        completeFeedback,
-        showFeedback,
-        elicitationType,
-        feedbackObj,
-        nextFunc,
-        nextParams
-    } = {}) {
-
-        // members
-        this.exp = exp;
-
-        this.trialObj = trialObj;
-        this.feedbackObj = feedbackObj;
-        this.imgObj = imgObj;
-
-        this.sessionNum = sessionNum;
-        this.phaseNum = phaseNum;
-
-        this.feedbackDuration = feedbackDuration;
-        this.completeFeedback = completeFeedback;
-        this.showFeedback = showFeedback;
-        this.elicitationType = elicitationType;
-
-        this.nextFunc = nextFunc;
-        this.nextParams = nextParams;
-
-        // init non parametric variables
-        this.trialNum = 0;
-
-        this.nTrial = trialObj.length;
-        this.invertedPosition = shuffle(
-            Array.from(Array(this.nTrial), x => randint(0, 1))
-        );
-
-    }
-
-    /* =========================================== public methods =========================================== */
-
-    run() {
-
-        GUI.init();
-
-        let trialObj = this.trialObj[this.trialNum];
-
-        let choiceTime = (new Date()).getTime();
-
-        let params = {
-            stimIdx1: trialObj[0],
-            stimIdx2: trialObj[1],
-            p1: trialObj[2],
-            contIdx1: trialObj[3],
-            ev1: trialObj[4],
-            p2: trialObj[5],
-            contIdx2: trialObj[6],
-            ev2: trialObj[7],
-            isCatchTrial: trialObj[8],
-            r1: [-1, 1],
-            choiceTime: choiceTime
-        };
-
-        GUI.displayOptions(
+    static         GUI.displayOptions(
             params["stimIdx1"],
             params["stimIdx2"],
             this.imgObj,
@@ -1014,18 +849,18 @@ class Instructions {
 
         GUI.init();
 
-        let nPages = 2;
+        let nPages = 3;
         let pageNum = funcParams["pageNum"];
         let isTraining = funcParams["isTraining"];
+        let phaseNum = funcParams['phaseNum'];
 
-        let Title = '<H2 align = "center">INSTRUCTIONS</H2>';
+        let Title = '<H2 align="center">INSTRUCTIONS</H2>';
         let Info;
 
         switch (pageNum) {
 
-
-            case 3:
-                Info = '<H3 align = "center"><b>Instructions for the first test (1/2)</b><br><br>'
+            case 1:
+                Info = '<H3 align="center"><b>Instructions for the first test (1/2)</b><br><br>'
                     + 'In each round you have to choose between one of two symbols displayed on either side of the screen.<br><br>'
                     + 'You can select one of the two symbols by left-clicking on it. <br><br>'
                     + 'After a choice, you can win/lose the following outcomes:<br><br>'
@@ -1036,25 +871,28 @@ class Instructions {
                     + 'Please note that only the outcome of your choice will be taken into account in the final payoff.<br><br></H3>';
                 break;
 
-            case 4:
-                Info = '<H3 align = "center"><b>Instructions for the first test (2/2)</b><br><br>'
+            case 2:
+                Info = '<H3 align="center"><b>Instructions for the first test (2/2)</b><br><br>'
                     + 'The different symbols are not equal in terms of outcome: one is in average more advantageous compared to the other in terms of points to be won.<br><br>'
-                    + 'At the end of the test you will be shown with the final payoff in terms of cumulated points and monetary bonus.<br><br></H3>'
+                    + 'At the end of the test you will be shown with the final payoff in terms of cumulated points and monetary bonus.<br><br></H3>';
 
                 break;
 
-            case 5:
-                let Info1;
-                let Info2;
-                Info1 = '<H3 align = "center">Let' + "'s " + 'begin with the first training test!<br><br>'
-                    + '<b>(Note : points won during the training do not count for the final payoff !)<br><br>'
-                    + 'The word "ready" will be displayed before the actual game starts.</H3></b><br><br>';
-    //            Info2 =
+            case 3:
+                let like;
+                if (isTraining) {
+                    Info = '<H3 align="center">Let' + "'s " + 'begin with the first training test!<br><br>'
+                        + '<b>(Note : points won during the training do not count for the final payoff !)<br><br>'
+                        + 'The word "ready" will be displayed before the actual game starts.</H3></b><br><br>';
+                    like = '';
+                } else {
+                    Title = '<H2 align="center">PHASE ' + phaseNum + '</H2><br>';
+                    Info = '<h3 align="center"><b>Note:</b> The test of the phase 1 is like the first test of the training.<br><br>';
 
-                break;
-
-            default:
-                Info;
+                    like = 'This is the actual game, every point will be included in the final payoff.<br><br>'
+                        + 'Ready? <br></H3>';
+                }
+                Info += like;
                 break;
         }
 
@@ -1084,9 +922,11 @@ class Instructions {
             $('#Stage').empty();
             $('#Bottom').empty();
 
+            funcParams['pageNum'] -= 1;
+
             if (pageNum === 1) {
             } else {
-                event.data.obj.displayInstructionLearning(pageNum - 1, nextFunc, nextParams);
+                event.data.obj.displayInstructionLearning(funcParams, nextFunc, nextParams);
             }
 
         });
@@ -1095,7 +935,8 @@ class Instructions {
             $('#TextBoxDiv').remove();
             $('#Stage').empty();
             $('#Bottom').empty();
-            event.data.obj.displayInstructionLearning(pageNum + 1, nextFunc, nextParams);
+            funcParams['pageNum'] += 1;
+            event.data.obj.displayInstructionLearning(funcParams, nextFunc, nextParams);
         });
 
         $('#Start').click({obj: this}, function (event) {
@@ -1104,147 +945,80 @@ class Instructions {
             $('#Stage').empty();
             $('#Bottom').empty();
 
-            if (event.data.obj.exp.online) {
-                sendToDB(0,
-                    {
-                        expID: event.data.obj.expID,
-                        id: event.data.obj.subID,
-                        exp: event.data.obj.expName,
-                        browser: event.data.obj.browsInfo
-                    },
-                    'php/InsertExpDetails.php'
-                );
-
-            }
             nextFunc(nextParams);
         });
     }
 
-    displayInstructionChoiceElicitation(
-        sessionNum, training, elicitationType, phaseNum, pageNum, nextFunc, nextParams) {
+    displayInstructionChoiceElicitation(funcParams, nextFunc, nextParams) {
 
         GUI.init();
 
+        let isTraining = funcParams['isTraining'];
+        let phaseNum = funcParams['phaseNum'];
+        let pageNum = funcParams['pageNum'];
         let points = this.exp.sumReward[phaseNum - 1];
         let pence = this.exp.pointsToPence(points).toFixed(2);
         let pounds = this.exp.pointsToPounds(points).toFixed(2);
+        let nPages = 3;
         let Title;
         let p;
         let like;
         let wonlost;
-        let nPages;
+
         let Info;
         let trainstring;
 
-        if (training) {
+        if (isTraining) {
             Title = '<H2 align = "center">INSTRUCTIONS</H2><br>';
             p = '<b>(Note: points won during the training do not count for the final payoff!)<br><br>'
-                + '<b>The word "ready" will be displayed before the actual game starts.</b></H3><br><br>'
+                + '<b>The word "ready" will be displayed before the actual game starts.</b></H3><br><br>';
             like = '';
         } else {
-            Title = '<H2 align = "center">PHASE ' + this.exp.phases[phaseNum] + '</H2><br>';
-            if (this.exp.phases[phaseNum] === 3)
-                like = '<h3 align="center"><b>Note:</b> The test of the phase 3 is like the third test of the training.</h3><br><br>';
-
-            if (this.exp.phases[phaseNum] === 2)
-                like = '<h3 align="center"><b>Note:</b> The test of the phase 2 is like the second test of the training.</h3><br><br>';
+            Title = '<H2 align = "center">PHASE ' + phaseNum + '</H2><br>';
+            like = '<h3 align="center"><b>Note:</b> The test of the phase 2 is like the second test of the training.</h3><br><br>';
 
             p = 'This is the actual game, every point will be included in the final payoff.<br><br>'
                 + 'Ready? <br></H3>';
         }
 
-        switch (elicitationType) {
-            case 0:
+        switch (pageNum) {
+            case 1:
+                wonlost = ['won', 'lost'][+(points < 0)];
 
-                switch (pageNum) {
-                    case 1:
-                        wonlost = ['won', 'lost'][+(points < 0)];
+                Info = '<H3 align = "center">You ' + wonlost + ' ' + points +
+                    ' points = ' + pence + ' pence = ' + pounds + ' pounds!</h3><br><br>';
 
-                        Info = '<H3 align = "center">You ' + wonlost + ' ' + points +
-                            ' points = ' + pence + ' pence = ' + pounds + ' pounds!</h3><br><br>';
+                Info += like;
 
-                        Info += like;
+                Info += '<H3 align="center"> <b>Instructions for the second test (1/2)</b><br><br>'
+                    + 'In each round you have to choose between one of two items displayed on either side of the screen.<br>'
+                    + 'You can select one of the two items by left-clicking on it.<br><br>'
+                    + 'Please note that the outcome of your choice will not be displayed on each trial.<br>'
+                    + 'However, for each choice an outcome will be calculated and taken into account for the final payoff.<br>'
+                    + 'At the end of the test you will be shown with the final payoff in terms of cumulated points and monetary bonus.<br><br></H3>';
 
-                        Info += '<H3 align="center"> <b>Instructions for the second test (1/2)</b><br><br>'
-                            + 'In each round you have to choose between one of two items displayed on either side of the screen.<br>'
-                            + 'You can select one of the two items by left-clicking on it.<br><br>'
-                            + 'Please note that the outcome of your choice will not be displayed on each trial.<br>'
-                            + 'However, for each choice an outcome will be calculated and taken into account for the final payoff.<br>'
-                            + 'At the end of the test you will be shown with the final payoff in terms of cumulated points and monetary bonus.<br><br></H3>';
-
-                        break;
-
-                    case 2:
-                        Info = '<H3 align="center"> <b>Instructions for the second test (2/2)</b><br><br>'
-                            + 'In the second test  there will be two kind of options.<br>'
-                            + 'The first kind of options is represented by the symbols you already met during the previous test.<br><br>'
-                            + '<b>Note</b>: the symbols keep the same outcome as in the first test.<br><br>'
-                            + 'The second kind of options is represented by pie-charts explicitly describing the odds of winning / losing a point.<br><br>'
-                            + 'Specifically, the green area indicates the chance of winning +1 (+' + this.exp.pointsToPence(1).toFixed(2) + 'p) ; the red area indicates the chance of losing -1 (+'
-                            + this.exp.pointsToPence(1).toFixed(2) + 'p).<br><br>';
-                        break;
-
-                    case 3:
-                        if (training) {
-                            trainstring = "Let's begin with the second training test!<br>";
-                        } else {
-                            trainstring = "";
-                        }
-
-                        Info = '<H3 align="center">' + trainstring + p;
-                        break;
-
-                }
                 break;
 
             case 2:
-
-                nPages = 4;
-
-                switch (pageNum) {
-                    case 1:
-                        wonlost = ['won', 'lost'][+(points < 0)];
-
-                        Info = '<H3 align = "center">You ' + wonlost + ' ' + points +
-                            ' points = ' + pence + ' pence = ' + pounds + ' pounds!</h3><br><br>';
-
-                        Info += like;
-
-                        Info += '<H3 align = "center"><b>Instructions for the third test (1/3)</b><br><br>'
-                            + 'In each round of third test you will be presented with the symbols and pie-charts you met in the first and the second test.<br><br>'
-                            + 'You will be asked to indicate (in percentages), what are the odds that a given symbol or pie-chart makes you win a point (+1=+' + this.exp.pointsToPence(1).toFixed(2) + 'p).<br><br>'
-                            + 'You will be able to do this through moving a slider on the screen and then confirm your final answer by clicking on the confirmation button.<br><br>'
-                            + '100%  = the symbol (or pie-chart) always gives +1pt.<br>'
-                            + '50%  = the symbol (or pie-chart) always gives +1pt or -1pt with equal chances.<br>'
-                            + '0% = the symbol (or pie-chart) always gives -1pt.<br><br>';
-                        break;
-
-                    case 2:
-                        Info = '<H3 align = "center"><b>Instructions for the third test (2/3)</b><br><br>'
-                            + 'After confirming your choice (denoted C hereafter) the computer will draw a random lottery number (denoted L hereafter) between 0 and 100.<br>'
-                            + 'If C is bigger than L, you win the reward with the probabilities associated to the symbol.<br>'
-                            + 'If C is smaller than L, the program will spin a wheel of fortune and you will win a reward of +1 point with a probability of L%, otherwise you will lose -1 point.<br><br>';
-                        break;
-
-                    case 3:
-                        Info = '<H3 align = "center"><b>Instructions for the third test (3/3)</b><br><br>'
-                            + 'To sum up, the higher the percentage you give, the higher the chances are the outcome will be determined by the symbol or the pie-chart.<br><br>'
-                            + 'Conversely, the lower the percentage, the higher the chances are the outcome will be determined by the random lottery number.<br><br>'
-                            + 'Please note that the outcome of your choice will not be displayed on each trial.<br><br>'
-                            + 'However, for each choice an outcome will be calculated and taken into account for the final payoff.<br><br>'
-                            + 'At the end of the test you will be shown with the final payoff in terms of cumulated points and monetary bonus.<br><br>'
-                        break;
-
-                    case 4:
-                        if (training) {
-                            trainstring = "Let's begin with the third training test!<br>";
-                        } else {
-                            trainstring = "";
-                        }
-                        Info = '<H3 align = "center">' + trainstring + p;
-                        break;
-                }
+                Info = '<H3 align="center"> <b>Instructions for the second test (2/2)</b><br><br>'
+                    + 'In the second test  there will be two kind of options.<br>'
+                    + 'The first kind of options is represented by the symbols you already met during the previous test.<br><br>'
+                    + '<b>Note</b>: the symbols keep the same outcome as in the first test.<br><br>'
+                    + 'The second kind of options is represented by pie-charts explicitly describing the odds of winning / losing a point.<br><br>'
+                    + 'Specifically, the green area indicates the chance of winning +1 (+' + this.exp.pointsToPence(1).toFixed(2) + 'p) ; the red area indicates the chance of losing -1 (+'
+                    + this.exp.pointsToPence(1).toFixed(2) + 'p).<br><br>';
                 break;
+
+            case 3:
+                if (isTraining) {
+                    trainstring = "Let's begin with the second training test!<br>";
+                } else {
+                    trainstring = "";
+                }
+
+                Info = '<H3 align="center">' + trainstring + p;
+                break;
+
         }
 
         $('#TextBoxDiv').html(Title + Info);
@@ -1273,10 +1047,11 @@ class Instructions {
             $('#Stage').empty();
             $('#Bottom').empty();
 
+            funcParams['pageNum'] -= 1;
+
             if (pageNum === 1) {
             } else {
-                event.data.obj.displayInstructionChoiceElicitation(
-                    sessionNum, training, elicitationType, phaseNum, pageNum - 1);
+                event.data.obj.displayInstructionChoiceElicitation(funcParams, nextFunc, nextParams);
             }
         });
 
@@ -1285,12 +1060,12 @@ class Instructions {
             $('#TextBoxDiv').remove();
             $('#Stage').empty();
             $('#Bottom').empty();
-            event.data.obj.displayInstructionChoiceElicitation(
-                sessionNum, training, elicitationType, phaseNum, pageNum + 1);
+            funcParams['pageNum'] += 1;
+            event.data.obj.displayInstructionChoiceElicitation(funcParams, nextFunc, nextParams);
 
         });
 
-        $('#Start').click({obj: this}, function (event) {
+        $('#Start').click(function () {
 
             $('#TextBoxDiv').remove();
             $('#Stage').empty();
@@ -1300,7 +1075,7 @@ class Instructions {
             let steady;
             let go;
 
-            if (training) {
+            if (isTraining) {
                 ready = '3...';
                 steady = '2...';
                 go = '1...';
@@ -1330,66 +1105,80 @@ class Instructions {
         });
     }
 
-    endTraining(sessionNum, phaseNum, pageNum, nextFunc, nextParams) {
-
+    displayInstructionSliderElicitation(funcParams, nextFunc, nextParams) {
 
         GUI.init();
 
-        let nPages = 2;
-        let Title;
-        let Info;
-        let totalPoints;
-        let pence;
-        let pounds;
+        let isTraining = funcParams['isTraining'];
+        let pageNum = funcParams['pageNum'];
+        let phaseNum = funcParams['phaseNum'];
+
+        let trainstring;
         let wonlost;
 
+        let points = this.exp.sumReward[phaseNum - 1];
+        let pence = this.exp.pointsToPence(points);
+        let pounds = this.exp.pointsToPounds(points);
+
+        let nPages = 4;
+
+        let Info;
+
+        let Title = '<H2 align="center">INSTRUCTIONS</H2><br>';
+
         switch (pageNum) {
-
             case 1:
-                Title = '<H2 align = "center">END OF THE TRAINING</H2>';
-                Info = '';
+                wonlost = ['won', 'lost'][+(points < 0)];
 
-                totalPoints = this.exp.sumReward[1] + this.exp.sumReward[2] + this.exp.sumReward[3];
-                pence = this.exp.pointsToPence(totalPoints).toFixed(2);
-                pounds = this.exp.pointsToPounds(totalPoints).toFixed(2);
+                Info = '<H3 align = "center">You ' + wonlost + ' ' + points +
+                    ' points = ' + pence + ' pence = ' + pounds + ' pounds!</h3><br><br>';
 
-                wonlost = ['won', 'lost'][+(totalPoints < 0)];
-
-                Info += '<H3 align="center"> The training is over!<br><br>';
-                Info += 'Overall, in this training, you ' + wonlost + ' ' + totalPoints +
-                    ' points = ' + pence + ' pence = ' + pounds + ' pounds!<br><br>';
-
-                Info += 'Test 1: ' + this.exp.sumReward[1] + '<br>';
-                Info += 'Test 2: ' + this.exp.sumReward[2] + '<br>';
-                Info += 'Test 3: ' + this.exp.sumReward[3] + '<br>';
-
-                Info += 'Now, you are about to start the first phase of the experiment.<br> Note that from now on the points will be counted in your final payoff.'
-                    + ' Also note that the experiment includes much more trials and more points are at stake, compared to the training.<br>'
-                    + 'Finally note that the real test will involve different symbols (i.e., not encountered in the training).<br>'
-                    + 'If you want you can do the training a second time.</h3><br><br>';
+                Info += '<H3 align = "center"><b>Instructions for the third test (1/3)</b><br><br>'
+                    + 'In each round of third test you will be presented with the symbols and pie-charts you met in the first and the second test.<br><br>'
+                    + 'You will be asked to indicate (in percentages), what are the odds that a given symbol or pie-chart makes you win a point (+1=+' + this.exp.pointsToPence(1).toFixed(2) + 'p).<br><br>'
+                    + 'You will be able to do this through moving a slider on the screen and then confirm your final answer by clicking on the confirmation button.<br><br>'
+                    + '100%  = the symbol (or pie-chart) always gives +1pt.<br>'
+                    + '50%  = the symbol (or pie-chart) always gives +1pt or -1pt with equal chances.<br>'
+                    + '0% = the symbol (or pie-chart) always gives -1pt.<br><br>';
                 break;
 
             case 2:
-
-                Title = '<H2 align = "center">PHASE 1</H2>';
-
-                Info = '<h3 align="center">The test of the phase 1 is like the first test of the training.<br><br>'
-                    + 'In each round you have to choose between one of two symbols displayed on either side of the screen.<br>'
-                    + 'You can select one of the two symbols by left-clicking on it.<br>'
-                    + 'After a choice, you can win/lose the following outcomes:<br><br>'
-                    + '1 point = ' + this.exp.pointsToPence(1).toFixed(2) + ' pence<br>'
-                    + '-1 points = -' + this.exp.pointsToPence(1).toFixed(2) + ' pence<br><br>'
-                    + 'The outcome of your choice will appear in the location of the symbol you chose.<br>'
-                    + 'The outcome you would have won by choosing the other option will also be displayed.<br><br>'
-                    + 'Please note that only the outcome of your choice will be taken into account in the final payoff.<br><br></H3>'
-                    + 'Click on start when you are ready.</h3><br><br>';
+                Info = '<H3 align = "center"><b>Instructions for the third test (2/3)</b><br><br>'
+                    + 'After confirming your choice (denoted C hereafter) the computer will draw a random lottery number (denoted L hereafter) between 0 and 100.<br>'
+                    + 'If C is bigger than L, you win the reward with the probabilities associated to the symbol.<br>'
+                    + 'If C is smaller than L, the program will spin a wheel of fortune and you will win a reward of +1 point with a probability of L%, otherwise you will lose -1 point.<br><br>';
                 break;
 
+            case 3:
+                Info = '<H3 align = "center"><b>Instructions for the third test (3/3)</b><br><br>'
+                    + 'To sum up, the higher the percentage you give, the higher the chances are the outcome will be determined by the symbol or the pie-chart.<br><br>'
+                    + 'Conversely, the lower the percentage, the higher the chances are the outcome will be determined by the random lottery number.<br><br>'
+                    + 'Please note that the outcome of your choice will not be displayed on each trial.<br><br>'
+                    + 'However, for each choice an outcome will be calculated and taken into account for the final payoff.<br><br>'
+                    + 'At the end of the test you will be shown with the final payoff in terms of cumulated points and monetary bonus.<br><br>'
+                break;
+
+            case 4:
+                let like;
+                if (isTraining) {
+                    Info = '<H3 align="center">Let' + "'s " + 'begin with the third training test!<br><br>'
+                        + '<b>(Note : points won during the training do not count for the final payoff !)<br><br>'
+                        + 'The word "ready" will be displayed before the actual game starts.</H3></b><br><br>';
+                    like = '';
+                } else {
+                    Title = '<H2 align="center">PHASE ' + phaseNum + '</H2><br>';
+                    Info = '<h3 align="center"><b>Note:</b> The test of the phase 3 is like the third test of the training.<br><br>';
+
+                    like = 'This is the actual game, every point will be included in the final payoff.<br><br>'
+                        + 'Ready? <br></H3>';
+                }
+                Info += like;
+                break;
         }
+
         $('#TextBoxDiv').html(Title + Info);
 
         let Buttons = '<div align="center"><input align="center" type="button"  class="btn btn-default" id="Back" value="Back" >\n\
-            <input align="center" type="button"  class="btn btn-default" id="Training" value="Play training again" >\n\
             <input align="center" type="button"  class="btn btn-default" id="Next" value="Next" >\n\
             <input align="center" type="button"  class="btn btn-default" id="Start" value="Start!" ></div>';
 
@@ -1397,13 +1186,7 @@ class Instructions {
 
         if (pageNum === 1) {
             $('#Back').hide();
-        } else {
-            $('#Training').hide();
         }
-
-        if (sessionNum === -2)
-            $('#Training').hide();
-
 
         if (pageNum === nPages) {
             $('#Next').hide();
@@ -1419,13 +1202,116 @@ class Instructions {
             $('#Stage').empty();
             $('#Bottom').empty();
 
+            funcParams['pageNum'] -= 1;
+
             if (pageNum === 1) {
             } else {
-                event.data.obj.endTraining(
-                    sessionNum, phaseNum, pageNum - 1, nextFunc, nextParams);
+                event.data.obj.displayInstructionSliderElicitation(funcParams, nextFunc, nextParams);
             }
+        });
+
+        $('#Next').click({obj: this}, function (event) {
+
+            $('#TextBoxDiv').remove();
+            $('#Stage').empty();
+            $('#Bottom').empty();
+
+            funcParams['pageNum'] += 1;
+
+            event.data.obj.displayInstructionSliderElicitation(funcParams, nextFunc, nextParams);
 
         });
+
+        $('#Start').click(function () {
+
+            $('#TextBoxDiv').remove();
+            $('#Stage').empty();
+            $('#Bottom').empty();
+
+            let ready;
+            let steady;
+            let go;
+
+            if (isTraining) {
+                ready = '3...';
+                steady = '2...';
+                go = '1...';
+            } else {
+                ready = 'Ready...';
+                steady = 'Steady...';
+                go = 'Go!';
+            }
+
+            $('#TextBoxDiv').remove();
+            $('#Stage').empty();
+            $('#Bottom').empty();
+
+            setTimeout(function () {
+                $('#Stage').html('<H1 align = "center">' + ready + '</H1>');
+                setTimeout(function () {
+                    $('#Stage').html('<H1 align = "center">' + steady + '</H1>');
+                    setTimeout(function () {
+                        $('#Stage').html('<H1 align = "center">' + go + '</H1>');
+                        setTimeout(function () {
+                            $('#Stage').empty();
+                            nextFunc(nextParams);
+                        }, 1000);
+                    }, 1000);
+                }, 1000);
+            }, 10);
+        });
+    }
+
+    endTraining(funcParams, nextFunc, nextParams) {
+
+
+        GUI.init();
+
+        let phaseNum = funcParams['phaseNum'];
+        let pageNum = funcParams['pageNum'];
+        let sessionNum = funcParams['sessionNum'];
+
+        let nPages = 2;
+        let Title;
+        let Info;
+        let totalPoints;
+        let pence;
+        let pounds;
+        let wonlost;
+
+        Title = '<H2 align = "center">END OF THE TRAINING</H2>';
+        Info = '';
+
+        totalPoints = this.exp.sumReward[1] + this.exp.sumReward[2] + this.exp.sumReward[3];
+        pence = this.exp.pointsToPence(totalPoints).toFixed(2);
+        pounds = this.exp.pointsToPounds(totalPoints).toFixed(2);
+
+        wonlost = ['won', 'lost'][+(totalPoints < 0)];
+
+        Info += '<H3 align="center"> The training is over!<br><br>';
+        Info += 'Overall, in this training, you ' + wonlost + ' ' + totalPoints +
+            ' points = ' + pence + ' pence = ' + pounds + ' pounds!<br><br>';
+
+        Info += 'Test 1: ' + this.exp.sumReward[1] + '<br>';
+        Info += 'Test 2: ' + this.exp.sumReward[2] + '<br>';
+        Info += 'Test 3: ' + this.exp.sumReward[3] + '<br>';
+
+        Info += 'Now, you are about to start the first phase of the experiment.<br> Note that from now on the points will be counted in your final payoff.'
+            + ' Also note that the experiment includes much more trials and more points are at stake, compared to the training.<br>'
+            + 'Finally note that the real test will involve different symbols (i.e., not encountered in the training).<br>'
+            + 'If you want you can do the training a second time.</h3><br><br>';
+
+        $('#TextBoxDiv').html(Title + Info);
+
+        let Buttons = '<div align="center">\n\
+            <input align="center" type="button"  class="btn btn-default" id="Training" value="Play training again" >\n\
+            <input align="center" type="button"  class="btn btn-default" id="Next" value="Next" >\n\
+            </div>';
+
+        $('#Bottom').html(Buttons);
+
+        if (sessionNum === this.exp.maxTraining)
+            $('#Training').hide();
 
         $('#Training').click({obj: this}, function (event) {
 
@@ -1447,37 +1333,7 @@ class Instructions {
             $('#TextBoxDiv').remove();
             $('#Stage').empty();
             $('#Bottom').empty();
-            event.data.obj.exp.endTraining(
-                sessionNum, phaseNum, pageNum + 1, nextFunc, nextParams);
-
-        });
-
-        $('#Start').click(function () {
-
-            $('#TextBoxDiv').remove();
-            $('#Stage').empty();
-            $('#Bottom').empty();
-
-            let ready = 'Ready...';
-            let steady = 'Steady...';
-            let go = 'Go!';
-
-            $('#TextBoxDiv').remove();
-            $('#Stage').empty();
-            $('#Bottom').empty();
-            setTimeout(function () {
-                $('#Stage').html('<H1 align = "center">' + ready + '</H1>');
-                setTimeout(function () {
-                    $('#Stage').html('<H1 align = "center">' + steady + '</H1>');
-                    setTimeout(function () {
-                        $('#Stage').html('<H1 align = "center">' + go + '</H1>');
-                        setTimeout(function () {
-                            $('#Stage').empty();
-                            nextFunc(nextParams);
-                        }, 1000);
-                    }, 1000);
-                }, 1000);
-            }, 10);
+            nextFunc(nextParams);
         });
     }
 
@@ -2340,9 +2196,6 @@ function Experiment() {
     let nCondPerSession = 4;
     let nTrialsPerCondition = 2;
 
-    // Single symbols per session
-    // var nSymbolPerSession = 8;
-
     this.feedbackDuration = 2000;
     this.sumReward = [0, 0, 0, 0, 0, 0, 0];
 
@@ -2551,9 +2404,7 @@ function Experiment() {
             stim1,
             stim2,
             expectedValueMap[stim1],
-            stim1,
             expectedValueMap[stim2],
-            stim2,
             true
         ].flat();
     }
