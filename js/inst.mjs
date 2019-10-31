@@ -2,7 +2,7 @@ import {GUI} from './gui.mjs';
 import {sendToDB} from "./request.mjs";
 
 
-class Instructions {
+export class Instructions {
 
     constructor(exp) {
         this.exp = exp;
@@ -722,8 +722,6 @@ class Instructions {
 
 }
 
-
-export {Instructions};
 
 //
 //

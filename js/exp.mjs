@@ -1,8 +1,7 @@
 import {range, shuffle, getOS, getBrowser, createCode} from './utils.mjs';
-export {ExperimentParameters};
 
 
-class ExperimentParameters {
+export class ExperimentParameters {
     /***
 
      Experiment initializer

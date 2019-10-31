@@ -1,4 +1,4 @@
-function sendToDB(call, data, url) {
+export function sendToDB(call, data, url) {
 
     $.ajax({
         type: 'POST',
@@ -19,5 +19,3 @@ function sendToDB(call, data, url) {
         }
     });
 }
-
-export {sendToDB};

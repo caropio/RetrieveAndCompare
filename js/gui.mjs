@@ -1,7 +1,7 @@
 import {createDiv, range} from './utils.mjs'
 
 
-class GUI {
+export class GUI {
 
     static init() {
         if ($('#TextBoxDiv').length === 0) {
@@ -165,7 +165,6 @@ class GUI {
     }
 }
 
-export {GUI};
 
 // function Gui({imgPath, imgExt, nImg, feedbackDuration}={}) {
 //     // private Members (accessible in the whole function)

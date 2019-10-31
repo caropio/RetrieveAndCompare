@@ -3,7 +3,7 @@ import {randint, shuffle, isString} from "./utils.mjs";
 import {GUI} from "./gui.mjs";
 
 
-class ChoiceManager {
+export class ChoiceManager {
     /*
     Manage trials with 2 options
     Private methods are prefixed with _
@@ -129,11 +129,14 @@ class ChoiceManager {
         let contIdx1 = params["contIdx1"];
         let contIdx2 = params["contIdx2"];
 
-       let [reward1, reward2, thisReward, otherReward, correctChoice] = this._getReward(choice, params);
-       this._showReward(reward1, reward2, thisReward, choice);
+        let p1 = params['p1'];
+        let p2 = params['p2'];
 
-       if (this.exp.online) {
-            request.sendToDB(0,
+        let [reward1, reward2, thisReward, otherReward, correctChoice] = this._getReward(choice, params);
+        this._showReward(reward1, reward2, thisReward, choice);
+
+        if (this.exp.online) {
+            sendToDB(0,
                 {
                     exp: this.exp.expName,
                     expID: this.exp.expID,
@@ -170,7 +173,7 @@ class ChoiceManager {
             );
         }
 
-       this._next();
+        this._next();
     }
 
     _getReward(choice, params) {
@@ -272,7 +275,7 @@ class ChoiceManager {
 }
 
 
-class SliderManager {
+export class SliderManager {
 
     constructor({
                     exp,
@@ -365,8 +368,10 @@ class SliderManager {
         let reactionTime = (new Date()).getTime();
         let invertedPosition = this.invertedPosition[this.trialNum];
         let ev1 = params["ev1"];
+        let p1 = params["p1"][1];
 
-        let [correctChoice, thisReward, otherReward, pLottery, elicDistance] = this._getReward(choice, params);
+        let [correctChoice, thisReward,
+            otherReward, pLottery, elicDistance] = this._getReward(choice, params);
 
         if (this.exp.online) {
             sendToDB(0,
@@ -377,8 +382,8 @@ class SliderManager {
                     test: 0,
                     trial: this.trialNum,
                     elicitation_type: this.elicitationType,
-                    cont_idx_1: contIdx1,
-                    cont_idx_2: contIdx2,
+                    cont_idx_1: -1,
+                    cont_idx_2:  -1,
                     condition: -1,
                     symL: -1,
                     symR: -1,
@@ -390,8 +395,8 @@ class SliderManager {
                     reaction_time: reactionTime - params["choiceTime"],
                     reward: this.exp.totalReward,
                     session: this.sessionNum,
-                    p1: p1[1],
-                    p2: p2[1],
+                    p1: p1,
+                    p2: -1,
                     option1: -1,
                     option2: -1,
                     ev1: Math.round(ev1 * 100) / 100,
@@ -452,5 +457,3 @@ class SliderManager {
         }
     };
 }
-
-export {ChoiceManager, SliderManager};
