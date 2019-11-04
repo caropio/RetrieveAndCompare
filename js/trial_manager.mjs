@@ -81,13 +81,6 @@ export class ChoiceManager {
             choiceTime: choiceTime
         };
 
-        if (this.elicitationType === -1) {
-            if (isString(params['stimIdx1']))
-                debugger
-
-            if (isString(params['stimIdx2']))
-                debugger
-        }
 
         GUI.displayOptions(
             params["stimIdx1"],

@@ -2430,7 +2430,7 @@ function Experiment() {
     let rewards = [];
     let cont = [];
 
-    // Define ind cont
+    // Define ind lotteryCont
     // -------------------------------------------------------------------------------------------------- //
     cont[0] = [1., 0.];
     cont[1] = [0.9, 0.1];

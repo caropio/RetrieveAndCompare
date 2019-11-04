@@ -68,26 +68,14 @@ export class ExperimentParameters {
     }
 
     _initConditionsAndContingencies() {
-        // Define conditions
-        // ===================================================================== //
         this.probs = [];
         this.rewards = [];
-        this.cont = [];
+        this.ev = [];
+        this.lotteryCont = [];
+        this.lotteryEV = [];
 
-        // Define ind this.cont
+        // Define Learning contingencies
         // ===================================================================== //
-        this.cont[0] = [1., 0.];
-        this.cont[1] = [0.9, 0.1];
-        this.cont[2] = [0.8, 0.2];
-        this.cont[3] = [0.7, 0.3];
-        this.cont[4] = [0.6, 0.4];
-        this.cont[5] = [0.5, 0.5];
-        this.cont[6] = [0.4, 0.6];
-        this.cont[7] = [0.3, 0.7];
-        this.cont[8] = [0.2, 0.8];
-        this.cont[9] = [0.1, 0.9];
-        this.cont[10] = [0., 1.];
-
         this.rewards[0] = [[-1, 1], [-1, 1]];
         this.probs[0] = [[0.1, 0.9], [0.9, 0.1]];
 
@@ -100,6 +88,37 @@ export class ExperimentParameters {
         this.rewards[3] = [[-1, 1], [-1, 1]];
         this.probs[3] = [[0.4, 0.6], [0.6, 0.4]];
 
+        // compute ev learning
+        for (let i = 0; i < this.probs.length; i++) {
+            this.ev.push([
+                math.round(math.multiply(this.rewards[i][0], this.probs[i][0]), 2),
+                math.round(math.multiply(this.rewards[i][1], this.probs[i][1]), 2)
+            ]);
+        }
+
+        // Define lottery contingencies
+        // ===================================================================== //
+        this.lotteryReward = [-1, 1];
+        this.lotteryCont[0] = [1., 0.];
+        this.lotteryCont[1] = [0.9, 0.1];
+        this.lotteryCont[2] = [0.8, 0.2];
+        this.lotteryCont[3] = [0.7, 0.3];
+        this.lotteryCont[4] = [0.6, 0.4];
+        this.lotteryCont[5] = [0.5, 0.5];
+        this.lotteryCont[6] = [0.4, 0.6];
+        this.lotteryCont[7] = [0.3, 0.7];
+        this.lotteryCont[8] = [0.2, 0.8];
+        this.lotteryCont[9] = [0.1, 0.9];
+        this.lotteryCont[10] = [0., 1.];
+
+        // compute ev lottery
+        for (let i = 0; i < this.lotteryCont.length; i++) {
+            this.lotteryEV[i] = math.round(
+                math.multiply(this.lotteryReward, this.lotteryCont[i]), 2);
+        }
+
+
+        debugger
         // Elicitations
         // ===================================================================== //
         this.expectedValue = [
@@ -108,17 +127,17 @@ export class ExperimentParameters {
         // Define maps
         // ===================================================================== //
         this.expectedValueMap = {
-            '-1': [this.cont[0], 0],
-            '-0.8': [this.cont[1], 1],
-            '-0.6': [this.cont[2], 2],
-            '-0.4': [this.cont[3], 3],
-            '-0.2': [this.cont[4], 4],
-            '0': [this.cont[5], 5],
-            '0.2': [this.cont[6], 6],
-            '0.4': [this.cont[7], 7],
-            '0.6': [this.cont[8], 8],
-            '0.8': [this.cont[9], 9],
-            '1': [this.cont[10], 10],
+            '-1': [this.lotteryCont[0], 0],
+            '-0.8': [this.lotteryCont[1], 1],
+            '-0.6': [this.lotteryCont[2], 2],
+            '-0.4': [this.lotteryCont[3], 3],
+            '-0.2': [this.lotteryCont[4], 4],
+            '0': [this.lotteryCont[5], 5],
+            '0.2': [this.lotteryCont[6], 6],
+            '0.4': [this.lotteryCont[7], 7],
+            '0.6': [this.lotteryCont[8], 8],
+            '0.8': [this.lotteryCont[9], 9],
+            '1': [this.lotteryCont[10], 10],
         };
 
     }
@@ -194,12 +213,12 @@ export class ExperimentParameters {
             let r = [-1, 1];
             this.symbolValueMapTraining[this.trainingContexts[i][0]] = [
                 v1,
-                this.cont.findIndex(x => x.toString() === v1.toString()),
+                this.lotteryCont.findIndex(x => x.toString() === v1.toString()),
                 v1[0] * r[0] + v1[1] * r[1],
             ];
             this.symbolValueMapTraining[this.trainingContexts[i][1]] = [
                 v2,
-                this.cont.findIndex(x => x.toString() === v2.toString()),
+                this.lotteryCont.findIndex(x => x.toString() === v2.toString()),
                 v2[0] * r[0] + v2[1] * r[1]
             ];
         }
@@ -213,12 +232,12 @@ export class ExperimentParameters {
             let r = [-1, 1];
             this.symbolValueMap[this.contexts[i][0]] = [
                 v1,
-                this.cont.findIndex(x => x.toString() === v1.toString()),
+                this.lotteryCont.findIndex(x => x.toString() === v1.toString()),
                 v1[0] * r[0] + v1[1] * r[1]
             ];
             this.symbolValueMap[this.contexts[i][1]] = [
                 v2,
-                this.cont.findIndex(x => x.toString() === v2.toString()),
+                this.lotteryCont.findIndex(x => x.toString() === v2.toString()),
                 v2[0] * r[0] + v2[1] * r[1]
             ];
         }
@@ -399,6 +418,9 @@ export class ExperimentParameters {
 
         this.elicitationStimTraining = shuffle(this.elicitationStimTraining);
         this.elicitationStim = shuffle(elicitationsStim);
+
+
+        debugger
     }
 
     _loadImg(imgPath) {
