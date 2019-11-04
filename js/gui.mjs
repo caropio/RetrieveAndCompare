@@ -70,7 +70,11 @@ export class GUI {
         $('#TextBoxDiv').html(Title + Feedback + Images + myCanvas);
     }
 
-    static displayOptionSlider(option) {
+    static displayOptionSlider(id, imgObj) {
+
+        let option = imgObj[id];
+        option.id = "option1";
+        option = option.outerHTML;
 
         let canvas1 = '<canvas id="canvas1" height="620"' +
             ' width="620" class="img-responsive center-block"' +
@@ -108,7 +112,8 @@ export class GUI {
             '</main>\n' +
             '<br><br><div align="center"><button id="ok" class="btn btn-default btn-lg">Ok</button></div>';
 
-        return Title + Images + myCanvas + Slider;
+        let str = Title + Images + myCanvas + Slider;
+        $('#TextBoxDiv').html(str);
     }
 
     static slideCard(pic, cv, showFeedback) {

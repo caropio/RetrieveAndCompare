@@ -323,13 +323,8 @@ export class SliderManager {
             choiceTime: choiceTime
         };
 
-        let option1 = this.imgObj[params["stimIdx"]];
-        option1.id = "option1";
-        option1 = option1.outerHTML;
 
-        let str = GUI.displayOptionSlider(option1);
-
-        $('#TextBoxDiv').html(str);
+        GUI.displayOptionSlider(params['stimIdx'], this.imgObj);
 
         rangeInputRun();
 

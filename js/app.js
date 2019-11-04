@@ -15,8 +15,8 @@ function main() {
      */
 
     // init main parameters
-    let sessionNum = -1;
-    let phaseNum = 1;
+    let sessionNum = 0;
+    let phaseNum = 3;
     let instructionNum = 'end';
 
     // instantiate experiment parameters
@@ -155,7 +155,6 @@ function stateMachine({instructionNum, sessionNum, phaseNum, inst, exp} = {}) {
                 [exp.learningStimTraining, exp.elicitationStimEVTraining][isElicitation],
             ][isTraining];
 
-            debugger
             let choice = new ChoiceManager(
                 {
                     trialObj: trialObj,
