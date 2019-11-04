@@ -68,7 +68,7 @@ export class ChoiceManager {
         let choiceTime = (new Date()).getTime();
 
         let params = {
-            stimIdx1: trialObj[0],
+            stimIdx1: trialObj[0], // key in img dict
             stimIdx2: trialObj[1],
             p1: trialObj[2],
             contIdx1: trialObj[3],
@@ -134,7 +134,7 @@ export class ChoiceManager {
                     exp: this.exp.expName,
                     expID: this.exp.expID,
                     id: this.exp.subID,
-                    test: 0,
+                    test: +(this.exp.isTesting),
                     trial: this.trialNum,
                     elicitation_type: this.elicitationType,
                     cont_idx_1: contIdx1,
@@ -372,7 +372,7 @@ export class SliderManager {
                     exp: this.exp.expName,
                     expID: this.exp.expID,
                     id: this.exp.subID,
-                    test: 0,
+                    test: +(this.exp.isTesting),
                     trial: this.trialNum,
                     elicitation_type: this.elicitationType,
                     cont_idx_1: -1,

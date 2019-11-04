@@ -22,9 +22,10 @@ function main() {
     // instantiate experiment parameters
     let exp = new ExperimentParameters(
         {
+            online: false,
+            isTesting: true,
             expName: 'RetrieveAndCompare',
             completeFeedback: false,
-            online: false,
             maxPoints: 98,
             howMuchPenceForOnePoint: 250,
             feedbackDuration: 2000, // in milliseconds
