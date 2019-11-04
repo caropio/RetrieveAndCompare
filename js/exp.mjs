@@ -64,6 +64,7 @@ export class ExperimentParameters {
         this._initConditionsAndContingencies();
         this._loadImg(imgPath);
         this._defineConditionArrays(nTrialPerCondition, nTrialPerConditionTraining, nCond);
+        this._defineTrialObj(nCond);
 
     }
 
@@ -73,7 +74,7 @@ export class ExperimentParameters {
         this.rewards = [];
         this.ev = [];
         this.lotteryCont = [];
-        this.lotteryEV = [];
+        this.lotteryEV = [];
         this.rew = undefined;
 
 
@@ -91,6 +92,7 @@ export class ExperimentParameters {
         this.cont[8] = [0.2, 0.8];
         this.cont[9] = [0.1, 0.9];
         this.cont[10] = [0., 1.];
+        // only magnitudes in the experiment
         this.rew = [-1, 1];
 
 
@@ -105,62 +107,34 @@ export class ExperimentParameters {
         this.probs[1] = [8, 2];
 
         this.rewards[2] = [this.rew, this.rew];
-        this.probs[2] = [];
+        this.probs[2] = [7, 3];
 
-        this.rewards[3] = [[-1, 1], [-1, 1]];
-        this.probs[3] = [[0.4, 0.6], [0.6, 0.4]];
+        this.rewards[3] = [this.rew, this.rew];
+        this.probs[3] = [6, 4];
 
         // compute ev learning
         for (let i = 0; i < this.probs.length; i++) {
+
+            let p1 = this.cont[this.probs[i][0]];
+            let p2 = this.cont[this.probs[i][1]];
+
             this.ev.push([
-                math.round(math.multiply(this.rewards[i][0], this.probs[i][0]), 2),
-                math.round(math.multiply(this.rewards[i][1], this.probs[i][1]), 2)
+                math.round(math.multiply(this.rewards[i][0], p1), 2),
+                math.round(math.multiply(this.rewards[i][1], p2), 2)
             ]);
         }
 
         // Define lottery contingencies
         // ===================================================================== //
-        this.lotteryReward = [-1, 1];
-        this.lotteryCont[0] = [1., 0.];
-        this.lotteryCont[1] = [0.9, 0.1];
-        this.lotteryCont[2] = [0.8, 0.2];
-        this.lotteryCont[3] = [0.7, 0.3];
-        this.lotteryCont[4] = [0.6, 0.4];
-        this.lotteryCont[5] = [0.5, 0.5];
-        this.lotteryCont[6] = [0.4, 0.6];
-        this.lotteryCont[7] = [0.3, 0.7];
-        this.lotteryCont[8] = [0.2, 0.8];
-        this.lotteryCont[9] = [0.1, 0.9];
-        this.lotteryCont[10] = [0., 1.];
+        this.lotteryRew = [-1, 1];
+        // lottery cont is all possible cont
+        this.lotteryCont = this.cont;
 
         // compute ev lottery
         for (let i = 0; i < this.lotteryCont.length; i++) {
             this.lotteryEV[i] = math.round(
-                math.multiply(this.lotteryReward, this.lotteryCont[i]), 2);
+                math.multiply(this.lotteryRew, this.lotteryCont[i]), 2);
         }
-
-        // debugger
-        // // Elicitations
-        // // ===================================================================== //
-        // this.expectedValue = [
-        //     "-1", "-0.8", "-0.6", "-0.4", "-0.2", "0", "0.2", "0.4", "0.6", "0.8", "1"];
-        //
-        // // Define maps
-        // // ===================================================================== //
-        // this.expectedValueMap = {
-        //     '-1': [this.lotteryCont[0], 0],
-        //     '-0.8': [this.lotteryCont[1], 1],
-        //     '-0.6': [this.lotteryCont[2], 2],
-        //     '-0.4': [this.lotteryCont[3], 3],
-        //     '-0.2': [this.lotteryCont[4], 4],
-        //     '0': [this.lotteryCont[5], 5],
-        //     '0.2': [this.lotteryCont[6], 6],
-        //     '0.4': [this.lotteryCont[7], 7],
-        //     '0.6': [this.lotteryCont[8], 8],
-        //     '0.8': [this.lotteryCont[9], 9],
-        //     '1': [this.lotteryCont[10], 10],
-        // };
-
     }
 
     _defineConditionArrays(nTrialPerCondition, nTrialPerConditionTraining, nCond) {
@@ -173,7 +147,6 @@ export class ExperimentParameters {
         this.learningStim = [];
         this.learningStimTraining = [];
 
-
         // range cond for each session
         let cond = shuffle(range(0, nCond - 1));
 
@@ -184,11 +157,6 @@ export class ExperimentParameters {
         }
         this.expCondition = this.expCondition.flat();
 
-        // for (let i = 0; i <= nCond; i++)
-        //     this.conditions.push({
-        //         reward: this.rewards[i],
-        //         prob: this.probs[i]
-        //     });
 
         // training conditions
         for (let i = 0; i < cond.length; i++) {
@@ -223,128 +191,71 @@ export class ExperimentParameters {
         }
 
         this.trainingContexts = shuffle(this.trainingContexts);
+    }
 
-        // // ===================================================================== //
-        //
-        // this.symbolValueMapTraining = [];
-        //
-        // for (let i = 0; i < this.trainingContexts.length; i++) {
-        //     let v1 = this.conditions[i]['prob'][0];
-        //     let v2 = this.conditions[i]['prob'][1];
-        //     let r = [-1, 1];
-        //     this.symbolValueMapTraining[this.trainingContexts[i][0]] = [
-        //         v1,
-        //         this.lotteryCont.findIndex(x => x.toString() === v1.toString()),
-        //         v1[0] * r[0] + v1[1] * r[1],
-        //     ];
-        //     this.symbolValueMapTraining[this.trainingContexts[i][1]] = [
-        //         v2,
-        //         this.lotteryCont.findIndex(x => x.toString() === v2.toString()),
-        //         v2[0] * r[0] + v2[1] * r[1]
-        //     ];
-        // }
-        //
-        //
-        // this.symbolValueMap = [];
-        //
-        // for (let i = 0; i < this.contexts.length; i++) {
-        //     let v1 = this.conditions[i]['prob'][0];
-        //     let v2 = this.conditions[i]['prob'][1];
-        //     let r = [-1, 1];
-        //     this.symbolValueMap[this.contexts[i][0]] = [
-        //         v1,
-        //         this.lotteryCont.findIndex(x => x.toString() === v1.toString()),
-        //         v1[0] * r[0] + v1[1] * r[1]
-        //     ];
-        //     this.symbolValueMap[this.contexts[i][1]] = [
-        //         v2,
-        //         this.lotteryCont.findIndex(x => x.toString() === v2.toString()),
-        //         v2[0] * r[0] + v2[1] * r[1]
-        //     ];
-        // }
+    _defineTrialObj(nCond) {
 
-        //
+        // define catch trials
+        // ===================================================================== //
+        // ===================================================================== //
+        // using cont idx
         let catchTrialsTemp = shuffle([
-            ["0.8", "-0.8"],
-            ["0.6", "-0.6"],
-            ["0.6", "-0.4"],
-            ["0.4", "-0.4"],
-            ["0.4", "-0.6"],
-            ["0.2", "-0.2"],
-            ["0.4", "-0.2"],
-            ["1", "-1"],
+            [1, 9],
+            [2, 9],
+            [3, 9],
+            [1, 8],
+            [2, 8],
+            [3, 8],
+            [0, 10],
+            [1, 7],
+            [2, 7]
         ]);
 
         let catchTrials = [];
         for (let i = 0; i < catchTrialsTemp.length; i++) {
 
-            let stim1 = catchTrialsTemp[i][0];
-            let stim2 = catchTrialsTemp[i][1];
+            let contIdx1 = catchTrialsTemp[i][0];
+            let contIdx2 = catchTrialsTemp[i][1];
+
+            let ev1 = this.lotteryEV[contIdx1];
+            let ev2 = this.lotteryEV[contIdx2];
+
+            let file1 = ev1.toString();
+            let file2 = ev2.toString();
+
+            let p1 = this.lotteryCont[contIdx1];
+            let p2 = this.lotteryCont[contIdx2];
+
+            let isCatchTrial = true;
 
             catchTrials[i] = [
-                stim1,
-                stim2,
-
-                true
-            ].flat();
-        }
-
-        this.elicitationStimTraining = [];
-        this.elicitationStimEVTraining = [];
-        for (let i = 0; i < nCond * 2; i += 2) {
-
-            this.trainingContexts[arr[j]] = [
-                this.trainingOptions[i], this.trainingOptions[i + 1]
+                file1, file2, contIdx1, contIdx2, p1, p2, ev1, ev2, isCatchTrial
             ];
-            j++;
-
-            let stim1 = this.trainingOptions[i];
-            let stim2 = this.trainingOptions[i + 1];
-
-            this.elicitationStimTraining.push(
-                [stim1, this.symbolValueMapTraining[stim1], false].flat()
-            );
-
-            this.elicitationStimTraining.push(
-                [stim2, this.symbolValueMapTraining[stim2], false].flat()
-            );
-
-            let temp = [];
-            for (let k = 0; k < this.probs.length; k++) {
-                temp.push([
-                    this.trainingOptions[i],
-                    this.expectedValue[k],
-                    this.symbolValueMapTraining[this.trainingOptions[i]],
-                    this.expectedValueMap[this.expectedValue[k]],
-                    false
-                ].flat());
-            }
-            this.elicitationStimEVTraining = this.elicitationStimEVTraining.concat(shuffle(temp));
-            this.elicitationStimEVTraining.push(catchTrials[i]);
-
-            temp = [];
-            for (let k = 0; k < this.probs.length; k++) {
-                temp.push([
-                    this.trainingOptions[i + 1],
-                    this.expectedValue[k],
-                    this.symbolValueMap[this.trainingOptions[i + 1]],
-                    this.expectedValueMap[this.expectedValue[k]],
-                    false
-                ].flat());
-            }
-            this.elicitationStimEVTraining = this.elicitationStimEVTraining.concat(shuffle(temp));
-            this.elicitationStimEVTraining.push(catchTrials[i + 1]);
-
         }
+
+        // Learning Phase -- Trial obj definition
+        // ===================================================================== //
+        // ===================================================================== //
 
         for (let i = 0; i < this.expCondition.length; i++) {
 
             let idx = this.expCondition[i];
 
-            let [stimIdx1, stimIdx2] = this.contexts[idx];
+            let contIdx1 = this.probs[idx][0];
+            let contIdx2 = this.probs[idx][1];
+
+            let [file1, file2] = this.contexts[idx];
+
+            let ev1 = this.ev[contIdx1];
+            let ev2 = this.ev[contIdx2];
+
+            let p1 = this.cont[contIdx1];
+            let p2 = this.cont[contIdx2];
+
+            let isCatchTrial = false;
 
             this.learningStim.push(
-                [stimIdx1, stimIdx2, this.symbolValueMap[stimIdx1], this.symbolValueMap[stimIdx2], false].flat()
+                [file1, file2, contIdx1, contIdx2, p1, p2, ev1, ev2, isCatchTrial]
             );
 
         }
@@ -353,95 +264,161 @@ export class ExperimentParameters {
 
             let idx = this.trainingCondition[i];
 
-            let [stimIdx1, stimIdx2] = this.trainingContexts[idx];
+            let contIdx1 = this.probs[idx][0];
+            let contIdx2 = this.probs[idx][1];
+
+            let [file1, file2] = this.trainingContexts[idx];
+
+            let ev1 = this.ev[contIdx1];
+            let ev2 = this.ev[contIdx2];
+
+            let p1 = this.cont[contIdx1];
+            let p2 = this.cont[contIdx2];
+
+            let isCatchTrial = false;
 
             this.learningStimTraining.push(
-                [stimIdx1, stimIdx2, this.symbolValueMapTraining[stimIdx1], this.symbolValueMapTraining[stimIdx2], false].flat()
+                [file1, file2, contIdx1, contIdx2, p1, p2, ev1, ev2, isCatchTrial]
             );
 
         }
 
-        // Elicitation
-        let elicitationsStim = [];
-        this.elicitationStimEV = [];
+        // Elicitation Phase -- Description experience + slider trial obj definition
+        // ===================================================================== //
+        // ===================================================================== //
 
-        let cidx = Array.from(new Set(shuffle(this.expCondition.flat())));
-        let catchIdx = 0;
+        // Training
+        this.elicitationStimTraining = [];
+        this.elicitationStimEVTraining = [];
+        let catchTrialIdx = 0;
 
-        for (let j = 0; j < cidx.length; j++) {
+        // Training
+        // ===================================================================== //
+        for (let i = 0; i < nCond; i++) {
 
-            let stim1 = this.contexts[cidx[j]].flat()[0];
-            let stim2 = this.contexts[cidx[j]].flat()[1];
+            let [file1, file2] = this.trainingContexts[i];
 
-            elicitationsStim.push([
-                stim1,
-                this.symbolValueMap[stim1],
-                false
-            ].flat());
+            let contIdx1 = this.probs[i][0];
+            let contIdx2 = this.probs[i][1];
 
-            elicitationsStim.push([
-                stim2,
-                this.symbolValueMap[stim2],
-                false
-            ].flat());
+            let ev1 = this.ev[contIdx1];
+            let ev2 = this.ev[contIdx2];
 
+            let p1 = this.cont[contIdx1];
+            let p2 = this.cont[contIdx2];
+
+            let isCatchTrial = false;
+
+            this.elicitationStimTraining.push(
+                [file1, contIdx1, p1, ev1, isCatchTrial]
+            );
+
+            this.elicitationStimTraining.push(
+                [file2, contIdx2, p2, ev2, isCatchTrial]
+            );
+
+            // mix lotteries and stim 1
             let temp = [];
-            for (let k = 0; k < this.expectedValue.length; k++) {
-                temp.push(
-                    [
-                        stim1,
-                        this.expectedValue[k],
-                        this.symbolValueMap[stim1],
-                        this.expectedValueMap[this.expectedValue[k]],
-                        false
-                    ].flat()
-                );
-            }
-            this.elicitationStimEV = this.elicitationStimEV.concat(shuffle(temp));
-            this.elicitationStimEV.push(catchTrials[catchIdx]);
-            catchIdx++;
+            for (let j = 0; j < this.lotteryCont.length; j++) {
 
+                let lotteryFile = this.lotteryEV[j].toString();
+                let lotteryContIdx = j;
+                let lotteryEV = this.lotteryEV[j];
+                let lotteryP = this.lotteryCont[j];
+
+                temp.push([
+                    file1, lotteryFile, contIdx1, lotteryContIdx, p1, lotteryP, ev1, lotteryEV
+                ]);
+            }
+
+            this.elicitationStimEVTraining = this.elicitationStimEVTraining.concat(shuffle(temp));
+            this.elicitationStimEVTraining.push(catchTrials[catchTrialIdx]);
+            catchTrialIdx++;
+
+            // mix lotteries and stim 2
             temp = [];
-            for (let k = 0; k < this.expectedValue.length; k++) {
-                temp.push(
-                    [
-                        stim2,
-                        this.expectedValue[k],
-                        this.symbolValueMap[stim2],
-                        this.expectedValueMap[this.expectedValue[k]],
-                        false
-                    ].flat()
-                );
+            for (let j = 0; j < this.lotteryCont.length; j++) {
+
+                let lotteryFile = this.lotteryEV[j].toString();
+                let lotteryContIdx = j;
+                let lotteryEV = this.lotteryEV[j];
+                let lotteryP = this.lotteryCont[j];
+
+                temp.push([
+                    file2, lotteryFile, contIdx2, lotteryContIdx, p2, lotteryP, ev2, lotteryEV
+                ]);
             }
+
+            this.elicitationStimEVTraining = this.elicitationStimEVTraining.concat(shuffle(temp));
+            this.elicitationStimEVTraining.push(catchTrials[catchTrialIdx]);
+
+        }
+
+        // Phase 2
+        // ===================================================================== //
+        this.elicitationStim = [];
+        this.elicitationStimEV = [];
+        catchTrialIdx = 0;
+
+        for (let i = 0; i < nCond; i++) {
+
+            let [file1, file2] = this.contexts[i];
+
+            let contIdx1 = this.probs[i][0];
+            let contIdx2 = this.probs[i][1];
+
+            let ev1 = this.ev[contIdx1];
+            let ev2 = this.ev[contIdx2];
+
+            let p1 = this.cont[contIdx1];
+            let p2 = this.cont[contIdx2];
+
+            let isCatchTrial = false;
+
+            this.elicitationStim.push(
+                [file1, contIdx1, p1, ev1, isCatchTrial]
+            );
+
+            this.elicitationStim.push(
+                [file2, contIdx2, p2, ev2, isCatchTrial]
+            );
+
+            // mix lotteries and stim 1
+            let temp = [];
+            for (let j = 0; j < this.lotteryCont.length; j++) {
+
+                let lotteryFile = this.lotteryEV[j].toString();
+                let lotteryContIdx = j;
+                let lotteryEV = this.lotteryEV[j];
+                let lotteryP = this.lotteryCont[j];
+
+                temp.push([
+                    file1, lotteryFile, contIdx1, lotteryContIdx, p1, lotteryP, ev1, lotteryEV
+                ]);
+            }
+
             this.elicitationStimEV = this.elicitationStimEV.concat(shuffle(temp));
-            this.elicitationStimEV.push(catchTrials[catchIdx]);
-            catchIdx++;
+            this.elicitationStimEV.push(catchTrials[catchTrialIdx]);
+            catchTrialIdx++;
+
+            // mix lotteries and stim 2
+            temp = [];
+            for (let j = 0; j < this.lotteryCont.length; j++) {
+
+                let lotteryFile = this.lotteryEV[j].toString();
+                let lotteryContIdx = j;
+                let lotteryEV = this.lotteryEV[j];
+                let lotteryP = this.lotteryCont[j];
+
+                temp.push([
+                    file2, lotteryFile, contIdx2, lotteryContIdx, p2, lotteryP, ev2, lotteryEV
+                ]);
+            }
+
+            this.elicitationStimEV = this.elicitationStimEV.concat(shuffle(temp));
+            this.elicitationStimEV.push(catchTrials[catchTrialIdx]);
 
         }
-
-        let randExpectedValue = shuffle(this.expectedValue);
-        for (let i = 0; i < 4; i++) {
-            elicitationsStim.push([
-                randExpectedValue[i],
-                this.expectedValueMap[randExpectedValue[i]],
-                false
-            ].flat());
-
-        }
-        randExpectedValue = shuffle(this.expectedValue);
-        for (let i = 0; i < 2; i++) {
-            this.elicitationStimTraining.push([
-                randExpectedValue[i],
-                this.expectedValueMap[randExpectedValue[i]],
-                false
-            ].flat());
-        }
-
-        this.elicitationStimTraining = shuffle(this.elicitationStimTraining);
-        this.elicitationStim = shuffle(elicitationsStim);
-
-
-        debugger
     }
 
     _loadImg(imgPath) {
@@ -493,8 +470,8 @@ export class ExperimentParameters {
         }
 
 
-        for (let i = 0; i < this.expectedValue.length; i++) {
-            let idx = this.expectedValue[i];
+        for (let i = 0; i < this.lotteryEV.length; i++) {
+            let idx = this.lotteryEV[i].toString();
             this.images[idx] = new Image();
             this.images[idx].src = imgPath + 'lotteries/' + idx + '.png';
             this.images[idx].className = "img-responsive center-block";

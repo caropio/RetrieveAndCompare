@@ -70,17 +70,16 @@ export class ChoiceManager {
         let params = {
             stimIdx1: trialObj[0], // key in img dict
             stimIdx2: trialObj[1],
-            p1: trialObj[2],
-            contIdx1: trialObj[3],
-            ev1: trialObj[4],
+            contIdx1: trialObj[2],
+            contIdx2: trialObj[3],
+            p1: trialObj[4],
             p2: trialObj[5],
-            contIdx2: trialObj[6],
+            ev1: trialObj[6],
             ev2: trialObj[7],
             isCatchTrial: trialObj[8],
             r1: [-1, 1],
             choiceTime: choiceTime
         };
-
 
         GUI.displayOptions(
             params["stimIdx1"],
@@ -316,8 +315,9 @@ export class SliderManager {
 
         let params = {
             stimIdx: trialObj[0],
-            p1: trialObj[1],
-            ev1: trialObj[2],
+            contIdx: trialObj[1],
+            p1: trialObj[2],
+            ev1: trialObj[3],
             r1: [-1, 1],
             isCatchTrial: trialObj[trialObj.length - 1],
             choiceTime: choiceTime
