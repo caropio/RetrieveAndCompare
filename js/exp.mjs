@@ -23,7 +23,7 @@ export class ExperimentParameters {
         nTrialPerCondition,
         nTrialPerConditionTraining,
         nCond}={}) {
-        // TODO:
+
         // Initial Experiment Parameters
         // ===================================================================== // 
         this.online = online;
@@ -50,7 +50,7 @@ export class ExperimentParameters {
 
         this.subID = undefined;
 
-        this.compLink = compLink;//'https://app.prolific.ac/submissions/complete?cc=RNFS5HP5';
+        this.compLink = compLink;
 
         // define compensations
         // ===================================================================== //
@@ -61,14 +61,14 @@ export class ExperimentParameters {
         this.pointsToPounds = points => this.penceToPounds(this.pointsToPence(points));
 
         // init
-        this._initConditionsAndContingencies();
+        this._initContingencies();
         this._loadImg(imgPath);
-        this._defineConditionArrays(nTrialPerCondition, nTrialPerConditionTraining, nCond);
-        this._defineTrialObj(nCond);
+        this._initConditionArrays(nTrialPerCondition, nTrialPerConditionTraining, nCond);
+        this._initTrialObj(nCond);
 
     }
 
-    _initConditionsAndContingencies() {
+    _initContingencies() {
         this.cont = [];
         this.probs = [];
         this.rewards = [];
@@ -137,7 +137,7 @@ export class ExperimentParameters {
         }
     }
 
-    _defineConditionArrays(nTrialPerCondition, nTrialPerConditionTraining, nCond) {
+    _initConditionArrays(nTrialPerCondition, nTrialPerConditionTraining, nCond) {
 
         // Define conditions
         // ===================================================================== //
@@ -193,7 +193,7 @@ export class ExperimentParameters {
         this.trainingContexts = shuffle(this.trainingContexts);
     }
 
-    _defineTrialObj(nCond) {
+    _initTrialObj(nCond) {
 
         // define catch trials
         // ===================================================================== //
@@ -226,10 +226,13 @@ export class ExperimentParameters {
             let p1 = this.lotteryCont[contIdx1];
             let p2 = this.lotteryCont[contIdx2];
 
+            let r1 = this.rew;
+            let r2 = this.rew;
+
             let isCatchTrial = true;
 
             catchTrials[i] = [
-                file1, file2, contIdx1, contIdx2, p1, p2, ev1, ev2, isCatchTrial
+                file1, file2, contIdx1, contIdx2, p1, p2, ev1, ev2, r1, r2, isCatchTrial
             ];
         }
 
@@ -252,10 +255,13 @@ export class ExperimentParameters {
             let p1 = this.cont[contIdx1];
             let p2 = this.cont[contIdx2];
 
+            let r1 = this.rew;
+            let r2 = this.rew;
+
             let isCatchTrial = false;
 
             this.learningStim.push(
-                [file1, file2, contIdx1, contIdx2, p1, p2, ev1, ev2, isCatchTrial]
+                [file1, file2, contIdx1, contIdx2, p1, p2, ev1, ev2, r1, r2, isCatchTrial]
             );
 
         }
@@ -275,10 +281,13 @@ export class ExperimentParameters {
             let p1 = this.cont[contIdx1];
             let p2 = this.cont[contIdx2];
 
+            let r1 = this.rew;
+            let r2 = this.rew;
+
             let isCatchTrial = false;
 
             this.learningStimTraining.push(
-                [file1, file2, contIdx1, contIdx2, p1, p2, ev1, ev2, isCatchTrial]
+                [file1, file2, contIdx1, contIdx2, p1, p2, ev1, ev2, r1, r2, isCatchTrial]
             );
 
         }
@@ -307,14 +316,17 @@ export class ExperimentParameters {
             let p1 = this.cont[contIdx1];
             let p2 = this.cont[contIdx2];
 
+            let r1 = this.rew;
+            let r2 = this.rew;
+
             let isCatchTrial = false;
 
             this.elicitationStimTraining.push(
-                [file1, contIdx1, p1, ev1, isCatchTrial]
+                [file1, contIdx1, p1, ev1, r1, isCatchTrial]
             );
 
             this.elicitationStimTraining.push(
-                [file2, contIdx2, p2, ev2, isCatchTrial]
+                [file2, contIdx2, p2, ev2, r2, isCatchTrial]
             );
 
             // mix lotteries and stim 1
@@ -327,7 +339,8 @@ export class ExperimentParameters {
                 let lotteryP = this.lotteryCont[j];
 
                 temp.push([
-                    file1, lotteryFile, contIdx1, lotteryContIdx, p1, lotteryP, ev1, lotteryEV
+                    file1, lotteryFile, contIdx1, lotteryContIdx, p1, lotteryP,
+                    ev1, lotteryEV, r1, r2, isCatchTrial
                 ]);
             }
 
@@ -345,7 +358,8 @@ export class ExperimentParameters {
                 let lotteryP = this.lotteryCont[j];
 
                 temp.push([
-                    file2, lotteryFile, contIdx2, lotteryContIdx, p2, lotteryP, ev2, lotteryEV
+                    file2, lotteryFile, contIdx2, lotteryContIdx, p2, lotteryP,
+                    ev2, lotteryEV, r1, r2, isCatchTrial
                 ]);
             }
 
@@ -373,14 +387,17 @@ export class ExperimentParameters {
             let p1 = this.cont[contIdx1];
             let p2 = this.cont[contIdx2];
 
+            let r1 = this.rew;
+            let r2 = this.rew;
+
             let isCatchTrial = false;
 
             this.elicitationStim.push(
-                [file1, contIdx1, p1, ev1, isCatchTrial]
+                [file1, contIdx1, p1, ev1, r1, isCatchTrial]
             );
 
             this.elicitationStim.push(
-                [file2, contIdx2, p2, ev2, isCatchTrial]
+                [file2, contIdx2, p2, ev2, r2, isCatchTrial]
             );
 
             // mix lotteries and stim 1
@@ -393,7 +410,8 @@ export class ExperimentParameters {
                 let lotteryP = this.lotteryCont[j];
 
                 temp.push([
-                    file1, lotteryFile, contIdx1, lotteryContIdx, p1, lotteryP, ev1, lotteryEV
+                    file1, lotteryFile, contIdx1, lotteryContIdx, p1,
+                    lotteryP, ev1, lotteryEV, r1, r2, isCatchTrial
                 ]);
             }
 
@@ -411,7 +429,8 @@ export class ExperimentParameters {
                 let lotteryP = this.lotteryCont[j];
 
                 temp.push([
-                    file2, lotteryFile, contIdx2, lotteryContIdx, p2, lotteryP, ev2, lotteryEV
+                    file2, lotteryFile, contIdx2, lotteryContIdx, p2,
+                    lotteryP, ev2, lotteryEV, r1, r2, isCatchTrial
                 ]);
             }
 
@@ -431,7 +450,7 @@ export class ExperimentParameters {
 
         this.images = [];
         this.availableOptions = [];
-        for (let i = 2; i <= nImg; i++) {
+        for (let i = 2; i < nImg + 2; i++) {
             this.availableOptions.push(i);
             this.images[i] = new Image();
             this.images[i].src = imgPath + 'stim_old/' + i + '.' + imgExt;
@@ -468,7 +487,6 @@ export class ExperimentParameters {
             this.trainingImg[i].style.position = "relative";
             this.trainingImg[i].style.top = "0px";
         }
-
 
         for (let i = 0; i < this.lotteryEV.length; i++) {
             let idx = this.lotteryEV[i].toString();

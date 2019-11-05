@@ -11,7 +11,7 @@ export class GUI {
 
     static displayOptions(id1, id2, img, feedbackImg, invertedPosition) {
        let [option1, option2, feedback1, feedback2] = GUI._getOptions(id1, id2, img, feedbackImg);
-       GUI._displayOpt(option1, option2, feedback1, feedback2, invertedPosition);
+       GUI._displayTwoOptions(option1, option2, feedback1, feedback2, invertedPosition);
     }
 
     static _getOptions(id1, id2, img, feedbackImg){
@@ -35,7 +35,7 @@ export class GUI {
         return [option1, option2, feedback1, feedback2]
     }
 
-    static _displayOpt(option1, option2, feedback1, feedback2, invertedPosition) {
+    static _displayTwoOptions(option1, option2, feedback1, feedback2, invertedPosition) {
 
         let Title = '<div id = "Title"><H2 align = "center"> <br><br><br><br></H2></div>';
 
@@ -70,7 +70,7 @@ export class GUI {
         $('#TextBoxDiv').html(Title + Feedback + Images + myCanvas);
     }
 
-    static displayOptionSlider(id, imgObj) {
+    static displayOptionSlider(id, imgObj, initValue) {
 
         let option = imgObj[id];
         option.id = "option1";
@@ -94,7 +94,6 @@ export class GUI {
             '<div class="col-xs-1 col-md-1"></div>  <div class="col-xs-3 col-md-3">'
             + '</div><div id = "Middle" class="col-xs-4 col-md-4">' + option + '</div></div>';
 
-        let initValue = range(25, 75, 5)[Math.floor(Math.random() * 10)];
 
         let Slider = '<main>\n' +
             '  <form id="form">\n' +

@@ -1,5 +1,5 @@
 import {sendToDB} from "./request.mjs"
-import {randint, shuffle, isString} from "./utils.mjs";
+import {randint, shuffle, range} from "./utils.mjs";
 import {GUI} from "./gui.mjs";
 
 
@@ -65,7 +65,7 @@ export class ChoiceManager {
 
         let trialObj = this.trialObj[this.trialNum];
 
-        let choiceTime = (new Date()).getTime();
+        let presentationTime = (new Date()).getTime();
 
         let params = {
             stimIdx1: trialObj[0], // key in img dict
@@ -76,9 +76,10 @@ export class ChoiceManager {
             p2: trialObj[5],
             ev1: trialObj[6],
             ev2: trialObj[7],
-            isCatchTrial: trialObj[8],
-            r1: [-1, 1],
-            choiceTime: choiceTime
+            r1: trialObj[8],
+            r2: trialObj[9],
+            isCatchTrial: trialObj[10],
+            presentationTime: presentationTime
         };
 
         GUI.displayOptions(
@@ -110,11 +111,12 @@ export class ChoiceManager {
     };
 
 
-    /* =================== public methods ================== */
+    /* =================== private methods ================== */
 
     _clickEvent(choice, params) {
 
-        let reactionTime = (new Date()).getTime();
+        let choiceTime = (new Date()).getTime();
+        let reactionTime = choiceTime - params["presentationTime"];
         let invertedPosition = this.invertedPosition[this.trialNum];
         let leftRight =
             +((invertedPosition && (choice === 1)) || (!invertedPosition && (choice === 2)));
@@ -147,7 +149,7 @@ export class ChoiceManager {
                     outcome: thisReward,
                     cf_outcome: otherReward,
                     choice_left_right: leftRight,
-                    reaction_time: reactionTime - params["choiceTime"],
+                    reaction_time: reactionTime,
                     reward: this.exp.totalReward,
                     session: this.sessionNum,
                     p1: p1[1],
@@ -156,9 +158,9 @@ export class ChoiceManager {
                     option2: -1,
                     ev1: Math.round(params["ev1"] * 100) / 100,
                     ev2: Math.round(params["ev2"] * 100) / 100,
-                    iscatch: params["isCatchTrial"],
+                    iscatch: +(params["isCatchTrial"]),
                     inverted: invertedPosition,
-                    choice_time: -1,
+                    choice_time: choiceTime,
                     elic_distance: -1,
                     p_lottery: -1
                 },
@@ -177,7 +179,7 @@ export class ChoiceManager {
         let ev2 = params["ev2"];
 
         let r1 = params["r1"];
-
+        let r2 = params["r2"];
 
         ev1 = Math.round(ev1 * 100) / 100;
         ev2 = Math.round(ev2 * 100) / 100;
@@ -189,7 +191,7 @@ export class ChoiceManager {
         let correctChoice;
 
         reward1 = r1[+(Math.random() < p1[1])];
-        reward2 = r1[+(Math.random() < p2[1])];
+        reward2 = r2[+(Math.random() < p2[1])];
         thisReward = [reward2, reward1][+(choice === 1)];
         otherReward = [reward2, reward1][+(choice === 1)];
         correctChoice = [+(ev2 >= ev1), +(ev1 >= ev2)][+(choice === 1)];
@@ -260,8 +262,8 @@ export class ChoiceManager {
                         $('#Stage').empty();
                         $('#Bottom').empty();
                         event.obj.nextFunc(event.obj.nextParams);
-                    }, event.obj.feedbackDuration, {obj: event.obj})
-                }, this.feedbackDuration, {obj: this}
+                    }, 500, {obj: event.obj})
+                }, 500, {obj: this}
             );
         }
     };
@@ -312,20 +314,21 @@ export class SliderManager {
 
         let trialObj = this.trialObj[this.trialNum];
 
-        let choiceTime = (new Date()).getTime();
+        let presentationTime = (new Date()).getTime();
 
         let params = {
             stimIdx: trialObj[0],
             contIdx: trialObj[1],
             p1: trialObj[2],
             ev1: trialObj[3],
-            r1: [-1, 1],
+            r1: trialObj[4],
             isCatchTrial: trialObj[trialObj.length - 1],
-            choiceTime: choiceTime
+            presentationTime: presentationTime
         };
 
 
-        GUI.displayOptionSlider(params['stimIdx'], this.imgObj);
+        let initValue = range(25, 75, 5)[Math.floor(Math.random() * 10)];
+        GUI.displayOptionSlider(params['stimIdx'], this.imgObj, initValue);
 
         rangeInputRun();
 
@@ -354,10 +357,13 @@ export class SliderManager {
 
     _clickEvent(choice, params) {
 
-        let reactionTime = (new Date()).getTime();
+        let choiceTime = (new Date()).getTime();
+        let reactionTime = choiceTime - params["presentationTime"];
         let invertedPosition = this.invertedPosition[this.trialNum];
         let ev1 = params["ev1"];
         let p1 = params["p1"][1];
+        let contIdx = params['contIdx'];
+        let isCatchTrial = +(params["isCatchTrial"]);
 
         let [correctChoice, thisReward,
             otherReward, pLottery, elicDistance] = this._getReward(choice, params);
@@ -371,7 +377,7 @@ export class SliderManager {
                     test: +(this.exp.isTesting),
                     trial: this.trialNum,
                     elicitation_type: this.elicitationType,
-                    cont_idx_1: -1,
+                    cont_idx_1: contIdx,
                     cont_idx_2:  -1,
                     condition: -1,
                     symL: -1,
@@ -381,7 +387,7 @@ export class SliderManager {
                     outcome: thisReward,
                     cf_outcome: otherReward,
                     choice_left_right: -1,
-                    reaction_time: reactionTime - params["choiceTime"],
+                    reaction_time: reactionTime,
                     reward: this.exp.totalReward,
                     session: this.sessionNum,
                     p1: p1,
@@ -390,9 +396,9 @@ export class SliderManager {
                     option2: -1,
                     ev1: Math.round(ev1 * 100) / 100,
                     ev2: -1,
-                    iscatch: params["isCatchTrial"],
+                    iscatch: isCatchTrial,
                     inverted: invertedPosition,
-                    choice_time: -1,
+                    choice_time: choiceTime,
                     elic_distance: elicDistance,
                     p_lottery: pLottery
                 },

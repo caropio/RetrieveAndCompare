@@ -3,7 +3,7 @@ import {Instructions} from "./inst.mjs";
 import {ChoiceManager, SliderManager} from "./trial_manager.mjs";
 
 
-// When the page is fully loaded, the function main will be called
+// When the page is fully loaded, the main function will be called
 $(document).ready(main);
 
 
@@ -15,27 +15,30 @@ function main() {
      */
 
     // init main parameters
-    let sessionNum = 0;
-    let phaseNum = 3;
+    // these three variables indicate what
+    // has to ran in the state machine (i.e. current state of the experiment)
+    let sessionNum = -1;
+    let phaseNum = 1;
     let instructionNum = 'end';
 
     // instantiate experiment parameters
     let exp = new ExperimentParameters(
         {
-            online: false,
-            isTesting: true,
-            expName: 'RetrieveAndCompare',
-            completeFeedback: false,
-            maxPoints: 98,
+            online: false,   // send network requests
+            isTesting: true, // isTesting==in development vs in production
+            expName: 'RetrieveAndCompare', // experience name
+            completeFeedback: true, // display feedback of both options
+            maxPoints: 98, // max points cumulated all along the experiment
             howMuchPenceForOnePoint: 250,
-            feedbackDuration: 2000, // in milliseconds
+            feedbackDuration: 2000, // how many milliseconds we present the outcome
             maxTrainingNum: -2, // if sessionNum == maxTrainingNum
                                 // do not allow for new training sessions
             nTrialPerConditionTraining: 5,
             nTrialPerCondition: 30,
             nCond: 4,
             imgPath: 'images/cards_gif/',
-            compLink: 'https://app.prolific.ac/submissions/complete?cc=RNFS5HP5'
+            compLink: 'https://app.prolific.ac/submissions/complete?cc=RNFS5HP5' // prolific completion link
+                                                                                // will be displayed at the end
         }
     );
     let inst = new Instructions(exp);
@@ -49,11 +52,14 @@ function stateMachine({instructionNum, sessionNum, phaseNum, inst, exp} = {}) {
 
     /* ============================ Instructions Management ========================== */
 
+    // if sessionNum < 0, then it is a training session
+    // here training sessionNum is in {-1, -2}
     let isTraining = +(sessionNum < 0);
 
     switch (instructionNum) {
         case 0:
             inst.goFullscreen(
+                // what will be executed next
                 stateMachine,
                 {
                     instructionNum: 1, inst: inst, exp: exp, sessionNum: sessionNum, phaseNum: 1
@@ -63,6 +69,7 @@ function stateMachine({instructionNum, sessionNum, phaseNum, inst, exp} = {}) {
 
         case 1:
             inst.setUserID(
+                // what will be executed next
                 stateMachine,
                 {
                     instructionNum: 2, inst: inst, exp: exp, sessionNum: sessionNum, phaseNum: 1
@@ -72,64 +79,76 @@ function stateMachine({instructionNum, sessionNum, phaseNum, inst, exp} = {}) {
 
         case 2:
             inst.displayConsent(
+                // what will be executed next
                 stateMachine,
                 {
                     instructionNum: 3, inst: inst, exp: exp, sessionNum: sessionNum, phaseNum: 1
                 }
-
             );
             return;
 
         case 3:
             inst.displayInitialInstruction(
                 {pageNum: 1},
+                // what will be executed next
                 stateMachine,
                 {
                     instructionNum: 4, inst: inst, exp: exp, sessionNum: sessionNum, phaseNum: 1
-                });
+                }
+            );
             return;
 
         case 4:
             inst.displayInstructionLearning(
                 {pageNum: 1, isTraining: isTraining, phaseNum: 1},
+                // what will be executed next
                 stateMachine,
                 {
                     instructionNum: 'end', inst: inst, exp: exp, sessionNum: sessionNum, phaseNum: 1
-                });
+                }
+            );
             return;
 
         case 5:
             inst.displayInstructionChoiceElicitation(
                 {pageNum: 1, isTraining: isTraining, phaseNum: 2},
+                // what will be executed next
                 stateMachine,
                 {
                     instructionNum: 'end', inst: inst, exp: exp, sessionNum: sessionNum, phaseNum: 2
-                });
+                }
+            );
             return;
 
         case 6:
             inst.displayInstructionSliderElicitation(
                 {pageNum: 1, isTraining: isTraining, phaseNum: 3},
+                // what will be executed next
                 stateMachine,
                 {
                     instructionNum: 'end', inst: inst, exp: exp, sessionNum: sessionNum, phaseNum: 3
-                });
+                }
+             );
             return;
         case 7:
             inst.endTraining(
                 {pageNum: 1, isTraining: 1, phaseNum: 3, sessionNum: sessionNum},
+                // what will be executed next
                 stateMachine,
                 {
                     instructionNum: 4, inst: inst, exp: exp, sessionNum: 0, phaseNum: 1
-                });
+                }
+            );
             return;
         case 8:
             inst.endExperiment(
                 {pageNum: 1, isTraining: 1, phaseNum: 3},
+                // what will be executed next
                 stateMachine,
                 {
                     instructionNum: 'end', inst: inst, exp: exp, sessionNum: 0, phaseNum: 'end'
-                });
+                }
+            );
             return;
 
 
@@ -150,6 +169,7 @@ function stateMachine({instructionNum, sessionNum, phaseNum, inst, exp} = {}) {
             let isElicitation = +(phaseNum > 1);
 
             // select stimuli depending on sessionNum;
+            // Using arrays allows to avoid multiple if statements
             trialObj = [
                 [exp.learningStim, exp.elicitationStimEV][isElicitation],
                 [exp.learningStimTraining, exp.elicitationStimEVTraining][isElicitation],
@@ -168,6 +188,7 @@ function stateMachine({instructionNum, sessionNum, phaseNum, inst, exp} = {}) {
                     elicitationType: [-1, 0][isElicitation],
                     showFeedback: [true, false][isElicitation],
                     maxTrials: 3,
+                    // what will be executed next
                     nextFunc: stateMachine,
                     nextParams: {
                         instructionNum: [5, 6][isElicitation],
@@ -198,6 +219,7 @@ function stateMachine({instructionNum, sessionNum, phaseNum, inst, exp} = {}) {
                     exp: exp,
                     elicitationType: 2,
                     showFeedback: exp.showFeedback,
+                    // what will be executed next
                     nextFunc: stateMachine,
                     nextParams: {
                         instructionNum: [8, 7][isTraining],

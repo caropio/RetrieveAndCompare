@@ -146,21 +146,12 @@ export class Instructions {
         $('#TextBoxDiv').html(Title + Info);
 
         let Buttons = '<div align="center"><input align="center" type="button"  class="btn btn-default" id="Back" value="Back" >\n\
-		<input align="center" type="button"  class="btn btn-default" id="Next" value="Next" >\n\
-		<input align="center" type="button"  class="btn btn-default" id="Start" value="Start the first phase!" ></div>';
+		<input align="center" type="button"  class="btn btn-default" id="Next" value="Next" ></div>';
 
         $('#Bottom').html(Buttons);
 
         if (pageNum === 1) {
             $('#Back').hide();
-        }
-
-        if (pageNum === nPages) {
-            $('#Next').hide();
-        }
-
-        if (pageNum < nPages) {
-            $('#Start').hide();
         }
 
         $('#Back').click({obj: this}, function (event) {
@@ -181,28 +172,22 @@ export class Instructions {
             $('#TextBoxDiv').remove();
             $('#Stage').empty();
             $('#Bottom').empty();
-            event.data.obj.displayInitialInstruction({pageNum: pageNum + 1}, nextFunc, nextParams);
-        });
-
-        $('#Start').click({obj: this}, function (event) {
-
-            $('#TextBoxDiv').remove();
-            $('#Stage').empty();
-            $('#Bottom').empty();
-
-            if (event.data.obj.exp.online) {
-                sendToDB(0,
-                    {
-                        expID: event.data.obj.expID,
-                        id: event.data.obj.subID,
-                        exp: event.data.obj.expName,
-                        browser: event.data.obj.browsInfo
-                    },
-                    'php/InsertExpDetails.php'
-                );
-
+            if (pageNum < nPages) {
+                event.data.obj.displayInitialInstruction({pageNum: pageNum + 1}, nextFunc, nextParams);
+            } else {
+                if (event.data.obj.exp.online) {
+                    sendToDB(0,
+                        {
+                            expID: event.data.obj.expID,
+                            id: event.data.obj.subID,
+                            exp: event.data.obj.expName,
+                            browser: event.data.obj.browsInfo
+                        },
+                        'php/InsertExpDetails.php'
+                    );
+                }
+                nextFunc(nextParams);
             }
-            nextFunc(nextParams);
         });
     }
 
