@@ -31,8 +31,6 @@ export class ExperimentParameters {
         this.expName = expName;
         this.isTesting = isTesting;
 
-        this.maxPoints = maxPoints; //98 
-
         this.feedbackDuration = feedbackDuration;
 
         this.sumReward = [0, 0, 0, 0, 0, 0, 0];
@@ -40,7 +38,6 @@ export class ExperimentParameters {
         this.totalReward = 0;
 
         this.maxTrainingNum = maxTrainingNum;
-
 
         this.initTime = (new Date()).getTime();
 
@@ -52,19 +49,26 @@ export class ExperimentParameters {
 
         this.compLink = compLink;
 
-        // define compensations
-        // ===================================================================== //
-        // one point equals 250 pence / maxPoints
-        let conversionRate = (howMuchPenceForOnePoint / this.maxPoints).toFixed(2);
-        this.pointsToPence = points => points * conversionRate;
-        this.penceToPounds = pence => pence / 100;
-        this.pointsToPounds = points => this.penceToPounds(this.pointsToPence(points));
 
         // init
         this._initContingencies();
         this._loadImg(imgPath);
         this._initConditionArrays(nTrialPerCondition, nTrialPerConditionTraining, nCond);
         this._initTrialObj(nCond);
+
+        if (maxPoints) {
+            this.maxPoints = maxPoints;
+        } else {
+            this.maxPoints = this._computeMaxPoints();
+        }
+
+        // define compensation functions
+        // ===================================================================== //
+        // one point equals 250 pence / maxPoints
+        let conversionRate = (howMuchPenceForOnePoint / this.maxPoints).toFixed(2);
+        this.pointsToPence = points => points * conversionRate;
+        this.penceToPounds = pence => pence / 100;
+        this.pointsToPounds = points => this.penceToPounds(this.pointsToPence(points));
 
     }
 
@@ -438,6 +442,42 @@ export class ExperimentParameters {
             this.elicitationStimEV.push(catchTrials[catchTrialIdx]);
 
         }
+    }
+
+    _computeMaxPoints() {
+        // using expected value compute what will be the final score
+        // if the subject makes optimal choices
+        // here we have one session so we compute it once
+
+        let maxPoints = 0;
+
+        for (let i = 0; i < this.learningStim.length; i++) {
+
+            let ev1 = this.learningStim[i][6];
+            let ev2 = this.learningStim[i][7];
+
+            maxPoints += Math.max(ev1, ev2)
+        }
+
+        for (let i = 0; i < this.elicitationStimEV.length; i++) {
+
+            let ev1 = this.elicitationStimEV[i][6];
+            let ev2 = this.elicitationStimEV[i][7];
+
+            maxPoints += Math.max(ev1, ev2)
+        }
+
+        for (let i = 0; i < this.elicitationStim.length; i++) {
+
+            let ev1 = this.elicitationStim[i][6];
+            let ev2 = this.elicitationStim[i][7];
+
+            maxPoints += Math.max(ev1, ev2)
+        }
+
+        console.log('Max points = ' + maxPoints);
+        debugger
+        return maxPoints
     }
 
     _loadImg(imgPath) {

@@ -16,7 +16,7 @@ function main() {
 
     // init main parameters
     // these three variables indicate what
-    // has to ran in the state machine (i.e. current state of the experiment)
+    // has to be run in the state machine (i.e. current state of the experiment)
     let sessionNum = -1;
     let phaseNum = 1;
     let instructionNum = 'end';
@@ -28,7 +28,8 @@ function main() {
             isTesting: true, // isTesting==in development vs in production
             expName: 'RetrieveAndCompare', // experience name
             completeFeedback: true, // display feedback of both options
-            maxPoints: 98, // max points cumulated all along the experiment
+            maxPoints: undefined, // max points cumulated all along the experiment
+                                 // if undefined or 0, will be computed automatically
             howMuchPenceForOnePoint: 250,
             feedbackDuration: 2000, // how many milliseconds we present the outcome
             maxTrainingNum: -2, // if sessionNum == maxTrainingNum
