@@ -77,10 +77,7 @@ export class ExperimentParameters {
         this.probs = [];
         this.rewards = [];
         this.ev = [];
-        this.lotteryCont = [];
-        this.lotteryEV = [];
         this.rew = undefined;
-
 
         // Define all possible probabilities and rewards
         // structure is [lose, win]
@@ -99,6 +96,11 @@ export class ExperimentParameters {
         // only magnitudes in the experiment
         this.rew = [-1, 1];
 
+        // compute ev for each cont
+        for (let i = 0; i < this.cont.length; i++) {
+            this.ev[i] = math.round(
+                math.multiply(this.rew, this.cont[i]), 2);
+        }
 
         // Define Learning using rew and cont idx
         // structure is [option 1, option 2]
@@ -116,29 +118,6 @@ export class ExperimentParameters {
         this.rewards[3] = [this.rew, this.rew];
         this.probs[3] = [6, 4];
 
-        // compute ev learning
-        for (let i = 0; i < this.probs.length; i++) {
-
-            let p1 = this.cont[this.probs[i][0]];
-            let p2 = this.cont[this.probs[i][1]];
-
-            this.ev.push([
-                math.round(math.multiply(this.rewards[i][0], p1), 2),
-                math.round(math.multiply(this.rewards[i][1], p2), 2)
-            ]);
-        }
-
-        // Define lottery contingencies
-        // ===================================================================== //
-        this.lotteryRew = [-1, 1];
-        // lottery cont is all possible cont
-        this.lotteryCont = this.cont;
-
-        // compute ev lottery
-        for (let i = 0; i < this.lotteryCont.length; i++) {
-            this.lotteryEV[i] = math.round(
-                math.multiply(this.lotteryRew, this.lotteryCont[i]), 2);
-        }
     }
 
     _initConditionArrays(nTrialPerCondition, nTrialPerConditionTraining, nCond) {
@@ -221,14 +200,14 @@ export class ExperimentParameters {
             let contIdx1 = catchTrialsTemp[i][0];
             let contIdx2 = catchTrialsTemp[i][1];
 
-            let ev1 = this.lotteryEV[contIdx1];
-            let ev2 = this.lotteryEV[contIdx2];
+            let ev1 = this.ev[contIdx1];
+            let ev2 = this.ev[contIdx2];
 
             let file1 = ev1.toString();
             let file2 = ev2.toString();
 
-            let p1 = this.lotteryCont[contIdx1];
-            let p2 = this.lotteryCont[contIdx2];
+            let p1 = this.cont[contIdx1];
+            let p2 = this.cont[contIdx2];
 
             let r1 = this.rew;
             let r2 = this.rew;
@@ -335,12 +314,12 @@ export class ExperimentParameters {
 
             // mix lotteries and stim 1
             let temp = [];
-            for (let j = 0; j < this.lotteryCont.length; j++) {
+            for (let j = 0; j < this.cont.length; j++) {
 
-                let lotteryFile = this.lotteryEV[j].toString();
+                let lotteryFile = this.cont[j].toString();
                 let lotteryContIdx = j;
-                let lotteryEV = this.lotteryEV[j];
-                let lotteryP = this.lotteryCont[j];
+                let lotteryEV = this.ev[j];
+                let lotteryP = this.ev[j];
 
                 temp.push([
                     file1, lotteryFile, contIdx1, lotteryContIdx, p1, lotteryP,
@@ -354,12 +333,12 @@ export class ExperimentParameters {
 
             // mix lotteries and stim 2
             temp = [];
-            for (let j = 0; j < this.lotteryCont.length; j++) {
+            for (let j = 0; j < this.cont.length; j++) {
 
-                let lotteryFile = this.lotteryEV[j].toString();
+                let lotteryFile = this.ev[j].toString();
                 let lotteryContIdx = j;
-                let lotteryEV = this.lotteryEV[j];
-                let lotteryP = this.lotteryCont[j];
+                let lotteryEV = this.ev[j];
+                let lotteryP = this.cont[j];
 
                 temp.push([
                     file2, lotteryFile, contIdx2, lotteryContIdx, p2, lotteryP,
@@ -406,12 +385,12 @@ export class ExperimentParameters {
 
             // mix lotteries and stim 1
             let temp = [];
-            for (let j = 0; j < this.lotteryCont.length; j++) {
+            for (let j = 0; j < this.cont.length; j++) {
 
-                let lotteryFile = this.lotteryEV[j].toString();
+                let lotteryFile = this.ev[j].toString();
                 let lotteryContIdx = j;
-                let lotteryEV = this.lotteryEV[j];
-                let lotteryP = this.lotteryCont[j];
+                let lotteryEV = this.ev[j];
+                let lotteryP = this.cont[j];
 
                 temp.push([
                     file1, lotteryFile, contIdx1, lotteryContIdx, p1,
@@ -425,12 +404,12 @@ export class ExperimentParameters {
 
             // mix lotteries and stim 2
             temp = [];
-            for (let j = 0; j < this.lotteryCont.length; j++) {
+            for (let j = 0; j < this.cont.length; j++) {
 
-                let lotteryFile = this.lotteryEV[j].toString();
+                let lotteryFile = this.ev[j].toString();
                 let lotteryContIdx = j;
-                let lotteryEV = this.lotteryEV[j];
-                let lotteryP = this.lotteryCont[j];
+                let lotteryEV = this.ev[j];
+                let lotteryP = this.cont[j];
 
                 temp.push([
                     file2, lotteryFile, contIdx2, lotteryContIdx, p2,
@@ -469,15 +448,11 @@ export class ExperimentParameters {
 
         for (let i = 0; i < this.elicitationStim.length; i++) {
 
-            let ev1 = this.elicitationStim[i][6];
-            let ev2 = this.elicitationStim[i][7];
-
-            maxPoints += Math.max(ev1, ev2)
+            let ev1 = this.elicitationStim[i][3];
+            maxPoints += ev1;
         }
 
-        console.log('Max points = ' + maxPoints);
-        debugger
-        return maxPoints
+        return Math.round(maxPoints)
     }
 
     _loadImg(imgPath) {
@@ -528,8 +503,8 @@ export class ExperimentParameters {
             this.trainingImg[i].style.top = "0px";
         }
 
-        for (let i = 0; i < this.lotteryEV.length; i++) {
-            let idx = this.lotteryEV[i].toString();
+        for (let i = 0; i < this.ev.length; i++) {
+            let idx = this.ev[i].toString();
             this.images[idx] = new Image();
             this.images[idx].src = imgPath + 'lotteries/' + idx + '.png';
             this.images[idx].className = "img-responsive center-block";

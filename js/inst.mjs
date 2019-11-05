@@ -608,6 +608,33 @@ export class Instructions {
         });
     }
 
+    displayInstructionQuestionnaire(nextFunc, nextParams) {
+
+        GUI.init();
+
+        let Title = '<H3 align = "center">QUESTIONNAIRE</H3>';
+
+        let startBut;
+        startBut = '"Start"';
+        let Info = '<H3 align = "center">You will now have to answer a few questions.<br><br>This won\'t take more than a few more minutes.<br><br>Your answers remain anonymous and will not be disclosed.<br><br>' +
+            'Note that the experiment will be considered completed (and the payment issued) only if the questionnaires are correctly filled.<br><br>' +
+            'Please click "Start" when you are ready.</H3><br><br>';
+
+        $('#TextBoxDiv').html(Title + Info);
+
+        let Buttons = '<div align="center"><input align="center" type="button"  class="btn btn-default" id="Start" value=' + startBut + ' ></div>';
+
+        $('#Bottom').html(Buttons);
+
+        $('#Start').click(function () {
+
+            $('#TextBoxDiv').remove();
+            $('#Stage').empty();
+            $('#Bottom').empty();
+            nextFunc(nextParams);
+        });
+    }
+
     endTraining(funcParams, nextFunc, nextParams) {
 
 

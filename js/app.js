@@ -1,5 +1,6 @@
 import {ExperimentParameters} from "./exp.mjs";
 import {Instructions} from "./inst.mjs";
+import {Questionnaire} from "./quest.mjs";
 import {ChoiceManager, SliderManager} from "./trial_manager.mjs";
 
 
@@ -10,16 +11,17 @@ $(document).ready(main);
 function main() {
     /*
     Main function where
-    we instantiate main components, in order to maintain
+    we instantiate experiment parameters, in order to maintain
     their attributes throught the whole experiment scope
      */
 
     // init main parameters
     // these three variables indicate what
     // has to be run in the state machine (i.e. current state of the experiment)
-    let sessionNum = -1;
+    let sessionNum = 0;
     let phaseNum = 1;
     let instructionNum = 'end';
+    let questNum = 'end';
 
     // instantiate experiment parameters
     let exp = new ExperimentParameters(
@@ -42,14 +44,16 @@ function main() {
                                                                                 // will be displayed at the end
         }
     );
-    let inst = new Instructions(exp);
-
+    
     // Run experiment!!
-    stateMachine({instructionNum, sessionNum, phaseNum, inst, exp});
+    stateMachine({instructionNum, sessionNum, phaseNum, questNum, exp});
 }
 
 
-function stateMachine({instructionNum, sessionNum, phaseNum, inst, exp} = {}) {
+function stateMachine({instructionNum, sessionNum, phaseNum, questNum, exp} = {}) {
+    
+    let inst = new Instructions(exp);
+    let quest = new Questionnaire(exp);
 
     /* ============================ Instructions Management ========================== */
 
@@ -63,7 +67,7 @@ function stateMachine({instructionNum, sessionNum, phaseNum, inst, exp} = {}) {
                 // what will be executed next
                 stateMachine,
                 {
-                    instructionNum: 1, inst: inst, exp: exp, sessionNum: sessionNum, phaseNum: 1
+                    instructionNum: 1, exp: exp, sessionNum: sessionNum, phaseNum: 1
                 }
             );
             return;
@@ -73,7 +77,7 @@ function stateMachine({instructionNum, sessionNum, phaseNum, inst, exp} = {}) {
                 // what will be executed next
                 stateMachine,
                 {
-                    instructionNum: 2, inst: inst, exp: exp, sessionNum: sessionNum, phaseNum: 1
+                    instructionNum: 2, exp: exp, sessionNum: sessionNum, phaseNum: 1
                 }
             );
             return;
@@ -83,7 +87,7 @@ function stateMachine({instructionNum, sessionNum, phaseNum, inst, exp} = {}) {
                 // what will be executed next
                 stateMachine,
                 {
-                    instructionNum: 3, inst: inst, exp: exp, sessionNum: sessionNum, phaseNum: 1
+                    instructionNum: 3, exp: exp, sessionNum: sessionNum, phaseNum: 1
                 }
             );
             return;
@@ -94,7 +98,7 @@ function stateMachine({instructionNum, sessionNum, phaseNum, inst, exp} = {}) {
                 // what will be executed next
                 stateMachine,
                 {
-                    instructionNum: 4, inst: inst, exp: exp, sessionNum: sessionNum, phaseNum: 1
+                    instructionNum: 4, exp: exp, sessionNum: sessionNum, phaseNum: 1
                 }
             );
             return;
@@ -105,7 +109,7 @@ function stateMachine({instructionNum, sessionNum, phaseNum, inst, exp} = {}) {
                 // what will be executed next
                 stateMachine,
                 {
-                    instructionNum: 'end', inst: inst, exp: exp, sessionNum: sessionNum, phaseNum: 1
+                    instructionNum: 'end', exp: exp, sessionNum: sessionNum, phaseNum: 1
                 }
             );
             return;
@@ -116,7 +120,7 @@ function stateMachine({instructionNum, sessionNum, phaseNum, inst, exp} = {}) {
                 // what will be executed next
                 stateMachine,
                 {
-                    instructionNum: 'end', inst: inst, exp: exp, sessionNum: sessionNum, phaseNum: 2
+                    instructionNum: 'end', exp: exp, sessionNum: sessionNum, phaseNum: 2
                 }
             );
             return;
@@ -127,7 +131,7 @@ function stateMachine({instructionNum, sessionNum, phaseNum, inst, exp} = {}) {
                 // what will be executed next
                 stateMachine,
                 {
-                    instructionNum: 'end', inst: inst, exp: exp, sessionNum: sessionNum, phaseNum: 3
+                    instructionNum: 'end', exp: exp, sessionNum: sessionNum, phaseNum: 3
                 }
              );
             return;
@@ -137,7 +141,7 @@ function stateMachine({instructionNum, sessionNum, phaseNum, inst, exp} = {}) {
                 // what will be executed next
                 stateMachine,
                 {
-                    instructionNum: 4, inst: inst, exp: exp, sessionNum: 0, phaseNum: 1
+                    instructionNum: 4, exp: exp, sessionNum: 0, phaseNum: 1
                 }
             );
             return;
@@ -147,14 +151,26 @@ function stateMachine({instructionNum, sessionNum, phaseNum, inst, exp} = {}) {
                 // what will be executed next
                 stateMachine,
                 {
-                    instructionNum: 'end', inst: inst, exp: exp, sessionNum: 0, phaseNum: 'end'
+                    instructionNum: 'end', exp: exp, sessionNum: 0, phaseNum: 'end'
+                }
+            );
+            return;
+        case 9:
+            inst.displayInstructionQuestionnaire(
+                // what will be executed next
+                stateMachine,
+                {
+                    instructionNum: 'end', exp: exp, sessionNum: 0, phaseNum: 'end', questNum: 0
                 }
             );
             return;
 
-
         case 'end':
+        case undefined:
             break;
+
+        default:
+            alert('NON-EXPECTED STATE');
     }
 
     /* ============================ Test Management ================================ */
@@ -196,7 +212,6 @@ function stateMachine({instructionNum, sessionNum, phaseNum, inst, exp} = {}) {
                         sessionNum: sessionNum,
                         phaseNum: [2, 3][isElicitation],
                         exp: exp,
-                        inst: inst
                     }
                 }
             );
@@ -223,11 +238,10 @@ function stateMachine({instructionNum, sessionNum, phaseNum, inst, exp} = {}) {
                     // what will be executed next
                     nextFunc: stateMachine,
                     nextParams: {
-                        instructionNum: [8, 7][isTraining],
+                        instructionNum: [9, 7][isTraining],
                         sessionNum: sessionNum,
                         phaseNum: ['end', 1][isTraining],
                         exp: exp,
-                        inst: inst
                     }
                 }
             );
@@ -235,10 +249,42 @@ function stateMachine({instructionNum, sessionNum, phaseNum, inst, exp} = {}) {
             break;
 
         case 'end':
+        case undefined:
             break;
+
+        default:
+            alert('NON-EXPECTED STATE');
     }
 
     /* ============================ Questionnaire Management ====================== */
 
+    switch (questNum) {
+        case 0:
+            quest.runCRT(
+                {questNum: 1},
+                stateMachine,
+                {
+                    instructionNum: 'end', exp: exp, sessionNum: 0, phaseNum: 'end', questNum: 1
+                }
+            );
+            return;
+        case 1:
+            quest.runSES(
+                {questNum: 1},
+                stateMachine,
+                {
+                    instructionNum: 8, exp: exp, sessionNum: 0, phaseNum: 'end', questNum: 'end'
+                }
+            );
+            return;
+
+        case 'end':
+        case undefined:
+            break;
+
+        default:
+            alert('NON-EXPECTED STATE');
+
+    }
 
 }
