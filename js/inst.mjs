@@ -59,7 +59,7 @@ export class Instructions {
                 $('#Bottom').empty();
                 nextFunc(nextParams);
             } else {
-                alert('You must enter your Prolific ID.');
+                GUI.displayModalWindow('Error', 'You must enter your Prolific ID.', 'error');
             }
         });
     };
@@ -109,7 +109,7 @@ export class Instructions {
 
         $('#toInstructions').click(function () {
             if ($("input:checkbox:not(:checked)").length > 0) {
-                alert('You must tick all check boxes to continue.');
+                GUI.displayModalWindow('Error', 'You must tick all check boxes to continue.', 'error');
             } else {
                 $('#TextBoxDiv').remove();
                 $('#Stage').empty();

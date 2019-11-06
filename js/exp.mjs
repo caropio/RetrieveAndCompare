@@ -493,7 +493,7 @@ export class ExperimentParameters {
         this.trainingOptions = [];
         let letters = [null, 'A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L',
             'M', 'N', 'O', 'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z'];
-        for (let i = 1; i <= nTrainingImg; i++) {
+        for (let i = 2; i <= nTrainingImg + 1; i++) {
             this.trainingOptions.push(i);
             this.trainingImg[i] = new Image();
             this.trainingImg[i].src = imgPath + 'stim/' + letters[i] + '.' + imgExt;

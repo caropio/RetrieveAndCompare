@@ -2,6 +2,7 @@ import {ExperimentParameters} from "./exp.mjs";
 import {Instructions} from "./inst.mjs";
 import {Questionnaire} from "./quest.mjs";
 import {ChoiceManager, SliderManager} from "./trial_manager.mjs";
+import {GUI} from "./gui.mjs";
 
 
 // When the page is fully loaded, the main function will be called

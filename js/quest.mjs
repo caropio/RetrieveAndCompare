@@ -180,7 +180,7 @@ export class Questionnaire {
         $('#Next').click({obj: this}, function (event) {
 
             if ($("input:radio:checked").length < 1) {
-                alert('Please select one answer.');
+                GUI.displayModalWindow('Error', 'Please select one answer.', 'error');
 
             } else {
 
@@ -541,7 +541,8 @@ export class Questionnaire {
         $('#Next').click({obj: this}, function (event) {
 
             if ($("input:radio:checked").length < 1) {
-                alert('Please select one answer.');
+
+                GUI.displayModalWindow('Error', 'Please select one answer.', 'error');
 
             } else {
 

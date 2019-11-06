@@ -9,6 +9,44 @@ export class GUI {
         }
     }
 
+    static displayModalWindow(title, message, type) {
+
+        let sym;
+        let color;
+        if (type === 'info') {
+            sym = 'fa-check';
+            color = 'green';
+        } else if (type === 'error') {
+            sym = 'fa-window-close';
+            color = 'red';
+        } else {
+            sym = 'fa-check';
+            color = 'gray';
+        }
+
+        let str =
+            '<!-- Modal pop up window used in order to inform that submission is sent-->\n' +
+            '<div class="modal fade" id="myModal" role="dialog">\n' +
+            '    <div class="modal-dialog modal-sm">\n' +
+            '      <div class="modal-content">\n' +
+            '        <div class="modal-header">\n' +
+            '          <button type="button" class="close" data-dismiss="modal">&times;</button>\n' +
+            '          <center><span class="fa ' + sym + '" style="font-size: 30px; color: '+ color + ';">  ' + title + '</center>\n' +
+            '        </div>\n' +
+            '        <div class="modal-body">\n' +
+            '        <center><p>' + message + '</p></center>\n' +
+            '        </div>\n' +
+            '        <div class="modal-footer">\n' +
+            '          <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>\n' +
+            '        </div>\n' +
+            '      </div>\n' +
+            '    </div>\n' +
+            '</div>\n';
+        $('#Top').html(str);
+        $('#myModal').modal();
+
+    }
+
     static displayOptions(id1, id2, img, feedbackImg, invertedPosition) {
        let [option1, option2, feedback1, feedback2] = GUI._getOptions(id1, id2, img, feedbackImg);
        GUI._displayTwoOptions(option1, option2, feedback1, feedback2, invertedPosition);
