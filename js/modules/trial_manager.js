@@ -18,6 +18,7 @@ export class ChoiceManager {
         completeFeedback,
         showFeedback,
         elicitationType,
+        conditionObj,
         feedbackObj,
         maxTrials,
         nextFunc,
@@ -41,6 +42,10 @@ export class ChoiceManager {
 
         this.nextFunc = nextFunc;
         this.nextParams = nextParams;
+
+        if (elicitationType === -1) {
+            this.conditionObj = conditionObj;
+        }
 
         // init non parametric variables
         this.trialNum = 0;
@@ -67,6 +72,12 @@ export class ChoiceManager {
 
         let presentationTime = (new Date()).getTime();
 
+        let condition = -1;
+
+        if (this.elicitationType === -1) {
+            condition = this.conditionObj[this.trialNum];
+        }
+
         let params = {
             stimIdx1: trialObj[0], // key in img dict
             stimIdx2: trialObj[1],
@@ -79,16 +90,18 @@ export class ChoiceManager {
             r1: trialObj[8],
             r2: trialObj[9],
             isCatchTrial: trialObj[10],
-            presentationTime: presentationTime
+            option2isSymbol: trialObj[11],
+            presentationTime: presentationTime,
+            condition: condition
         };
 
-            GUI.displayOptions(
-                params["stimIdx1"],
-                params["stimIdx2"],
-                this.imgObj,
-                this.feedbackObj,
-                this.invertedPosition[this.trialNum]
-            );
+        GUI.displayOptions(
+            params["stimIdx1"],
+            params["stimIdx2"],
+            this.imgObj,
+            this.feedbackObj,
+            this.invertedPosition[this.trialNum]
+        );
 
         let clickEnabled = true;
 
@@ -121,11 +134,28 @@ export class ChoiceManager {
         let leftRight =
             +((invertedPosition && (choice === 1)) || (!invertedPosition && (choice === 2)));
 
+        let option2isSymbol = +(params['option2isSymbol']);
+        let isCatchTrial = +(params['isCatchTrial']);
+
+        let condition = params['condition'];
+
         let contIdx1 = params["contIdx1"];
         let contIdx2 = params["contIdx2"];
 
         let p1 = params['p1'];
         let p2 = params['p2'];
+
+        let symL;
+        let symR;
+
+        if (!invertedPosition) {
+            symL = params['stimIdx1'];
+            symR = params['stimIdx2'];
+        } else {
+            symL = params['stimIdx2'];
+            symR = params['stimIdx1'];
+        }
+
 
         let [reward1, reward2, thisReward, otherReward, correctChoice] = this._getReward(choice, params);
         this._showReward(reward1, reward2, thisReward, choice);
@@ -141,9 +171,9 @@ export class ChoiceManager {
                     elicitation_type: this.elicitationType,
                     cont_idx_1: contIdx1,
                     cont_idx_2: contIdx2,
-                    condition: -1,
-                    symL: -1,
-                    symR: -1,
+                    condition: condition,
+                    symL: symL, // sym left filename
+                    symR: symR, // sym right filename
                     choice: choice,
                     correct_choice: correctChoice,
                     outcome: thisReward,
@@ -154,13 +184,13 @@ export class ChoiceManager {
                     session: this.sessionNum,
                     p1: p1[1],
                     p2: p2[1],
-                    option1: -1,
-                    option2: -1,
+                    option1: [1, 0][isCatchTrial], // option one is a symbol if not catch trial
+                    option2: option2isSymbol, // is option two a symbol
                     ev1: Math.round(params["ev1"] * 100) / 100,
                     ev2: Math.round(params["ev2"] * 100) / 100,
-                    iscatch: +(params["isCatchTrial"]),
+                    iscatch: isCatchTrial,
                     inverted: invertedPosition,
-                    choice_time: choiceTime,
+                    choice_time: choiceTime - this.exp.initTime,
                     elic_distance: -1,
                     p_lottery: -1
                 },
@@ -193,7 +223,7 @@ export class ChoiceManager {
         reward1 = r1[+(Math.random() < p1[1])];
         reward2 = r2[+(Math.random() < p2[1])];
         thisReward = [reward2, reward1][+(choice === 1)];
-        otherReward = [reward2, reward1][+(choice === 1)];
+        otherReward = [reward1, reward2][+(choice === 1)];
         correctChoice = [+(ev2 >= ev1), +(ev1 >= ev2)][+(choice === 1)];
 
         this.exp.sumReward[this.phaseNum] += thisReward;
@@ -363,7 +393,9 @@ export class SliderManager {
         let ev1 = params["ev1"];
         let p1 = params["p1"][1];
         let contIdx = params['contIdx'];
+        let stimIdx = params['stimIdx'];
         let isCatchTrial = +(params["isCatchTrial"]);
+        let isSymbol = +((range(2, 10)).includes(params['stimIdx']));
 
         let [correctChoice, thisReward,
             otherReward, pLottery, elicDistance] = this._getReward(choice, params);
@@ -380,7 +412,7 @@ export class SliderManager {
                     cont_idx_1: contIdx,
                     cont_idx_2:  -1,
                     condition: -1,
-                    symL: -1,
+                    symL: stimIdx,
                     symR: -1,
                     choice: choice,
                     correct_choice: correctChoice,
@@ -392,13 +424,13 @@ export class SliderManager {
                     session: this.sessionNum,
                     p1: p1,
                     p2: -1,
-                    option1: -1,
+                    option1: isSymbol,
                     option2: -1,
                     ev1: Math.round(ev1 * 100) / 100,
                     ev2: -1,
                     iscatch: isCatchTrial,
                     inverted: invertedPosition,
-                    choice_time: choiceTime,
+                    choice_time: choiceTime - this.exp.initTime,
                     elic_distance: elicDistance,
                     p_lottery: pLottery
                 },

@@ -17,7 +17,7 @@ function main() {
     TODO:
         * Add symbols during post test (7 for each block)
         * check instructions adapted
-        * check whether correct score is displayed
+        * check whether correct score is displayed [last]
         * check db insertion
      */
 
@@ -32,7 +32,7 @@ function main() {
     // instantiate experiment parameters
     let exp = new ExperimentParameters(
         {
-            online: false,   // send network requests
+            online: true,   // send network requests
             isTesting: true, // isTesting==in development vs in production
             expName: 'RetrieveAndCompare', // experience name
             completeFeedback: true, // display feedback of both options
@@ -194,6 +194,10 @@ function stateMachine({instructionNum, sessionNum, phaseNum, questNum, exp} = {}
                 exp.trialObjLearning,
                 exp.trialObjLearningTraining][isTraining];
 
+            let conditionObj = [
+                exp.expCondition,
+                exp.trainingCondition][isTraining];
+
             choice = new ChoiceManager(
                 {
                     trialObj: trialObj,
@@ -201,12 +205,13 @@ function stateMachine({instructionNum, sessionNum, phaseNum, questNum, exp} = {}
                     completeFeedback: exp.completeFeedback,
                     feedbackObj: exp.feedbackImg,
                     imgObj: imgObj,
+                    conditionObj: conditionObj,
                     sessionNum: sessionNum,
                     phaseNum: phaseNum,
                     exp: exp,
                     elicitationType: -1,
                     showFeedback: true,
-                    maxTrials: 3,
+                    maxTrials: undefined,
                     // what will be executed next
                     nextFunc: stateMachine,
                     nextParams: {
@@ -239,7 +244,7 @@ function stateMachine({instructionNum, sessionNum, phaseNum, questNum, exp} = {}
                     exp: exp,
                     elicitationType: 0,
                     showFeedback: false,
-                    maxTrials: 3,
+                    maxTrials: undefined,
                     // what will be executed next
                     nextFunc: stateMachine,
                     nextParams: {

@@ -149,12 +149,12 @@ export class ExperimentParameters {
         // EXP
         // ===================================================================== //
         // shuffle the options to randomize context content
-        this.availableOptions = shuffle(this.availableOptions);
+        this.learningOptions = shuffle(this.learningOptions);
         this.contexts = [];
 
         for (let i = 0; i < nCond * 2; i += 2) {
             this.contexts.push([
-                this.availableOptions[i], this.availableOptions[i + 1]
+                this.learningOptions[i], this.learningOptions[i + 1]
             ]);
         }
 
@@ -210,9 +210,10 @@ export class ExperimentParameters {
             let r2 = this.rew;
 
             let isCatchTrial = true;
+            let option2isSymbol = false;
 
             catchTrials[i] = [
-                file1, file2, contIdx1, contIdx2, p1, p2, ev1, ev2, r1, r2, isCatchTrial
+                file1, file2, contIdx1, contIdx2, p1, p2, ev1, ev2, r1, r2, isCatchTrial, option2isSymbol
             ];
         }
 
@@ -308,48 +309,145 @@ export class ExperimentParameters {
                 [file1, contIdx1, p1, ev1, r1, isCatchTrial]
             );
 
-            this.trialObjSliderElicitationTraining.push(
-                [file2, contIdx2, p2, ev2, r2, isCatchTrial]
-            );
-
             // mix lotteries and stim 1
             let temp = [];
-            for (let j = 0; j < this.cont.length; j++) {
+            for (let j = 0; j < this.cont.length - 7; j++) {
 
                 let lotteryFile = this.ev[j].toString();
                 let lotteryContIdx = j;
                 let lotteryEV = this.ev[j];
                 let lotteryP = this.ev[j];
 
+                let option2isSymbol = false;
+
                 temp.push([
                     file1, lotteryFile, contIdx1, lotteryContIdx, p1, lotteryP,
-                    ev1, lotteryEV, r1, r2, isCatchTrial
+                    ev1, lotteryEV, r1, r2, isCatchTrial, option2isSymbol
                 ]);
+
             }
 
-            this.trialObjChoiceElicitationTraining = this.trialObjChoiceElicitationTraining.concat(shuffle(temp));
+            for (let k = 0; k < nCond - 2; k++) {
+                let [sym1, sym2] = this.trainingContexts[k];
+
+                let sym1contIdx = this.probs[k][0];
+                let sym2contIdx = this.probs[k][1];
+
+                let symEv1 = this.ev[sym1contIdx];
+                let symEv2 = this.ev[sym2contIdx];
+
+                let symP1 = this.cont[sym1contIdx];
+                let symP2 = this.cont[sym2contIdx];
+
+                let symR1 = this.rew;
+                let symR2 = this.rew;
+
+                let isCatchTrial = false;
+                let option2isSymbol = true;
+
+                if (sym1 !== file1) {
+                    temp.push([
+                        file1, sym1,
+                        contIdx1, sym1contIdx,
+                        p1, symP1,
+                        ev1, symEv1,
+                        r1, symR1,
+                        isCatchTrial,
+                        option2isSymbol
+                    ])
+                }
+                if (sym2 !== file1) {
+                    temp.push([
+                        file1, sym2,
+                        contIdx1, sym2contIdx,
+                        p1, symP2,
+                        ev1, symEv2,
+                        r1, symR2,
+                        isCatchTrial,
+                        option2isSymbol
+                    ])
+                }
+            }
+
+            this.trialObjChoiceElicitationTraining =
+                this.trialObjChoiceElicitationTraining.concat(shuffle(temp));
             this.trialObjChoiceElicitationTraining.push(catchTrials[catchTrialIdx]);
             catchTrialIdx++;
 
             // mix lotteries and stim 2
             temp = [];
-            for (let j = 0; j < this.cont.length; j++) {
+            for (let j = 0; j < this.cont.length - 7; j++) {
 
                 let lotteryFile = this.ev[j].toString();
                 let lotteryContIdx = j;
                 let lotteryEV = this.ev[j];
                 let lotteryP = this.cont[j];
 
+                let option2isSymbol = false;
+
                 temp.push([
                     file2, lotteryFile, contIdx2, lotteryContIdx, p2, lotteryP,
-                    ev2, lotteryEV, r1, r2, isCatchTrial
+                    ev2, lotteryEV, r1, r2, isCatchTrial, option2isSymbol
                 ]);
             }
 
-            this.trialObjChoiceElicitationTraining = this.trialObjChoiceElicitationTraining.concat(shuffle(temp));
+            for (let k = 0; k < nCond - 2; k++) {
+                let [sym1, sym2] = this.trainingContexts[k];
+
+                let sym1contIdx = this.probs[k][0];
+                let sym2contIdx = this.probs[k][1];
+
+                let symEv1 = this.ev[sym1contIdx];
+                let symEv2 = this.ev[sym2contIdx];
+
+                let symP1 = this.cont[sym1contIdx];
+                let symP2 = this.cont[sym2contIdx];
+
+                let symR1 = this.rew;
+                let symR2 = this.rew;
+
+                let isCatchTrial = false;
+                let option2isSymbol = true;
+
+                if (sym1 !== file2) {
+                    temp.push([
+                        file2, sym1,
+                        contIdx2, sym1contIdx,
+                        p2, symP1,
+                        ev2, symEv1,
+                        r2, symR1,
+                        isCatchTrial,
+                        option2isSymbol
+                    ])
+                }
+                if (sym2 !== file2) {
+                    temp.push([
+                        file2, sym2,
+                        contIdx2, sym2contIdx,
+                        p2, symP2,
+                        ev2, symEv2,
+                        r2, symR2,
+                        isCatchTrial,
+                        option2isSymbol
+                    ])
+                }
+            }
+
+            this.trialObjChoiceElicitationTraining =
+                this.trialObjChoiceElicitationTraining.concat(shuffle(temp));
             this.trialObjChoiceElicitationTraining.push(catchTrials[catchTrialIdx]);
 
         }
+
+        // add catch trials to slider
+        this.trialObjSliderElicitationTraining.push(
+            [this.ev[2].toString(), 2, this.cont[2], this.ev[2], this.rew, true]
+        );
+        this.trialObjSliderElicitationTraining.push(
+            [this.ev[8].toString(), 8, this.cont[8], this.ev[8], this.rew, true]
+        );
+
+        this.trialObjSliderElicitationTraining = shuffle(this.trialObjSliderElicitationTraining);
 
         // Phase 2
         // ===================================================================== //
@@ -392,13 +490,58 @@ export class ExperimentParameters {
                 let lotteryEV = this.ev[j];
                 let lotteryP = this.cont[j];
 
+                let option2isSymbol = false;
+
                 temp.push([
                     file1, lotteryFile, contIdx1, lotteryContIdx, p1,
-                    lotteryP, ev1, lotteryEV, r1, r2, isCatchTrial
+                    lotteryP, ev1, lotteryEV, r1, r2, isCatchTrial, option2isSymbol
                 ]);
             }
+            for (let k = 0; k < nCond; k++) {
+                let [sym1, sym2] = this.contexts[k];
 
-            this.trialObjChoiceElicitation = this.trialObjChoiceElicitation.concat(shuffle(temp));
+                let sym1contIdx = this.probs[k][0];
+                let sym2contIdx = this.probs[k][1];
+
+                let symEv1 = this.ev[sym1contIdx];
+                let symEv2 = this.ev[sym2contIdx];
+
+                let symP1 = this.cont[sym1contIdx];
+                let symP2 = this.cont[sym2contIdx];
+
+                let symR1 = this.rew;
+                let symR2 = this.rew;
+
+                let option2isSymbol = true;
+
+                let isCatchTrial = false;
+
+                if (sym1 !== file1) {
+                    temp.push([
+                        file1, sym1,
+                        contIdx1, sym1contIdx,
+                        p1, symP1,
+                        ev1, symEv1,
+                        r1, symR1,
+                        isCatchTrial,
+                        option2isSymbol
+                    ])
+                }
+                if (sym2 !== file1) {
+                    temp.push([
+                        file1, sym2,
+                        contIdx1, sym2contIdx,
+                        p1, symP2,
+                        ev1, symEv2,
+                        r1, symR2,
+                        isCatchTrial,
+                        option2isSymbol
+                    ])
+                }
+            }
+
+            this.trialObjChoiceElicitation =
+                this.trialObjChoiceElicitation.concat(shuffle(temp));
             this.trialObjChoiceElicitation.push(catchTrials[catchTrialIdx]);
             catchTrialIdx++;
 
@@ -411,16 +554,72 @@ export class ExperimentParameters {
                 let lotteryEV = this.ev[j];
                 let lotteryP = this.cont[j];
 
+                let option2isSymbol = false;
+
                 temp.push([
                     file2, lotteryFile, contIdx2, lotteryContIdx, p2,
-                    lotteryP, ev2, lotteryEV, r1, r2, isCatchTrial
+                    lotteryP, ev2, lotteryEV, r1, r2, isCatchTrial, option2isSymbol
                 ]);
             }
 
-            this.trialObjChoiceElicitation = this.trialObjChoiceElicitation.concat(shuffle(temp));
+            for (let k = 0; k < nCond; k++) {
+                let [sym1, sym2] = this.contexts[k];
+
+                let sym1contIdx = this.probs[k][0];
+                let sym2contIdx = this.probs[k][1];
+
+                let symEv1 = this.ev[sym1contIdx];
+                let symEv2 = this.ev[sym2contIdx];
+
+                let symP1 = this.cont[sym1contIdx];
+                let symP2 = this.cont[sym2contIdx];
+
+                let symR1 = this.rew;
+                let symR2 = this.rew;
+
+                let option2isSymbol = true;
+                let isCatchTrial = false;
+
+                if (sym1 !== file2) {
+                    temp.push([
+                        file2, sym1,
+                        contIdx2, sym1contIdx,
+                        p2, symP1,
+                        ev2, symEv1,
+                        r2, symR1,
+                        isCatchTrial,
+                        option2isSymbol
+                    ])
+                }
+                if (sym2 !== file2) {
+                    temp.push([
+                        file2, sym2,
+                        contIdx2, sym2contIdx,
+                        p2, symP2,
+                        ev2, symEv2,
+                        r2, symR2,
+                        isCatchTrial,
+                        option2isSymbol
+                    ])
+                }
+            }
+
+            this.trialObjChoiceElicitation =
+                this.trialObjChoiceElicitation.concat(shuffle(temp));
             this.trialObjChoiceElicitation.push(catchTrials[catchTrialIdx]);
 
         }
+        // add catch trials to slider
+        this.trialObjSliderElicitation.push(
+            [this.ev[1].toString(), 1, this.cont[1], this.ev[1], this.rew, true]
+        );
+        this.trialObjSliderElicitation.push(
+            [this.ev[9].toString(), 9, this.cont[9], this.ev[9], this.rew, true]
+        );
+
+        this.trialObjSliderElicitation = shuffle(this.trialObjSliderElicitation);
+
+        debugger
     }
 
     _computeMaxPoints() {
@@ -464,9 +663,9 @@ export class ExperimentParameters {
         let borderColor = "transparent";
 
         this.images = [];
-        this.availableOptions = [];
+        this.learningOptions = [];
         for (let i = 2; i < nImg + 2; i++) {
-            this.availableOptions.push(i);
+            this.learningOptions.push(i);
             this.images[i] = new Image();
             this.images[i].src = imgPath + 'stim_old/' + i + '.' + imgExt;
             this.images[i].className = "img-responsive center-block";
