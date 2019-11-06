@@ -126,8 +126,6 @@ export class ExperimentParameters {
         this.expCondition = [];
         this.trainingCondition = [];
 
-        this.learningStim = [];
-        this.learningStimTraining = [];
 
         // range cond for each session
         let cond = shuffle(range(0, nCond - 1));
@@ -221,6 +219,9 @@ export class ExperimentParameters {
         // Learning Phase -- Trial obj definition
         // ===================================================================== //
         // ===================================================================== //
+        this.trialObjLearning = [];
+        this.trialObjLearningTraining = [];
+
 
         for (let i = 0; i < this.expCondition.length; i++) {
 
@@ -242,7 +243,7 @@ export class ExperimentParameters {
 
             let isCatchTrial = false;
 
-            this.learningStim.push(
+            this.trialObjLearning.push(
                 [file1, file2, contIdx1, contIdx2, p1, p2, ev1, ev2, r1, r2, isCatchTrial]
             );
 
@@ -268,7 +269,7 @@ export class ExperimentParameters {
 
             let isCatchTrial = false;
 
-            this.learningStimTraining.push(
+            this.trialObjLearningTraining.push(
                 [file1, file2, contIdx1, contIdx2, p1, p2, ev1, ev2, r1, r2, isCatchTrial]
             );
 
@@ -279,8 +280,8 @@ export class ExperimentParameters {
         // ===================================================================== //
 
         // Training
-        this.elicitationStimTraining = [];
-        this.elicitationStimEVTraining = [];
+        this.trialObjChoiceElicitation = [];
+        this.trialObjChoiceElicitationTraining = [];
         let catchTrialIdx = 0;
 
         // Training
@@ -303,11 +304,11 @@ export class ExperimentParameters {
 
             let isCatchTrial = false;
 
-            this.elicitationStimTraining.push(
+            this.trialObjChoiceElicitation.push(
                 [file1, contIdx1, p1, ev1, r1, isCatchTrial]
             );
 
-            this.elicitationStimTraining.push(
+            this.trialObjChoiceElicitation.push(
                 [file2, contIdx2, p2, ev2, r2, isCatchTrial]
             );
 
@@ -326,8 +327,8 @@ export class ExperimentParameters {
                 ]);
             }
 
-            this.elicitationStimEVTraining = this.elicitationStimEVTraining.concat(shuffle(temp));
-            this.elicitationStimEVTraining.push(catchTrials[catchTrialIdx]);
+            this.trialObjChoiceElicitationTraining = this.trialObjChoiceElicitationTraining.concat(shuffle(temp));
+            this.trialObjChoiceElicitationTraining.push(catchTrials[catchTrialIdx]);
             catchTrialIdx++;
 
             // mix lotteries and stim 2
@@ -345,15 +346,15 @@ export class ExperimentParameters {
                 ]);
             }
 
-            this.elicitationStimEVTraining = this.elicitationStimEVTraining.concat(shuffle(temp));
-            this.elicitationStimEVTraining.push(catchTrials[catchTrialIdx]);
+            this.trialObjChoiceElicitationTraining = this.trialObjChoiceElicitationTraining.concat(shuffle(temp));
+            this.trialObjChoiceElicitationTraining.push(catchTrials[catchTrialIdx]);
 
         }
 
         // Phase 2
         // ===================================================================== //
-        this.elicitationStim = [];
-        this.elicitationStimEV = [];
+        this.trialObjSliderElicitation = [];
+        this.trialObjSliderElicitationTraining = [];
         catchTrialIdx = 0;
 
         for (let i = 0; i < nCond; i++) {
@@ -374,11 +375,11 @@ export class ExperimentParameters {
 
             let isCatchTrial = false;
 
-            this.elicitationStim.push(
+            this.trialObjSliderElicitation.push(
                 [file1, contIdx1, p1, ev1, r1, isCatchTrial]
             );
 
-            this.elicitationStim.push(
+            this.trialObjSliderElicitation.push(
                 [file2, contIdx2, p2, ev2, r2, isCatchTrial]
             );
 
@@ -397,8 +398,8 @@ export class ExperimentParameters {
                 ]);
             }
 
-            this.elicitationStimEV = this.elicitationStimEV.concat(shuffle(temp));
-            this.elicitationStimEV.push(catchTrials[catchTrialIdx]);
+            this.trialObjSliderElicitationTraining = this.trialObjSliderElicitationTraining.concat(shuffle(temp));
+            this.trialObjSliderElicitationTraining.push(catchTrials[catchTrialIdx]);
             catchTrialIdx++;
 
             // mix lotteries and stim 2
@@ -416,8 +417,8 @@ export class ExperimentParameters {
                 ]);
             }
 
-            this.elicitationStimEV = this.elicitationStimEV.concat(shuffle(temp));
-            this.elicitationStimEV.push(catchTrials[catchTrialIdx]);
+            this.trialObjSliderElicitationTraining = this.trialObjSliderElicitationTraining.concat(shuffle(temp));
+            this.trialObjSliderElicitationTraining.push(catchTrials[catchTrialIdx]);
 
         }
     }
@@ -429,25 +430,25 @@ export class ExperimentParameters {
 
         let maxPoints = 0;
 
-        for (let i = 0; i < this.learningStim.length; i++) {
+        for (let i = 0; i < this.trialObjLearning.length; i++) {
 
-            let ev1 = this.learningStim[i][6];
-            let ev2 = this.learningStim[i][7];
-
-            maxPoints += Math.max(ev1, ev2)
-        }
-
-        for (let i = 0; i < this.elicitationStimEV.length; i++) {
-
-            let ev1 = this.elicitationStimEV[i][6];
-            let ev2 = this.elicitationStimEV[i][7];
+            let ev1 = this.trialObjLearning[i][6];
+            let ev2 = this.trialObjLearning[i][7];
 
             maxPoints += Math.max(ev1, ev2)
         }
 
-        for (let i = 0; i < this.elicitationStim.length; i++) {
+        for (let i = 0; i < this.trialObjSliderElicitationTraining.length; i++) {
 
-            let ev1 = this.elicitationStim[i][3];
+            let ev1 = this.trialObjSliderElicitationTraining[i][6];
+            let ev2 = this.trialObjSliderElicitationTraining[i][7];
+
+            maxPoints += Math.max(ev1, ev2)
+        }
+
+        for (let i = 0; i < this.trialObjSliderElicitation.length; i++) {
+
+            let ev1 = this.trialObjSliderElicitation[i][3];
             maxPoints += ev1;
         }
 
