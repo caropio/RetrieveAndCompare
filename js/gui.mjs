@@ -42,7 +42,7 @@ export class GUI {
             '      </div>\n' +
             '    </div>\n' +
             '</div>\n';
-        $('#Top').html(str);
+        $('#Modal').html(str);
         $('#myModal').modal();
 
     }
