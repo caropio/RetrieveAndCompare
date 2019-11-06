@@ -3,6 +3,7 @@ import {Instructions} from "./modules/inst.js";
 import {Questionnaire} from "./modules/quest.js";
 import {ChoiceManager, SliderManager} from "./modules/trial_manager.js";
 import {GUI} from "./modules/gui.js";
+import {sendToDB} from "./modules/request.js";
 
 
 // When the page is fully loaded, the main function will be called
@@ -10,6 +11,10 @@ $(document).ready(main);
 
 
 function main() {
+    let data = {expID: '11s', id: 'test', exp: 'salut', browser: 'tiit'};
+    let url = '/php/InsertExpDetails.php';
+    sendToDB(0, data, url);
+
     /*
     Main function where
     we instantiate experiment parameters, in order to maintain

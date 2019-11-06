@@ -2,7 +2,6 @@ import {GUI} from './gui.js'
 
 
 export function sendToDB(call, data, url) {
-
     $.ajax({
         type: 'POST',
         data: data,
@@ -15,9 +14,11 @@ export function sendToDB(call, data, url) {
             }
             alert(r);
             alert(r.error);
+            debugger
         },
 
         error: function (XMLHttpRequest, textStatus, errorThrown) {
+
 
             if ((call + 1) < 5) {
                 sendToDB(call + 1);
@@ -25,6 +26,7 @@ export function sendToDB(call, data, url) {
 
             GUI.displayModalWindow('Network error',
                 '' + XMLHttpRequest + ' ' + textStatus + ' ' + errorThrown, 'error');
+            debugger
         }
     });
 }
