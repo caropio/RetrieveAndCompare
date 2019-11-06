@@ -13,14 +13,19 @@ function main() {
     Main function where
     we instantiate experiment parameters, in order to maintain
     their attributes throught the whole experiment scope
+    TODO:
+        * Add symbols during post test (7 for each block)
+        * check instructions adapted
+        * check whether correct score is displayed
+        * check db insertion
      */
 
     // init main parameters
     // these three variables indicate what
     // has to be run in the state machine (i.e. current state of the experiment)
     let sessionNum = -1;
-    let phaseNum = 2;
-    let instructionNum = 'end';
+    let phaseNum = 1;
+    let instructionNum = 0;
     let questNum = 0;
 
     // instantiate experiment parameters
@@ -32,7 +37,7 @@ function main() {
             completeFeedback: true, // display feedback of both options
             maxPoints: undefined, // max points cumulated all along the experiment
                                  // if undefined or 0, will be computed automatically
-            howMuchPenceForOnePoint: 250,
+            maxCompensation: 250, // in pence (in addition of the initial endowment)
             feedbackDuration: 2000, // how many milliseconds we present the outcome
             maxTrainingNum: -2, // if sessionNum == maxTrainingNum
                                 // do not allow for new training sessions
@@ -170,7 +175,7 @@ function stateMachine({instructionNum, sessionNum, phaseNum, questNum, exp} = {}
             break;
 
         default:
-            alert('NON-EXPECTED STATE');
+            error('Instructions: non-expected state');
     }
 
     /* ============================ Test Management ================================ */
@@ -204,7 +209,7 @@ function stateMachine({instructionNum, sessionNum, phaseNum, questNum, exp} = {}
                     exp: exp,
                     elicitationType: [-1, 0][isElicitation],
                     showFeedback: [true, false][isElicitation],
-                    maxTrials: 6,
+                    maxTrials: 3,
                     // what will be executed next
                     nextFunc: stateMachine,
                     nextParams: {
@@ -253,7 +258,7 @@ function stateMachine({instructionNum, sessionNum, phaseNum, questNum, exp} = {}
             break;
 
         default:
-            alert('NON-EXPECTED STATE');
+            error('Test: non-expected state');
     }
 
     /* ============================ Questionnaire Management ====================== */
@@ -283,7 +288,7 @@ function stateMachine({instructionNum, sessionNum, phaseNum, questNum, exp} = {}
             break;
 
         default:
-            alert('NON-EXPECTED STATE');
+            error('Questionnaire: non-expected state');
 
     }
 

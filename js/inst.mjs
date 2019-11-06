@@ -139,7 +139,8 @@ export class Instructions {
 
             case 2:
                 Info = '<H3 align = "center">In addition of the fixed compensation provided by Profilic, you have been endowed with an additional 2.5 pounds. '
-                    + '<br><br>Depending on your choices you can either double this endowment or lose it.<br><br>Following experimental economics methodological standards, no deception is involved concerning the calculation of the final payoff.'
+                    + '<br><br>Depending on your choices you can either double this endowment or lose it.<br><br>'
+                    + 'Following experimental economics methodological standards, no deception is involved concerning the calculation of the final payoff.'
                     + '<br> Across the three phases of the experiment, you can win a bonus up to ' + this.exp.maxPoints + ' points = ' + this.exp.pointsToPounds(this.exp.maxPoints).toFixed(2) + ' pounds!';
                 break;
         }

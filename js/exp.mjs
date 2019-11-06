@@ -19,7 +19,7 @@ export class ExperimentParameters {
         maxTrainingNum,
         compLink,
         imgPath,
-        howMuchPenceForOnePoint,
+        maxCompensation,
         nTrialPerCondition,
         nTrialPerConditionTraining,
         nCond}={}) {
@@ -64,8 +64,7 @@ export class ExperimentParameters {
 
         // define compensation functions
         // ===================================================================== //
-        // one point equals 250 pence / maxPoints
-        let conversionRate = (howMuchPenceForOnePoint / this.maxPoints).toFixed(2);
+        let conversionRate = (maxCompensation/this.maxPoints).toFixed(2);
         this.pointsToPence = points => points * conversionRate;
         this.penceToPounds = pence => pence / 100;
         this.pointsToPounds = points => this.penceToPounds(this.pointsToPence(points));
