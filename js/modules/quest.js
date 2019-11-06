@@ -8,13 +8,13 @@ export class Questionnaire {
     constructor(exp) {
         this.exp = exp;
     }
-    
+
     runCRT(funcParams, nextFunc, nextParams) {
-        
+
         let questNum = funcParams['questNum'];
         GUI.init();
-        
-        let nQuestions = 7; 
+
+        let nQuestions = 7;
 
         let Title = '<H2 align = "center"></H2>';
         let questID;
@@ -166,7 +166,7 @@ export class Questionnaire {
         }
 
         let Buttons = '<div class="row"><div class="col-xs-3 col-md-3"></div><div id = "Middle" class="col-xs-7 col-md-7">'
-            +'<input type="button"  class="btn btn-default" id="Next" value="Next" > </div><div class="col-xs-1 col-md-1"></div></div>';
+            + '<input type="button"  class="btn btn-default" id="Next" value="Next" > </div><div class="col-xs-1 col-md-1"></div></div>';
 
 
         $('#TextBoxDiv').html(Title + Info + Ticks);
@@ -225,7 +225,7 @@ export class Questionnaire {
     }
 
     runSES(funcParams, nextFunc, nextParams) {
-        
+
         GUI.init();
 
         let questNum = funcParams['questNum'];

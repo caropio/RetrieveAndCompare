@@ -25,7 +25,6 @@ export class GUI {
         }
 
         let str =
-            '<!-- Modal pop up window used in order to inform that submission is sent-->\n' +
             '<div class="modal fade" id="myModal" role="dialog">\n' +
             '    <div class="modal-dialog modal-sm">\n' +
             '      <div class="modal-content">\n' +

@@ -1,8 +1,8 @@
-import {ExperimentParameters} from "./exp.js";
-import {Instructions} from "./inst.js";
-import {Questionnaire} from "./quest.js";
-import {ChoiceManager, SliderManager} from "./trial_manager.js";
-import {GUI} from "./gui.js";
+import {ExperimentParameters} from "./modules/exp.js";
+import {Instructions} from "./modules/inst.js";
+import {Questionnaire} from "./modules/quest.js";
+import {ChoiceManager, SliderManager} from "./modules/trial_manager.js";
+import {GUI} from "./modules/gui.js";
 
 
 // When the page is fully loaded, the main function will be called
