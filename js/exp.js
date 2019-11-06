@@ -1,4 +1,4 @@
-import {range, shuffle, getOS, getBrowser, createCode} from './utils.mjs';
+import {range, shuffle, getOS, getBrowser, createCode} from './utils.js';
 
 
 export class ExperimentParameters {

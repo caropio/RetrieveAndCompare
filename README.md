@@ -2,5 +2,5 @@
 
 ##  TO DO (refactoring and encapsulation)
 
-* Encapsulate GUI
+* Encapsulate Gui
 * Remove what is hardcoded as much as possible

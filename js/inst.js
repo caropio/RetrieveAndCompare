@@ -1,5 +1,5 @@
-import {GUI} from './gui.mjs';
-import {sendToDB} from "./request.mjs";
+import {GUI} from './gui.js';
+import {sendToDB} from "./request.js";
 
 
 export class Instructions {

@@ -1,6 +1,6 @@
-import {sendToDB} from "./request.mjs"
-import {randint, shuffle, range} from "./utils.mjs";
-import {GUI} from "./gui.mjs";
+import {sendToDB} from "./request.js"
+import {randint, shuffle, range} from "./utils.js";
+import {GUI} from "./gui.js";
 
 
 export class ChoiceManager {
