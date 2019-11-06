@@ -39,8 +39,8 @@ $stmt->bind_param("sssiddidiiiiiiiissidiiiddiiiid",
 );
 $stmt->execute();
 $err = $stmt->errno ;
-$data[] = array(
-      'ErrorNo' => $err,
+$data = array(
+      'error' => $err,
     );
 $stmt->close();
  $db->close();

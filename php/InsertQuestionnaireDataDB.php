@@ -1,6 +1,5 @@
 <?php
 
-
 include 'connectDB.php';
 
 $EXP = stripslashes(htmlspecialchars($_POST['exp']));
@@ -17,8 +16,8 @@ $stmt = $db->prepare("INSERT INTO questionnaire_data_r_and_c VALUE(?,?,?,?,?,?,?
 $stmt->bind_param("ssssiiiis",$EXP,$EXPID,$ID,$QUESTIONNAIRE,$NUMBER,$ITEM,$ANSWER,$VAL,$RTIME);
 $stmt->execute();
 $err = $stmt->errno ;
-$data[] = array(
-      'ErrorNo' => $err,
+$data = array(
+      'error' => $err,
     );
 $stmt->close();
  $db->close();
