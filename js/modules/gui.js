@@ -2,6 +2,12 @@ import {createDiv, range} from './utils.js'
 
 
 export class GUI {
+    /*
+    Class to display graphic contents
+     */
+
+
+    /* =================== public methods ================== */
 
     static init() {
         if ($('#TextBoxDiv').length === 0) {
@@ -9,106 +15,11 @@ export class GUI {
         }
     }
 
-    static displayModalWindow(title, message, type) {
-
-        let sym;
-        let color;
-        if (type === 'info') {
-            sym = 'fa-check';
-            color = 'green';
-        } else if (type === 'error') {
-            sym = 'fa-window-close';
-            color = 'red';
-        } else {
-            sym = 'fa-check';
-            color = 'gray';
-        }
-
-        let str =
-            '<div class="modal fade" id="myModal" role="dialog">\n' +
-            '    <div class="modal-dialog modal-sm">\n' +
-            '      <div class="modal-content">\n' +
-            '        <div class="modal-header">\n' +
-            '          <button type="button" class="close" data-dismiss="modal">&times;</button>\n' +
-            '          <center><span class="fa ' + sym + '" style="font-size: 30px; color: '+ color + ';">  ' + title + '</center>\n' +
-            '        </div>\n' +
-            '        <div class="modal-body">\n' +
-            '        <center><p>' + message + '</p></center>\n' +
-            '        </div>\n' +
-            '        <div class="modal-footer">\n' +
-            '          <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>\n' +
-            '        </div>\n' +
-            '      </div>\n' +
-            '    </div>\n' +
-            '</div>\n';
-        $('#Modal').html(str);
-        $('#myModal').modal();
-
-    }
-
     static displayOptions(id1, id2, img, feedbackImg, invertedPosition) {
        let [option1, option2, feedback1, feedback2] = GUI._getOptions(id1, id2, img, feedbackImg);
        GUI._displayTwoOptions(option1, option2, feedback1, feedback2, invertedPosition);
     }
 
-    static _getOptions(id1, id2, img, feedbackImg){
-
-        let option1 = img[id1];
-        option1.id = "option1";
-        option1 = option1.outerHTML;
-
-        let option2 = img[id2];
-        if (!option2) {
-            debugger
-        }
-        option2.id = "option2";
-        option2 = option2.outerHTML;
-
-        let feedback1 = feedbackImg["empty"];
-        feedback1.id = "feedback1";
-        feedback1 = feedback1.outerHTML;
-
-        let feedback2 = feedbackImg["empty"];
-        feedback2.id = "feedback2";
-        feedback2 = feedback2.outerHTML;
-
-        return [option1, option2, feedback1, feedback2]
-    }
-
-    static _displayTwoOptions(option1, option2, feedback1, feedback2, invertedPosition) {
-
-        let Title = '<div id = "Title"><H2 align = "center"> <br><br><br><br></H2></div>';
-
-        let canvas1 = '<canvas id="canvas1" height="620"' +
-            ' width="620" class="img-responsive center-block"' +
-            ' style="border: 5px solid transparent; position: relative; top: 0px;">';
-
-        let canvas2 = '<canvas id="canvas2" height="620"' +
-            ' width="620" class="img-responsive center-block"' +
-            ' style="border: 5px solid transparent; position: relative; top: 0px;">';
-
-        let options = [[option1, option2], [option2, option1]][+(invertedPosition)];
-        let feedbacks = [[feedback1, feedback2], [feedback2, feedback1]][+(invertedPosition)];
-        let canvas = [[canvas1, canvas2], [canvas2, canvas1]][+(invertedPosition)];
-
-        /* Create canevas for the slot machine effect, of the size of the images */
-        let Images = '<div id = "stimrow" class="row" style= "transform: translate(0%, -100%);position:relative"> ' +
-            '<div class="col-xs-1 col-md-1"></div>  <div class="col-xs-3 col-md-3">'
-            + options[0] + '</div><div id = "Middle" class="col-xs-4 col-md-4"></div>' +
-            '<div class="col-xs-3 col-md-3">' + options[1] + '</div><div class="col-xs-1 col-md-1"></div></div>';
-
-        let Feedback = '<div id = "fbrow" class="row" style= "transform: translate(0%, 0%);position:relative"> ' +
-            '<div class="col-xs-1 col-md-1"></div>  <div class="col-xs-3 col-md-3">' + feedbacks[0] + '' +
-            '</div><div id = "Middle" class="col-xs-4 col-md-4"></div><div class="col-xs-3 col-md-3">'
-            + feedbacks[1] + '</div><div class="col-xs-1 col-md-1"></div></div>';
-
-        let myCanvas = '<div id = "cvrow" class="row" style= "transform: translate(0%, -200%);position:relative">' +
-            '    <div class="col-xs-1 col-md-1"></div>  <div class="col-xs-3 col-md-3">'
-            + canvas[0] + '</div><div id = "Middle" class="col-xs-4 col-md-4"></div><div class="col-xs-3 col-md-3">'
-            + canvas[1] + '</div><div class="col-xs-1 col-md-1"></div></div>';
-
-        $('#TextBoxDiv').html(Title + Feedback + Images + myCanvas);
-    }
 
     static displayOptionSlider(id, imgObj, initValue) {
 
@@ -207,6 +118,108 @@ export class GUI {
             y += dy;
         }
     }
+
+    static displayModalWindow(title, message, type) {
+        /*
+        Method used to display error messages, warning, infos...
+         */
+
+        let sym;
+        let color;
+        if (type === 'info') {
+            sym = 'fa-check';
+            color = 'green';
+        } else if (type === 'error') {
+            sym = 'fa-window-close';
+            color = 'red';
+        } else {
+            sym = 'fa-check';
+            color = 'gray';
+        }
+
+        let str =
+            '<div class="modal fade" id="myModal" role="dialog">\n' +
+            '    <div class="modal-dialog modal-sm">\n' +
+            '      <div class="modal-content">\n' +
+            '        <div class="modal-header">\n' +
+            '          <button type="button" class="close" data-dismiss="modal">&times;</button>\n' +
+            '          <center><span class="fa ' + sym + '" style="font-size: 30px; color: '+ color + ';">  ' + title + '</center>\n' +
+            '        </div>\n' +
+            '        <div class="modal-body">\n' +
+            '        <center><p>' + message + '</p></center>\n' +
+            '        </div>\n' +
+            '        <div class="modal-footer">\n' +
+            '          <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>\n' +
+            '        </div>\n' +
+            '      </div>\n' +
+            '    </div>\n' +
+            '</div>\n';
+        $('#Modal').html(str);
+        $('#myModal').modal();
+
+    }
+
+    /* =================== private methods ================== */
+
+    static _getOptions(id1, id2, img, feedbackImg){
+
+        let option1 = img[id1];
+        option1.id = "option1";
+        option1 = option1.outerHTML;
+
+        let option2 = img[id2];
+        if (!option2) {
+            debugger
+        }
+        option2.id = "option2";
+        option2 = option2.outerHTML;
+
+        let feedback1 = feedbackImg["empty"];
+        feedback1.id = "feedback1";
+        feedback1 = feedback1.outerHTML;
+
+        let feedback2 = feedbackImg["empty"];
+        feedback2.id = "feedback2";
+        feedback2 = feedback2.outerHTML;
+
+        return [option1, option2, feedback1, feedback2]
+    }
+
+    static _displayTwoOptions(option1, option2, feedback1, feedback2, invertedPosition) {
+
+        let Title = '<div id = "Title"><H2 align = "center"> <br><br><br><br></H2></div>';
+
+        let canvas1 = '<canvas id="canvas1" height="620"' +
+            ' width="620" class="img-responsive center-block"' +
+            ' style="border: 5px solid transparent; position: relative; top: 0px;">';
+
+        let canvas2 = '<canvas id="canvas2" height="620"' +
+            ' width="620" class="img-responsive center-block"' +
+            ' style="border: 5px solid transparent; position: relative; top: 0px;">';
+
+        let options = [[option1, option2], [option2, option1]][+(invertedPosition)];
+        let feedbacks = [[feedback1, feedback2], [feedback2, feedback1]][+(invertedPosition)];
+        let canvas = [[canvas1, canvas2], [canvas2, canvas1]][+(invertedPosition)];
+
+        /* Create canevas for the slot machine effect, of the size of the images */
+        let Images = '<div id = "stimrow" class="row" style= "transform: translate(0%, -100%);position:relative"> ' +
+            '<div class="col-xs-1 col-md-1"></div>  <div class="col-xs-3 col-md-3">'
+            + options[0] + '</div><div id = "Middle" class="col-xs-4 col-md-4"></div>' +
+            '<div class="col-xs-3 col-md-3">' + options[1] + '</div><div class="col-xs-1 col-md-1"></div></div>';
+
+        let Feedback = '<div id = "fbrow" class="row" style= "transform: translate(0%, 0%);position:relative"> ' +
+            '<div class="col-xs-1 col-md-1"></div>  <div class="col-xs-3 col-md-3">' + feedbacks[0] + '' +
+            '</div><div id = "Middle" class="col-xs-4 col-md-4"></div><div class="col-xs-3 col-md-3">'
+            + feedbacks[1] + '</div><div class="col-xs-1 col-md-1"></div></div>';
+
+        let myCanvas = '<div id = "cvrow" class="row" style= "transform: translate(0%, -200%);position:relative">' +
+            '    <div class="col-xs-1 col-md-1"></div>  <div class="col-xs-3 col-md-3">'
+            + canvas[0] + '</div><div id = "Middle" class="col-xs-4 col-md-4"></div><div class="col-xs-3 col-md-3">'
+            + canvas[1] + '</div><div class="col-xs-1 col-md-1"></div></div>';
+
+        $('#TextBoxDiv').html(Title + Feedback + Images + myCanvas);
+    }
+
 }
 
 
