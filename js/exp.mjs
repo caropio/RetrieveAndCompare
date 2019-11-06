@@ -354,7 +354,7 @@ export class ExperimentParameters {
         // Phase 2
         // ===================================================================== //
         this.trialObjSliderElicitation = [];
-        this.trialObjSliderElicitationTraining = [];
+        this.trialObjChoiceElicitation = [];
         catchTrialIdx = 0;
 
         for (let i = 0; i < nCond; i++) {
@@ -398,8 +398,8 @@ export class ExperimentParameters {
                 ]);
             }
 
-            this.trialObjSliderElicitationTraining = this.trialObjSliderElicitationTraining.concat(shuffle(temp));
-            this.trialObjSliderElicitationTraining.push(catchTrials[catchTrialIdx]);
+            this.trialObjChoiceElicitation = this.trialObjChoiceElicitation.concat(shuffle(temp));
+            this.trialObjChoiceElicitation.push(catchTrials[catchTrialIdx]);
             catchTrialIdx++;
 
             // mix lotteries and stim 2
@@ -417,8 +417,8 @@ export class ExperimentParameters {
                 ]);
             }
 
-            this.trialObjSliderElicitationTraining = this.trialObjSliderElicitationTraining.concat(shuffle(temp));
-            this.trialObjSliderElicitationTraining.push(catchTrials[catchTrialIdx]);
+            this.trialObjChoiceElicitation = this.trialObjChoiceElicitation.concat(shuffle(temp));
+            this.trialObjChoiceElicitation.push(catchTrials[catchTrialIdx]);
 
         }
     }
@@ -438,10 +438,10 @@ export class ExperimentParameters {
             maxPoints += Math.max(ev1, ev2)
         }
 
-        for (let i = 0; i < this.trialObjSliderElicitationTraining.length; i++) {
+        for (let i = 0; i < this.trialObjChoiceElicitation.length; i++) {
 
-            let ev1 = this.trialObjSliderElicitationTraining[i][6];
-            let ev2 = this.trialObjSliderElicitationTraining[i][7];
+            let ev1 = this.trialObjChoiceElicitation[i][6];
+            let ev2 = this.trialObjChoiceElicitation[i][7];
 
             maxPoints += Math.max(ev1, ev2)
         }

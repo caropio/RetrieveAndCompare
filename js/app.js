@@ -182,22 +182,18 @@ function stateMachine({instructionNum, sessionNum, phaseNum, questNum, exp} = {}
 
     let trialObj;
     let imgObj = [exp.images, exp.trainingImg][isTraining];
+    let choice;
 
     switch (phaseNum) {
 
         case 1:
-        case 2:
-
-            let isElicitation = +(phaseNum > 1);
-
             // select stimuli depending on sessionNum;
             // Using arrays allows to avoid multiple if statements
             trialObj = [
-                [exp.trialObjLearning, exp.trialObjSliderElicitationTraining][isElicitation],
-                [exp.trialObjLearningTraining, exp.trialObjChoiceElicitationTraining][isElicitation],
-            ][isTraining];
+                exp.trialObjLearning,
+                exp.trialObjLearningTraining][isTraining];
 
-            let choice = new ChoiceManager(
+            choice = new ChoiceManager(
                 {
                     trialObj: trialObj,
                     feedbackDuration: exp.feedbackDuration,
@@ -207,15 +203,48 @@ function stateMachine({instructionNum, sessionNum, phaseNum, questNum, exp} = {}
                     sessionNum: sessionNum,
                     phaseNum: phaseNum,
                     exp: exp,
-                    elicitationType: [-1, 0][isElicitation],
-                    showFeedback: [true, false][isElicitation],
+                    elicitationType: -1,
+                    showFeedback: true,
                     maxTrials: 3,
                     // what will be executed next
                     nextFunc: stateMachine,
                     nextParams: {
-                        instructionNum: [5, 6][isElicitation],
+                        instructionNum: 5,
                         sessionNum: sessionNum,
-                        phaseNum: [2, 3][isElicitation],
+                        phaseNum: 2,
+                        exp: exp,
+                    }
+                }
+            );
+            choice.run();
+            return;
+
+        case 2:
+            // select stimuli depending on sessionNum;
+            // Using arrays allows to avoid multiple if statements
+            trialObj = [
+                exp.trialObjChoiceElicitation,
+                exp.trialObjChoiceElicitationTraining][isTraining];
+
+            choice = new ChoiceManager(
+                {
+                    trialObj: trialObj,
+                    feedbackDuration: exp.feedbackDuration,
+                    completeFeedback: exp.completeFeedback,
+                    feedbackObj: exp.feedbackImg,
+                    imgObj: imgObj,
+                    sessionNum: sessionNum,
+                    phaseNum: phaseNum,
+                    exp: exp,
+                    elicitationType: 0,
+                    showFeedback: false,
+                    maxTrials: 3,
+                    // what will be executed next
+                    nextFunc: stateMachine,
+                    nextParams: {
+                        instructionNum: 6,
+                        sessionNum: sessionNum,
+                        phaseNum: 3,
                         exp: exp,
                     }
                 }
@@ -226,7 +255,9 @@ function stateMachine({instructionNum, sessionNum, phaseNum, questNum, exp} = {}
         case 3:
 
             // select stimuli depending on sessionNum;
-            trialObj = [exp.trialObjSliderElicitation, exp.trialObjChoiceElicitation][isTraining];
+            trialObj = [
+                exp.trialObjSliderElicitation,
+                exp.trialObjChoiceElicitation][isTraining];
 
             let slider = new SliderManager(
                 {

@@ -128,7 +128,7 @@ function stateMachine({instructionNum, sessionNum, phaseNum, inst, exp} = {}) {
 
             // select stimuli depending on sessionNum;
             trialObj = [
-                [exp.trialObjLearning, exp.trialObjSliderElicitationTraining][isElicitation],
+                [exp.trialObjLearning, exp.trialObjChoiceElicitation][isElicitation],
                 [exp.trialObjLearningTraining, exp.trialObjChoiceElicitationTraining][isElicitation],
             ][isTraining];
 
