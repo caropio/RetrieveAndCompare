@@ -280,7 +280,7 @@ export class ExperimentParameters {
         // ===================================================================== //
 
         // Training
-        this.trialObjChoiceElicitation = [];
+        this.trialObjSliderElicitationTraining = [];
         this.trialObjChoiceElicitationTraining = [];
         let catchTrialIdx = 0;
 
@@ -304,11 +304,11 @@ export class ExperimentParameters {
 
             let isCatchTrial = false;
 
-            this.trialObjChoiceElicitation.push(
+            this.trialObjSliderElicitationTraining.push(
                 [file1, contIdx1, p1, ev1, r1, isCatchTrial]
             );
 
-            this.trialObjChoiceElicitation.push(
+            this.trialObjSliderElicitationTraining.push(
                 [file2, contIdx2, p2, ev2, r2, isCatchTrial]
             );
 
