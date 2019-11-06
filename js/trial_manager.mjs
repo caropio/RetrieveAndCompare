@@ -82,13 +82,13 @@ export class ChoiceManager {
             presentationTime: presentationTime
         };
 
-        GUI.displayOptions(
-            params["stimIdx1"],
-            params["stimIdx2"],
-            this.imgObj,
-            this.feedbackObj,
-            this.invertedPosition[this.trialNum]
-        );
+            GUI.displayOptions(
+                params["stimIdx1"],
+                params["stimIdx2"],
+                this.imgObj,
+                this.feedbackObj,
+                this.invertedPosition[this.trialNum]
+            );
 
         let clickEnabled = true;
 
@@ -263,7 +263,7 @@ export class ChoiceManager {
                         $('#Bottom').empty();
                         event.obj.nextFunc(event.obj.nextParams);
                     }, 500, {obj: event.obj})
-                }, 500, {obj: this}
+                }, this.feedbackDuration, {obj: this}
             );
         }
     };
@@ -448,7 +448,15 @@ export class SliderManager {
                 }, 500, {obj: event.obj});
             }, this.feedbackDuration, {obj: this});
         } else {
-            this.nextFunc(this.nextParams);
+            setTimeout(function (event) {
+                    $('#TextBoxDiv').fadeOut(500);
+                    setTimeout(function (event) {
+                        $('#Stage').empty();
+                        $('#Bottom').empty();
+                        event.obj.nextFunc(event.obj.nextParams);
+                    }, 500, {obj: event.obj})
+                }, this.feedbackDuration, {obj: this}
+            );
         }
     };
 }

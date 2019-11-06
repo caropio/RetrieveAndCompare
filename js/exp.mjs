@@ -316,7 +316,7 @@ export class ExperimentParameters {
             let temp = [];
             for (let j = 0; j < this.cont.length; j++) {
 
-                let lotteryFile = this.cont[j].toString();
+                let lotteryFile = this.ev[j].toString();
                 let lotteryContIdx = j;
                 let lotteryEV = this.ev[j];
                 let lotteryP = this.ev[j];

@@ -18,10 +18,10 @@ function main() {
     // init main parameters
     // these three variables indicate what
     // has to be run in the state machine (i.e. current state of the experiment)
-    let sessionNum = 0;
-    let phaseNum = 1;
+    let sessionNum = -1;
+    let phaseNum = 2;
     let instructionNum = 'end';
-    let questNum = 'end';
+    let questNum = 0;
 
     // instantiate experiment parameters
     let exp = new ExperimentParameters(
@@ -204,7 +204,7 @@ function stateMachine({instructionNum, sessionNum, phaseNum, questNum, exp} = {}
                     exp: exp,
                     elicitationType: [-1, 0][isElicitation],
                     showFeedback: [true, false][isElicitation],
-                    maxTrials: 3,
+                    maxTrials: 6,
                     // what will be executed next
                     nextFunc: stateMachine,
                     nextParams: {
@@ -216,7 +216,7 @@ function stateMachine({instructionNum, sessionNum, phaseNum, questNum, exp} = {}
                 }
             );
             choice.run();
-            break;
+            return;
 
         case 3:
 
@@ -246,7 +246,7 @@ function stateMachine({instructionNum, sessionNum, phaseNum, questNum, exp} = {}
                 }
             );
             slider.run();
-            break;
+            return;
 
         case 'end':
         case undefined:

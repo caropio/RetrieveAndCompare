@@ -21,6 +21,9 @@ export class GUI {
         option1 = option1.outerHTML;
 
         let option2 = img[id2];
+        if (!option2) {
+            debugger
+        }
         option2.id = "option2";
         option2 = option2.outerHTML;
 
