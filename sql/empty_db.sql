@@ -69,8 +69,8 @@ CREATE TABLE IF NOT EXISTS `learning_data_r_and_c` (
 `COND` int(11) NOT NULL,
 `CONT1` int(11) NOT NULL,
 `CONT2` int(11) NOT NULL,
-`SYML` int(11) NOT NULL,
-`SYMR` int(11) NOT NULL,
+`SYML` varchar(20) NOT NULL,
+`SYMR` varchar(20) NOT NULL,
 `LR` int(11) NOT NULL,
 `REW` double NOT NULL,
 `SESSION` int(11) NOT NULL,
@@ -92,18 +92,18 @@ CREATE TABLE IF NOT EXISTS `learning_data_r_and_c` (
 --  Table structure for table `questionnaire_data`
 -- 
 
--- CREATE TABLE IF NOT EXISTS `questionnaire_data` (
--- `EXP` varchar(20) NOT NULL,
--- `EXPID` varchar(20) NOT NULL,
--- `ID` varchar(100) NOT NULL,
--- `QUESTIONNAIRE` varchar(20) NOT NULL,
--- `NUMBER` int(11) NOT NULL,
--- `ITEM` int(11) NOT NULL,
--- `ANSWER` int(11) NOT NULL,
--- `VAL` int(11) NOT NULL,
--- `RTIME` bigint(20) NOT NULL,
--- `DBTIME` time NOT NULL
--- ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+ CREATE TABLE IF NOT EXISTS `questionnaire_data_r_and_c` (
+ `EXP` varchar(20) NOT NULL,
+ `EXPID` varchar(20) NOT NULL,
+ `ID` varchar(100) NOT NULL,
+ `QUESTIONNAIRE` varchar(20) NOT NULL,
+ `NUMBER` int(11) NOT NULL,
+ `ITEM` int(11) NOT NULL,
+ `ANSWER` int(11) NOT NULL,
+ `VAL` int(11) NOT NULL,
+ `RTIME` bigint(20) NOT NULL,
+ `DBTIME` time NOT NULL
+ ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 -- 
 -- --  -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- 
 -- 

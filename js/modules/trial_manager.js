@@ -134,7 +134,14 @@ export class ChoiceManager {
         let leftRight =
             +((invertedPosition && (choice === 1)) || (!invertedPosition && (choice === 2)));
 
-        let option2isSymbol = +(params['option2isSymbol']);
+        let option2isSymbol;
+
+        if (this.elicitationType === -1) {
+            option2isSymbol = 1;
+        } else {
+            option2isSymbol = +(params['option2isSymbol']);
+        }
+
         let isCatchTrial = +(params['isCatchTrial']);
 
         let condition = params['condition'];
@@ -155,7 +162,6 @@ export class ChoiceManager {
             symL = params['stimIdx2'];
             symR = params['stimIdx1'];
         }
-
 
         let [reward1, reward2, thisReward, otherReward, correctChoice] = this._getReward(choice, params);
         this._showReward(reward1, reward2, thisReward, choice);

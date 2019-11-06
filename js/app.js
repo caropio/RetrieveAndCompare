@@ -26,7 +26,7 @@ function main() {
     // has to be run in the state machine (i.e. current state of the experiment)
     let sessionNum = -1;
     let phaseNum = 1;
-    let instructionNum = 0;
+    let instructionNum = 3;
     let questNum = 0;
 
     // instantiate experiment parameters

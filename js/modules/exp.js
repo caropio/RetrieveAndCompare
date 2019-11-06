@@ -619,7 +619,6 @@ export class ExperimentParameters {
 
         this.trialObjSliderElicitation = shuffle(this.trialObjSliderElicitation);
 
-        debugger
     }
 
     _computeMaxPoints() {
