@@ -257,7 +257,7 @@ function stateMachine({instructionNum, sessionNum, phaseNum, questNum, exp} = {}
             // select stimuli depending on sessionNum;
             trialObj = [
                 exp.trialObjSliderElicitation,
-                exp.trialObjChoiceElicitation][isTraining];
+                exp.trialObjSliderElicitationTraining][isTraining];
 
             let slider = new SliderManager(
                 {
