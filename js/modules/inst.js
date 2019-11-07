@@ -136,6 +136,7 @@ export class Instructions {
             case 1:
                 Info = '<H3 align = "center">This experiment is composed of 4 phases.<br><br>'
                     + 'The first three phases consist in different cognitive tests.<br><br>'
+                    + 'The last phase consists in a short questionnaire.<br><br>'
                     + 'There will be a training session composed of shorter versions of the 3 phases before the actual experiment starts.<br>'
                     + '<br><br> </H3>';
                 break;
@@ -206,7 +207,7 @@ export class Instructions {
 
         let Title;
         if (isTraining) {
-            Title = '<H2 align="center">INSTRUCTIONS</H2>';
+            Title = '<H2 align="center">TRAINING</H2>';
         } else {
             Title = '<H2 align="center">PHASE ' + phaseNum + '</H2>';
         }
@@ -324,7 +325,7 @@ export class Instructions {
         let trainstring;
 
         if (isTraining) {
-            Title = '<H2 align = "center">INSTRUCTIONS</H2><br>';
+            Title = '<H2 align = "center">TRAINING</H2><br>';
             p = '<b>(Note: points won during the training do not count for the final payoff!)<br><br>'
                 + '<b>The word "ready" will be displayed before the actual game starts.</b></H3><br><br>';
             like = '';
@@ -481,7 +482,7 @@ export class Instructions {
         let Title;
 
         if (isTraining) {
-            Title = '<H2 align="center">INSTRUCTIONS</H2><br>';
+            Title = '<H2 align="center">TRAINING</H2><br>';
         } else {
             Title = '<H2 align="center">PHASE ' + phaseNum + '</H2><br>';
 
