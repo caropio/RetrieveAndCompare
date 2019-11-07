@@ -143,7 +143,7 @@ export class GUI {
             '      <div class="modal-content">\n' +
             '        <div class="modal-header">\n' +
             '          <button type="button" class="close" data-dismiss="modal">&times;</button>\n' +
-            '          <center><span class="fa ' + sym + '" style="font-size: 30px; color: '+ color + ';">  ' + title + '</center>\n' +
+            '          <center><span class="fa ' + sym + '" style="font-size: 24px; color: '+ color + ';">  ' + title + '</center>\n' +
             '        </div>\n' +
             '        <div class="modal-body">\n' +
             '        <center><p>' + message + '</p></center>\n' +
