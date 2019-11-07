@@ -41,7 +41,8 @@ export class Instructions {
 
         GUI.init();
 
-        let Title = '<H3 align = "center">Please enter your Prolific ID: <input type="text" id = "textbox_id" name="ID"></H3>';
+        // prolific id is 24 characters
+        let Title = '<H3 align = "center">Please enter your Prolific ID: <input maxlength="24" size="24" type="text" id = "textbox_id" name="ID"></H3>';
         let Buttons = '<div align="center"><input align="center" type="button"  class="btn btn-default" id="toConsent" value="Next" ></div>';
 
         let TextInput = '';
@@ -52,14 +53,16 @@ export class Instructions {
 
         $('#toConsent').click({obj: this}, function (event) {
 
-            if (document.getElementById('textbox_id').value !== '') {
-                event.data.obj.exp.subID = document.getElementById('textbox_id').value;
+            let answer = document.getElementById('textbox_id').value;
+
+            if (answer.length === 24 || event.data.obj.exp.isTesting) {
+                event.data.obj.exp.subID = answer;
                 $('#TextBoxDiv').remove();
                 $('#Stage').empty();
                 $('#Bottom').empty();
                 nextFunc(nextParams);
             } else {
-                GUI.displayModalWindow('Error', 'You must enter your Prolific ID.', 'error');
+                GUI.displayModalWindow('Error', 'You must enter a valid Prolific ID (24 alphanumeric characters).', 'error');
             }
         });
     };
@@ -354,10 +357,11 @@ export class Instructions {
                 Info = '<H3 align="center"> <b>Instructions for the second test (2/2)</b><br><br>'
                     + 'In the second test  there will be two kind of options.<br>'
                     + 'The first kind of options is represented by the symbols you already met during the previous test.<br><br>'
-                    + '<b>Note</b>: the symbols keep the same value as in the first test.<br><br>'
+                    + '<b>Note</b>: the symbols keep the same odds of winning / losing a point as in the first test.<br><br>'
                     + 'The second kind of options is represented by pie-charts explicitly describing the odds of winning / losing a point.<br><br>'
                     + 'Specifically, the green area indicates the chance of winning +1 (+' + this.exp.pointsToPence(1).toFixed(2) + 'p) ; the red area indicates the chance of losing -1 (+'
-                    + this.exp.pointsToPence(1).toFixed(2) + 'p).<br><br>';
+                    + this.exp.pointsToPence(1).toFixed(2) + 'p).<br><br>'
+                    + 'Sometimes you will be asked to choose between two symbols, sometime between two pie-charts, and sometimes between a pie-chart and a symbol.<br><br>';
                 break;
 
             case 3:

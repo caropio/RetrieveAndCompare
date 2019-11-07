@@ -148,13 +148,16 @@ export class GUI {
             '        <div class="modal-body">\n' +
             '        <center><p>' + message + '</p></center>\n' +
             '        </div>\n' +
-            '        <div class="modal-footer">\n' +
-            '          <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>\n' +
-            '        </div>\n' +
+            //'        <div class="modal-footer">\n' +
+            //'          <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>\n' +
+            //'        </div>\n' +
             '      </div>\n' +
             '    </div>\n' +
             '</div>\n';
-        $('#Modal').html(str);
+
+        if (!$('#Modal').html().includes('myModal')) {
+            $('#Modal').html(str);
+        }
         $('#myModal').modal();
 
     }
