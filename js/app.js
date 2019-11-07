@@ -11,10 +11,6 @@ $(document).ready(main);
 
 
 function main() {
-    let data = {expID: '11s', id: 'test', exp: 'salut', browser: 'tiit'};
-    let url = '/php/InsertExpDetails.php';
-    sendToDB(0, data, url);
-
     /*
     Main function where
     we instantiate experiment parameters, in order to maintain
@@ -31,7 +27,7 @@ function main() {
     // has to be run in the state machine (i.e. current state of the experiment)
     let sessionNum = -1;
     let phaseNum = 1;
-    let instructionNum = 3;
+    let instructionNum = 0;
     let questNum = 0;
 
     // instantiate experiment parameters
