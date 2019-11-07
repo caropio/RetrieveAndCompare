@@ -201,7 +201,12 @@ export class Instructions {
         let isTraining = funcParams["isTraining"];
         let phaseNum = funcParams['phaseNum'];
 
-        let Title = '<H2 align="center">INSTRUCTIONS</H2>';
+        let Title;
+        if (isTraining) {
+            Title = '<H2 align="center">INSTRUCTIONS</H2>';
+        } else {
+            Title = '<H2 align="center">PHASE ' + phaseNum + '</H2>';
+        }
         let Info;
 
         switch (pageNum) {
@@ -303,7 +308,7 @@ export class Instructions {
         let isTraining = funcParams['isTraining'];
         let phaseNum = funcParams['phaseNum'];
         let pageNum = funcParams['pageNum'];
-        let points = this.exp.sumReward[phaseNum];
+        let points = this.exp.sumReward[phaseNum - 1];
         let pence = this.exp.pointsToPence(points).toFixed(2);
         let pounds = this.exp.pointsToPounds(points).toFixed(2);
         let nPages = 3;
@@ -324,7 +329,7 @@ export class Instructions {
             Title = '<H2 align = "center">PHASE ' + phaseNum + '</H2><br>';
             like = '<h3 align="center"><b>Note:</b> The test of the phase 2 is like the second test of the training.</h3><br><br>';
 
-            p = 'This is the actual game, every point will be included in the final payoff.<br><br>'
+            p = '<H3 align="center">This is the actual game, every point will be included in the final payoff.<br><br>'
                 + 'Ready? <br></H3>';
         }
 
@@ -335,7 +340,6 @@ export class Instructions {
                 Info = '<H3 align = "center">You ' + wonlost + ' ' + points +
                     ' points = ' + pence + ' pence = ' + pounds + ' pounds!</h3><br><br>';
 
-                Info += like;
 
                 Info += '<H3 align="center"> <b>Instructions for the second test (1/2)</b><br><br>'
                     + 'In each round you have to choose between one of two items displayed on either side of the screen.<br>'
@@ -350,7 +354,7 @@ export class Instructions {
                 Info = '<H3 align="center"> <b>Instructions for the second test (2/2)</b><br><br>'
                     + 'In the second test  there will be two kind of options.<br>'
                     + 'The first kind of options is represented by the symbols you already met during the previous test.<br><br>'
-                    + '<b>Note</b>: the symbols keep the same outcome as in the first test.<br><br>'
+                    + '<b>Note</b>: the symbols keep the same value as in the first test.<br><br>'
                     + 'The second kind of options is represented by pie-charts explicitly describing the odds of winning / losing a point.<br><br>'
                     + 'Specifically, the green area indicates the chance of winning +1 (+' + this.exp.pointsToPence(1).toFixed(2) + 'p) ; the red area indicates the chance of losing -1 (+'
                     + this.exp.pointsToPence(1).toFixed(2) + 'p).<br><br>';
@@ -363,7 +367,7 @@ export class Instructions {
                     trainstring = "";
                 }
 
-                Info = '<H3 align="center">' + trainstring + p;
+                Info = '<H3 align="center">' + trainstring + like + p;
                 break;
 
         }
@@ -463,15 +467,21 @@ export class Instructions {
         let trainstring;
         let wonlost;
 
-        let points = this.exp.sumReward[phaseNum];
+        let points = this.exp.sumReward[phaseNum - 1];
         let pence = this.exp.pointsToPence(points).toFixed(2);
         let pounds = this.exp.pointsToPounds(points).toFixed(2);
 
         let nPages = 4;
 
         let Info;
+        let Title;
 
-        let Title = '<H2 align="center">INSTRUCTIONS</H2><br>';
+        if (isTraining) {
+            Title = '<H2 align="center">INSTRUCTIONS</H2><br>';
+        } else {
+            Title = '<H2 align="center">PHASE ' + phaseNum + '</H2><br>';
+
+        }
 
         switch (pageNum) {
             case 1:
@@ -724,7 +734,12 @@ export class Instructions {
 
         let Title = '<h3 align = "center">The game is over!<br>' +
             'You ' + wonlost + points + ' points in total, which is ' + pence + ' pence = ' + pounds + ' pounds!<br><br>' +
-            'With your initial endowment, you won a total bonus of ' + (parseFloat(pence) + 250) + ' pence = ' + (parseFloat(pounds) + 2.5) + ' pounds!<br><br>' +
+            'Overall, in this training, you ' + wonlost + ' ' + totalPoints +
+            ' points = ' + pence + ' pence = ' + pounds + ' pounds!<br><br>'
+            +'Test 1: ' + this.exp.sumReward[1] + '<br>'
+            + 'Test 2: ' + this.exp.sumReward[2] + '<br>'
+            + 'Test 3: ' + this.exp.sumReward[3] + '<br>'
+            + 'With your initial endowment, you won a total bonus of ' + (parseFloat(pence) + 250) + ' pence = ' + (parseFloat(pounds) + 2.5) + ' pounds!<br><br>' +
             'Thank you for playing!<br><br>Please click the link to complete this study:<br></h3><br>';
 
         let url = '<center><a href="' + this.exp.compLink + '">Click here.</a></center>';

@@ -25,6 +25,12 @@ function main() {
     // init main parameters
     // these three variables indicate what
     // has to be run in the state machine (i.e. current state of the experiment)
+    // initial values are:
+    // let sessionNum = -1;
+    // let phaseNum = 1;
+    // let instructionNum = 0;
+    // let questNum = 0;
+
     let sessionNum = -1;
     let phaseNum = 1;
     let instructionNum = 0;

@@ -159,6 +159,25 @@ export class GUI {
 
     }
 
+    static insertSkipButton(Obj=undefined, br=false) {
+
+        let b = ['', '<br><br>'][+(br)];
+
+        let button = b +
+            '<div align="center"><input align="center" type="button"' +
+            '  class="btn btn-default" id="skip" value="Skip all trials" ></div>';
+
+
+        $('#Bottom').html(button);
+        $('#skip').click(function () {
+            if (Obj.skipEnabled) {
+                Obj.skip = true;
+                Obj._next();
+            }
+        });
+
+    }
+
     /* =================== private methods ================== */
 
     static _getOptions(id1, id2, img, feedbackImg){
@@ -257,7 +276,7 @@ export class GUI {
 //     };
 //
 //     this.createDiv = function (parentID, childID) {
-// 		let d = $(document.createElement('div'))
+// 		let d = $(document.createElement('di?v'))
 // 		.attr("id", childID);
 // 		let container = document.getElementById(parentID);
 // 		d.appendTo(container);

@@ -60,6 +60,13 @@ export class ChoiceManager {
             Array.from(Array(this.nTrial), x => randint(0, 1))
         );
 
+        if (this.exp.isTesting) {
+            this._isTesting();
+        }
+
+        this.skip = undefined;
+        this.skipEnabled = true;
+
     }
 
     /* =================== public methods ================== */
@@ -67,6 +74,7 @@ export class ChoiceManager {
     run() {
 
         GUI.init();
+        this.skipEnabled = true;
 
         let trialObj = this.trialObj[this.trialNum];
 
@@ -109,6 +117,7 @@ export class ChoiceManager {
             if (!clickEnabled)
                 return;
             clickEnabled = false;
+            event.data.obj.skipEnabled = false;
             document.getElementById("canvas1").style.borderColor = "black";
             event.data.obj._clickEvent(1, params);
         });
@@ -117,6 +126,7 @@ export class ChoiceManager {
             if (!clickEnabled)
                 return;
             clickEnabled = false;
+            event.data.obj.skipEnabled = false;
             document.getElementById("canvas2").style.borderColor = "black";
             event.data.obj._clickEvent(2, params);
         });
@@ -125,6 +135,9 @@ export class ChoiceManager {
 
 
     /* =================== private methods ================== */
+    _isTesting() {
+        GUI.insertSkipButton(this, true);
+    }
 
     _clickEvent(choice, params) {
 
@@ -280,6 +293,15 @@ export class ChoiceManager {
     }
 
     _next() {
+        if (this.skip) {
+            $('#TextBoxDiv').fadeOut(500);
+            setTimeout(function (event) {
+                $('#Stage').empty();
+                $('#Bottom').empty();
+                event.obj.nextFunc(event.obj.nextParams);
+            }, 200, {obj: this});
+            return;
+        }
         this.trialNum++;
         if (this.trialNum < this.nTrial) {
             setTimeout(function (event) {
@@ -340,6 +362,12 @@ export class SliderManager {
 
         this.nextFunc = nextFunc;
         this.nextParams = nextParams;
+
+        if (this.exp.isTesting) {
+            this._isTesting();
+        }
+        this.skip = undefined;
+        this.skipEnabled = true;
     }
 
     /* =================== public methods ================== */
@@ -347,6 +375,8 @@ export class SliderManager {
     run() {
 
         GUI.init();
+
+        this.skipEnabled = true;
 
         let trialObj = this.trialObj[this.trialNum];
 
@@ -382,6 +412,7 @@ export class SliderManager {
         $('#ok').click({obj: this}, function (event) {
             if (clickEnabled) {
                 clickEnabled = false;
+                event.data.obj.skipEnabled = false;
                 let choice = slider.value;
                 event.data.obj._clickEvent(choice, params);
             }
@@ -390,6 +421,9 @@ export class SliderManager {
     };
 
     /* =================== private methods ================== */
+    _isTesting() {
+        GUI.insertSkipButton(this, true);
+    }
 
     _clickEvent(choice, params) {
 
@@ -474,6 +508,15 @@ export class SliderManager {
     };
 
     _next() {
+        if (this.skip) {
+            $('#TextBoxDiv').fadeOut(500);
+            setTimeout(function (event) {
+                $('#Stage').empty();
+                $('#Bottom').empty();
+                event.obj.nextFunc(event.obj.nextParams);
+            }, 200, {obj: this});
+            return;
+        }
         this.trialNum++;
         if (this.trialNum < this.nTrial) {
             setTimeout(function (event) {
