@@ -1,5 +1,6 @@
 import {GUI} from './gui.js'
 
+const MAX_REQUESTS = 3;
 
 export function sendToDB(call, data, url) {
     $.ajax({
@@ -9,7 +10,7 @@ export function sendToDB(call, data, url) {
         url: url,
         success: function (r) {
 
-            if (r.error > 0 && (call + 1) < 5) {
+            if (r.error > 0 && (call + 1) < MAX_REQUESTS) {
                 sendToDB(call + 1);
             }
         },
@@ -17,7 +18,7 @@ export function sendToDB(call, data, url) {
         error: function (XMLHttpRequest, textStatus, errorThrown) {
 
 
-            if ((call + 1) < 3) {
+            if ((call + 1) < MAX_REQUESTS) {
                 sendToDB(call + 1);
             } else {
                 GUI.displayModalWindow('Network error', 'Please contact us on prolific.', 'error');
