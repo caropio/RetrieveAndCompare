@@ -159,6 +159,9 @@ export class GUI {
             $('#Modal').html(str);
         }
         $('#myModal').modal();
+        $('#myModal').on('hidden.bs.modal', function () {
+            $('#Modal').empty();
+        });
 
     }
 
