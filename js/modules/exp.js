@@ -692,13 +692,14 @@ export class ExperimentParameters {
         let letters = [null, 'A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L',
             'M', 'N', 'O', 'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z'];
         for (let i = 2; i <= nTrainingImg + 1; i++) {
-            this.trainingOptions.push(i);
-            this.trainingImg[i] = new Image();
-            this.trainingImg[i].src = imgPath + 'stim/' + letters[i] + '.' + imgExt;
-            this.trainingImg[i].className = "img-responsive center-block";
-            this.trainingImg[i].style.border = "5px solid " + borderColor;
-            this.trainingImg[i].style.position = "relative";
-            this.trainingImg[i].style.top = "0px";
+            let idx = letters[i];
+            this.trainingOptions.push(idx);
+            this.trainingImg[idx] = new Image();
+            this.trainingImg[idx].src = imgPath + 'stim/' + idx + '.' + imgExt;
+            this.trainingImg[idx].className = "img-responsive center-block";
+            this.trainingImg[idx].style.border = "5px solid " + borderColor;
+            this.trainingImg[idx].style.position = "relative";
+            this.trainingImg[idx].style.top = "0px";
         }
 
         for (let i = 0; i < this.ev.length; i++) {

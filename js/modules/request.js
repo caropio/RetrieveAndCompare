@@ -17,7 +17,6 @@ export function sendToDB(call, data, url) {
 
         error: function (XMLHttpRequest, textStatus, errorThrown) {
 
-
             if ((call + 1) < MAX_REQUESTS) {
                 sendToDB(call + 1);
             } else {
