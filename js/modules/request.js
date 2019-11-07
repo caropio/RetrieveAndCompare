@@ -21,10 +21,11 @@ export function sendToDB(call, data, url) {
                 sendToDB(call + 1);
             } else {
                 GUI.displayModalWindow('Network error',
-                '' + XMLHttpRequest + ' ' + textStatus + ' ' + errorThrown, 'error');
+                    '' + XMLHttpRequest + ' ' + textStatus + ' ' + errorThrown, 'error');
                 GUI.displayModalWindow('Network error', 'Please contact the prolific experimentator.', 'error');
             }
 
+        }
 
     });
 }
