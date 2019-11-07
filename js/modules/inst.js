@@ -748,11 +748,9 @@ export class Instructions {
             + 'Test 2: ' + this.exp.sumReward[2] + ' = ' + this.exp.pointsToPounds(this.exp.sumReward[2]) + ' pounds' + '<br>'
             + 'Test 3: ' + this.exp.sumReward[1] + ' = ' + this.exp.pointsToPounds(this.exp.sumReward[3]) + ' pounds' + '<br>'
             + 'With your initial endowment, you won a total bonus of ' + (parseFloat(pence) + 250) + ' pence = ' + (parseFloat(pounds) + 2.5) + ' pounds!<br><br>' +
-            'Thank you for playing!<br><br>Please click the link to complete this study:<br></h3><br>';
+            'Thank you for playing!<br><br><a href="' + this.exp.compLink + '">Please click the link to complete this study</a><br></h3><br>';
 
-        let url = '<center><a href="' + this.exp.compLink + '">Click here.</a></center>';
-
-        $('#TextBoxDiv').html(Title + url);
+        $('#TextBoxDiv').html(Title);
     }
 
 
