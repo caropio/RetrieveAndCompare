@@ -20,8 +20,6 @@ export function sendToDB(call, data, url) {
             if ((call + 1) < 3) {
                 sendToDB(call + 1);
             } else {
-                GUI.displayModalWindow('Network error',
-                    '' + XMLHttpRequest + ' ' + textStatus + ' ' + errorThrown, 'error');
                 GUI.displayModalWindow('Network error', 'Please contact us on prolific.', 'error');
             }
 
