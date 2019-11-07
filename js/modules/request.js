@@ -22,7 +22,7 @@ export function sendToDB(call, data, url) {
             } else {
                 GUI.displayModalWindow('Network error',
                     '' + XMLHttpRequest + ' ' + textStatus + ' ' + errorThrown, 'error');
-                GUI.displayModalWindow('Network error', 'Please contact the prolific experimentator.', 'error');
+                GUI.displayModalWindow('Network error', 'Please contact us on prolific.', 'error');
             }
 
         }

@@ -715,6 +715,11 @@ export class Instructions {
 
         $('#Next').click({obj: this}, function (event) {
 
+            event.data.obj.exp.sumReward[0] = 0;
+            event.data.obj.exp.sumReward[1] = 0;
+            event.data.obj.exp.sumReward[2] = 0;
+            event.data.obj.exp.sumReward[3] = 0;
+
             $('#TextBoxDiv').remove();
             $('#Stage').empty();
             $('#Bottom').empty();
@@ -733,12 +738,10 @@ export class Instructions {
         let wonlost = [' won ', ' lost '][+(points < 0)];
 
         let Title = '<h3 align = "center">The game is over!<br>' +
-            'You ' + wonlost + points + ' points in total, which is ' + pence + ' pence = ' + pounds + ' pounds!<br><br>' +
-            'Overall, in this training, you ' + wonlost + ' ' + totalPoints +
-            ' points = ' + pence + ' pence = ' + pounds + ' pounds!<br><br>'
-            +'Test 1: ' + this.exp.sumReward[1] + '<br>'
-            + 'Test 2: ' + this.exp.sumReward[2] + '<br>'
-            + 'Test 3: ' + this.exp.sumReward[3] + '<br>'
+            'You ' + wonlost + points + ' points in total, which is ' + pence + ' pence = ' + pounds + ' pounds!<br><br>'
+            + 'Test 1: ' + this.exp.sumReward[1] + ' = ' + this.exp.pointsToPounds(this.exp.sumReward[1]) + ' pounds' + '<br>'
+            + 'Test 2: ' + this.exp.sumReward[2] + ' = ' + this.exp.pointsToPounds(this.exp.sumReward[2]) + ' pounds' + '<br>'
+            + 'Test 3: ' + this.exp.sumReward[1] + ' = ' + this.exp.pointsToPounds(this.exp.sumReward[3]) + ' pounds' + '<br>'
             + 'With your initial endowment, you won a total bonus of ' + (parseFloat(pence) + 250) + ' pence = ' + (parseFloat(pounds) + 2.5) + ' pounds!<br><br>' +
             'Thank you for playing!<br><br>Please click the link to complete this study:<br></h3><br>';
 
