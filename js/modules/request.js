@@ -12,21 +12,19 @@ export function sendToDB(call, data, url) {
             if (r.error > 0 && (call + 1) < 5) {
                 sendToDB(call + 1);
             }
-            alert(r);
-            alert(r.error);
-            debugger
         },
 
         error: function (XMLHttpRequest, textStatus, errorThrown) {
 
 
-            if ((call + 1) < 5) {
+            if ((call + 1) < 3) {
                 sendToDB(call + 1);
+            } else {
+                GUI.displayModalWindow('Network error',
+                '' + XMLHttpRequest + ' ' + textStatus + ' ' + errorThrown, 'error');
+                GUI.displayModalWindow('Network error', 'Please contact the prolific experimentator.', 'error');
             }
 
-            GUI.displayModalWindow('Network error',
-                '' + XMLHttpRequest + ' ' + textStatus + ' ' + errorThrown, 'error');
-            debugger
-        }
+
     });
 }
