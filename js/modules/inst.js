@@ -179,10 +179,10 @@ export class Instructions {
                 if (event.data.obj.exp.online) {
                     sendToDB(0,
                         {
-                            expID: event.data.obj.expID,
-                            id: event.data.obj.subID,
-                            exp: event.data.obj.expName,
-                            browser: event.data.obj.browsInfo
+                            expID: event.data.obj.exp.expID,
+                            id: event.data.obj.exp.subID,
+                            exp: event.data.obj.exp.expName,
+                            browser: event.data.obj.exp.browsInfo
                         },
                         'php/InsertExpDetails.php'
                     );
