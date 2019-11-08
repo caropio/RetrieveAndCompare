@@ -64,8 +64,8 @@ export class ExperimentParameters {
 
         // define compensation functions
         // ===================================================================== //
-        let conversionRate = (maxCompensation/this.maxPoints).toFixed(2);
-        this.pointsToPence = points => points * conversionRate;
+        this.conversionRate = (maxCompensation/this.maxPoints).toFixed(2);
+        this.pointsToPence = points => points * this.conversionRate;
         this.penceToPounds = pence => pence / 100;
         this.pointsToPounds = points => this.penceToPounds(this.pointsToPence(points));
 

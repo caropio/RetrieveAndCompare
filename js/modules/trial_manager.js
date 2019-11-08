@@ -74,6 +74,7 @@ export class ChoiceManager {
     run() {
 
         GUI.init();
+
         this.skipEnabled = true;
 
         let trialObj = this.trialObj[this.trialNum];
