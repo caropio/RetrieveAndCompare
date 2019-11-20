@@ -39,7 +39,7 @@ function main() {
     // instantiate experiment parameters
     let exp = new ExperimentParameters(
         {
-            online: true,   // send network requests
+            online: false,   // send network requests
             isTesting: true, // isTesting==in development vs in production
             expName: 'RetrieveAndCompare', // experience name
             completeFeedback: true, // display feedback of both options
@@ -51,6 +51,7 @@ function main() {
                                 // do not allow for new training sessions
             nTrialPerConditionTraining: 5,
             nTrialPerCondition: 30,
+            nSession: 2,
             nCond: 4,
             imgPath: 'images/cards_gif/',
             compLink: 'https://app.prolific.ac/submissions/complete?cc=RNFS5HP5' // prolific completion link
@@ -73,6 +74,7 @@ function stateMachine({instructionNum, sessionNum, phaseNum, questNum, exp} = {}
     // if sessionNum < 0, then it is a training session
     // here training sessionNum is in {-1, -2}
     let isTraining = +(sessionNum < 0);
+    let isLastSession = +(sessionNum === (exp.nSession-1));
 
     switch (instructionNum) {
         case 0:
@@ -118,7 +120,7 @@ function stateMachine({instructionNum, sessionNum, phaseNum, questNum, exp} = {}
 
         case 4:
             inst.displayInstructionLearning(
-                {pageNum: 1, isTraining: isTraining, phaseNum: 1},
+                {pageNum: 1, isTraining: isTraining, phaseNum: 1, sessionNum: sessionNum},
                 // what will be executed next
                 stateMachine,
                 {
@@ -129,7 +131,7 @@ function stateMachine({instructionNum, sessionNum, phaseNum, questNum, exp} = {}
 
         case 5:
             inst.displayInstructionChoiceElicitation(
-                {pageNum: 1, isTraining: isTraining, phaseNum: 2},
+                {pageNum: 1, isTraining: isTraining, phaseNum: 2, sessionNum: sessionNum},
                 // what will be executed next
                 stateMachine,
                 {
@@ -140,7 +142,7 @@ function stateMachine({instructionNum, sessionNum, phaseNum, questNum, exp} = {}
 
         case 6:
             inst.displayInstructionSliderElicitation(
-                {pageNum: 1, isTraining: isTraining, phaseNum: 3},
+                {pageNum: 1, isTraining: isTraining, phaseNum: 3, sessionNum: sessionNum},
                 // what will be executed next
                 stateMachine,
                 {
@@ -160,11 +162,11 @@ function stateMachine({instructionNum, sessionNum, phaseNum, questNum, exp} = {}
             return;
         case 8:
             inst.endExperiment(
-                {pageNum: 1, isTraining: 1, phaseNum: 3},
+                {pageNum: 1, isTraining: 1, phaseNum: 3, sessionNum: sessionNum},
                 // what will be executed next
                 stateMachine,
                 {
-                    instructionNum: 'end', exp: exp, sessionNum: 0, phaseNum: 'end'
+                    instructionNum: 'end', exp: exp, sessionNum: sessionNum, phaseNum: 'end'
                 }
             );
             return;
@@ -177,6 +179,16 @@ function stateMachine({instructionNum, sessionNum, phaseNum, questNum, exp} = {}
                 }
             );
             return;
+        case 10:
+            inst.nextSession(
+                // what will be executed next
+                stateMachine,
+                {
+                    instructionNum: 4, exp: exp, sessionNum: sessionNum, phaseNum: phaseNum, questNum: questNum
+                }
+            );
+            return;
+
 
         case 'end':
         case undefined:
@@ -198,12 +210,12 @@ function stateMachine({instructionNum, sessionNum, phaseNum, questNum, exp} = {}
             // select stimuli depending on sessionNum;
             // Using arrays allows to avoid multiple if statements
             trialObj = [
-                exp.trialObjLearning,
-                exp.trialObjLearningTraining][isTraining];
+                exp.trialObjLearning[sessionNum],
+                exp.trialObjLearningTraining[Math.abs(sessionNum) - 1]][isTraining];
 
             let conditionObj = [
-                exp.expCondition,
-                exp.trainingCondition][isTraining];
+                exp.expCondition[sessionNum],
+                exp.trainingCondition[Math.abs(sessionNum) - 1]][isTraining];
 
             choice = new ChoiceManager(
                 {
@@ -236,8 +248,8 @@ function stateMachine({instructionNum, sessionNum, phaseNum, questNum, exp} = {}
             // select stimuli depending on sessionNum;
             // Using arrays allows to avoid multiple if statements
             trialObj = [
-                exp.trialObjChoiceElicitation,
-                exp.trialObjChoiceElicitationTraining][isTraining];
+                exp.trialObjChoiceElicitation[sessionNum],
+                exp.trialObjChoiceElicitationTraining[Math.abs(sessionNum) - 1]][isTraining];
 
             choice = new ChoiceManager(
                 {
@@ -255,9 +267,9 @@ function stateMachine({instructionNum, sessionNum, phaseNum, questNum, exp} = {}
                     // what will be executed next
                     nextFunc: stateMachine,
                     nextParams: {
-                        instructionNum: 6,
-                        sessionNum: sessionNum,
-                        phaseNum: 3,
+                        instructionNum: [6, 10][+(sessionNum===0)],
+                        sessionNum: sessionNum+(sessionNum===0),
+                        phaseNum: [[1, 3][isTraining], 3][isLastSession],
                         exp: exp,
                     }
                 }
@@ -269,8 +281,8 @@ function stateMachine({instructionNum, sessionNum, phaseNum, questNum, exp} = {}
 
             // select stimuli depending on sessionNum;
             trialObj = [
-                exp.trialObjSliderElicitation,
-                exp.trialObjSliderElicitationTraining][isTraining];
+                exp.trialObjSliderElicitation[sessionNum],
+                exp.trialObjSliderElicitationTraining[Math.abs(sessionNum) - 1]][isTraining];
 
             let slider = new SliderManager(
                 {
@@ -287,9 +299,9 @@ function stateMachine({instructionNum, sessionNum, phaseNum, questNum, exp} = {}
                     // what will be executed next
                     nextFunc: stateMachine,
                     nextParams: {
-                        instructionNum: [9, 7][isTraining],
+                        instructionNum: [[4, 7][isTraining], 9][isLastSession],
                         sessionNum: sessionNum,
-                        phaseNum: ['end', 1][isTraining],
+                        phaseNum: [1, 'end'][isLastSession],
                         exp: exp,
                     }
                 }

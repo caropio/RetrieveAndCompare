@@ -122,6 +122,32 @@ export class Instructions {
         });
     }
 
+    nextSession(nextFunc, nextParams) {
+
+        GUI.init();
+
+        let oldSession = nextParams['sessionNum'];
+        let newSession = nextParams['sessionNum'] + 1;
+
+        let Title = '<H2 align = "center">END OF SESSION</H2>';
+        let Info = '<br><br><br><br><br><H3 align = "center">This is the end of session ' + oldSession + '.<br><br>'
+                    + 'Session ' + newSession + ' starts now.'
+                    + '<br><br> </H3>';
+        let Buttons =
+            '<div align="center"><input align="center" type="button"  class="btn btn-default" id="Next" value="Next" ></div>';
+
+        $('#TextBoxDiv').html(Title+Info);
+        $('#Bottom').html(Buttons);
+
+        $('#Next').click(function () {
+            $('#TextBoxDiv').remove();
+            $('#Stage').empty();
+            $('#Bottom').empty();
+            nextFunc(nextParams);
+        });
+        debugger
+    }
+
     displayInitialInstruction(funcParams, nextFunc, nextParams) {
 
         let nPages = 2;
@@ -134,10 +160,10 @@ export class Instructions {
         switch (pageNum) {
 
             case 1:
-                Info = '<H3 align = "center">This experiment is composed of 4 phases.<br><br>'
-                    + 'The first three phases consist in different cognitive tests.<br><br>'
-                    + 'The last phase consists in a short questionnaire.<br><br>'
+                Info = '<H3 align = "center">This experiment is composed of 3 sessions.<br><br>'
+                    + 'The first two sessions consist in different cognitive tests and are composed of respectively two and three phases.<br><br>'
                     + 'There will be a training session composed of shorter versions of the 3 phases before the actual experiment starts.<br>'
+                    + 'The last session consists in a short questionnaire.<br><br>'
                     + '<br><br> </H3>';
                 break;
 
@@ -204,13 +230,13 @@ export class Instructions {
         let nPages = 3;
         let pageNum = funcParams["pageNum"];
         let isTraining = funcParams["isTraining"];
-        let phaseNum = funcParams['phaseNum'];
+        let sessionNum = funcParams['sessionNum']+1;
 
         let Title;
         if (isTraining) {
-            Title = '<H2 align="center">TRAINING</H2>';
+            Title = '<H2 align="center">TRAINING SESSION</H2>';
         } else {
-            Title = '<H2 align="center">PHASE ' + phaseNum + '</H2>';
+            Title = '<H2 align="center"> SESSION ' + sessionNum + ' </H2>';
         }
         let Info;
 
@@ -243,7 +269,7 @@ export class Instructions {
                         + 'The word "ready" will be displayed before the actual game starts.</H3></b><br><br>';
                     like = '';
                 } else {
-                    Title = '<H2 align="center">PHASE ' + phaseNum + '</H2><br>';
+                    Title = '<H2 align="center">SESSION ' + sessionNum + '</H2><br>';
                     Info = '<h3 align="center"><b>Note:</b> The test of the phase 1 is like the first test of the training.<br><br>';
 
                     like = 'This is the actual game, every point will be included in the final payoff.<br><br>'
@@ -257,7 +283,7 @@ export class Instructions {
 
         let Buttons = '<div align="center"><input align="center" type="button"  class="btn btn-default" id="Back" value="Back" >\n\
 		<input align="center" type="button"  class="btn btn-default" id="Next" value="Next" >\n\
-		<input align="center" type="button"  class="btn btn-default" id="Start" value="Start the first phase!" ></div>';
+		<input align="center" type="button"  class="btn btn-default" id="Start" value="Start!" ></div>';
 
         $('#Bottom').html(Buttons);
 
@@ -302,7 +328,41 @@ export class Instructions {
             $('#Stage').empty();
             $('#Bottom').empty();
 
-            nextFunc(nextParams);
+            $('#TextBoxDiv').remove();
+            $('#Stage').empty();
+            $('#Bottom').empty();
+
+            let ready;
+            let steady;
+            let go;
+
+            if (isTraining) {
+                ready = '3...';
+                steady = '2...';
+                go = '1...';
+            } else {
+                ready = 'Ready...';
+                steady = 'Steady...';
+                go = 'Go!';
+            }
+
+            $('#TextBoxDiv').remove();
+            $('#Stage').empty();
+            $('#Bottom').empty();
+
+            setTimeout(function () {
+                $('#Stage').html('<H1 align = "center">' + ready + '</H1>');
+                setTimeout(function () {
+                    $('#Stage').html('<H1 align = "center">' + steady + '</H1>');
+                    setTimeout(function () {
+                        $('#Stage').html('<H1 align = "center">' + go + '</H1>');
+                        setTimeout(function () {
+                            $('#Stage').empty();
+                            nextFunc(nextParams);
+                        }, 1000);
+                    }, 1000);
+                }, 1000);
+            }, 10);
         });
     }
 
@@ -311,6 +371,7 @@ export class Instructions {
         GUI.init();
 
         let isTraining = funcParams['isTraining'];
+        let sessionNum = funcParams['sessionNum']+1;
         let phaseNum = funcParams['phaseNum'];
         let pageNum = funcParams['pageNum'];
         let points = this.exp.sumReward[phaseNum - 1];
@@ -326,12 +387,12 @@ export class Instructions {
         let trainstring;
 
         if (isTraining) {
-            Title = '<H2 align = "center">TRAINING</H2><br>';
+            Title = '<H2 align = "center">TRAINING SESSION</H2><br>';
             p = '<b>(Note: points won during the training do not count for the final payoff!)<br><br>'
                 + '<b>The word "ready" will be displayed before the actual game starts.</b></H3><br><br>';
             like = '';
         } else {
-            Title = '<H2 align = "center">PHASE ' + phaseNum + '</H2><br>';
+            Title = '<H2 align="center"> SESSION ' + sessionNum + ' </H2>';
             like = '<h3 align="center"><b>Note:</b> The test of the phase 2 is like the second test of the training.</h3><br><br>';
 
             p = '<H3 align="center">This is the actual game, every point will be included in the final payoff.<br><br>'
@@ -469,6 +530,7 @@ export class Instructions {
         let isTraining = funcParams['isTraining'];
         let pageNum = funcParams['pageNum'];
         let phaseNum = funcParams['phaseNum'];
+        let sessionNum = funcParams['sessionNum']+1;
 
         let trainstring;
         let wonlost;
@@ -483,9 +545,9 @@ export class Instructions {
         let Title;
 
         if (isTraining) {
-            Title = '<H2 align="center">TRAINING</H2><br>';
+            Title = '<H2 align="center">TRAINING SESSION</H2><br>';
         } else {
-            Title = '<H2 align="center">PHASE ' + phaseNum + '</H2><br>';
+            Title = '<H2 align="center">SESSION ' + sessionNum + '</H2><br>';
 
         }
 
@@ -529,7 +591,7 @@ export class Instructions {
                         + 'The word "ready" will be displayed before the actual game starts.</H3></b><br><br>';
                     like = '';
                 } else {
-                    Title = '<H2 align="center">PHASE ' + phaseNum + '</H2><br>';
+                    Title = '<H2 align="center">SESSION ' + sessionNum + '</H2><br>';
                     Info = '<h3 align="center"><b>Note:</b> The test of the phase 3 is like the third test of the training.<br><br>';
 
                     like = 'This is the actual game, every point will be included in the final payoff.<br><br>'
@@ -754,135 +816,5 @@ export class Instructions {
         $('#TextBoxDiv').html(Title);
     }
 
-
 }
-
-
-//
-//
-// /* Abstract experience model */
-// function Exp(
-//     {
-//         nOption,
-//         nContext,
-//         rewards,
-//         probs,
-//         interleaved,
-//         nInterleaved,
-//         nTrialPerContext,
-//         nTrial,
-//         nTrialTraining,
-//         language,
-//     }={}
-//     ) {
-//
-//     // private members (accessible in the whole function)
-//     this.nOption = nOption;
-//     this.nContext = nContext;
-//
-//     this.rewards = rewards;
-//     this.probs = probs;
-//     this.nTrialPerContext = nTrialPerContext;
-//     this.nTrial = nTrial;
-//     this.nInterleaved = nInterleaved;
-//     this.interleaved = interleaved;
-//     this.language = language;
-//     this.nTrialTraining = nTrialTraining;
-//
-//     this.order = [];
-//     this.context = [];
-//     this.r = [];
-//     this.p = [];
-//
-//     assert(
-//         sum(nTrialPerContext) === nTrial, 'nTrial does not correspond to nTrialPerContext'
-//     );
-//
-//     /* =================== private methods ================= */
-//
-//     /* randomize order of options on screens
-//     idx=0 is the most far on the left
-//     idx=max ist the most far on the right */
-//     this.randomizeOrder = function () {
-//         for (let t = 0; t < this.nTrial; t++) {
-//             this.order.push(shuffle(range(this.nOption)));
-//         }
-//         assert(this.order.length === this.nTrial, 'Error in this.order length');
-//     };
-//
-//     this.initContexts = function () {
-//         // first define contexts for each time-steps
-//         if (this.interleaved) {
-//             for (let i = 0; i < this.nTrial; i += this.nInterleaved) {
-//                 this.context = this.context.concat(
-//                     shuffle(range(0, nContext - 1))
-//                 );
-//             }
-//         } else {
-//             for (let i = 0; i < this.nContext; i++) {
-//                 this.context = this.context.concat(
-//                     Array(this.nTrialPerContext[i]).fill(i)
-//                 )
-//             }
-//         }
-//         // set rewards and probabilities accordingly
-//         for (let t = 0; t < this.nTrial; t++) {
-//             this.r[t] = this.rewards[this.context[t]];
-//             this.p[t] = this.probs[this.context[t]];
-//         }
-//         assert(this.context.length === this.nTrial, 'Errors in context length.');
-//     };
-//
-//     /* =================== public methods ================== */
-//
-//     // main init method
-//     this.init = function () {
-//         this.initContexts();
-//         this.randomizeOrder();
-//     };
-//
-//
-// }
-//
-// // set to true to test the module
-// // using "$ node --experimental-modules myscript.mjs"
-// main({test: false});
-//
-// function main({test}={}) {
-//     if (test) {
-//         console.log('Testing module...');
-//         let nOption = 2;
-//         let nContext = 4;
-//         let rewards = [
-//             [[0, 0], [-1, 1]],
-//             [[0, 0], [-1, 1]],
-//             [[-1, 1], [-1, 1]],
-//             [[0, 1], [0, -1]]
-//         ];
-//         let probs = [
-//             [[0.5, 0.5], [0.5, 0.5]],
-//             [[0.5, 0.5], [0.5, 0.5]],
-//             [[0.25, 0.75], [0.75, 0.25]],
-//             [[0.5, 0.5], [0.5, 0.5]]
-//         ];
-//         let nTrialPerContext = [24, 24, 24, 24];
-//         let nTrial = 96;
-//         let nInterleaved = 4;
-//         let interleaved = true;
-//
-//         let exp = new Exp(
-//             {
-//                 nOption: nOption,
-//                 nContext: nContext,
-//                 rewards: rewards,
-//                 probs: probs,
-//                 nTrialPerContext: nTrialPerContext,
-//                 nTrial: nTrial,
-//                 nInterleaved: nInterleaved,
-//                 interleaved: interleaved
-//             }
-//         );
-//         exp.init();
-//     }
-// }
 

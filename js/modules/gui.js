@@ -171,16 +171,54 @@ export class GUI {
 
         let button = b +
             '<div align="center"><input align="center" type="button"' +
-            '  class="btn btn-default" id="skip" value="Skip all trials" ></div>';
-
+            '  class="btn btn-default" id="skip" value="Skip trials" ></div>';
 
         $('#Bottom').html(button);
+
+        // let Slider = '<main>\n' +
+        //     '  <form id="form">\n' +
+        //     '    <h2>\n' +
+        //     '    </h2>\n' +
+        //     '    <div class="range">\n' +
+        //     '      <input id="slider" name="range" type="range" value="0" min="0" max="' + nTrial +'" step="1">\n' +
+        //     '      <div class="range-output">\n' +
+        //     '        <output id="output" class="output" name="output" for="range">\n' +
+        //     '          ' + '0' + '%\n' +
+        //     '        </output>\n' +
+        //     '      </div>\n' +
+        //     '    </div>\n' +
+        //     '  </form>\n' +
+        //     '</main>\n' +
+        //     '<br><br><div align="center"><button id="ok" class="btn btn-default btn-lg" style="vis">Ok</button></div>';
+        //
+        // let slider = document.getElementById('slider');
+        // let output = document.getElementById('output');
+        // let form = document.getElementById('form');
+        //
+        //
+        // form.oninput = function () {
+        //     output.value = slider.valueAsNumber;
+        //     output.innerHTML += "%";
+        // };
+
+
         $('#skip').click(function () {
+
             if (Obj.skipEnabled) {
                 Obj.skip = true;
                 Obj._next();
             }
+            // rangeInputRun();
         });
+
+        // $('#ok').click(function () {
+            // if (obj.skipenabled) {
+            //
+            //     obj.skip = true;
+            //     obj._next();
+            // }
+
+        // });
 
     }
 
