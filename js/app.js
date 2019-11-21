@@ -16,13 +16,11 @@ function main() {
     we instantiate experiment parameters, in order to maintain
     their attributes throught the whole experiment scope
     TODO:
-        * Add symbols during post test (7 for each block)
-        * check instructions adapted
-        * check whether correct score is displayed [last]
-        * check db insertion
+        * ???
      */
 
     // init main parameters
+    /* ============================================================================= */
     // these three variables indicate what
     // has to be run in the state machine (i.e. current state of the experiment)
     // initial values are:
@@ -40,7 +38,7 @@ function main() {
     let exp = new ExperimentParameters(
         {
             online: true,   // send network requests
-            isTesting: true, // isTesting==in development vs in production
+            isTesting: false, // isTesting==in development vs in production
             expName: 'RetrieveAndCompare', // experience name
             completeFeedback: true, // display feedback of both options
             maxPoints: undefined, // max points cumulated all along the experiment
