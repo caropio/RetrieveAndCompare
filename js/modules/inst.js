@@ -177,7 +177,7 @@ export class Instructions {
         $('#TextBoxDiv').html(Title + Info);
 
         let Buttons = '<div align="center"><input align="center" type="button"  class="btn btn-default" id="Back" value="Back" >\n\
-		<input align="center" type="button"  class="btn btn-default" id="Next" value="Next" ></div>';
+		<button align="center" class="btn btn-default" id="Next"><i class="fa fa-arrow-right"></i></input></div>';
 
         $('#Bottom').html(Buttons);
 
