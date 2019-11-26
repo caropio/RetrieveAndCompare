@@ -1,33 +1,99 @@
+<!-- HTML template to fill the <body> tag with instructions -->
+<meta charset="utf-8"/>
 <!DOCTYPE html>
-<html lang="en">
+
+<html>
 <head>
-    <meta charset="UTF-8">
-    <title>Title</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1, user-scalable=no">
+
+    <title>Online Experiment</title>
+
     <link rel="shortcut icon" href="images/favicon.ico" type="image/x-icon">
     <link rel="icon" href="images/favicon.ico" type="image/x-icon">
     <link rel="manifest" href="manifest.json">
-     <!-- Bootstrap CSS -->
-    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
 
-    <link rel="stylesheet" href="main.css">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css"
+          integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap-theme.min.css">
+    <link rel='stylesheet' type='text/css' href='main.css' media="screen"/>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
 
+    <script src="https://code.jquery.com/jquery-3.2.1.js"
+            integrity="sha256-DZAnKJ/6XZ9si04Hgrsxu/8s717jcIzLy3oi35EouyE=" crossorigin="anonymous"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"
+            integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa"
+            crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/1.20.3/TweenMax.min.js"></script>
+    <script src="https://unpkg.com/mathjs@6.2.3/dist/math.min.js"></script>
+
+    <script src="js/app.js" type="module" crossorigin="anonymous"></script>
+    <script src="lib/js/slider.js"></script>
+    <script src="lib/js/pleaserotate.min.js"></script>
+
+    <script src="//cdn.rawgit.com/cantino/expando/38affee59bffdd87975c492472362c69ce0f6fda/jquery.expando.js"></script>
 </head>
+
 <body>
-<!-- Optional JavaScript -->
-    <!-- jQuery first, then Popper.js, then Bootstrap JS -->
-    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
-    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
-<div class="card">
-  <div class="card-header">
-    Featured
-  </div>
-  <div class="">
-    <h5 class="card-title">Special title treatment</h5>
-    <p class="card-text">With supporting text below as a natural lead-in to additional content.</p>
-    <a href="#" class="btn btn-primary">Go somewhere</a>
-  </div>
+<div class="md-stepper-horizontal green">
+    <div class="md-step active">
+      <div class="md-step-circle"></div>
+      <div class="md-step-title">Instructions</div>
+      <div class="md-step-bar-left"></div>
+      <div class="md-step-bar-right"></div>
+    </div>
+    <div class="md-step">
+      <div class="md-step-circle"></div>
+      <div class="md-step-title">Training</div>
+      <div class="md-step-bar-left"></div>
+      <div class="md-step-bar-right"></div>
+    </div>
+    <div class="md-step">
+      <div class="md-step-circle"></div>
+      <div class="md-step-title">Session 1</div>
+      <div class="md-step-bar-left"></div>
+      <div class="md-step-bar-right"></div>
+    </div>
+    <div class="md-step">
+      <div class="md-step-circle"></div>
+      <div class="md-step-title">Session 2</div>
+      <div class="md-step-bar-left"></div>
+      <div class="md-step-bar-right"></div>
+    </div>
+    <div class="md-step">
+      <div class="md-step-circle"></div>
+      <div class="md-step-title">Questionnaire</div>
+      <div class="md-step-bar-left"></div>
+      <div class="md-step-bar-right"></div>
+    </div>
 </div>
 
-</body>
-</html>
+<div class="card">
+  <div class="card-header" id="title">
+       Instructions
+  </div>
+    <div class="card-title" id="subtitle">
+
+        subtitle
+    </div>
+    <div class="card-text" id="text">
+        text text text text text text text text text text text text text text text text text text text text
+        text text text text text text text text text text text text text text text text text text text text
+        text text text text text text text text text text text text text text text text text text text text
+        text text text text text text text text text text text text text text text text text text text text
+        text text text text text text text text text text text text text text text text text text text text
+        text text text text text text text text text text text text text text text text text text text text
+        text text text text text text text text text text text text text text text text text text text text
+        text text text text text text text text text text text text text text text text text text text text
+        text text text text text text text text text text text text text text text text text text text text
+        text text text text text text text text text text text text text text text text text text text text
+        text text text text text text text text text text text text text text text text text text text text
+        text text text text text text text text text text text text text text text text text text text text
+        text text text text text text text text text text text text text text text text text text text text
+        text text text text text text text text text text text text text text text text text text text text
+        text text text text text text text text text text text text text text text text text text text text
+        text text text text text text text text text text text text text text text text text text text text
+        text text text text text text text text text text text text text text text text text text text text
+        text text text text text text text text text text text text text text text text text text text text
+        text text text text text text text text text text text text text text text text text text text text
+    </div>
+</div>
