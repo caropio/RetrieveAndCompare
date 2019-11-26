@@ -15,6 +15,48 @@ export class GUI {
         }
     }
 
+    static panelInsertParagraph(text) {
+        $('#card-content').append('<div class="card-text">' + text + '</div>');
+    }
+
+    static panelInsertParagraphTitle(title) {
+        $('#card-content').append('<div class="card-title">' + title + '</div>');
+    }
+
+    static panelSetTitle(title) {
+        $('#panel-title').text(title);
+    }
+
+    static panelFlush() {
+        $('#card-content').empty();
+    }
+
+    static panelInsertButton({classname="btn btn-default card-button",
+                                 onclick="",
+                                 id="",
+                                 div=true,
+                                 value=""}={}) {
+        let div1; let div2;
+        if (div) {
+            div1 = '<div align="center">';
+            div2 = '</div>';
+        } else {
+            div1 = '';
+            div2 = '';
+        }
+        $('#card-content').append(
+            div1+'<input type="button" class="' + classname + '" onclick="'+ onclick + '" id="' + id
+            + '"' + ' value="' + value + '">' + div2);
+    }
+
+    static panelShow() {
+        $('#panel').show();
+    }
+
+    static panelHide() {
+        $('#panel').hide();
+    }
+
     static displayOptions(id1, id2, img, feedbackImg, invertedPosition) {
        let [option1, option2, feedback1, feedback2] = GUI._getOptions(id1, id2, img, feedbackImg);
        GUI._displayTwoOptions(option1, option2, feedback1, feedback2, invertedPosition);

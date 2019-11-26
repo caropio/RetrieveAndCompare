@@ -255,6 +255,16 @@ form {
   margin-bottom: 7% !important;
 }
 
+.card-text {
+  margin-left: 7% !important;
+  margin-right: 7% !important;
+  margin-bottom: 7% !important;
+}
+
+.card-button {
+   margin-bottom: 7% !important;
+}
+
 .card-title {
   font-weight: bolder;
   margin-left: 7% !important;

@@ -12,13 +12,9 @@ export class Instructions {
 
         GUI.init();
 
-        let Title = '<H3 align = "center">To continue the experiment, you must enable fullscreen.</H3><br>';
-        let Button = '<div align="center">' +
-            '<input align="center" id="fullscreen" type="button" value="Enable fullscreen"' +
-            ' class="btn btn-default" onclick="openFullscreen();"></div>';
-
-        $('#TextBoxDiv').html(Title);
-        $('#Bottom').html(Button);
+        GUI.panelSetTitle('Hello Fabien');
+        GUI.panelInsertParagraph('To continue the experiment, you must enable fullscreen');
+        GUI.panelInsertButton({id: 'fullscreen', value: 'Salut'});
 
         let elem = document.documentElement;
         let button = document.getElementById('fullscreen');
@@ -33,6 +29,8 @@ export class Instructions {
             } else if (elem.msRequestFullscreen) { /* IE/Edge */
                 elem.msRequestFullscreen();
             }
+            GUI.panelFlush();
+            GUI.panelHide();
             nextFunc(nextParams);
         }
     }
