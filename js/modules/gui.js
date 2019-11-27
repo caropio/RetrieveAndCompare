@@ -31,22 +31,33 @@ export class GUI {
         $('#card-content').empty();
     }
 
-    static panelInsertButton({classname="btn btn-default card-button",
+    static panelInsertDiv({id="", align="center"}) {
+        $('#card-content').append('<div id="' + id + '" align="' + align + '"></div>');
+    }
+
+    static panelShowRightArrow() {
+        $("#")
+    }
+
+    static panelInsertButton({classname="btn btn-default card-button card-center",
                                  onclick="",
                                  id="",
-                                 div=true,
+                                 div="card-content",
                                  value=""}={}) {
-        let div1; let div2;
-        if (div) {
-            div1 = '<div align="center">';
-            div2 = '</div>';
-        } else {
-            div1 = '';
-            div2 = '';
-        }
-        $('#card-content').append(
-            div1+'<input type="button" class="' + classname + '" onclick="'+ onclick + '" id="' + id
-            + '"' + ' value="' + value + '">' + div2);
+        $('#' + div).append(
+            '<input type="button"' + '" class="' + classname + '" onclick="'+ onclick + '" id="' + id
+            + '"' + ' value="' + value + '">');
+    }
+
+    static panelInsertInput({classname='card-center',
+                                maxlength="24",
+                                 size="24",
+                                 id="textbox_id",
+                                div="card-content",
+                            }={}) {
+        $('#' + div).append(
+            '<input class="' + classname + '" type="text" maxlength=""' + maxlength + '" size="'+ size + '" id="' + id
+            + '">');
     }
 
     static panelShow() {

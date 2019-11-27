@@ -12,9 +12,9 @@ export class Instructions {
 
         GUI.init();
 
-        GUI.panelSetTitle('Hello Fabien');
+        GUI.panelSetTitle('Instructions');
         GUI.panelInsertParagraph('To continue the experiment, you must enable fullscreen');
-        GUI.panelInsertButton({id: 'fullscreen', value: 'Salut'});
+        GUI.panelInsertButton({id: 'fullscreen', value: 'Next'});
 
         let elem = document.documentElement;
         let button = document.getElementById('fullscreen');
@@ -30,7 +30,6 @@ export class Instructions {
                 elem.msRequestFullscreen();
             }
             GUI.panelFlush();
-            GUI.panelHide();
             nextFunc(nextParams);
         }
     }
@@ -40,14 +39,10 @@ export class Instructions {
         GUI.init();
 
         // prolific id is 24 characters
-        let Title = '<H3 align = "center">Please enter your Prolific ID: <input maxlength="24" size="24" type="text" id = "textbox_id" name="ID"></H3>';
-        let Buttons = '<div align="center"><input align="center" type="button"  class="btn btn-default" id="toConsent" value="Next" ></div>';
-
-        let TextInput = '';
-
-        $('#TextBoxDiv').html(Title + TextInput);
-
-        $('#Bottom').html(Buttons);
+        GUI.panelInsertParagraph('Please enter your Prolific id.');
+        GUI.panelInsertInput({maxlength: 24, size: 24, id: "textbox_id"});
+        //let Title = '<H3 align = "center">Please enter your Prolific ID: <input maxlength="24" size="24" type="text" id = "textbox_id" name="ID"></H3>';
+        GUI.panelInsertButton({id:"toConsent", value:"Next"});
 
         $('#toConsent').click({obj: this}, function (event) {
 
