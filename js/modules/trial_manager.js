@@ -256,8 +256,6 @@ export class ChoiceManager {
     };
 
     _showReward(reward1, reward2, thisReward, choice) {
-
-
         GUI.showFeedback({
             completeFeedback: this.completeFeedback,
             showFeedback: this.showFeedback,
@@ -267,8 +265,6 @@ export class ChoiceManager {
             reward1: reward1,
             reward2: reward2
         });
-
-
     }
 
     next(nTrial = undefined) {
