@@ -8,7 +8,7 @@ function main() {
     their attributes throught the whole experiment scope
      */
 
-    // init main parameters
+    // initGameStageDiv main parameters
     let sessionNum = -1;
     let phaseNum = 1;
 
@@ -425,7 +425,7 @@ class ChoiceManager {
         this.nextFunc = nextFunc;
         this.nextParams = nextParams;
 
-        // init non parametric variables
+        // initGameStageDiv non parametric variables
         this.trialNum = 0;
 
         if (!maxTrials) {

@@ -53,7 +53,7 @@ export class ExperimentParameters {
         this.compLink = compLink;
 
 
-        // init
+        // initGameStageDiv
         this._initContingencies();
         this._loadImg(imgPath, nCond, nSession);
         this._initConditionArrays(
@@ -824,8 +824,8 @@ export class ExperimentParameters {
 //
 //     /* =================== public methods ================== */
 //
-//     // main init method
-//     this.init = function () {
+//     // main initGameStageDiv method
+//     this.initGameStageDiv = function () {
 //         this.initContexts();
 //         this.randomizeOrder();
 //     };
@@ -871,7 +871,7 @@ export class ExperimentParameters {
 //                 interleaved: interleaved
 //             }
 //         );
-//         exp.init();
+//         exp.initGameStageDiv();
 //     }
 // }
 

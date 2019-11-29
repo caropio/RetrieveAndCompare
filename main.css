@@ -247,15 +247,11 @@ form {
     border-radius: .35rem;
     margin: auto;
     margin-top: 5%;
+    margin-bottom: 2%;
     width: 55%;
     box-shadow: 2px 2px 2px 1px rgba(0, 0, 0, 0.2);
 }
 
-.card-center {
-  display: block;
-  margin-right: auto;
-  margin-left: auto;
-}
 .card-header {
     padding: 1.75rem 2.15rem;
     margin-bottom: 5%;
@@ -273,27 +269,66 @@ form {
 }
 
 .card-text:last-child {
-    margin-left: 7% !important;
-    margin-right: 7% !important;
-    margin-bottom: 7% !important;
+    margin-bottom: 4% !important;
+    white-space: pre-line;
 }
 
 .card-text {
-    margin-left: 7% !important;
-    margin-right: 7% !important;
-    margin-bottom: 7% !important;
+    margin-bottom: 4% !important;
+    white-space: pre-line;
+    font-size: large;
+    font-weight: 497;
 }
 
 .card-button {
-    margin-top: 7% !important;
-    margin-bottom: 7% !important;
+    margin-top: 3% !important;
+    margin-bottom: 3% !important;
+    margin-left: 1% !important;
+    margin-right: 1% !important;
+}
+
+.btn-default.card-button {
+    background-color: rgba(50, 174, 151, 0.86) !important; /*url('images/logo-ens.png') no-repeat 99% 50%;*/
+    background-image: none !important;
+    border-color: rgba(50, 174, 151, 0.4) !important; /*url('images/logo-ens.png') no-repeat 99% 50%;*/
+    color: white;
+    font-weight: 650;
+    border-radius: .35rem;
+    text-shadow: none;
+}
+
+.btn-default.card-button:hover {
+    background-color: rgba(50, 174, 151, 0.5) !important; /*url('images/logo-ens.png') no-repeat 99% 50%;*/
+}
+
+.btn-default.card-button:focus {
+    color: white;
+}
+
+.card-center {
+    display: block;
+    margin-right: auto !important;
+    margin-left: auto !important;
 }
 
 .card-title {
     font-weight: bolder;
-    margin-left: 7% !important;
     font-size: 110%;
 }
+
+.card-img {
+    box-shadow: 2px 2px 2px 1px rgba(0, 0, 0, 0.2);
+    margin-top: 2%;
+    margin-bottom: 2%;
+}
+
+#card-content input:focus {
+    border-color: rgba(50, 174, 151, 1) !important;
+    background-image: none;
+    border-radius: .35rem;
+    border-style: solid;
+}
+
 
 body {
     background: #EBEDEF;
@@ -376,6 +411,7 @@ body {
 
 .md-stepper-horizontal.green .md-step.active .md-step-circle {
     background-color: rgba(50, 174, 151, 1);
+    transition: background-color 1000ms linear;
 }
 
 .md-stepper-horizontal.orange .md-step.active .md-step-circle {
@@ -462,10 +498,10 @@ body {
 
 
 #main-slider-space {
-	overflow:hidden;
+    overflow: hidden;
 }
 
-.slider-wrapper {
+.slider-wrapper  {
     position: relative;
     margin-left: 20%;
     margin-right: 20%
@@ -491,4 +527,88 @@ body {
 
 .slider-button-right:hover {
     background-color: rgba(50, 174, 151, 1);
+}
+
+/* Customize the label (the container) */
+.checkcontainer {
+    display: block;
+    position: relative;
+    padding-left: 35px;
+    margin-bottom: 12px;
+    cursor: pointer;
+    font-size: 22px;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+}
+
+/* Hide the browser's default checkbox */
+.checkcontainer input {
+    position: absolute;
+    opacity: 0;
+    cursor: pointer;
+    height: 0;
+    width: 0;
+}
+
+/* Create a custom checkbox */
+.checkmark {
+    position: absolute;
+    /* display: none;*/
+    top: 0;
+    left: 0;
+    height: 25px;
+    width: 25px;
+    background-color: #eee;
+}
+
+/* On mouse-over, add a grey background color */
+.checkcontainer:hover input ~ .checkmark {
+    background-color: #ccc;
+}
+
+/* When the checkbox is checked, add a blue background */
+.checkcontainer input:checked ~ .checkmark {
+    background-color: rgba(50, 174, 151, 1);
+}
+
+/* Create the checkmark/indicator (hidden when not checked) */
+.checkmark:after {
+    content: "";
+    position: absolute;
+    display: none;
+}
+
+/* Show the checkmark when checked */
+.checkcontainer input:checked ~ .checkmark:after {
+    display: block;
+}
+
+/* Style the checkmark/indicator */
+.checkcontainer .checkmark:after {
+    left: 9px;
+    top: 5px;
+    width: 5px;
+    height: 10px;
+    border: solid white;
+    border-width: 0 3px 3px 0;
+    -webkit-transform: rotate(45deg);
+    -ms-transform: rotate(45deg);
+    transform: rotate(45deg);
+}
+
+.card-content  {
+    padding: 3% !important;
+}
+
+/*.btn-info, .btn-info:hover, .btn-info:active, .btn-info:visited {*/
+/*background-color: #1b6d85!important;*/
+/*}*/
+
+#skipButton {
+    margin-left: 50% !important;
+    margin-bottom: auto !important;
+    margin-top: auto !important;
+    display: block;
 }

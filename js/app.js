@@ -17,9 +17,11 @@ function main() {
     their attributes throught the whole experiment scope
     TODO:
         * ???
+        * Améliorer isSymbol
+        * Init dictionnaries instead of arrays
      */
 
-    // init main parameters
+    // initGameStageDiv main parameters
     /* ============================================================================= */
     // these three variables indicate what
     // has to be run in the state machine (i.e. current state of the experiment)
@@ -38,7 +40,7 @@ function main() {
     let exp = new ExperimentParameters(
         {
             online: false,   // send network requests
-            isTesting: false, // isTesting==in development vs in production
+            isTesting: true, // isTesting==in development vs in production
             expName: 'RetrieveAndCompare', // experience name
             completeFeedback: true, // display feedback of both options
             maxPoints: undefined, // max points cumulated all along the experiment

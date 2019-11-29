@@ -9,21 +9,21 @@ export class ChoiceManager {
     Private methods are prefixed with _
      */
     constructor({
-        exp,
-        trialObj,
-        imgObj,
-        sessionNum,
-        phaseNum,
-        feedbackDuration,
-        completeFeedback,
-        showFeedback,
-        elicitationType,
-        conditionObj,
-        feedbackObj,
-        maxTrials,
-        nextFunc,
-        nextParams
-    } = {}) {
+                    exp,
+                    trialObj,
+                    imgObj,
+                    sessionNum,
+                    phaseNum,
+                    feedbackDuration,
+                    completeFeedback,
+                    showFeedback,
+                    elicitationType,
+                    conditionObj,
+                    feedbackObj,
+                    maxTrials,
+                    nextFunc,
+                    nextParams
+                } = {}) {
 
         // members
         this.exp = exp;
@@ -47,7 +47,7 @@ export class ChoiceManager {
             this.conditionObj = conditionObj;
         }
 
-        // init non parametric variables
+        // initGameStageDiv non parametric variables
         this.trialNum = 0;
 
         if (!maxTrials) {
@@ -73,7 +73,7 @@ export class ChoiceManager {
 
     run() {
 
-        GUI.init();
+        GUI.initGameStageDiv();
 
         this.skipEnabled = true;
 
@@ -137,7 +137,7 @@ export class ChoiceManager {
 
     /* =================== private methods ================== */
     _isTesting() {
-        GUI.insertSkipButton(this, true);
+        GUI.insertSkipButton(this, this.nTrial - 1);
     }
 
     _clickEvent(choice, params) {
@@ -218,7 +218,7 @@ export class ChoiceManager {
             );
         }
 
-        this._next();
+        this.next();
     }
 
     _getReward(choice, params) {
@@ -257,69 +257,45 @@ export class ChoiceManager {
 
     _showReward(reward1, reward2, thisReward, choice) {
 
-        let pic1 = document.getElementById("option1");
-        let pic2 = document.getElementById("option2");
 
-        let cv1 = document.getElementById("canvas1");
-        let cv2 = document.getElementById("canvas2");
+        GUI.showFeedback({
+            completeFeedback: this.completeFeedback,
+            showFeedback: this.showFeedback,
+            feedbackObj: this.feedbackObj,
+            choice: choice,
+            thisReward: thisReward,
+            reward1: reward1,
+            reward2: reward2
+        });
 
-        let fb1 = document.getElementById("feedback1");
-        let fb2 = document.getElementById("feedback2");
 
-        let pic = [pic2, pic1][+(choice === 1)];
-        let cv = [cv2, cv1][+(choice === 1)];
-        let fb = [fb2, fb1][+(choice === 1)];
-
-        let showFeedback = this.showFeedback;
-
-        if (this.completeFeedback) {
-            if (this.showFeedback) {
-                fb1.src = this.feedbackObj['' + reward1].src;
-                fb2.src = this.feedbackObj['' + reward2].src;
-            }
-
-            setTimeout(function () {
-                GUI.slideCard(pic1, cv1, showFeedback);
-                GUI.slideCard(pic2, cv2, showFeedback);
-            }, 500);
-
-        } else {
-            if (this.showFeedback) {
-                fb.src = this.feedbackObj['' + thisReward].src;
-            }
-            setTimeout(function () {
-                GUI.slideCard(pic, cv, showFeedback);
-            }, 500);
-        }
     }
 
-    _next() {
-        if (this.skip) {
-            $('#TextBoxDiv').fadeOut(500);
+    next(nTrial = undefined) {
+        if (this.skip && nTrial) {
+            GUI.hideOptions();
             setTimeout(function (event) {
-                $('#Stage').empty();
-                $('#Bottom').empty();
-                event.obj.nextFunc(event.obj.nextParams);
-            }, 200, {obj: this});
+                event.obj.trialNum = nTrial;
+                event.obj.run();
+            }, 500, {obj: this});
             return;
         }
         this.trialNum++;
         if (this.trialNum < this.nTrial) {
             setTimeout(function (event) {
-                $('#stimrow').fadeOut(500);
-                $('#fbrow').fadeOut(500);
-                $('#cvrow').fadeOut(500);
-                $('main').fadeOut(500);
+                GUI.hideOptions();
                 setTimeout(function (event) {
                     event.obj.run();
                 }, 500, {obj: event.obj});
             }, this.feedbackDuration, {obj: this});
         } else {
+            GUI.hideSkipButton();
             setTimeout(function (event) {
                     $('#TextBoxDiv').fadeOut(500);
                     setTimeout(function (event) {
                         $('#Stage').empty();
-                        $('#Bottom').empty();
+                        GUI.panelShow();
+                        //$('#Bottom').empty();
                         event.obj.nextFunc(event.obj.nextParams);
                     }, 500, {obj: event.obj})
                 }, this.feedbackDuration, {obj: this}
@@ -375,7 +351,7 @@ export class SliderManager {
 
     run() {
 
-        GUI.init();
+        GUI.initGameStageDiv();
 
         this.skipEnabled = true;
 
@@ -395,22 +371,11 @@ export class SliderManager {
 
 
         let initValue = range(25, 75, 5)[Math.floor(Math.random() * 10)];
-        GUI.displayOptionSlider(params['stimIdx'], this.imgObj, initValue);
-
-        rangeInputRun();
-
-        let slider = document.getElementById('slider');
-        let output = document.getElementById('output');
-        let form = document.getElementById('form');
-
         let clickEnabled = true;
 
-        form.oninput = function () {
-            output.value = slider.valueAsNumber;
-            output.innerHTML += "%";
-        };
+        let slider = GUI.displayOptionSlider(params['stimIdx'], this.imgObj, initValue);
 
-        $('#ok').click({obj: this}, function (event) {
+        GUI.listenOnSlider({obj: this, slider: slider}, function (event) {
             if (clickEnabled) {
                 clickEnabled = false;
                 event.data.obj.skipEnabled = false;
@@ -423,7 +388,7 @@ export class SliderManager {
 
     /* =================== private methods ================== */
     _isTesting() {
-        GUI.insertSkipButton(this, true);
+        GUI.insertSkipButton(this, this.nTrial - 1);
     }
 
     _clickEvent(choice, params) {
@@ -451,7 +416,7 @@ export class SliderManager {
                     trial: this.trialNum,
                     elicitation_type: this.elicitationType,
                     cont_idx_1: contIdx,
-                    cont_idx_2:  -1,
+                    cont_idx_2: -1,
                     condition: -1,
                     symL: stimIdx,
                     symR: -1,
@@ -479,7 +444,7 @@ export class SliderManager {
             );
         }
 
-        this._next();
+        this.next();
 
     }
 
@@ -508,28 +473,25 @@ export class SliderManager {
 
     };
 
-    _next() {
-        if (this.skip) {
-            $('#TextBoxDiv').fadeOut(500);
+    next(nTrial = undefined) {
+        if (this.skip && nTrial) {
+            GUI.hideOptions();
             setTimeout(function (event) {
-                $('#Stage').empty();
-                $('#Bottom').empty();
-                event.obj.nextFunc(event.obj.nextParams);
-            }, 200, {obj: this});
+                event.obj.trialNum = nTrial;
+                event.obj.run();
+            }, 500, {obj: this});
             return;
         }
         this.trialNum++;
         if (this.trialNum < this.nTrial) {
             setTimeout(function (event) {
-                $('#stimrow').fadeOut(500);
-                $('#fbrow').fadeOut(500);
-                $('#cvrow').fadeOut(500);
-                $('main').fadeOut(500);
+                GUI.hideOptions();
                 setTimeout(function (event) {
                     event.obj.run();
                 }, 500, {obj: event.obj});
             }, this.feedbackDuration, {obj: this});
         } else {
+            GUI.hideSkipButton();
             setTimeout(function (event) {
                     $('#TextBoxDiv').fadeOut(500);
                     setTimeout(function (event) {

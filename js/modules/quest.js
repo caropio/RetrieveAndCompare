@@ -12,7 +12,7 @@ export class Questionnaire {
     runCRT(funcParams, nextFunc, nextParams) {
 
         let questNum = funcParams['questNum'];
-        GUI.init();
+        GUI.initGameStageDiv();
 
         let nQuestions = 7;
 
@@ -226,7 +226,7 @@ export class Questionnaire {
 
     runSES(funcParams, nextFunc, nextParams) {
 
-        GUI.init();
+        GUI.initGameStageDiv();
 
         let questNum = funcParams['questNum'];
         let nQuestions = 13;

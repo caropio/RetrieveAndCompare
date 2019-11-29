@@ -10,135 +10,141 @@ export class Instructions {
 
     goFullscreen(nextFunc, nextParams) {
 
-        GUI.init();
-
-        GUI.panelSetTitle('Instructions');
+        GUI.panelSetTitle('Introduction');
         GUI.panelInsertParagraph('To continue the experiment, you must enable fullscreen');
-        GUI.panelInsertButton({id: 'fullscreen', value: 'Next'});
-
-        let elem = document.documentElement;
-        let button = document.getElementById('fullscreen');
-
-        button.onclick = function () {
-            if (elem.requestFullscreen) {
-                elem.requestFullscreen();
-            } else if (elem.mozRequestFullScreen) { /* Firefox */
-                elem.mozRequestFullScreen();
-            } else if (elem.webkitRequestFullscreen) { /* Chrome, Safari & Opera */
-                elem.webkitRequestFullscreen();
-            } else if (elem.msRequestFullscreen) { /* IE/Edge */
-                elem.msRequestFullscreen();
+        GUI.panelInsertButton({
+            id: 'fullscreen', value: 'Next',
+            clickFunc: function () {
+                let elem = document.documentElement;
+                if (elem.requestFullscreen) {
+                    elem.requestFullscreen();
+                } else if (elem.mozRequestFullScreen) { /* Firefox */
+                    elem.mozRequestFullScreen();
+                } else if (elem.webkitRequestFullscreen) { /* Chrome, Safari & Opera */
+                    elem.webkitRequestFullscreen();
+                } else if (elem.msRequestFullscreen) { /* IE/Edge */
+                    elem.msRequestFullscreen();
+                }
+                nextFunc(nextParams);
             }
-            GUI.panelFlush();
-            nextFunc(nextParams);
-        }
+        });
     }
 
     setUserID(nextFunc, nextParams) {
 
-        GUI.init();
+        GUI.panelFlush();
 
         // prolific id is 24 characters
         GUI.panelInsertParagraph('Please enter your Prolific id.');
-        GUI.panelInsertInput({maxlength: 24, size: 24, id: "textbox_id"});
-        //let Title = '<H3 align = "center">Please enter your Prolific ID: <input maxlength="24" size="24" type="text" id = "textbox_id" name="ID"></H3>';
-        GUI.panelInsertButton({id:"toConsent", value:"Next"});
+        GUI.panelInsertInput({maxlength: 24, size: 24, id: "ID"});
+        GUI.panelInsertButton({
+            id: "toConsent", value: "Next",
+            clickArgs: {obj: this},
+            clickFunc: function (event) {
+                let answer = document.getElementById('ID').value;
 
-        $('#toConsent').click({obj: this}, function (event) {
-
-            let answer = document.getElementById('textbox_id').value;
-
-            if (answer.length === 24 || event.data.obj.exp.isTesting) {
-                event.data.obj.exp.subID = answer;
-                $('#TextBoxDiv').remove();
-                $('#Stage').empty();
-                $('#Bottom').empty();
-                nextFunc(nextParams);
-            } else {
-                GUI.displayModalWindow('Error', 'You must enter a valid Prolific ID (24 alphanumeric characters).', 'error');
+                if (answer.length === 24 || event.data.obj.exp.isTesting) {
+                    event.data.obj.exp.subID = answer;
+                    $('#TextBoxDiv').remove();
+                    $('#Stage').empty();
+                    $('#Bottom').empty();
+                    nextFunc(nextParams);
+                } else {
+                    GUI.displayModalWindow('Error',
+                        'You must enter a valid Prolific ID (24 alphanumeric characters).', 'error');
+                }
             }
         });
-    };
+    }
 
     displayConsent(nextFunc, nextParams) {
 
-        GUI.init();
+        GUI.panelFlush();
 
-        let Title = '<H2 align = "center">CONSENT</H2><br>';
+        GUI.panelSetTitle('Consent');
 
-        let Info = '<H4>INFORMATION FOR THE PARTICIPANT</H4>' +
-            'You are about to participate in the research study entitled:<br>' +
-            'The domain-general role of reinforcement learning-based training in cognition across short and long time-spans<br>' +
-            'Researcher in charge: Pr. Stefano PALMINTERI<br>' +
+        GUI.panelInsertParagraphTitle('Information for the participant');
+        GUI.panelInsertParagraph('You are about to participate in the research study entitled:\n' +
+            'The domain-general role of reinforcement learning-based training in cognition across short and long time-spans.\n' +
+            'Researcher in charge: Pr. Stefano PALMINTERI.\n' +
             'This study aims to understand the learning processes in decision-making. Its fundamental purpose is to investigate the cognitive mechanisms of these' +
             'learning and decision-making processes.' +
-            'The proposed experiments have no immediate application or clinical value, but they will allow us to improve our understanding of the functioning brain.<br>' +
-            'We are asking you to participate in this study because you have been recruited by the RISC or Prolific platforms. <br>' +
-            '<H4>PROCEDURE</H4>' +
-            'During your participation in this study, we will ask you to answer several simple questionnaires and tests, which do not require any particular competence.' +
-            'Your internet-based participation will require approximately 30 minutes. <br>' +
-            '<H4>VOLUNTARY PARTICIPATION AND CONFIDENTIALITY</H4>' +
-            'Your participation in this study is voluntary. This means that you are consenting to participate in this project without external pressure.' +
-            'During your participation in this project, the researcher in charge and his staff will collect and record information about you.<br>' +
+            'The proposed experiments have no immediate application or clinical value, but they will allow us to improve our understanding of the functioning brain.' +
+            'We are asking you to participate in this study because you have been recruited by the RISC or Prolific platforms.');
+
+        GUI.panelInsertParagraphTitle('Procedure');
+        GUI.panelInsertParagraph('During your participation in this study, we will ask you to answer several simple ' +
+            'questionnaires and tests, which do not require any particular competence.' +
+            'Your internet-based participation will require approximately 50 minutes.');
+
+        GUI.panelInsertParagraphTitle('Voluntary Participation And Confidentiality');
+        GUI.panelInsertParagraph('Your participation in this study is voluntary. This means that you are consenting to participate in this project without external pressure.' +
+            'During your participation in this project, the researcher in charge and his staff will collect and record information about you. ' +
             'In order to preserve your identity and the confidentiality of the data, the identification of each file will be coded, thus preserving the anonymity of your answers. ' +
-            'We will not collect any personal data from the RISC or Prolific platforms.<br>' +
+            'We will not collect any personal data from the RISC or Prolific platforms. ' +
             'The researcher in charge of this study will only use the data for research purposes in order to answer the scientific objectives of the project.' +
-            'The data may be published in scientific journals and shared within the scientific community,' +
-            'in which case no publication or scientific communication will contain identifying information. <br>' +
-            '<H4>RESEARCH RESULTS AND PUBLICATION</H4>' +
-            'You will be able to check the publications resulting from this study on the following link:<br>' +
-            'https://sites.google.com/site/stefanopalminteri/publications<br>' +
-            '<H4>CONTACT AND ADDITIONAL INFORMATION</H4>' +
-            'Email: humanreinforcementlearning@gmail.com<br>' +
-            'This research has received a favorable opinion from the Inserm Ethical Review Committee / IRB0888 on November 13th, 2018.<br>' +
-            'Your participation in this research confirms that you have read this information and wish to participate in the research study.<br><br>' +
-            '<H4>Please check all boxes before starting:<H4>';
+            'The data may be published in scientific journals and shared within the scientific community, ' +
+            'in which case no publication or scientific communication will contain identifying information.');
 
-        let Ticks = '<H4><input type="checkbox" name="consent" value="consent1"> I am 18 years old or more<br>' +
-            '<input type="checkbox" name="consent" value="consent2"> My participation in this experiment is voluntary <br>' +
-            '<input type="checkbox" name="consent" value="consent3"> I understand that my data will be kept confidential and I can stop at any time without justification <br></H4>';
 
-        let Buttons = '<div align="center"><input align="center" type="button"  class="btn btn-default" id="toInstructions" value="Next" ></div>';
+        GUI.panelInsertParagraphTitle('Research Results And Publication');
+        GUI.panelInsertParagraph('You will be able to check the publications resulting from this study on the following link: \n' +
+            'https://sites.google.com/site/stefanopalminteri/publications');
 
-        $('#TextBoxDiv').html(Title + Info + Ticks);
-        $('#Bottom').html(Buttons);
+        GUI.panelInsertParagraphTitle('Contact And Additional Information');
+        GUI.panelInsertParagraph('Email: humanreinforcementlearning@gmail.com\n' +
+            'This research has received a favorable opinion from the Inserm Ethical Review Committee / IRB0888 on November 13th, 2018.' +
+            'Your participation in this research confirms that you have read this information and wish to participate in the research study.');
 
-        $('#toInstructions').click(function () {
-            if ($("input:checkbox:not(:checked)").length > 0) {
-                GUI.displayModalWindow('Error', 'You must tick all check boxes to continue.', 'error');
-            } else {
-                $('#TextBoxDiv').remove();
-                $('#Stage').empty();
-                $('#Bottom').empty();
-                nextFunc(nextParams);
+
+        GUI.panelInsertCheckBox({text: 'I am 18 years old or more', id: 'c1'});
+        GUI.panelInsertCheckBox({text: 'My participation in this experiment is voluntary', id: 'c2'});
+        GUI.panelInsertCheckBox({
+            text: 'I understand that my data will be kept confidential and I can stop at any time without justification',
+            id: 'c3'
+        });
+
+
+        GUI.panelInsertButton({
+            value: 'Next', id: 'next',
+            clickFunc: function () {
+                if ($("input:checkbox:not(:checked)").length > 0) {
+                    GUI.displayModalWindow('Error', 'You must tick all check boxes to continue.', 'error');
+                } else {
+                    nextFunc(nextParams);
+                }
             }
         });
     }
 
     nextSession(nextFunc, nextParams) {
 
-        GUI.init();
-
         let oldSession = nextParams['sessionNum'];
         let newSession = nextParams['sessionNum'] + 1;
 
-        let Title = '<H2 align = "center">END OF SESSION</H2>';
-        let Info = '<br><br><br><br><br><H3 align = "center">This is the end of session ' + oldSession + '.<br><br>'
-                    + 'Session ' + newSession + ' starts now.'
-                    + '<br><br> </H3>';
-        let Buttons =
-            '<div align="center"><input align="center" type="button"  class="btn btn-default" id="Next" value="Next" ></div>';
+        GUI.panelFlush();
+        GUI.panelShow();
+        GUI.setActiveCurrentStep('training');
+        GUI.setActiveCurrentStep('session' + oldSession);
+        GUI.setActiveCurrentStep('session' + newSession);
 
-        $('#TextBoxDiv').html(Title+Info);
-        $('#Bottom').html(Buttons);
+        GUI.panelSetTitle('End of session' + oldSession);
 
-        $('#Next').click(function () {
-            $('#TextBoxDiv').remove();
-            $('#Stage').empty();
-            $('#Bottom').empty();
-            nextFunc(nextParams);
+        GUI.panelSetParagraph(`
+        • This the end of session ${oldSession}.\n\n
+         • Session ${newSession} starts now.
+        `);
+
+        GUI.panelInsertButton({
+            id: 'next', value: 'Next', clickArgs: {obj: this},
+            classname: 'btn btn-default card-button',
+            clickFunc: function (event) {
+                setTimeout(
+                    nextFunc(nextParams), 800
+                );
+
+            }
         });
-        debugger
     }
 
     displayInitialInstruction(funcParams, nextFunc, nextParams) {
@@ -146,543 +152,375 @@ export class Instructions {
         let nPages = 2;
         let pageNum = funcParams["pageNum"];
 
-        GUI.init();
 
-        let Title = '<H2 align = "center">INSTRUCTIONS</H2>';
-        let Info;
-        switch (pageNum) {
+        GUI.panelFlush();
+        GUI.panelSetTitle('General Instructions');
 
-            case 1:
-                Info = '<H3 align = "center">This experiment is composed of 3 sessions.<br><br>'
-                    + 'The first two sessions consist in different cognitive tests and are composed of respectively two and three phases.<br><br>'
-                    + 'There will be a training session composed of shorter versions of the 3 phases before the actual experiment starts.<br>'
-                    + 'The last session consists in a short questionnaire.<br><br>'
-                    + '<br><br> </H3>';
-                break;
+        let text = {
+            1: ' • This experiment is composed of 3 sessions. \n\n'
+                + ' • The first two sessions consist in different cognitive tests and are composed of respectively two and three phases.\n\n'
+                + ' • There will be a training session composed of shorter versions of the 3 phases before the actual experiment starts.\n\n'
+                + ' • The last session consists in a short questionnaire.\n\n',
+            2: ' • In addition of the fixed compensation provided by Prolific, you have been endowed with an additional 2.5 pounds. \n\n'
+                + ' • Depending on your choices you can either double this endowment or lose it. \n\n'
+                + ' • Following experimental economics methodological standards, no deception is involved concerning the calculation of the final payoff.\n\n'
+                + ' • Across the three phases of the experiment, you can win a bonus up to '
+                + this.exp.maxPoints + ' points = ' + this.exp.pointsToPounds(this.exp.maxPoints).toFixed(2) + ' pounds!',
+            3: ' • Points won during the training are not included in the final payoff.'
+                + ' • Your progression in the experiment is displayed on the timeline on top of the page'
+        };
 
-            case 2:
-                Info = '<H3 align = "center">In addition of the fixed compensation provided by Prolific, you have been endowed with an additional 2.5 pounds. '
-                    + '<br><br>Depending on your choices you can either double this endowment or lose it.<br><br>'
-                    + 'Following experimental economics methodological standards, no deception is involved concerning the calculation of the final payoff.'
-                    + '<br> Across the three phases of the experiment, you can win a bonus up to ' + this.exp.maxPoints + ' points = ' + this.exp.pointsToPounds(this.exp.maxPoints).toFixed(2) + ' pounds!';
-                break;
-        }
-        $('#TextBoxDiv').html(Title + Info);
+        GUI.panelSetParagraph(text[pageNum]);
 
-        let Buttons = '<div align="center"><input align="center" type="button"  class="btn btn-default" id="Back" value="Back" >\n\
-		<input align="center"  type="button" class="btn btn-default" id="Next" value="Next"></div>';
+        // to center two buttons inline
+        GUI.panelInsertDiv({id: 'buttonBox'});
 
-        $('#Bottom').html(Buttons);
-
-        if (pageNum === 1) {
-            $('#Back').hide();
-        }
-
-        $('#Back').click({obj: this}, function (event) {
-
-            $('#TextBoxDiv').remove();
-            $('#Stage').empty();
-            $('#Bottom').empty();
-
-            if (pageNum === 1) {
-            } else {
-                event.data.obj.displayInitialInstruction({pageNum: pageNum - 1}, nextFunc, nextParams);
-            }
-
-        });
-
-        $('#Next').click({obj: this}, function (event) {
-
-            $('#TextBoxDiv').remove();
-            $('#Stage').empty();
-            $('#Bottom').empty();
-            if (pageNum < nPages) {
-                event.data.obj.displayInitialInstruction({pageNum: pageNum + 1}, nextFunc, nextParams);
-            } else {
-                if (event.data.obj.exp.online) {
-                    sendToDB(0,
-                        {
-                            expID: event.data.obj.exp.expID,
-                            id: event.data.obj.exp.subID,
-                            exp: event.data.obj.exp.expName,
-                            browser: event.data.obj.exp.browsInfo,
-                            conversionRate: event.data.obj.exp.conversionRate
-                        },
-                        'php/InsertExpDetails.php'
-                    );
+        GUI.panelInsertButton({
+            id: 'back', value: 'Back',
+            div: 'buttonBox', classname: 'btn btn-default card-button',
+            clickFunc: function () {
+                if (pageNum > 1) {
+                    pageNum--;
+                    GUI.panelSetParagraph(text[pageNum]);
                 }
-                nextFunc(nextParams);
+                if (pageNum === 1) {
+                    GUI.hideElement('back');
+                }
             }
         });
+
+        // If pagenum is 1 we can't go back
+        if (pageNum === 1) {
+            GUI.hideElement('back');
+        }
+
+        GUI.panelInsertButton({
+            id: 'next', value: 'Next', clickArgs: {obj: this},
+            div: 'buttonBox', classname: 'btn btn-default card-button',
+            clickFunc: function (event) {
+
+                GUI.showElement('back');
+                if (pageNum < nPages) {
+                    pageNum++;
+                    GUI.panelSetParagraph(text[pageNum]);
+                } else {
+                    if (event.data.obj.exp.online) {
+                        sendToDB(0,
+                            {
+                                expID: event.data.obj.exp.expID,
+                                id: event.data.obj.exp.subID,
+                                exp: event.data.obj.exp.expName,
+                                browser: event.data.obj.exp.browsInfo,
+                                conversionRate: event.data.obj.exp.conversionRate
+                            },
+                            'php/InsertExpDetails.php'
+                        );
+                    }
+                    nextFunc(nextParams);
+                }
+            }
+        });
+
     }
 
     displayInstructionLearning(funcParams, nextFunc, nextParams) {
 
-        GUI.init();
-
-        let nPages = 3;
         let pageNum = funcParams["pageNum"];
         let isTraining = funcParams["isTraining"];
-        let sessionNum = funcParams['sessionNum']+1;
+        let sessionNum = funcParams['sessionNum'] + 1;
+        let nPages = 2;
 
-        let Title;
-        if (isTraining) {
-            Title = '<H2 align="center">TRAINING SESSION</H2>';
-        } else {
-            Title = '<H2 align="center"> SESSION ' + sessionNum + ' </H2>';
+        GUI.panelFlush();
+        GUI.setActiveCurrentStep('training');
+        if (!isTraining) {
+            GUI.setActiveCurrentStep('session1');
         }
-        let Info;
+        GUI.panelSetTitle('Instructions for the first test'
+            + [' | Session ' + sessionNum + ' | Phase 1 ', ' | Training | Phase 1 '][+(isTraining)]);
 
-        switch (pageNum) {
+        let text = {
+            1: ' • In each round you have to choose between one of two symbols displayed on either side of the screen. \n'
+                + 'You can select one of the two symbols by left-clicking on it.\n\n'
+                + [GUI.panelGenerateImg({src: 'images/instructions/1.png', width: '40%'}),
+                    GUI.panelGenerateImg({src: 'images/instructions/3.png', width: '40%'})][+(isTraining)]
+                + '• After a choice, you can win/lose the following outcomes:\n\n'
+                + '1 point = +' + this.exp.pointsToPence(1).toFixed(2) + ' pence\n'
+                + '-1 points = -' + this.exp.pointsToPence(1).toFixed(2) + ' pence\n\n'
+                + ' • The outcome of your choice will appear in the location of the symbol you chose.\n'
+                + 'The outcome you would have won by choosing the other option will also be displayed.\n\n'
+                + GUI.panelGenerateImg({src: 'images/instructions/2.png', width: '40%'})
+                + ' • Please note that only the outcome of your choice will be taken into account in the final payoff.',
+            2: ' • The different symbols are not equal in terms of outcome: one is in average more advantageous compared to the other in terms of points to be won. \n'
+                + 'At the end of the test you will be shown with the final payoff in terms of cumulated points and monetary bonus.\n\n'
+                + ['• Note: The test of the phase 1 is like the first test of the training.\n'
+                + 'This is the actual game, every point will be included in the final payoff. \n\n Ready?',
+                    " • Let's begin with the first training test! \n\n"
+                    + '(Note : points won during the training do not count for the final payoff!)'][+(isTraining)]
+        };
 
-            case 1:
-                Info = '<H3 align="center"><b>Instructions for the first test (1/2)</b><br><br>'
-                    + 'In each round you have to choose between one of two symbols displayed on either side of the screen.<br><br>'
-                    + 'You can select one of the two symbols by left-clicking on it. <br><br>'
-                    + 'After a choice, you can win/lose the following outcomes:<br><br>'
-                    + '1 point = +' + this.exp.pointsToPence(1).toFixed(2) + ' pence<br>'
-                    + '-1 points = -' + this.exp.pointsToPence(1).toFixed(2) + ' pence<br><br>'
-                    + 'The outcome of your choice will appear in the location of the symbol you chose.<br><br>'
-                    + 'The outcome you would have won by choosing the other option will also be displayed.<br><br>'
-                    + 'Please note that only the outcome of your choice will be taken into account in the final payoff.<br><br></H3>';
-                break;
+        GUI.panelSetParagraph(text[pageNum]);
 
-            case 2:
-                Info = '<H3 align="center"><b>Instructions for the first test (2/2)</b><br><br>'
-                    + 'The different symbols are not equal in terms of outcome: one is in average more advantageous compared to the other in terms of points to be won.<br><br>'
-                    + 'At the end of the test you will be shown with the final payoff in terms of cumulated points and monetary bonus.<br><br></H3>';
+        // to center two buttons inline
+        GUI.panelInsertDiv({id: 'buttonBox'});
 
-                break;
-
-            case 3:
-                let like;
-                if (isTraining) {
-                    Info = '<H3 align="center">Let' + "'s " + 'begin with the first training test!<br><br>'
-                        + '<b>(Note : points won during the training do not count for the final payoff !)<br><br>'
-                        + 'The word "ready" will be displayed before the actual game starts.</H3></b><br><br>';
-                    like = '';
-                } else {
-                    Title = '<H2 align="center">SESSION ' + sessionNum + '</H2><br>';
-                    Info = '<h3 align="center"><b>Note:</b> The test of the phase 1 is like the first test of the training.<br><br>';
-
-                    like = 'This is the actual game, every point will be included in the final payoff.<br><br>'
-                        + 'Ready? <br></H3>';
+        GUI.panelInsertButton({
+            id: 'back', value: 'Back',
+            div: 'buttonBox', classname: 'btn btn-default card-button',
+            clickFunc: function () {
+                if (pageNum > 1) {
+                    pageNum--;
+                    GUI.panelSetParagraph(text[pageNum]);
                 }
-                Info += like;
-                break;
-        }
+                if (pageNum === 1) {
+                    GUI.hideElement('back');
+                }
+            }
+        });
 
-        $('#TextBoxDiv').html(Title + Info);
-
-        let Buttons = '<div align="center"><input align="center" type="button"  class="btn btn-default" id="Back" value="Back" >\n\
-		<input align="center" type="button"  class="btn btn-default" id="Next" value="Next" >\n\
-		<input align="center" type="button"  class="btn btn-default" id="Start" value="Start!" ></div>';
-
-        $('#Bottom').html(Buttons);
-
+        // If pagenum is 1 we can't go back
         if (pageNum === 1) {
-            $('#Back').hide();
+            GUI.hideElement('back');
         }
 
-        if (pageNum === nPages) {
-            $('#Next').hide();
-        }
+        GUI.panelInsertButton({
+            id: 'next', value: 'Next', clickArgs: {obj: this},
+            div: 'buttonBox', classname: 'btn btn-default card-button',
+            clickFunc: function (event) {
 
-        if (pageNum < nPages) {
-            $('#Start').hide();
-        }
+                GUI.showElement('back');
+                if (pageNum < nPages) {
+                    pageNum++;
+                    GUI.panelSetParagraph(text[pageNum]);
+                } else {
+                    GUI.panelFlush();
+                    GUI.panelHide();
 
-        $('#Back').click({obj: this}, function (event) {
+                    setTimeout(
+                        nextFunc(nextParams), 800
+                    );
 
-            $('#TextBoxDiv').remove();
-            $('#Stage').empty();
-            $('#Bottom').empty();
-
-            funcParams['pageNum'] -= 1;
-
-            if (pageNum === 1) {
-            } else {
-                event.data.obj.displayInstructionLearning(funcParams, nextFunc, nextParams);
+                }
             }
-
-        });
-        $('#Next').click({obj: this}, function (event) {
-
-            $('#TextBoxDiv').remove();
-            $('#Stage').empty();
-            $('#Bottom').empty();
-            funcParams['pageNum'] += 1;
-            event.data.obj.displayInstructionLearning(funcParams, nextFunc, nextParams);
-        });
-
-        $('#Start').click({obj: this}, function (event) {
-
-            $('#TextBoxDiv').remove();
-            $('#Stage').empty();
-            $('#Bottom').empty();
-
-            $('#TextBoxDiv').remove();
-            $('#Stage').empty();
-            $('#Bottom').empty();
-
-            let ready;
-            let steady;
-            let go;
-
-            if (isTraining) {
-                ready = '3...';
-                steady = '2...';
-                go = '1...';
-            } else {
-                ready = 'Ready...';
-                steady = 'Steady...';
-                go = 'Go!';
-            }
-
-            $('#TextBoxDiv').remove();
-            $('#Stage').empty();
-            $('#Bottom').empty();
-
-            setTimeout(function () {
-                $('#Stage').html('<H1 align = "center">' + ready + '</H1>');
-                setTimeout(function () {
-                    $('#Stage').html('<H1 align = "center">' + steady + '</H1>');
-                    setTimeout(function () {
-                        $('#Stage').html('<H1 align = "center">' + go + '</H1>');
-                        setTimeout(function () {
-                            $('#Stage').empty();
-                            nextFunc(nextParams);
-                        }, 1000);
-                    }, 1000);
-                }, 1000);
-            }, 10);
         });
     }
 
     displayInstructionChoiceElicitation(funcParams, nextFunc, nextParams) {
 
-        GUI.init();
-
-        let isTraining = funcParams['isTraining'];
-        let sessionNum = funcParams['sessionNum']+1;
-        let phaseNum = funcParams['phaseNum'];
-        let pageNum = funcParams['pageNum'];
+        let pageNum = funcParams["pageNum"];
+        let phaseNum = funcParams["phaseNum"];
+        let isTraining = funcParams["isTraining"];
+        let sessionNum = funcParams['sessionNum'] + 1;
         let points = this.exp.sumReward[phaseNum - 1];
         let pence = this.exp.pointsToPence(points).toFixed(2);
         let pounds = this.exp.pointsToPounds(points).toFixed(2);
         let nPages = 3;
-        let Title;
-        let p;
-        let like;
-        let wonlost;
 
-        let Info;
-        let trainstring;
+        GUI.panelFlush();
+        GUI.panelShow();
+        GUI.setActiveCurrentStep('training');
+        if (!isTraining) {
+            GUI.setActiveCurrentStep('session' + sessionNum);
+        }
+        GUI.panelSetTitle('Instructions for the second test ' +
+            [' | Session ' + sessionNum + ' | Phase ' + phaseNum, ' | Training '][+(isTraining)]);
 
+        let text;
         if (isTraining) {
-            Title = '<H2 align = "center">TRAINING SESSION</H2><br>';
-            p = '<b>(Note: points won during the training do not count for the final payoff!)<br><br>'
-                + '<b>The word "ready" will be displayed before the actual game starts.</b></H3><br><br>';
-            like = '';
-        } else {
-            Title = '<H2 align="center"> SESSION ' + sessionNum + ' </H2>';
-            like = '<h3 align="center"><b>Note:</b> The test of the phase 2 is like the second test of the training.</h3><br><br>';
-
-            p = '<H3 align="center">This is the actual game, every point will be included in the final payoff.<br><br>'
-                + 'Ready? <br></H3>';
-        }
-
-        switch (pageNum) {
-            case 1:
-                wonlost = ['won', 'lost'][+(points < 0)];
-
-                Info = '<H3 align = "center">You ' + wonlost + ' ' + points +
-                    ' points = ' + pence + ' pence = ' + pounds + ' pounds!</h3><br><br>';
-
-
-                Info += '<H3 align="center"> <b>Instructions for the second test (1/2)</b><br><br>'
-                    + 'In each round you have to choose between one of two items displayed on either side of the screen.<br>'
-                    + 'You can select one of the two items by left-clicking on it.<br><br>'
-                    + 'Please note that the outcome of your choice will not be displayed on each trial.<br>'
-                    + 'However, for each choice an outcome will be calculated and taken into account for the final payoff.<br>'
-                    + 'At the end of the test you will be shown with the final payoff in terms of cumulated points and monetary bonus.<br><br></H3>';
-
-                break;
-
-            case 2:
-                Info = '<H3 align="center"> <b>Instructions for the second test (2/2)</b><br><br>'
-                    + 'In the second test  there will be two kind of options.<br>'
-                    + 'The first kind of options is represented by the symbols you already met during the previous test.<br><br>'
-                    + '<b>Note</b>: the symbols keep the same odds of winning / losing a point as in the first test.<br><br>'
-                    + 'The second kind of options is represented by pie-charts explicitly describing the odds of winning / losing a point.<br><br>'
+            text = {
+                1: ' • In each round you have to choose between one of two items displayed on either side of the screen. \n'
+                    + 'You can select one of the two symbols by left-clicking on it.\n\n'
+                    + ' • Please note that the outcome of your choice will not be displayed on each trial.\n'
+                    + 'However, for each choice an outcome will be calculated and taken into account for the final payoff.\n\n'
+                    + ' • At the end of the test you will be shown with the final payoff in terms of cumulated points and monetary bonus.',
+                2: ' • In the second test  there will be two kind of options. \n'
+                    + ' • The first kind of options is represented by the symbols you already met during the previous test.\n'
+                    + GUI.panelGenerateImg({src: 'images/cards_gif/stim/A.jpg', width: '15%'})
+                    + 'Note: the symbols keep the same odds of winning / losing a point as in the first test.'
+                    + ' • The second kind of options is represented by pie-charts explicitly describing the odds of winning / losing a point.\n'
+                    + GUI.panelGenerateImg({src: 'images/cards_gif/lotteries/0.4.png', width: '15%'})
                     + 'Specifically, the green area indicates the chance of winning +1 (+' + this.exp.pointsToPence(1).toFixed(2) + 'p) ; the red area indicates the chance of losing -1 (+'
-                    + this.exp.pointsToPence(1).toFixed(2) + 'p).<br><br>'
-                    + 'Sometimes you will be asked to choose between two symbols, sometime between two pie-charts, and sometimes between a pie-chart and a symbol.<br><br>';
-                break;
+                    + this.exp.pointsToPence(1).toFixed(2) + 'p).\n\n'
+                    + ' • Sometimes you will be asked to choose between two symbols, sometime between two pie-charts, and sometimes between a pie-chart and a symbol.\n',
+                3: ' • (Note : points won during the training do not count for the final payoff!) \n\n'
+                    + " • Let's begin with the second training test! \n\n"
+            };
+        } else {
+            text = {
+                1: ' • In each round you have to choose between one of two items displayed on either side of the screen. \n'
+                    + 'You can select one of the two symbols by left-clicking on it.\n\n'
+                    + ' • Please note that the outcome of your choice will not be displayed on each trial.\n'
+                    + 'However, for each choice an outcome will be calculated and taken into account for the final payoff.\n\n'
+                    + ' • At the end of the test you will be shown with the final payoff in terms of cumulated points and monetary bonus.',
+                2: ' • In the second test  there will be two kind of options. \n'
+                    + ' • The first kind of options is represented by the symbols you already met during the previous test.\n'
+                    + GUI.panelGenerateImg({src: 'images/cards_gif/stim_old/2.gif', width: '15%'})
+                    + 'Note: the symbols keep the same odds of winning / losing a point as in the first test.'
+                    + ' • The second kind of options is represented by pie-charts explicitly describing the odds of winning / losing a point.\n'
+                    + GUI.panelGenerateImg({src: 'images/cards_gif/lotteries/0.4.png', width: '15%'})
+                    + 'Specifically, the green area indicates the chance of winning +1 (+' + this.exp.pointsToPence(1).toFixed(2) + 'p) ; the red area indicates the chance of losing -1 (+'
+                    + this.exp.pointsToPence(1).toFixed(2) + 'p).\n\n'
+                    + ' • Sometimes you will be asked to choose between two symbols, sometime between two pie-charts, and sometimes between a pie-chart and a symbol.\n',
+                3: '• Note: The test of the phase 2 is like the second test of the training.\n'
+                    + 'This is the actual game, every point will be included in the final payoff. \n\n Ready?',
+            };
+        }
 
-            case 3:
-                if (isTraining) {
-                    trainstring = "Let's begin with the second training test!<br>";
-                } else {
-                    trainstring = "";
+        GUI.panelSetParagraph(text[pageNum]);
+
+        // to center two buttons inline
+        GUI.panelInsertDiv({id: 'buttonBox'});
+
+        GUI.panelInsertButton({
+            id: 'back', value: 'Back',
+            div: 'buttonBox', classname: 'btn btn-default card-button',
+            clickFunc: function () {
+                if (pageNum > 1) {
+                    pageNum--;
+                    GUI.panelSetParagraph(text[pageNum]);
                 }
+                if (pageNum === 1) {
+                    GUI.hideElement('back');
+                }
+            }
+        });
 
-                Info = '<H3 align="center">' + trainstring + like + p;
-                break;
-
-        }
-
-        $('#TextBoxDiv').html(Title + Info);
-
-        let Buttons = '<div align="center"><input align="center" type="button"  class="btn btn-default" id="Back" value="Back" >\n\
-            <input align="center" type="button"  class="btn btn-default" id="Next" value="Next" >\n\
-            <input align="center" type="button"  class="btn btn-default" id="Start" value="Start!" ></div>';
-
-        $('#Bottom').html(Buttons);
-
+        // If pagenum is 1 we can't go back
         if (pageNum === 1) {
-            $('#Back').hide();
+            GUI.hideElement('back');
         }
 
-        if (pageNum === nPages) {
-            $('#Next').hide();
-        }
+        GUI.panelInsertButton({
+            id: 'next', value: 'Next', clickArgs: {obj: this},
+            div: 'buttonBox', classname: 'btn btn-default card-button',
+            clickFunc: function (event) {
 
-        if (pageNum < nPages) {
-            $('#Start').hide();
-        }
+                GUI.showElement('back');
+                if (pageNum < nPages) {
+                    pageNum++;
+                    GUI.panelSetParagraph(text[pageNum]);
+                } else {
+                    GUI.panelFlush();
+                    GUI.panelHide();
 
-        $('#Back').click({obj: this}, function (event) {
+                    setTimeout(
+                        nextFunc(nextParams), 800
+                    );
 
-            $('#TextBoxDiv').remove();
-            $('#Stage').empty();
-            $('#Bottom').empty();
-
-            funcParams['pageNum'] -= 1;
-
-            if (pageNum === 1) {
-            } else {
-                event.data.obj.displayInstructionChoiceElicitation(funcParams, nextFunc, nextParams);
+                }
             }
-        });
-
-        $('#Next').click({obj: this}, function (event) {
-
-            $('#TextBoxDiv').remove();
-            $('#Stage').empty();
-            $('#Bottom').empty();
-            funcParams['pageNum'] += 1;
-            event.data.obj.displayInstructionChoiceElicitation(funcParams, nextFunc, nextParams);
-
-        });
-
-        $('#Start').click(function () {
-
-            $('#TextBoxDiv').remove();
-            $('#Stage').empty();
-            $('#Bottom').empty();
-
-            let ready;
-            let steady;
-            let go;
-
-            if (isTraining) {
-                ready = '3...';
-                steady = '2...';
-                go = '1...';
-            } else {
-                ready = 'Ready...';
-                steady = 'Steady...';
-                go = 'Go!';
-            }
-
-            $('#TextBoxDiv').remove();
-            $('#Stage').empty();
-            $('#Bottom').empty();
-
-            setTimeout(function () {
-                $('#Stage').html('<H1 align = "center">' + ready + '</H1>');
-                setTimeout(function () {
-                    $('#Stage').html('<H1 align = "center">' + steady + '</H1>');
-                    setTimeout(function () {
-                        $('#Stage').html('<H1 align = "center">' + go + '</H1>');
-                        setTimeout(function () {
-                            $('#Stage').empty();
-                            nextFunc(nextParams);
-                        }, 1000);
-                    }, 1000);
-                }, 1000);
-            }, 10);
         });
     }
 
     displayInstructionSliderElicitation(funcParams, nextFunc, nextParams) {
 
-        GUI.init();
-
-        let isTraining = funcParams['isTraining'];
-        let pageNum = funcParams['pageNum'];
-        let phaseNum = funcParams['phaseNum'];
-        let sessionNum = funcParams['sessionNum']+1;
-
-        let trainstring;
-        let wonlost;
-
+        let pageNum = funcParams["pageNum"];
+        let phaseNum = funcParams["phaseNum"];
+        let isTraining = funcParams["isTraining"];
+        let sessionNum = funcParams['sessionNum'] + 1;
         let points = this.exp.sumReward[phaseNum - 1];
         let pence = this.exp.pointsToPence(points).toFixed(2);
         let pounds = this.exp.pointsToPounds(points).toFixed(2);
-
         let nPages = 4;
 
-        let Info;
-        let Title;
+        GUI.panelFlush();
+        GUI.panelShow();
+        GUI.setActiveCurrentStep('training');
+        if (!isTraining) {
+            GUI.setActiveCurrentStep('session' + sessionNum);
+        }
+        GUI.panelSetTitle('Instructions for the third test ' +
+            [' | Session ' + sessionNum + ' | Phase ' + phaseNum, ' | Training '][+(isTraining)]);
 
+        let text;
         if (isTraining) {
-            Title = '<H2 align="center">TRAINING SESSION</H2><br>';
+            text = {
+                1: ' • In each round of the third test you will be presented with the symbols and pie-charts you met in the first and the second test.\n'
+                    + 'You will be asked to indicate (in percentages), what are the odds that a given symbol or pie-chart makes you win a point (+1=+' + this.exp.pointsToPence(1).toFixed(2) + 'p).\n'
+                    + ' • You will be able to do this through moving a slider on the screen and then confirm your final answer by clicking on the confirmation button.\n\n'
+                    + ' • 100%  = the symbol (or pie-chart) always gives +1pt.\n'
+                    + ' • 50%  = the symbol (or pie-chart) always gives +1pt or -1pt with equal chances.\n'
+                    + ' • 0% = the symbol (or pie-chart) always gives -1pt.\n',
+                2: ' • After confirming your choice (denoted C hereafter) the computer will draw a random lottery number (denoted L hereafter) between 0 and 100.\n'
+                    + ' • If C is bigger than L, you win the reward with the probabilities associated to the symbol.\n'
+                    + ' • If C is smaller than L, the program will spin a wheel of fortune and you will win a reward of +1 point with a probability of L%, otherwise you will lose -1 point.\n',
+                3: ' • To sum up, the higher the percentage you give, the higher the chances are the outcome will be determined by the symbol or the pie-chart.\n'
+                    + 'Conversely, the lower the percentage, the higher the chances are the outcome will be determined by the random lottery number.\n\n'
+                    + ' •  Please note that the outcome of your choice will not be displayed on each trial.'
+                    + ' • However, for each choice an outcome will be calculated and taken into account for the final payoff.\n'
+                    + 'At the end of the test you will be shown with the final payoff in terms of cumulated points and monetary bonus.',
+                4: ' • Let\'s begin with the third training test!\n\n'
+                    + ' • Note : points won during the training do not count for the final payoff !)'
+            };
         } else {
-            Title = '<H2 align="center">SESSION ' + sessionNum + '</H2><br>';
-
+            text = {
+                1: ' • In each round of the third test you will be presented with the symbols and pie-charts you met in the first and the second test.\n'
+                    + 'You will be asked to indicate (in percentages), what are the odds that a given symbol or pie-chart makes you win a point (+1=+' + this.exp.pointsToPence(1).toFixed(2) + 'p).\n'
+                    + ' • You will be able to do this through moving a slider on the screen and then confirm your final answer by clicking on the confirmation button.\n\n'
+                    + ' • 100%  = the symbol (or pie-chart) always gives +1pt.\n'
+                    + ' • 50%  = the symbol (or pie-chart) always gives +1pt or -1pt with equal chances.\n'
+                    + ' • 0% = the symbol (or pie-chart) always gives -1pt.\n',
+                2: ' • After confirming your choice (denoted C hereafter) the computer will draw a random lottery number (denoted L hereafter) between 0 and 100.\n'
+                    + ' • If C is bigger than L, you win the reward with the probabilities associated to the symbol.\n'
+                    + ' • If C is smaller than L, the program will spin a wheel of fortune and you will win a reward of +1 point with a probability of L%, otherwise you will lose -1 point.\n',
+                3: ' • To sum up, the higher the percentage you give, the higher the chances are the outcome will be determined by the symbol or the pie-chart.\n'
+                    + 'Conversely, the lower the percentage, the higher the chances are the outcome will be determined by the random lottery number.\n\n'
+                    + ' •  Please note that the outcome of your choice will not be displayed on each trial.'
+                    + ' • However, for each choice an outcome will be calculated and taken into account for the final payoff.\n'
+                    + 'At the end of the test you will be shown with the final payoff in terms of cumulated points and monetary bonus.',
+                4: '• Note: The test of the phase 3 is like the third test of the training.\n\n '
+                    + 'This is the actual game, every point will be included in the final payoff. \n\n Ready?',
+            };
         }
 
-        switch (pageNum) {
-            case 1:
-                wonlost = ['won', 'lost'][+(points < 0)];
+        GUI.panelSetParagraph(text[pageNum]);
 
-                Info = '<H3 align = "center">You ' + wonlost + ' ' + points +
-                    ' points = ' + pence + ' pence = ' + pounds + ' pounds!</h3><br><br>';
+        // to center two buttons inline
+        GUI.panelInsertDiv({id: 'buttonBox'});
 
-                Info += '<H3 align = "center"><b>Instructions for the third test (1/3)</b><br><br>'
-                    + 'In each round of third test you will be presented with the symbols and pie-charts you met in the first and the second test.<br><br>'
-                    + 'You will be asked to indicate (in percentages), what are the odds that a given symbol or pie-chart makes you win a point (+1=+' + this.exp.pointsToPence(1).toFixed(2) + 'p).<br><br>'
-                    + 'You will be able to do this through moving a slider on the screen and then confirm your final answer by clicking on the confirmation button.<br><br>'
-                    + '100%  = the symbol (or pie-chart) always gives +1pt.<br>'
-                    + '50%  = the symbol (or pie-chart) always gives +1pt or -1pt with equal chances.<br>'
-                    + '0% = the symbol (or pie-chart) always gives -1pt.<br><br>';
-                break;
-
-            case 2:
-                Info = '<H3 align = "center"><b>Instructions for the third test (2/3)</b><br><br>'
-                    + 'After confirming your choice (denoted C hereafter) the computer will draw a random lottery number (denoted L hereafter) between 0 and 100.<br>'
-                    + 'If C is bigger than L, you win the reward with the probabilities associated to the symbol.<br>'
-                    + 'If C is smaller than L, the program will spin a wheel of fortune and you will win a reward of +1 point with a probability of L%, otherwise you will lose -1 point.<br><br>';
-                break;
-
-            case 3:
-                Info = '<H3 align = "center"><b>Instructions for the third test (3/3)</b><br><br>'
-                    + 'To sum up, the higher the percentage you give, the higher the chances are the outcome will be determined by the symbol or the pie-chart.<br><br>'
-                    + 'Conversely, the lower the percentage, the higher the chances are the outcome will be determined by the random lottery number.<br><br>'
-                    + 'Please note that the outcome of your choice will not be displayed on each trial.<br><br>'
-                    + 'However, for each choice an outcome will be calculated and taken into account for the final payoff.<br><br>'
-                    + 'At the end of the test you will be shown with the final payoff in terms of cumulated points and monetary bonus.<br><br>'
-                break;
-
-            case 4:
-                let like;
-                if (isTraining) {
-                    Info = '<H3 align="center">Let' + "'s " + 'begin with the third training test!<br><br>'
-                        + '<b>(Note : points won during the training do not count for the final payoff !)<br><br>'
-                        + 'The word "ready" will be displayed before the actual game starts.</H3></b><br><br>';
-                    like = '';
-                } else {
-                    Title = '<H2 align="center">SESSION ' + sessionNum + '</H2><br>';
-                    Info = '<h3 align="center"><b>Note:</b> The test of the phase 3 is like the third test of the training.<br><br>';
-
-                    like = 'This is the actual game, every point will be included in the final payoff.<br><br>'
-                        + 'Ready? <br></H3>';
+        GUI.panelInsertButton({
+            id: 'back', value: 'Back',
+            div: 'buttonBox', classname: 'btn btn-default card-button',
+            clickFunc: function () {
+                if (pageNum > 1) {
+                    pageNum--;
+                    GUI.panelSetParagraph(text[pageNum]);
                 }
-                Info += like;
-                break;
-        }
+                if (pageNum === 1) {
+                    GUI.hideElement('back');
+                }
+            }
+        });
 
-        $('#TextBoxDiv').html(Title + Info);
-
-        let Buttons = '<div align="center"><input align="center" type="button"  class="btn btn-default" id="Back" value="Back" >\n\
-            <input align="center" type="button"  class="btn btn-default" id="Next" value="Next" >\n\
-            <input align="center" type="button"  class="btn btn-default" id="Start" value="Start!" ></div>';
-
-        $('#Bottom').html(Buttons);
-
+        // If pagenum is 1 we can't go back
         if (pageNum === 1) {
-            $('#Back').hide();
+            GUI.hideElement('back');
         }
 
-        if (pageNum === nPages) {
-            $('#Next').hide();
-        }
+        GUI.panelInsertButton({
+            id: 'next', value: 'Next', clickArgs: {obj: this},
+            div: 'buttonBox', classname: 'btn btn-default card-button',
+            clickFunc: function (event) {
 
-        if (pageNum < nPages) {
-            $('#Start').hide();
-        }
+                GUI.showElement('back');
+                if (pageNum < nPages) {
+                    pageNum++;
+                    GUI.panelSetParagraph(text[pageNum]);
+                } else {
+                    GUI.panelFlush();
+                    GUI.panelHide();
 
-        $('#Back').click({obj: this}, function (event) {
+                    setTimeout(
+                        nextFunc(nextParams), 800
+                    );
 
-            $('#TextBoxDiv').remove();
-            $('#Stage').empty();
-            $('#Bottom').empty();
-
-            funcParams['pageNum'] -= 1;
-
-            if (pageNum === 1) {
-            } else {
-                event.data.obj.displayInstructionSliderElicitation(funcParams, nextFunc, nextParams);
+                }
             }
-        });
-
-        $('#Next').click({obj: this}, function (event) {
-
-            $('#TextBoxDiv').remove();
-            $('#Stage').empty();
-            $('#Bottom').empty();
-
-            funcParams['pageNum'] += 1;
-
-            event.data.obj.displayInstructionSliderElicitation(funcParams, nextFunc, nextParams);
-
-        });
-
-        $('#Start').click(function () {
-
-            $('#TextBoxDiv').remove();
-            $('#Stage').empty();
-            $('#Bottom').empty();
-
-            let ready;
-            let steady;
-            let go;
-
-            if (isTraining) {
-                ready = '3...';
-                steady = '2...';
-                go = '1...';
-            } else {
-                ready = 'Ready...';
-                steady = 'Steady...';
-                go = 'Go!';
-            }
-
-            $('#TextBoxDiv').remove();
-            $('#Stage').empty();
-            $('#Bottom').empty();
-
-            setTimeout(function () {
-                $('#Stage').html('<H1 align = "center">' + ready + '</H1>');
-                setTimeout(function () {
-                    $('#Stage').html('<H1 align = "center">' + steady + '</H1>');
-                    setTimeout(function () {
-                        $('#Stage').html('<H1 align = "center">' + go + '</H1>');
-                        setTimeout(function () {
-                            $('#Stage').empty();
-                            nextFunc(nextParams);
-                        }, 1000);
-                    }, 1000);
-                }, 1000);
-            }, 10);
         });
     }
 
     displayInstructionQuestionnaire(nextFunc, nextParams) {
 
-        GUI.init();
+        GUI.initGameStageDiv();
 
         let Title = '<H3 align = "center">QUESTIONNAIRE</H3>';
 
@@ -709,20 +547,10 @@ export class Instructions {
 
     endTraining(funcParams, nextFunc, nextParams) {
 
-
-        GUI.init();
-
-        let sessionNum = funcParams['sessionNum'];
-
-        let Title;
-        let Info;
         let totalPoints;
         let pence;
         let pounds;
         let wonlost;
-
-        Title = '<H2 align = "center">END OF THE TRAINING</H2>';
-        Info = '';
 
         totalPoints = this.exp.sumReward[1] + this.exp.sumReward[2] + this.exp.sumReward[3];
         pence = this.exp.pointsToPence(totalPoints).toFixed(2);
@@ -730,67 +558,62 @@ export class Instructions {
 
         wonlost = ['won', 'lost'][+(totalPoints < 0)];
 
-        Info += '<H3 align="center"> The training is over!<br><br>';
-        Info += 'Overall, in this training, you ' + wonlost + ' ' + totalPoints +
-            ' points = ' + pence + ' pence = ' + pounds + ' pounds!<br><br>';
+        GUI.panelFlush();
+        GUI.panelShow();
+        GUI.setActiveCurrentStep('training');
+        GUI.panelSetTitle('End of training');
 
-        Info += 'Test 1: ' + this.exp.sumReward[1] + '<br>';
-        Info += 'Test 2: ' + this.exp.sumReward[2] + '<br>';
-        Info += 'Test 3: ' + this.exp.sumReward[3] + '<br>';
+        GUI.panelSetParagraph(`• The training is over!\n\n
+         • Overall, in this training, you ${wonlost} ${totalPoints} points = ${pence} pence = ${pounds} pounds!\n\n
+         Test 1: ${this.exp.sumReward[1]}\n
+         Test 2: ${this.exp.sumReward[2]}\n
+         Test 3: ${this.exp.sumReward[3]}\n\n
+         • Now, you are about to start the first phase of the experiment. Note that from now on the points will be counted in your final payoff.\n
+           Also note that the experiment includes much more trials and more points are at stake, compared to the training.\n
+           Finally note that the real test will involve different symbols (i.e., not encountered in the training).\n\n
+         • If you want you can do the training a second time.
+        `);
 
-        Info += 'Now, you are about to start the first phase of the experiment.<br> Note that from now on the points will be counted in your final payoff.'
-            + ' Also note that the experiment includes much more trials and more points are at stake, compared to the training.<br>'
-            + 'Finally note that the real test will involve different symbols (i.e., not encountered in the training).<br>'
-            + 'If you want you can do the training a second time.</h3><br><br>';
+        // to center two buttons inline
+        GUI.panelInsertDiv({id: 'buttonBox'});
 
-        $('#TextBoxDiv').html(Title + Info);
-
-        let Buttons = '<div align="center">\n\
-            <input align="center" type="button"  class="btn btn-default" id="Training" value="Play training again" >\n\
-            <input align="center" type="button"  class="btn btn-default" id="Next" value="Next" >\n\
-            </div>';
-
-        $('#Bottom').html(Buttons);
-
-        if (sessionNum === this.exp.maxTrainingNum)
-            $('#Training').hide();
-
-        $('#Training').click({obj: this}, function (event) {
-
-            $('#TextBoxDiv').remove();
-            $('#Stage').empty();
-            $('#Bottom').empty();
-
-            event.data.obj.exp.sumReward[0] = 0;
-            event.data.obj.exp.sumReward[1] = 0;
-            event.data.obj.exp.sumReward[2] = 0;
-            event.data.obj.exp.sumReward[3] = 0;
-            nextParams['phaseNum'] = 1;
-            nextParams['sessionNum'] = -2;
-            nextParams['instructionNum'] = 4;
-            nextFunc(nextParams);
-            // TODO: restart training
-            // nextParams
-
+        GUI.panelInsertButton({
+            id: 'toTraining', value: 'Restart training',
+            div: 'buttonBox', classname: 'btn btn-default card-button',
+            clickFunc: function (event) {
+                event.data.obj.exp.sumReward[0] = 0;
+                event.data.obj.exp.sumReward[1] = 0;
+                event.data.obj.exp.sumReward[2] = 0;
+                event.data.obj.exp.sumReward[3] = 0;
+                nextParams['phaseNum'] = 1;
+                nextParams['sessionNum'] = -2;
+                nextParams['instructionNum'] = 4;
+                nextFunc(nextParams);
+            },
+            clickArgs: {obj: this}
         });
 
-        $('#Next').click({obj: this}, function (event) {
+        GUI.panelInsertButton({
+            id: 'next', value: 'Next', clickArgs: {obj: this},
+            div: 'buttonBox', classname: 'btn btn-default card-button',
+            clickFunc: function (event) {
+                event.data.obj.exp.sumReward[0] = 0;
+                event.data.obj.exp.sumReward[1] = 0;
+                event.data.obj.exp.sumReward[2] = 0;
+                event.data.obj.exp.sumReward[3] = 0;
 
-            event.data.obj.exp.sumReward[0] = 0;
-            event.data.obj.exp.sumReward[1] = 0;
-            event.data.obj.exp.sumReward[2] = 0;
-            event.data.obj.exp.sumReward[3] = 0;
+                setTimeout(
+                    nextFunc(nextParams), 800
+                );
 
-            $('#TextBoxDiv').remove();
-            $('#Stage').empty();
-            $('#Bottom').empty();
-            nextFunc(nextParams);
+            }
         });
     }
 
-    endExperiment() {
+    endExperiment()
+    {
 
-        GUI.init();
+        GUI.initGameStageDiv();
 
         let points = this.exp.totalReward;
         let pence = this.exp.pointsToPence(points).toFixed(2);
@@ -810,4 +633,3 @@ export class Instructions {
     }
 
 }
-
