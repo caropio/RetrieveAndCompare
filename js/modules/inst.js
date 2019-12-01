@@ -45,9 +45,6 @@ export class Instructions {
 
                 if (answer.length === 24 || event.data.obj.exp.isTesting) {
                     event.data.obj.exp.subID = answer;
-                    $('#TextBoxDiv').remove();
-                    $('#Stage').empty();
-                    $('#Bottom').empty();
                     nextFunc(nextParams);
                 } else {
                     GUI.displayModalWindow('Error',

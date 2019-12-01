@@ -25,6 +25,10 @@ export class GUI {
         $('#' + id).show();
     }
 
+    // static setCardTransition() {
+    //     $('.card-wrapper').css('height', $('#card-content').height());
+    // }
+
     static setActiveCurrentStep(id) {
         if (!$('#' + id).attr('class').includes('active')) {
             $('#' + id).attr('class', 'md-step active');
@@ -34,10 +38,13 @@ export class GUI {
     static panelSetParagraph(text) {
         $('.card-text').remove();
         $('#card-content').prepend('<div class="card-text">' + text + '</div>');
+        //this.setCardTransition();
+
     }
 
     static panelInsertParagraph(text) {
         $('#card-content').append('<div class="card-text">' + text + '</div>');
+        //this.setCardTransition();
     }
 
     static panelInsertParagraphTitle(title) {
@@ -276,7 +283,7 @@ export class GUI {
                   <div class="modal-content">
                     <div class="modal-header">
                       <button type="button" class="close" data-dismiss="modal">&times;</button>
-                      <span class="fa ${sym}" style="font-size: 24px; color: ${color};">  ${title}
+                      <center><span class="fa ${sym}" style="font-size: 24px; color: ${color};">  ${title}</center>
                     </div>
                     <div class="modal-body">
                     ${message}

@@ -137,7 +137,7 @@ export class ChoiceManager {
 
     /* =================== private methods ================== */
     _isTesting() {
-        GUI.insertSkipButton(this, this.nTrial - 1);
+        GUI.insertSkipButton(this, this.nTrial);
     }
 
     _clickEvent(choice, params) {
@@ -270,9 +270,13 @@ export class ChoiceManager {
     next(nTrial = undefined) {
         if (this.skip && nTrial) {
             GUI.hideOptions();
+            this.trialNum = nTrial;
             setTimeout(function (event) {
-                event.obj.trialNum = nTrial;
-                event.obj.run();
+                if (nTrial === event.obj.nTrial) {
+                    event.obj.next();
+                } else {
+                    event.obj.run();
+                }
             }, 500, {obj: this});
             return;
         }
@@ -384,7 +388,7 @@ export class SliderManager {
 
     /* =================== private methods ================== */
     _isTesting() {
-        GUI.insertSkipButton(this, this.nTrial - 1);
+        GUI.insertSkipButton(this, this.nTrial);
     }
 
     _clickEvent(choice, params) {
@@ -472,9 +476,13 @@ export class SliderManager {
     next(nTrial = undefined) {
         if (this.skip && nTrial) {
             GUI.hideOptions();
+            this.trialNum = nTrial;
             setTimeout(function (event) {
-                event.obj.trialNum = nTrial;
-                event.obj.run();
+                if (nTrial === event.obj.nTrial) {
+                    event.obj.next();
+                } else {
+                    event.obj.run();
+                }
             }, 500, {obj: this});
             return;
         }

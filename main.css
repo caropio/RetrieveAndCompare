@@ -252,6 +252,10 @@ form {
     box-shadow: 2px 2px 2px 1px rgba(0, 0, 0, 0.2);
 }
 
+.card-wrapper {
+    transition: height .4s;
+}
+
 .card-header {
     padding: 1.75rem 2.15rem;
     margin-bottom: 5%;
@@ -598,7 +602,7 @@ body {
     transform: rotate(45deg);
 }
 
-.card-content  {
+.card-content {
     padding: 3% !important;
 }
 
