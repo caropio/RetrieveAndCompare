@@ -12,8 +12,28 @@ export class Questionnaire {
     runCRT(funcParams, nextFunc, nextParams) {
 
         let questNum = funcParams['questNum'];
-        GUI.initGameStageDiv();
 
+        GUI.panelFlush();
+        GUI.panelShow();
+        GUI.setActiveCurrentStep('questionnaire');
+
+        GUI.panelSetTitle('Questionnaire');
+
+        GUI.panelSetParagraph(`
+        • This the end of session ${oldSession}.\n\n
+         • Session ${newSession} starts now.
+        `);
+
+        GUI.panelInsertButton({
+            id: 'next', value: 'Next', clickArgs: {obj: this},
+            classname: 'btn btn-default card-button',
+            clickFunc: function (event) {
+                setTimeout(
+                    nextFunc(nextParams), 800
+                );
+
+            }
+        });
         let nQuestions = 7;
 
         let Title = '<H2 align = "center"></H2>';

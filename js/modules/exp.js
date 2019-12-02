@@ -666,11 +666,11 @@ export class ExperimentParameters {
                 maxPoints += Math.max(ev1, ev2)
             }
 
-            for (let i = 0; i < this.trialObjSliderElicitation[0].length; i++) {
+        }
 
-                let ev1 = this.trialObjSliderElicitation[sessionNum][i][3];
-                maxPoints += ev1;
-            }
+        for (let i = 0; i < this.trialObjSliderElicitation[0].length; i++) {
+            let ev1 = this.trialObjSliderElicitation[0][i][3];
+            maxPoints += ev1;
         }
 
         return Math.round(maxPoints)

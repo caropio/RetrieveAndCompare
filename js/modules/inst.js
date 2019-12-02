@@ -517,29 +517,28 @@ export class Instructions {
 
     displayInstructionQuestionnaire(nextFunc, nextParams) {
 
-        GUI.initGameStageDiv();
+        GUI.panelFlush();
+        GUI.panelShow();
+        GUI.setActiveCurrentStep('questionnaire');
+        GUI.panelSetTitle('Questionnaire');
 
-        let Title = '<H3 align = "center">QUESTIONNAIRE</H3>';
+        GUI.panelSetParagraph(
+            ` • You will now have to answer a few questions.\n\n
+              • This won\'t take more than a few more minutes. Your answers remain anonymous and will not be disclosed.\n\n
+              • Note that the experiment will be considered completed (and the payment issued) only if the questionnaires are correctly filled.\n\n
+              • Please click "Start" when you are ready.`);
 
-        let startBut;
-        startBut = '"Start"';
-        let Info = '<H3 align = "center">You will now have to answer a few questions.<br><br>This won\'t take more than a few more minutes.<br><br>Your answers remain anonymous and will not be disclosed.<br><br>' +
-            'Note that the experiment will be considered completed (and the payment issued) only if the questionnaires are correctly filled.<br><br>' +
-            'Please click "Start" when you are ready.</H3><br><br>';
+        GUI.panelInsertButton({
+            id: 'next', value: 'Start', clickArgs: {obj: this},
+            classname: 'btn btn-default card-button card-center',
+            clickFunc: function (event) {
+                setTimeout(
+                    nextFunc(nextParams), 800
+                );
 
-        $('#TextBoxDiv').html(Title + Info);
-
-        let Buttons = '<div align="center"><input align="center" type="button"  class="btn btn-default" id="Start" value=' + startBut + ' ></div>';
-
-        $('#Bottom').html(Buttons);
-
-        $('#Start').click(function () {
-
-            $('#TextBoxDiv').remove();
-            $('#Stage').empty();
-            $('#Bottom').empty();
-            nextFunc(nextParams);
+            }
         });
+
     }
 
     endTraining(funcParams, nextFunc, nextParams) {
