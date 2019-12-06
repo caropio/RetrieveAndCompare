@@ -13,8 +13,9 @@ export class GUI {
         GUI.panelFlush();
         GUI.panelHide();
         if ($('#TextBoxDiv').length === 0) {
-            createDiv('Stage', 'TextBoxDiv');
+            createDiv('game', 'TextBoxDiv');
         }
+        $('#TextBoxDiv').fadeIn(400);
     }
 
     static hideElement(id) {
@@ -129,7 +130,13 @@ export class GUI {
         $('#stimrow').fadeOut(500);
         $('#fbrow').fadeOut(500);
         $('#cvrow').fadeOut(500);
-        $('main').fadeOut(500);
+        //$('#game').fadeOut(500);
+    }
+    static showOptions() {
+        $('#stimrow').fadeIn(500);
+        $('#fbrow').fadeIn(500);
+        $('#cvrow').fadeIn(500);
+        //$('#game').fadeOut(500);
     }
 
     static displayOptions(id1, id2, img, feedbackImg, invertedPosition) {
@@ -140,6 +147,7 @@ export class GUI {
 
     static displayOptionSlider(id, imgObj, initValue) {
 
+        GUI.showElement('TextBoxDiv');
         let option = imgObj[id];
         option.id = "option1";
         option = option.outerHTML;
@@ -148,17 +156,17 @@ export class GUI {
             ' width="620" class="img-responsive center-block"' +
             ' style="border: 5px solid transparent; position: relative; top: 0px;">';
 
-        let canvas2 = '<canvas id="canvas2" height="620"' +
-            ' width="620" class="img-responsive center-block"' +
-            ' style="border: 5px solid transparent; position: relative; top: 0px;">';
+        // let canvas2 = '<canvas id="canvas2" height="620"' +
+        //     ' width="620" class="img-responsive center-block"' +
+        //     ' style="border: 5px solid transparent; position: relative; top: 0px;">';
 
         let myCanvas = '<div id = "cvrow" class="row" style= "transform: translate(0%, -200%);position:relative">' +
             '    <div class="col-xs-1 col-md-1"></div>  <div class="col-xs-3 col-md-3">'
             + canvas1 + '</div><div id = "Middle" class="col-xs-4 col-md-4"></div><div class="col-xs-3 col-md-3">'
-            + canvas2 + '</div><div class="col-xs-1 col-md-1"></div></div>';
+            + '</div><div class="col-xs-1 col-md-1"></div></div>';
 
-        let Title = '<div id = "Title"><H2 style="margin-top: 5%" align = "center">What are the odds this symbol gives a +1?<br><br><br><br></H2></div>';
-        let Images = '<div id = "stimrow" style="transform: translate(0%, -100%);position:relative"> ' +
+        let Title = '<H2 align = "center" style="margin-bottom: 8%;">What are the odds this symbol gives a +1?</H2>';
+        let Images = '<div id = "stimrow" style="transform: translate(0%, -100%);position:relative; margin-bottom: 20%;"> ' +
             '<div class="col-xs-1 col-md-1"></div>  <div class="col-xs-3 col-md-3">'
             + '</div><div id = "Middle" class="col-xs-4 col-md-4">' + option + '</div></div>';
 
@@ -402,7 +410,6 @@ export class GUI {
 
     static _displayTwoOptions(option1, option2, feedback1, feedback2, invertedPosition) {
 
-        let Title = '<div id = "Title"><H2 align = "center"> <br><br><br><br></H2></div>';
 
         let canvas1 = '<canvas id="canvas1" height="620"' +
             ' width="620" class="img-responsive center-block"' +
@@ -427,12 +434,12 @@ export class GUI {
             '</div><div id = "Middle" class="col-xs-4 col-md-4"></div><div class="col-xs-3 col-md-3">'
             + feedbacks[1] + '</div><div class="col-xs-1 col-md-1"></div></div>';
 
-        let myCanvas = '<div id = "cvrow" class="row" style= "transform: translate(0%, -200%);position:relative">' +
+        let myCanvas = '<div id = "cvrow" class ="row" style= "transform: translate(0%, -200%);position:relative">' +
             '    <div class="col-xs-1 col-md-1"></div>  <div class="col-xs-3 col-md-3">'
             + canvas[0] + '</div><div id = "Middle" class="col-xs-4 col-md-4"></div><div class="col-xs-3 col-md-3">'
             + canvas[1] + '</div><div class="col-xs-1 col-md-1"></div></div>';
 
-        $('#TextBoxDiv').html(Title + Feedback + Images + myCanvas);
+        $('#TextBoxDiv').html(Feedback + Images + myCanvas);
     }
 
 }

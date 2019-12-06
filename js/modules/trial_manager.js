@@ -99,7 +99,8 @@ export class ChoiceManager {
             r1: trialObj[8],
             r2: trialObj[9],
             isCatchTrial: trialObj[10],
-            option2isSymbol: trialObj[11],
+            option1Type: trialObj[11],
+            option2Type: trialObj[12],
             presentationTime: presentationTime,
             condition: condition
         };
@@ -119,7 +120,7 @@ export class ChoiceManager {
                 return;
             clickEnabled = false;
             event.data.obj.skipEnabled = false;
-            document.getElementById("canvas1").style.borderColor = "black";
+            this.style.borderColor = "black";
             event.data.obj._clickEvent(1, params);
         });
 
@@ -128,7 +129,7 @@ export class ChoiceManager {
                 return;
             clickEnabled = false;
             event.data.obj.skipEnabled = false;
-            document.getElementById("canvas2").style.borderColor = "black";
+            this.style.borderColor = "black";
             event.data.obj._clickEvent(2, params);
         });
 
@@ -148,13 +149,8 @@ export class ChoiceManager {
         let leftRight =
             +((invertedPosition && (choice === 1)) || (!invertedPosition && (choice === 2)));
 
-        let option2isSymbol;
-
-        if (this.elicitationType === -1) {
-            option2isSymbol = 1;
-        } else {
-            option2isSymbol = +(params['option2isSymbol']);
-        }
+        let option1Type = params['option1Type'];
+        let option2Type = params['option2Type'];
 
         let isCatchTrial = +(params['isCatchTrial']);
 
@@ -204,8 +200,8 @@ export class ChoiceManager {
                     session: this.sessionNum,
                     p1: p1[1],
                     p2: p2[1],
-                    option1: [1, 0][isCatchTrial], // option one is a symbol if not catch trial
-                    option2: option2isSymbol, // is option two a symbol
+                    option1: option1Type,
+                    option2: option2Type,
                     ev1: Math.round(params["ev1"] * 100) / 100,
                     ev2: Math.round(params["ev2"] * 100) / 100,
                     iscatch: isCatchTrial,
@@ -365,7 +361,9 @@ export class SliderManager {
             p1: trialObj[2],
             ev1: trialObj[3],
             r1: trialObj[4],
-            isCatchTrial: trialObj[trialObj.length - 1],
+            isCatchTrial: trialObj[5],
+            option1Type: trialObj[6],
+            option2Type: trialObj[7],
             presentationTime: presentationTime
         };
 
@@ -401,7 +399,7 @@ export class SliderManager {
         let contIdx = params['contIdx'];
         let stimIdx = params['stimIdx'];
         let isCatchTrial = +(params["isCatchTrial"]);
-        let isSymbol = +((range(2, 10)).includes(params['stimIdx']));
+        let option1Type = params['option1Type'];
 
         let [correctChoice, thisReward,
             otherReward, pLottery, elicDistance] = this._getReward(choice, params);
@@ -430,7 +428,7 @@ export class SliderManager {
                     session: this.sessionNum,
                     p1: p1,
                     p2: -1,
-                    option1: isSymbol,
+                    option1: option1Type,
                     option2: -1,
                     ev1: Math.round(ev1 * 100) / 100,
                     ev2: -1,

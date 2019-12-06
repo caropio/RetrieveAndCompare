@@ -1,8 +1,7 @@
-
 function getKeyCode(event) {
-
     return event.which;
 }
+
 
 function getColor(FB) {
     let color = borderColor;
@@ -20,9 +19,11 @@ function getColor(FB) {
     return color;
 }
 
+
 function createCode() {
     return Math.floor(Math.random() * 10000000000);
 }
+
 
 function createDiv(ParentID, ChildID) {
 
@@ -31,6 +32,7 @@ function createDiv(ParentID, ChildID) {
     let container = document.getElementById(ParentID);
     d.appendTo(container);
 }
+
 
 function shuffle(array) {
     let counter = array.length;
@@ -52,14 +54,16 @@ function shuffle(array) {
     return array;
 }  /* function shuffle(array) */
 
+
 // simple range function
 function range(start, stop, step) {
-    var a = [start], b = start;
+    let a = [start], b = start;
     while (b < stop) {
         a.push(b += step || 1);
     }
     return a;
 }
+
 
 /**
  * Asserts a condition
@@ -76,19 +80,24 @@ function assert(condition, message) {
     }
 }
 
+
 const sum = arr => arr.reduce((a, b) => a + b, 0);
+
 
 function randint(min, max) {
     return Math.floor(Math.random() * (max - min + 1)) + min;
 }
 
+
 function isFloat(n) {
     return Number(n) === n && n % 1 !== 0;
 }
 
+
 function isString(x) {
     return Object.prototype.toString.call(x) === "[object String]"
 }
+
 
 function getBrowser() {
 

@@ -32,8 +32,8 @@ function main() {
     // let questNum = 0;
 
     let sessionNum = -1;
-    let phaseNum = 1;
-    let instructionNum = 0;
+    let phaseNum = 3;
+    let instructionNum = 'end';
     let questNum = 0;
 
     // instantiate experiment parameters

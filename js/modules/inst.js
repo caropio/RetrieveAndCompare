@@ -122,8 +122,7 @@ export class Instructions {
         GUI.panelFlush();
         GUI.panelShow();
         GUI.setActiveCurrentStep('training');
-        GUI.setActiveCurrentStep('session' + oldSession);
-        GUI.setActiveCurrentStep('session' + newSession);
+        GUI.setActiveCurrentStep('experiment');
 
         GUI.panelSetTitle('End of session' + oldSession);
 
@@ -230,7 +229,7 @@ export class Instructions {
         GUI.panelFlush();
         GUI.setActiveCurrentStep('training');
         if (!isTraining) {
-            GUI.setActiveCurrentStep('session1');
+            GUI.setActiveCurrentStep('experiment');
         }
         GUI.panelSetTitle('Instructions for the first test'
             + [' | Session ' + sessionNum + ' | Phase 1 ', ' | Training | Phase 1 '][+(isTraining)]);
@@ -316,7 +315,7 @@ export class Instructions {
         GUI.panelShow();
         GUI.setActiveCurrentStep('training');
         if (!isTraining) {
-            GUI.setActiveCurrentStep('session' + sessionNum);
+            GUI.setActiveCurrentStep('experiment');
         }
         GUI.panelSetTitle('Instructions for the second test ' +
             [' | Session ' + sessionNum + ' | Phase ' + phaseNum, ' | Training '][+(isTraining)]);
@@ -423,7 +422,7 @@ export class Instructions {
         GUI.panelShow();
         GUI.setActiveCurrentStep('training');
         if (!isTraining) {
-            GUI.setActiveCurrentStep('session' + sessionNum);
+            GUI.setActiveCurrentStep('experiment');
         }
         GUI.panelSetTitle('Instructions for the third test ' +
             [' | Session ' + sessionNum + ' | Phase ' + phaseNum, ' | Training '][+(isTraining)]);
@@ -557,6 +556,7 @@ export class Instructions {
         GUI.panelFlush();
         GUI.panelShow();
         GUI.setActiveCurrentStep('training');
+
         GUI.panelSetTitle('End of training');
 
         GUI.panelSetParagraph(`• The training is over!\n\n
@@ -598,6 +598,7 @@ export class Instructions {
                 event.data.obj.exp.sumReward[2] = 0;
                 event.data.obj.exp.sumReward[3] = 0;
 
+                GUI.setActiveCurrentStep('experiment');
                 setTimeout(
                     nextFunc(nextParams), 800
                 );

@@ -1,4 +1,5 @@
-.Main {
+.main {
+    display: block;
     margin-right: auto;
     margin-left: auto;
     background-color: #DDDDDD;
@@ -13,6 +14,7 @@
 
 .range {
     position: relative;
+    margin-top: 6%;
 }
 
 .range input[type=range] {
@@ -359,12 +361,38 @@ body {
     box-shadow: 0 3px 8px -6px rgba(0, 0, 0, .50);
 }
 
-@media only screen and (min-width: 1400px) {
+@media only screen and (min-width: 1200px) {
     .md-stepper-horizontal {
         background: url('images/logo-ens.png') no-repeat 1% 50%;
         background-size: 70px;
     }
 }
+
+@media only screen and (max-width: 1100px) {
+    /*.img-responsive {*/
+        /*max-width: 160% !important;*/
+    /*}*/
+
+    .col-xs-4 {
+        max-width: 160% !important;
+    }
+    .col-md-4 {
+        max-width: 160% !important;
+    }
+
+    .img-responsive {
+        max-width: 160% !important;
+    }
+    .card
+    {
+        width: 70% !important;
+    }
+
+    #skipButton {
+        margin-left: 0 !important;
+    }
+}
+
 
 .md-stepper-horizontal .md-step {
     display: table-cell;
@@ -611,8 +639,27 @@ body {
 /*}*/
 
 #skipButton {
-    margin-left: 50% !important;
+    margin-left: 30% !important;
     margin-bottom: auto !important;
     margin-top: auto !important;
     display: block;
 }
+
+.vertical-center {
+  margin: 0;
+  position: absolute;
+  top: 50%;
+  -ms-transform: translateY(-50%);
+  transform: translateY(-50%);
+}
+
+#game {
+    padding-left: 15%;
+    padding-right: 15%;
+}
+#TextBoxDiv {
+    margin-top: 5%;
+}
+
+
+
