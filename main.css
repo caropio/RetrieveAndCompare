@@ -381,7 +381,7 @@ body {
     /*}*/
     .md-stepper-horizontal {
         background: url('images/logo-ens.png') no-repeat 1% 50%;
-        background-size: 35px;
+        background-size: 30px;
     }
 
     .md-step {
