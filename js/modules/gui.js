@@ -15,6 +15,7 @@ export class GUI {
         if ($('#TextBoxDiv').length === 0) {
             createDiv('game', 'TextBoxDiv');
         }
+        $('#game').fadeIn(400);
         $('#TextBoxDiv').fadeIn(400);
     }
 
@@ -119,6 +120,7 @@ export class GUI {
     }
 
     static panelShow() {
+        $('#game').hide();
         $('#panel').show(800);
     }
 
@@ -305,11 +307,13 @@ export class GUI {
 
         if (!modalWin.html().includes('myModal')) {
             modalWin.html(str);
+            modalWin.show();
             myModal = $('#myModal');
         }
         myModal.modal();
         myModal.on('hidden.bs.modal', function () {
             modalWin.empty();
+            modalWin.hide();
         });
 
     }

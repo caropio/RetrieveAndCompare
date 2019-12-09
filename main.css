@@ -357,39 +357,69 @@ body {
     width: 100%;
     margin: 0 auto;
     background-color: #FFFFFF;
+    background: url('images/logo-ens.png') no-repeat 1% 50%;
+    background-size: 70px;
 
     box-shadow: 0 3px 8px -6px rgba(0, 0, 0, .50);
 }
 
-@media only screen and (min-width: 1200px) {
-    .md-stepper-horizontal {
-        background: url('images/logo-ens.png') no-repeat 1% 50%;
-        background-size: 70px;
-    }
-}
 
-@media only screen and (max-width: 1100px) {
+@media only screen and (min-width: 300px) and (max-width: 1100px) {
     /*.img-responsive {*/
         /*max-width: 160% !important;*/
     /*}*/
 
-    .col-xs-4 {
-        max-width: 160% !important;
-    }
-    .col-md-4 {
-        max-width: 160% !important;
+    /*.col-xs-4 {*/
+        /*max-width: 160% !important;*/
+    /*}*/
+    /*.col-md-4 {*/
+        /*max-width: 160% !important;*/
+    /*}*/
+    /**/
+    /*.img-responsive {*/
+        /*max-width: 160% !important;*/
+    /*}*/
+    .md-stepper-horizontal {
+        background: url('images/logo-ens.png') no-repeat 1% 50%;
+        background-size: 35px;
     }
 
-    .img-responsive {
-        max-width: 160% !important;
+    .md-step {
+        padding: 4px !important;
+    }
+
+    .md-step-circle {
+        height: 15px !important;
+        width: 15px !important;
     }
     .card
     {
         width: 70% !important;
     }
 
+    .md-stepper-horizontal .md-step .md-step-bar-right {
+        display: none;
+    }
+
+    .md-stepper-horizontal .md-step .md-step-bar-left {
+        display: none;
+    }
+
     #skipButton {
         margin-left: 0 !important;
+    }
+
+    #game {
+        height: 70%;
+    }
+
+    #TextBoxDiv {
+        height: 80%;
+    }
+
+    .img-responsive {
+        height: 80%;
+        max-width: none;
     }
 }
 
