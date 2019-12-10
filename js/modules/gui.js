@@ -134,6 +134,7 @@ export class GUI {
         $('#cvrow').fadeOut(500);
         //$('#game').fadeOut(500);
     }
+
     static showOptions() {
         $('#stimrow').fadeIn(500);
         $('#fbrow').fadeIn(500);
@@ -167,8 +168,8 @@ export class GUI {
             + canvas1 + '</div><div id = "Middle" class="col-xs-4 col-md-4"></div><div class="col-xs-3 col-md-3">'
             + '</div><div class="col-xs-1 col-md-1"></div></div>';
 
-        let Title = '<H2 align = "center" style="margin-bottom: 8%;">What are the odds this symbol gives a +1?</H2>';
-        let Images = '<div id = "stimrow" style="transform: translate(0%, -100%);position:relative; margin-bottom: 20%;"> ' +
+        let Title = '<h4 align = "center" style="margin-bottom: 2%;">What are the odds this symbol gives a +1?</h4>';
+        let Images = '<div id = "stimrow" style="transform: translate(0%, -100%);position:relative;"> ' +
             '<div class="col-xs-1 col-md-1"></div>  <div class="col-xs-3 col-md-3">'
             + '</div><div id = "Middle" class="col-xs-4 col-md-4">' + option + '</div></div>';
 
@@ -321,8 +322,6 @@ export class GUI {
     static generateSlider({min = 0, max = 100, step = 5, initValue = 0, percent = true, n = 1} = {}) {
         let slider = `<main>
             <form id="form_${n}">
-            <h2>
-            </h2>
             <div class="range">
             <input id="slider_${n}" name="range" type="range" value="${initValue}" min="${min}" max="${max}" step="${step}">
             <div class="range-output">
@@ -333,7 +332,7 @@ export class GUI {
              </div>
             </form>
             </main>
-            <br><br><div align="center"><button id="ok_${n}" data-dismiss="modal" class="btn btn-default card-button">Submit</button>
+            <div align="center"><button id="ok_${n}" data-dismiss="modal" class="btn btn-default card-button">Submit</button>
             </div>`;
 
         return slider;

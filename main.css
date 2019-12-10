@@ -381,7 +381,11 @@ body {
     /*}*/
     .md-stepper-horizontal {
         background: url('images/logo-ens.png') no-repeat 1% 50%;
-        background-size: 30px;
+        background-size: 27px;
+    }
+
+    .md-step-title {
+        font-size: 8px !important;
     }
 
     .md-step {
@@ -409,17 +413,19 @@ body {
         margin-left: 0 !important;
     }
 
-    #game {
-        height: 70%;
-    }
+    @media only screen and (max-height: 600px) {
+        #game {
+            height: 70%;
+        }
 
-    #TextBoxDiv {
-        height: 80%;
-    }
+        #TextBoxDiv {
+            height: 80%;
+        }
 
-    .img-responsive {
-        height: 80%;
-        max-width: none;
+        .img-responsive {
+            height: 80%;
+            max-width: none;
+        }
     }
 }
 
