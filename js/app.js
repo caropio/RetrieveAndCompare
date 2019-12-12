@@ -30,7 +30,7 @@ function main() {
     // let instructionNum = 0;
     // let questNum = 0;
 
-    let sessionNum = 0;
+    let sessionNum = -1;
     let phaseNum = 1;
     let instructionNum = 0;
     let questNum = 0;

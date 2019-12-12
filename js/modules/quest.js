@@ -14,26 +14,10 @@ export class Questionnaire {
         let questNum = funcParams['questNum'];
 
         GUI.panelFlush();
-        GUI.panelShow();
+        GUI.panelHide();
         GUI.setActiveCurrentStep('questionnaire');
+        GUI.initGameStageDiv();
 
-        GUI.panelSetTitle('Questionnaire');
-
-        GUI.panelSetParagraph(`
-        • This the end of session ${oldSession}.\n\n
-         • Session ${newSession} starts now.
-        `);
-
-        GUI.panelInsertButton({
-            id: 'next', value: 'Next', clickArgs: {obj: this},
-            classname: 'btn btn-default card-button',
-            clickFunc: function (event) {
-                setTimeout(
-                    nextFunc(nextParams), 800
-                );
-
-            }
-        });
         let nQuestions = 7;
 
         let Title = '<H2 align = "center"></H2>';
@@ -189,11 +173,11 @@ export class Questionnaire {
             + '<input type="button"  class="btn btn-default" id="Next" value="Next" > </div><div class="col-xs-1 col-md-1"></div></div>';
 
 
-        $('#TextBoxDiv').html(Title + Info + Ticks);
+        $('#TextBoxDiv').html(Title + Info + Ticks + Buttons);
 
         Question_time = (new Date()).getTime();
 
-        $('#Bottom').html(Buttons);
+        // $('#Bottom').html(Buttons);
 
         let exp = this.exp;
 
@@ -550,11 +534,11 @@ export class Questionnaire {
 
         }
 
-        $('#TextBoxDiv').html(Title + Info + Ticks);
+        $('#TextBoxDiv').html(Title + Info + Ticks + Buttons);
 
         Question_time = (new Date()).getTime();
 
-        $('#Bottom').html(Buttons);
+        //$('#Bottom').html(Buttons);
 
         let exp = this.exp;
 

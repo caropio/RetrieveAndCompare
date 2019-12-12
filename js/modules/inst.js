@@ -124,11 +124,12 @@ export class Instructions {
         GUI.setActiveCurrentStep('training');
         GUI.setActiveCurrentStep('experiment');
 
-        GUI.panelSetTitle('End of session' + oldSession);
+        GUI.panelSetTitle('End of the first part');
 
         GUI.panelSetParagraph(`
-        • This the end of session ${oldSession}.\n\n
-         • Session ${newSession} starts now.
+            • This the end of the first part of the experiment\n\n
+            • You will now pass 3 tests that are identical to the ones during the training phase.
+            • Please note that previous symbols are now replaced by new ones. 
         `);
 
         GUI.panelInsertButton({
@@ -148,15 +149,14 @@ export class Instructions {
         let nPages = 2;
         let pageNum = funcParams["pageNum"];
 
-
         GUI.panelFlush();
         GUI.panelSetTitle('General Instructions');
 
         let text = {
-            1: ' • This experiment is composed of 3 sessions. \n\n'
-                + ' • The first two sessions consist in different cognitive tests and are composed of respectively two and three phases.\n\n'
-                + ' • There will be a training session composed of shorter versions of the 3 phases before the actual experiment starts.\n\n'
-                + ' • The last session consists in a short questionnaire.\n\n',
+            1: ' • This experiment is composed of 3 main phases. \n\n'
+                + ' • The first phase is a training phase consisting in 3 different cognitive tests.\n\n'
+                + ' • The second phase constitutes the actual experiment and is composed of longer versions of the 3 cognitive tests .\n\n'
+                + ' • The last phase consists in a short questionnaire.\n\n',
             2: ' • In addition of the fixed compensation provided by Prolific, you have been endowed with an additional 2.5 pounds. \n\n'
                 + ' • Depending on your choices you can either double this endowment or lose it. \n\n'
                 + ' • Following experimental economics methodological standards, no deception is involved concerning the calculation of the final payoff.\n\n'
@@ -231,8 +231,7 @@ export class Instructions {
         if (!isTraining) {
             GUI.setActiveCurrentStep('experiment');
         }
-        GUI.panelSetTitle('Instructions for the first test'
-            + [' | Session ' + sessionNum + ' | Phase 1 ', ' | Training | Phase 1 '][+(isTraining)]);
+        GUI.panelSetTitle('Instructions for the first test');
 
         let text = {
             1: ' • In each round you have to choose between one of two symbols displayed on either side of the screen. \n'
@@ -317,8 +316,7 @@ export class Instructions {
         if (!isTraining) {
             GUI.setActiveCurrentStep('experiment');
         }
-        GUI.panelSetTitle('Instructions for the second test ' +
-            [' | Session ' + sessionNum + ' | Phase ' + phaseNum, ' | Training '][+(isTraining)]);
+        GUI.panelSetTitle('Instructions for the second test');
 
         let text;
         if (isTraining) {
@@ -428,14 +426,13 @@ export class Instructions {
         if (!isTraining) {
             GUI.setActiveCurrentStep('experiment');
         }
-        GUI.panelSetTitle('Instructions for the third test ' +
-            [' | Session ' + sessionNum + ' | Phase ' + phaseNum, ' | Training '][+(isTraining)]);
+        GUI.panelSetTitle('Instructions for the third test');
 
         let text;
         if (isTraining) {
             text = {
                 1: ' • In each round of the third test you will be presented with the symbols and pie-charts you met in the first and the second test.\n'
-                    + 'You will be asked to indicate (in percentages), what are the odds that a given symbol or pie-chart makes you win a point (+1=+' + this.exp.pointsToPence(1).toFixed(2) + 'p).\n'
+                    + ' • You will be asked to indicate (in percentages), what are the odds that a given symbol or pie-chart makes you win a point (+1=+' + this.exp.pointsToPence(1).toFixed(2) + 'p).\n\n'
                     + ' • You will be able to do this through moving a slider on the screen and then confirm your final answer by clicking on the confirmation button.\n\n'
                     + ' • 100%  = the symbol (or pie-chart) always gives +1pt.\n'
                     + ' • 50%  = the symbol (or pie-chart) always gives +1pt or -1pt with equal chances.\n'
@@ -464,7 +461,7 @@ export class Instructions {
                     + ' • If C is smaller than L, the program will spin a wheel of fortune and you will win a reward of +1 point with a probability of L%, otherwise you will lose -1 point.\n',
                 3: ' • To sum up, the higher the percentage you give, the higher the chances are the outcome will be determined by the symbol or the pie-chart.\n'
                     + 'Conversely, the lower the percentage, the higher the chances are the outcome will be determined by the random lottery number.\n\n'
-                    + ' •  Please note that the outcome of your choice will not be displayed on each trial.'
+                    + ' •  Please note that the outcome of your choice will not be displayed on each trial. \n\n'
                     + ' • However, for each choice an outcome will be calculated and taken into account for the final payoff.\n'
                     + 'At the end of the test you will be shown with the final payoff in terms of cumulated points and monetary bonus.',
                 4: '• Note: The test of the phase 3 is like the third test of the training.\n\n '
