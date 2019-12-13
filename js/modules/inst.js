@@ -329,7 +329,7 @@ export class Instructions {
                 2: ' • In the second test  there will be two kind of options. \n'
                     + ' • The first kind of options is represented by the symbols you already met during the previous test.\n'
                     + GUI.panelGenerateImg({src: 'images/cards_gif/stim/A.jpg', width: '15%'})
-                    + 'Note: the symbols keep the same odds of winning / losing a point as in the first test.'
+                    + 'Note: the symbols keep the same odds of winning / losing a point as in the first test.\n\n'
                     + ' • The second kind of options is represented by pie-charts explicitly describing the odds of winning / losing a point.\n'
                     + GUI.panelGenerateImg({src: 'images/cards_gif/lotteries/0.4.png', width: '15%'})
                     + 'Specifically, the green area indicates the chance of winning +1 (+' + this.exp.pointsToPence(1).toFixed(2) + 'p) ; the red area indicates the chance of losing -1 (+'
@@ -350,7 +350,7 @@ export class Instructions {
                 2: ' • In the second test  there will be two kind of options. \n'
                     + ' • The first kind of options is represented by the symbols you already met during the previous test.\n'
                     + GUI.panelGenerateImg({src: 'images/cards_gif/stim_old/2.gif', width: '15%'})
-                    + 'Note: the symbols keep the same odds of winning / losing a point as in the first test.'
+                    + 'Note: the symbols keep the same odds of winning / losing a point as in the first test. \n\n'
                     + ' • The second kind of options is represented by pie-charts explicitly describing the odds of winning / losing a point.\n'
                     + GUI.panelGenerateImg({src: 'images/cards_gif/lotteries/0.4.png', width: '15%'})
                     + 'Specifically, the green area indicates the chance of winning +1 (+' + this.exp.pointsToPence(1).toFixed(2) + 'p) ; the red area indicates the chance of losing -1 (+'
@@ -442,7 +442,7 @@ export class Instructions {
                     + ' • If C is smaller than L, the program will spin a wheel of fortune and you will win a reward of +1 point with a probability of L%, otherwise you will lose -1 point.\n',
                 3: ' • To sum up, the higher the percentage you give, the higher the chances are the outcome will be determined by the symbol or the pie-chart.\n'
                     + 'Conversely, the lower the percentage, the higher the chances are the outcome will be determined by the random lottery number.\n\n'
-                    + ' •  Please note that the outcome of your choice will not be displayed on each trial.'
+                    + ' •  Please note that the outcome of your choice will not be displayed on each trial. \n\n'
                     + ' • However, for each choice an outcome will be calculated and taken into account for the final payoff.\n'
                     + 'At the end of the test you will be shown with the final payoff in terms of cumulated points and monetary bonus.',
                 4: ' • Let\'s begin with the third training test!\n\n'
