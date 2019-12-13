@@ -247,7 +247,7 @@ export class Instructions {
                 + ' • Please note that only the outcome of your choice will be taken into account in the final payoff.',
             2: ' • The different symbols are not equal in terms of outcome: one is in average more advantageous compared to the other in terms of points to be won. \n'
                 + 'At the end of the test you will be shown with the final payoff in terms of cumulated points and monetary bonus.\n\n'
-                + ['• Note: The test of the phase 1 is like the first test of the training.\n'
+                + ['• Note: This test is like the first test of the training.\n'
                 + 'This is the actual game, every point will be included in the final payoff. \n\n Ready?',
                     " • Let's begin with the first training test! \n\n"
                     + '(Note : points won during the training do not count for the final payoff!)'][+(isTraining)]
@@ -358,7 +358,7 @@ export class Instructions {
                     + ' • Sometimes the pie-chart will be hidden an represented by a question mark, in such a way that the odds of winning / losing are unknown.\n'
                     + GUI.panelGenerateImg({src: 'images/cards_gif/stim/question.jpg', width: '15%'})
                     + ' • Sometimes you will be asked to choose between two symbols, sometime between two pie-charts, and sometimes between a pie-chart and a symbol.\n',
-                3: '• Note: The test of the phase 2 is like the second test of the training.\n'
+                3: '• Note: This test is like the second test of the training.\n'
                     + 'This is the actual game, every point will be included in the final payoff. \n\n Ready?',
             };
         }
@@ -464,7 +464,7 @@ export class Instructions {
                     + ' •  Please note that the outcome of your choice will not be displayed on each trial. \n\n'
                     + ' • However, for each choice an outcome will be calculated and taken into account for the final payoff.\n'
                     + 'At the end of the test you will be shown with the final payoff in terms of cumulated points and monetary bonus.',
-                4: '• Note: The test of the phase 3 is like the third test of the training.\n\n '
+                4: '• Note: This test is like the third test of the training.\n\n '
                     + 'This is the actual game, every point will be included in the final payoff. \n\n Ready?',
             };
         }
