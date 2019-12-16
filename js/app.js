@@ -29,7 +29,6 @@ function main() {
     // let phaseNum = 1;
     // let instructionNum = 0;
     // let questNum = 0;
-
     let sessionNum = -1;
     let phaseNum = 1;
     let instructionNum = 0;
@@ -39,14 +38,14 @@ function main() {
     let exp = new ExperimentParameters(
         {
             online: true,   // send network requests
-            isTesting: false, // isTesting==in development vs in production
+            isTesting: true, // isTesting==in development vs in production
             expName: 'RetrieveAndCompare', // experience name
             completeFeedback: true, // display feedback of both options
             maxPoints: undefined, // max points cumulated all along the experiment
                                  // if undefined or 0, will be computed automatically
             maxCompensation: 250, // in pence (in addition of the initial endowment)
-            feedbackDuration: 1500, // how many milliseconds we present the outcome
-            beforeFeedbackDuration: 1000, // how many milliseconds before the outcome
+            feedbackDuration: 1400, // how many milliseconds we present the outcome
+            beforeFeedbackDuration: 900, // how many milliseconds before the outcome
             maxTrainingNum: -2, // if sessionNum == maxTrainingNum
                                 // do not allow for new training sessions
             nTrialPerConditionTraining: 5,

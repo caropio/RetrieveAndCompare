@@ -216,7 +216,7 @@ export class ChoiceManager {
 
         setTimeout(function (event) {
                 event.obj.next()
-        }, this.feedbackDuration+this.exp.beforeFeedbackDuration, {obj: this});
+        }, this.feedbackDuration+this.exp.beforeFeedbackDuration*(+(this.showFeedback)), {obj: this});
     }
 
     _getReward(choice, params) {
