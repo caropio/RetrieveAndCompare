@@ -39,13 +39,14 @@ function main() {
     let exp = new ExperimentParameters(
         {
             online: true,   // send network requests
-            isTesting: true, // isTesting==in development vs in production
+            isTesting: false, // isTesting==in development vs in production
             expName: 'RetrieveAndCompare', // experience name
             completeFeedback: true, // display feedback of both options
             maxPoints: undefined, // max points cumulated all along the experiment
                                  // if undefined or 0, will be computed automatically
             maxCompensation: 250, // in pence (in addition of the initial endowment)
-            feedbackDuration: 2000, // how many milliseconds we present the outcome
+            feedbackDuration: 1500, // how many milliseconds we present the outcome
+            beforeFeedbackDuration: 1000, // how many milliseconds before the outcome
             maxTrainingNum: -2, // if sessionNum == maxTrainingNum
                                 // do not allow for new training sessions
             nTrialPerConditionTraining: 5,
@@ -220,6 +221,7 @@ function stateMachine({instructionNum, sessionNum, phaseNum, questNum, exp} = {}
                 {
                     trialObj: trialObj,
                     feedbackDuration: exp.feedbackDuration,
+                    beforeFeedbackDuration: exp.beforeFeedbackDuration,
                     completeFeedback: exp.completeFeedback,
                     feedbackObj: exp.feedbackImg,
                     imgObj: imgObj,
@@ -254,6 +256,7 @@ function stateMachine({instructionNum, sessionNum, phaseNum, questNum, exp} = {}
                 {
                     trialObj: trialObj,
                     feedbackDuration: exp.feedbackDuration,
+                    beforeFeedbackDuration: exp.beforeFeedbackDuration,
                     completeFeedback: exp.completeFeedback,
                     feedbackObj: exp.feedbackImg,
                     imgObj: imgObj,

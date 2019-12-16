@@ -15,6 +15,7 @@ export class ExperimentParameters {
                     completeFeedback,
                     maxPoints,
                     expName,
+                    beforeFeedbackDuration,
                     feedbackDuration,
                     maxTrainingNum,
                     compLink,
@@ -34,6 +35,7 @@ export class ExperimentParameters {
         this.isTesting = isTesting;
 
         this.feedbackDuration = feedbackDuration;
+        this.beforeFeedbackDuration = beforeFeedbackDuration;
 
         this.nSession = nSession;
 

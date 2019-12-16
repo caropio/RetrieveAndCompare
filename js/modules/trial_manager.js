@@ -214,7 +214,9 @@ export class ChoiceManager {
             );
         }
 
-        this.next();
+        setTimeout(function (event) {
+                event.obj.next()
+        }, this.feedbackDuration+this.exp.beforeFeedbackDuration, {obj: this});
     }
 
     _getReward(choice, params) {
@@ -255,6 +257,7 @@ export class ChoiceManager {
         GUI.showFeedback({
             completeFeedback: this.completeFeedback,
             showFeedback: this.showFeedback,
+            beforeFeedbackDuration: this.exp.beforeFeedbackDuration,
             feedbackObj: this.feedbackObj,
             choice: choice,
             thisReward: thisReward,
@@ -278,24 +281,23 @@ export class ChoiceManager {
         }
         this.trialNum++;
         if (this.trialNum < this.nTrial) {
-            setTimeout(function (event) {
+            // setTimeout(function (event) {
                 GUI.hideOptions();
                 setTimeout(function (event) {
                     event.obj.run();
-                }, 500, {obj: event.obj});
-            }, this.feedbackDuration, {obj: this});
+                }, 500, {obj: this});
+            // }, this.feedbackDuration, {obj: this});
         } else {
             GUI.hideSkipButton();
-            setTimeout(function (event) {
+            // setTimeout(function (event) {
                     $('#TextBoxDiv').fadeOut(500);
                     setTimeout(function (event) {
                         $('#Stage').empty();
                         GUI.panelShow();
                         //$('#Bottom').empty();
                         event.obj.nextFunc(event.obj.nextParams);
-                    }, 500, {obj: event.obj})
-                }, this.feedbackDuration, {obj: this}
-            );
+                    }, 500, {obj: this});
+                // }, this.feedbackDuration, {obj: this}
         }
     };
 }

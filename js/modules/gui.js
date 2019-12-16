@@ -182,7 +182,8 @@ export class GUI {
 
     }
 
-    static showFeedback({showFeedback, completeFeedback, choice, thisReward, reward1, reward2, feedbackObj}) {
+    static showFeedback({showFeedback, completeFeedback, beforeFeedbackDuration,
+                            choice, thisReward, reward1, reward2, feedbackObj}) {
         let pic1 = document.getElementById("option1");
         let pic2 = document.getElementById("option2");
 
@@ -203,21 +204,21 @@ export class GUI {
             }
 
             setTimeout(function () {
-                GUI.slideCard(pic1, cv1, showFeedback);
-                GUI.slideCard(pic2, cv2, showFeedback);
-            }, 500);
+                GUI.slideCard(pic1, cv1, showFeedback, beforeFeedbackDuration);
+                GUI.slideCard(pic2, cv2, showFeedback, beforeFeedbackDuration);
+            }, 100);
 
         } else {
             if (showFeedback) {
                 fb.src = feedbackObj['' + thisReward].src;
             }
             setTimeout(function () {
-                GUI.slideCard(pic, cv, showFeedback);
-            }, 500);
+                GUI.slideCard(pic, cv, showFeedback, beforeFeedbackDuration);
+            }, 100);
         }
     }
 
-    static slideCard(pic, cv, showFeedback) {
+    static slideCard(pic, cv, showFeedback, beforeFeedbackDuration) {
 
         let img = new Image();
         let canvas;
@@ -247,7 +248,7 @@ export class GUI {
                     pic.style.visibility = "hidden";
                     clearInterval(scroll);
                     ctx.clearRect(0, 0, canvas.width, canvas.height);
-                }, 1000);
+                }, beforeFeedbackDuration);
             }
 
         };
