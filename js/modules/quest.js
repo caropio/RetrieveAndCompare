@@ -189,7 +189,7 @@ export class Questionnaire {
             } else {
 
                 Reaction_time = (new Date()).getTime();
-                answer = parseInt($("input:radio:checked").attr('value')); //console.log(answer)
+                answer = parseInt($("input:radio:checked").attr('id')); //console.log(answer)
                 answer_value = $("input:radio:checked").val();
 
                 if (exp.online) {

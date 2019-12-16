@@ -410,20 +410,20 @@ export class ExperimentParameters {
                 }
 
                 // 2 ? per sym
-                    // mix ambiguity and stim 1
-                    let ambiguityFile = '?';
-                    let ambiguityContIdx = contIdx1;
-                    let ambiguityEV = this.ev[contIdx1];
-                    let ambiguityP = this.cont[contIdx1];
+                // mix ambiguity and stim 1
+                let ambiguityFile = '?';
+                let ambiguityContIdx = contIdx1;
+                let ambiguityEV = this.ev[contIdx1];
+                let ambiguityP = this.cont[contIdx1];
 
-                    // ambiguity is 2
-                    option1Type = 1;
-                    let option2Type = 2;
+                // ambiguity is 2
+                option1Type = 1;
+                let option2Type = 2;
 
-                    temp.push([
-                        file1, ambiguityFile, contIdx1, ambiguityContIdx, p1,
-                        ambiguityP, ev1, ambiguityEV, r1, r2, isCatchTrial, option1Type, option2Type
-                    ]);
+                temp.push([
+                    file1, ambiguityFile, contIdx1, ambiguityContIdx, p1,
+                    ambiguityP, ev1, ambiguityEV, r1, r2, isCatchTrial, option1Type, option2Type
+                ]);
 
                 for (let k = 0; k < nCond - 3; k++) {
                     let [sym1, sym2] = this.trainingContexts[sessionNum][k];
@@ -499,19 +499,19 @@ export class ExperimentParameters {
 
                 // mix ambiguity and stim 2
                 // 2 ? per sym
-                    ambiguityFile = '?';
-                    ambiguityContIdx = contIdx2;
-                    ambiguityEV = this.ev[contIdx2];
-                    ambiguityP = this.cont[contIdx2];
+                ambiguityFile = '?';
+                ambiguityContIdx = contIdx2;
+                ambiguityEV = this.ev[contIdx2];
+                ambiguityP = this.cont[contIdx2];
 
-                    // ambiguity is 2
-                    option1Type = 1;
-                    option2Type = 2;
+                // ambiguity is 2
+                option1Type = 1;
+                option2Type = 2;
 
-                    temp.push([
-                        file2, ambiguityFile, contIdx2, ambiguityContIdx, p2,
-                        ambiguityP, ev2, ambiguityEV, r1, r2, isCatchTrial, option1Type, option2Type
-                    ]);
+                temp.push([
+                    file2, ambiguityFile, contIdx2, ambiguityContIdx, p2,
+                    ambiguityP, ev2, ambiguityEV, r1, r2, isCatchTrial, option1Type, option2Type
+                ]);
 
                 for (let k = 0; k < nCond - 3; k++) {
                     let [sym1, sym2] = this.trainingContexts[sessionNum][k];
