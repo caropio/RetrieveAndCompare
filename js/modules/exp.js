@@ -862,20 +862,16 @@ export class ExperimentParameters {
 
             for (let i = 0; i < this.trialObjChoiceElicitation[sessionNum].length; i++) {
 
-                try {
-                    var ev1 = this.trialObjChoiceElicitation[sessionNum][i][6];
-                    var ev2 = this.trialObjChoiceElicitation[sessionNum][i][7];
-                } catch (e) {
-                    debugger
-                }
+                let ev1 = this.trialObjChoiceElicitation[sessionNum][i][6];
+                let ev2 = this.trialObjChoiceElicitation[sessionNum][i][7];
 
                 maxPoints += Math.max(ev1, ev2)
             }
 
         }
 
-        for (let i = 0; i < this.trialObjSliderElicitation[0].length; i++) {
-            let ev1 = this.trialObjSliderElicitation[0][i][3];
+        for (let i = 0; i < this.trialObjSliderElicitation[1].length; i++) {
+            let ev1 = this.trialObjSliderElicitation[1][i][3];
             maxPoints += ev1;
         }
 
@@ -963,132 +959,4 @@ export class ExperimentParameters {
 
 }
 
-
-//
-//
-// /* Abstract experience model */
-// function Exp(
-//     {
-//         nOption,
-//         nContext,
-//         this.rewards,
-//         this.probs,
-//         interleaved,
-//         nInterleaved,
-//         nTrialPerContext,
-//         nTrial,
-//         nTrialTraining,
-//         language,
-//     }={}
-//     ) {
-//
-//     // private members (accessible in the whole function)
-//     this.nOption = nOption;
-//     this.nContext = nContext;
-//
-//     this.this.rewards = this.rewards;
-//     this.this.probs = this.probs;
-//     this.nTrialPerContext = nTrialPerContext;
-//     this.nTrial = nTrial;
-//     this.nInterleaved = nInterleaved;
-//     this.interleaved = interleaved;
-//     this.language = language;
-//     this.nTrialTraining = nTrialTraining;
-//
-//     this.order = [];
-//     this.this.context = [];
-//     this.r = [];
-//     this.p = [];
-//
-//     assert(
-//         sum(nTrialPerContext) === nTrial, 'nTrial does not correspond to nTrialPerContext'
-//     );
-//
-//     /* =================== private methods ================= */
-//
-//     /* randomize order of options on screens
-//     idx=0 is the most far on the left
-//     idx=max ist the most far on the right */
-//     this.randomizeOrder = function () {
-//         for (let t = 0; t < this.nTrial; t++) {
-//             this.order.push(shuffle(range(this.nOption)));
-//         }
-//         assert(this.order.length === this.nTrial, 'Error in this.order length');
-//     };
-//
-//     this.initContexts = function () {
-//         // first define this.contexts for each time-steps
-//         if (this.interleaved) {
-//             for (let i = 0; i < this.nTrial; i += this.nInterleaved) {
-//                 this.this.context = this.this.context.concat(
-//                     shuffle(range(0, nContext - 1))
-//                 );
-//             }
-//         } else {
-//             for (let i = 0; i < this.nContext; i++) {
-//                 this.this.context = this.this.context.concat(
-//                     Array(this.nTrialPerContext[i]).fill(i)
-//                 )
-//             }
-//         }
-//         // set this.rewards and probabilities accordingly
-//         for (let t = 0; t < this.nTrial; t++) {
-//             this.r[t] = this.this.rewards[this.this.context[t]];
-//             this.p[t] = this.this.probs[this.this.context[t]];
-//         }
-//         assert(this.this.context.length === this.nTrial, 'Errors in this.context length.');
-//     };
-//
-//     /* =================== public methods ================== */
-//
-//     // main initGameStageDiv method
-//     this.initGameStageDiv = function () {
-//         this.initContexts();
-//         this.randomizeOrder();
-//     };
-//
-//
-// }
-//
-// // set to true to test the module
-// // using "$ node --experimental-modules myscript.mjs"
-// main({test: false});
-//
-// function main({test}={}) {
-//     if (test) {
-//         console.log('Testing module...');
-//         let nOption = 2;
-//         let nContext = 4;
-//         let this.rewards = [
-//             [[0, 0], [-1, 1]],
-//             [[0, 0], [-1, 1]],
-//             [[-1, 1], [-1, 1]],
-//             [[0, 1], [0, -1]]
-//         ];
-//         let this.probs = [
-//             [[0.5, 0.5], [0.5, 0.5]],
-//             [[0.5, 0.5], [0.5, 0.5]],
-//             [[0.25, 0.75], [0.75, 0.25]],
-//             [[0.5, 0.5], [0.5, 0.5]]
-//         ];
-//         let nTrialPerContext = [24, 24, 24, 24];
-//         let nTrial = 96;
-//         let nInterleaved = 4;
-//         let interleaved = true;
-//
-//         let exp = new Exp(
-//             {
-//                 nOption: nOption,
-//                 nContext: nContext,
-//                 this.rewards: this.rewards,
-//                 this.probs: this.probs,
-//                 nTrialPerContext: nTrialPerContext,
-//                 nTrial: nTrial,
-//                 nInterleaved: nInterleaved,
-//                 interleaved: interleaved
-//             }
-//         );
-//         exp.initGameStageDiv();
-//     }
-// }
 

@@ -37,6 +37,7 @@ export class ChoiceManager {
 
         this.feedbackDuration = feedbackDuration;
         this.completeFeedback = completeFeedback;
+        this.beforeFeedbackDuration = this.exp.beforeFeedbackDuration;
         this.showFeedback = showFeedback;
         this.elicitationType = elicitationType;
 
@@ -138,7 +139,7 @@ export class ChoiceManager {
 
     /* =================== private methods ================== */
     _isTesting() {
-        GUI.insertSkipButton(this, this.nTrial);
+        GUI.insertSkipButton(this, this.nTrial, this.trialNum);
     }
 
     _clickEvent(choice, params) {
@@ -216,7 +217,7 @@ export class ChoiceManager {
 
         setTimeout(function (event) {
                 event.obj.next()
-        }, this.feedbackDuration+this.exp.beforeFeedbackDuration*(+(this.showFeedback)), {obj: this});
+        }, this.feedbackDuration+this.beforeFeedbackDuration*(+(this.showFeedback)), {obj: this});
     }
 
     _getReward(choice, params) {
@@ -267,7 +268,7 @@ export class ChoiceManager {
     }
 
     next(nTrial = undefined) {
-        if (this.skip && nTrial) {
+        if (nTrial !== undefined) {
             GUI.hideOptions();
             this.trialNum = nTrial;
             setTimeout(function (event) {
@@ -388,7 +389,7 @@ export class SliderManager {
 
     /* =================== private methods ================== */
     _isTesting() {
-        GUI.insertSkipButton(this, this.nTrial);
+        GUI.insertSkipButton(this, this.nTrial, this.trialNum);
     }
 
     _clickEvent(choice, params) {
@@ -473,8 +474,8 @@ export class SliderManager {
 
     };
 
-    next(nTrial = undefined) {
-        if (this.skip && nTrial) {
+    next(nTrial=undefined) {
+        if (nTrial !== undefined) {
             GUI.hideOptions();
             this.trialNum = nTrial;
             setTimeout(function (event) {

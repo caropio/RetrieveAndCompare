@@ -358,8 +358,7 @@ export class GUI {
 
     }
 
-    static insertSkipButton(Obj, max) {
-
+    static insertSkipButton(Obj) {
         let button = '<input type="button" class="btn btn-default card-button" id="skipButton" value="Skip trials" >';
         let timeline = $('#timeline');
 
@@ -368,13 +367,13 @@ export class GUI {
         $('#skipButton').click(function () {
             if (Obj.skipEnabled) {
                 GUI.displayModalWindow('Select the trial you want to reach.',
-                    GUI.generateSlider({min: 1, max: max, initValue: 1, step: 1, percent: false, n: 2})
+                    GUI.generateSlider({min: 0, max: Obj.nTrial, initValue: Obj.trialNum, step: 1, percent: false, n: 2})
                     , 'info');
 
                 GUI.listenOnSlider({obj: Obj}, function (ev) {
 
                     let slider = document.getElementById('slider_2');
-                    ev.data.obj.skip = true;
+                    // ev.data.obj.skip = true;
                     ev.data.obj.next(
                         slider.valueAsNumber);
                 }, false, 2);
