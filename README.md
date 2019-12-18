@@ -1,6 +1,9 @@
 #  Retrieve And Compare
 
-##  TO DO (refactoring and encapsulation)
+##  TO DO
+
+* Improve smartphone layout (not centered)
+
 * Replace strings additions by multiline strings 
 
  ```javascript       
@@ -9,7 +12,19 @@ let str = `this a  multine string,
            myNumber value is ${myNumber}`;
  ```
         
-* design a simpler layout for option presentation
+* design a simpler css code layout for option presentation
 * Refactor quest.js
 * Encapsulate Gui
 * Remove what is hardcoded as much as possible (create an experiment parameters config file?)
+
+## Screenshots
+
+* Text panel + experiment timeline/stepper
+![screen1](images/screenshots/screen1.png)
+
+* Bandit-task type choices
+![screen1](images/screenshots/screen2.png)
+
+* Testing mode allowing to navigate through the experiment
+![screen1](images/screenshots/screen3.png)
+
