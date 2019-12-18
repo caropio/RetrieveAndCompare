@@ -170,7 +170,7 @@ export class Questionnaire {
         }
 
         let Buttons = '<div class="row"><div class="col-xs-3 col-md-3"></div><div id = "Middle" class="col-xs-7 col-md-7">'
-            + '<input type="button"  class="btn btn-default" id="Next" value="Next" > </div><div class="col-xs-1 col-md-1"></div></div>';
+            + '<input type="button"  class="btn btn-default card-button" id="Next" value="Next" > </div><div class="col-xs-1 col-md-1"></div></div>';
 
 
         $('#TextBoxDiv').html(Title + Info + Ticks + Buttons);
@@ -247,7 +247,7 @@ export class Questionnaire {
 
         let nb_skip = 0;
 
-        let Buttons = '<div class="row"><div class="col-xs-3 col-md-3"></div><div id = "Middle" class="col-xs-7 col-md-7"> <input type="button"  class="btn btn-default" id="Next" value="Next" > </div><div class="col-xs-1 col-md-1"></div></div>';
+        let Buttons = '<div class="row"><div class="col-xs-3 col-md-3"></div><div id = "Middle" class="col-xs-7 col-md-7"> <input type="button"  class="btn btn-default card-button" id="Next" value="Next" > </div><div class="col-xs-1 col-md-1"></div></div>';
 
         let Info;
 
