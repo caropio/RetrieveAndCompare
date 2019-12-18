@@ -216,8 +216,8 @@ export class ChoiceManager {
         }
 
         setTimeout(function (event) {
-                event.obj.next()
-        }, this.feedbackDuration+this.beforeFeedbackDuration*(+(this.showFeedback)), {obj: this});
+            event.obj.next()
+        }, this.feedbackDuration + this.beforeFeedbackDuration * (+(this.showFeedback)), {obj: this});
     }
 
     _getReward(choice, params) {
@@ -258,6 +258,7 @@ export class ChoiceManager {
         GUI.showFeedback({
             completeFeedback: this.completeFeedback,
             showFeedback: this.showFeedback,
+            feedbackDuration: this.feedbackDuration,
             beforeFeedbackDuration: this.exp.beforeFeedbackDuration,
             feedbackObj: this.feedbackObj,
             choice: choice,
@@ -282,23 +283,18 @@ export class ChoiceManager {
         }
         this.trialNum++;
         if (this.trialNum < this.nTrial) {
-            // setTimeout(function (event) {
-                GUI.hideOptions();
-                setTimeout(function (event) {
-                    event.obj.run();
-                }, 500, {obj: this});
-            // }, this.feedbackDuration, {obj: this});
+            GUI.hideOptions();
+            setTimeout(function (event) {
+                event.obj.run();
+            }, 500, {obj: this});
         } else {
             GUI.hideSkipButton();
-            // setTimeout(function (event) {
-                    $('#TextBoxDiv').fadeOut(500);
-                    setTimeout(function (event) {
-                        $('#Stage').empty();
-                        GUI.panelShow();
-                        //$('#Bottom').empty();
-                        event.obj.nextFunc(event.obj.nextParams);
-                    }, 500, {obj: this});
-                // }, this.feedbackDuration, {obj: this}
+            $('#TextBoxDiv').fadeOut(500);
+            setTimeout(function (event) {
+                $('#Stage').empty();
+                GUI.panelShow();
+                event.obj.nextFunc(event.obj.nextParams);
+            }, 500, {obj: this});
         }
     };
 }
@@ -474,7 +470,7 @@ export class SliderManager {
 
     };
 
-    next(nTrial=undefined) {
+    next(nTrial = undefined) {
         if (nTrial !== undefined) {
             GUI.hideOptions();
             this.trialNum = nTrial;
