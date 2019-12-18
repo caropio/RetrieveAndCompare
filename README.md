@@ -17,7 +17,8 @@ let str = `this a  multine string,
 * Encapsulate Gui
 * Remove what is hardcoded as much as possible (create an experiment parameters config file?)
 
-## Screenshots
+
+## Screenshots
 
 * Text panel + experiment timeline/stepper
 ![screen1](images/screenshots/screen1.png)
