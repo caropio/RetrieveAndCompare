@@ -2,6 +2,10 @@
 
 ##  TO DO
 
+* More coherent variable names
+
+* Use modern php code for DB insertion
+
 * Improve smartphone layout (not centered)
 
 * Replace strings additions by multiline strings 
