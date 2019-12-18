@@ -226,7 +226,7 @@ export class GUI {
         img.width = pic.width;
         img.height = pic.height;
 
-        let speed = 3;
+        let speed = 5;
         let y = 0;
 
         let dy = 10;
