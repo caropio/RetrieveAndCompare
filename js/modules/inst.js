@@ -64,9 +64,9 @@ export class Instructions {
         GUI.panelInsertParagraph('You are about to participate in the research study entitled:\n' +
             'The domain-general role of reinforcement learning-based training in cognition across short and long time-spans.\n' +
             'Researcher in charge: Pr. Stefano PALMINTERI.\n' +
-            'This study aims to understand the learning processes in decision-making. Its fundamental purpose is to investigate the cognitive mechanisms of these' +
+            'This study aims to understand the learning processes in decision-making. Its fundamental purpose is to investigate the cognitive mechanisms of these ' +
             'learning and decision-making processes.' +
-            'The proposed experiments have no immediate application or clinical value, but they will allow us to improve our understanding of the functioning brain.' +
+            'The proposed experiments have no immediate application or clinical value, but they will allow us to improve our understanding of the functioning brain. ' +
             'We are asking you to participate in this study because you have been recruited by the RISC or Prolific platforms.');
 
         GUI.panelInsertParagraphTitle('Procedure');
@@ -93,14 +93,12 @@ export class Instructions {
             'This research has received a favorable opinion from the Inserm Ethical Review Committee / IRB0888 on November 13th, 2018.' +
             'Your participation in this research confirms that you have read this information and wish to participate in the research study.');
 
-
         GUI.panelInsertCheckBox({text: 'I am 18 years old or more', id: 'c1'});
         GUI.panelInsertCheckBox({text: 'My participation in this experiment is voluntary', id: 'c2'});
         GUI.panelInsertCheckBox({
             text: 'I understand that my data will be kept confidential and I can stop at any time without justification',
             id: 'c3'
         });
-
 
         GUI.panelInsertButton({
             value: 'Next', id: 'next',
