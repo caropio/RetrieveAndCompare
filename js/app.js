@@ -2,8 +2,6 @@ import {ExperimentParameters} from "./modules/exp.js";
 import {Instructions} from "./modules/inst.js";
 import {Questionnaire} from "./modules/quest.js";
 import {ChoiceManager, SliderManager} from "./modules/trial_manager.js";
-import {GUI} from "./modules/gui.js";
-import {sendToDB} from "./modules/request.js";
 
 
 // When the page is fully loaded, the main function will be called
@@ -29,16 +27,16 @@ function main() {
     // let phaseNum = 1;
     // let instructionNum = 0;
     // let questNum = 0;
-    let sessionNum = -1;
-    let phaseNum = 1;
-    let instructionNum = 0;
+    let sessionNum = 0;
+    let phaseNum = 2;
+    let instructionNum = 'end';
     let questNum = 0;
 
     // instantiate experiment parameters
     let exp = new ExperimentParameters(
         {
-            online: true,   // send network requests
-            isTesting: false, // isTesting==in development vs in production
+            online: false,   // send network requests
+            isTesting: true, // isTesting==in development vs in production
             expName: 'RetrieveAndCompare', // experience name
             completeFeedback: true, // display feedback of both options
             maxPoints: undefined, // max points cumulated all along the experiment

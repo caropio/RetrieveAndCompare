@@ -22,7 +22,8 @@ export function sendToDB(call, data, url) {
                 sendToDB(call + 1);
             } else {
                 GUI.displayModalWindow('Network error',
-                    'Please contact us on prolific.', 'error');
+                    `Please check your internet connection.\n\n
+                     If you are not online, the data is lost and we can\'t pay you. :(`, 'error');
             }
 
         }

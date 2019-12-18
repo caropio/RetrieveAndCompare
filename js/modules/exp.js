@@ -253,35 +253,39 @@ export class ExperimentParameters {
         // ===================================================================== //
         // using cont idx
         let lotVSAmbiguity = [];
-        for (let j = 0; j < this.selectedCont.length; j++) {
+        for (let k = 0; k < 2; k++) {
+            for (let j = 0; j < this.selectedCont.length; j++) {
 
-            let idx = this.selectedCont[j];
+                let idx = this.selectedCont[j];
 
-            let contIdx1 = idx;
-            let contIdx2 = idx;
+                let contIdx1 = idx;
+                let contIdx2 = idx;
 
-            let ev1 = this.ev[contIdx1];
-            let ev2 = this.ev[contIdx2];
+                let ev1 = this.ev[contIdx1];
+                let ev2 = this.ev[contIdx2];
 
-            let file1 = ev1.toString();
-            let file2 = '?';
+                let file1 = ev1.toString();
+                let file2 = '?';
 
-            let p1 = this.cont[contIdx1];
-            let p2 = this.cont[contIdx2];
+                let p1 = this.cont[contIdx1];
+                let p2 = this.cont[contIdx2];
 
-            let r1 = this.rew;
-            let r2 = this.rew;
+                let r1 = this.rew;
+                let r2 = this.rew;
 
-            let isCatchTrial = false;
+                let isCatchTrial = false;
 
-            let option1Type = 0;
-            let option2Type = 2;
+                let option1Type = 0;
+                let option2Type = 2;
 
-            lotVSAmbiguity.push([
-                file1, file2, contIdx1, contIdx2,
-                p1, p2, ev1, ev2, r1, r2, isCatchTrial, option1Type, option2Type
-            ]);
+                lotVSAmbiguity.push([
+                    file1, file2, contIdx1, contIdx2,
+                    p1, p2, ev1, ev2, r1, r2, isCatchTrial, option1Type, option2Type
+                ]);
+            }
         }
+
+        lotVSAmbiguity = shuffle(lotVSAmbiguity);
 
         // ===================================================================== //
         this.trialObjLearning = new Array(nSession).fill().map(x => []);
@@ -406,7 +410,7 @@ export class ExperimentParameters {
 
                     temp.push([
                         file1, lotteryFile, contIdx1, lotteryContIdx, p1, lotteryP,
-                        ev1, lotteryEV, r1, r2, isCatchTrial, option2Type, option2Type
+                        ev1, lotteryEV, r1, r2, isCatchTrial, option1Type, option2Type
 
                     ]);
                 }
@@ -581,6 +585,7 @@ export class ExperimentParameters {
             // ===================================================================== //
 
             catchTrialIdx = 0;
+            let lotVSAmbiguityIdx = 0;
 
             for (let i = 0; i < nCond; i++) {
 
@@ -696,10 +701,11 @@ export class ExperimentParameters {
 
                 this.trialObjChoiceElicitation[sessionNum] =
                     this.trialObjChoiceElicitation[sessionNum].concat(shuffle(temp));
-                this.trialObjChoiceElicitation[sessionNum].push(lotVSAmbiguity[catchTrialIdx]);
-                this.trialObjChoiceElicitation[sessionNum].push(lotVSAmbiguity[catchTrialIdx+1]);
+                this.trialObjChoiceElicitation[sessionNum].push(lotVSAmbiguity[lotVSAmbiguityIdx]);
+                this.trialObjChoiceElicitation[sessionNum].push(lotVSAmbiguity[lotVSAmbiguityIdx+1]);
                 this.trialObjChoiceElicitation[sessionNum].push(catchTrials[catchTrialIdx]);
                 catchTrialIdx++;
+                lotVSAmbiguityIdx += 2;
 
                 // mix lotteries and stim 2 + lottery and ambiguity
                 temp = [];
@@ -783,9 +789,10 @@ export class ExperimentParameters {
 
                 this.trialObjChoiceElicitation[sessionNum] =
                     this.trialObjChoiceElicitation[sessionNum].concat(shuffle(temp));
-                this.trialObjChoiceElicitation[sessionNum].push(lotVSAmbiguity[catchTrialIdx]);
-                this.trialObjChoiceElicitation[sessionNum].push(lotVSAmbiguity[catchTrialIdx+1]);
+                this.trialObjChoiceElicitation[sessionNum].push(lotVSAmbiguity[lotVSAmbiguityIdx]);
+                this.trialObjChoiceElicitation[sessionNum].push(lotVSAmbiguity[lotVSAmbiguityIdx+1]);
                 this.trialObjChoiceElicitation[sessionNum].push(catchTrials[catchTrialIdx]);
+                lotVSAmbiguityIdx += 2;
 
             }
             // add catch trials to slider
@@ -798,6 +805,43 @@ export class ExperimentParameters {
 
             this.trialObjSliderElicitation[sessionNum] = shuffle(this.trialObjSliderElicitation[sessionNum]);
         }
+
+        // let pcount = {};
+        // for (let s = 0; s < 2; s++) {
+        //    for (let i = 0; i < this.trialObjChoiceElicitation[s].length; i++) {
+        //        try {
+        //            let trialObj = this.trialObjChoiceElicitation[s][i];
+        //
+        //            let params = {
+        //                stimIdx1: trialObj[0], // key in img dict
+        //                stimIdx2: trialObj[1],
+        //                contIdx1: trialObj[2],
+        //                contIdx2: trialObj[3],
+        //                p1: trialObj[4],
+        //                p2: trialObj[5],
+        //                ev1: trialObj[6],
+        //                ev2: trialObj[7],
+        //                r1: trialObj[8],
+        //                r2: trialObj[9],
+        //                isCatchTrial: trialObj[10],
+        //                option1Type: trialObj[11],
+        //                option2Type: trialObj[12]
+        //            };
+        //
+        //            if ((params['option1Type'] === 0) && (params['option2Type'] === 2)) {
+        //                if (!pcount[params['p1'][0]]) {
+        //                    pcount[params['p1'][0]] = 0;
+        //                }
+        //                pcount[params['p1'][0]] += 1;
+        //
+        //            }
+        //        } catch {
+        //            ;
+        //        }
+        //    }
+        // }
+        //
+        // debugger
     }
 
     _computeMaxPoints(nSession) {
