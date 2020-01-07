@@ -110,7 +110,7 @@ export class ExperimentParameters {
         }
 
         this.lotteryCont = [];
-        this.selectedCont = [1, 2, 3, 4, 6, 7, 8, 9];
+        this.selectedCont = [3, 3, 4, 4, 6, 6, 7, 7];
         let i = 0;
         for (let cont in this.cont) {
             if (this.selectedCont.includes(i)) {
@@ -127,13 +127,13 @@ export class ExperimentParameters {
         this.probs[0] = [9, 1];
 
         this.rewards[1] = [this.rew, this.rew];
-        this.probs[1] = [8, 2];
+        this.probs[1] = [9, 1];
 
         this.rewards[2] = [this.rew, this.rew];
-        this.probs[2] = [7, 3];
+        this.probs[2] = [8, 2];
 
         this.rewards[3] = [this.rew, this.rew];
-        this.probs[3] = [6, 4];
+        this.probs[3] = [8, 2];
 
     }
 

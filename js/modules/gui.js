@@ -203,18 +203,18 @@ export class GUI {
                 fb2.src = feedbackObj['' + reward2].src;
             }
 
-            setTimeout(function () {
+            // setTimeout(function () {
                 GUI.slideCard(pic1, cv1, showFeedback, feedbackDuration, beforeFeedbackDuration);
                 GUI.slideCard(pic2, cv2, showFeedback, feedbackDuration, beforeFeedbackDuration);
-            }, 100);
+            // }, 100);
 
         } else {
             if (showFeedback) {
                 fb.src = feedbackObj['' + thisReward].src;
             }
-            setTimeout(function () {
+            // setTimeout(function () {
                 GUI.slideCard(pic, cv, showFeedback, feedbackDuration, beforeFeedbackDuration);
-            }, 100);
+            // }, 100);
         }
     }
 
