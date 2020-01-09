@@ -27,16 +27,16 @@ function main() {
     // let phaseNum = 1;
     // let instructionNum = 0;
     // let questNum = 0;
-    let sessionNum = 1;
-    let phaseNum = 2;
-    let instructionNum = 5;
+    let sessionNum = -1;
+    let phaseNum = 1;
+    let instructionNum = 0;
     let questNum = 0;
 
     // instantiate experiment parameters
     let exp = new ExperimentParameters(
         {
             online: true,   // send network requests
-            isTesting: true, // isTesting==in development vs in production
+            isTesting: false, // isTesting==in development vs in production
             expName: 'RandCHeuristicCounter', // experience name
             completeFeedback: true, // display feedback of both options
             maxPoints: undefined, // max points cumulated all along the experiment
