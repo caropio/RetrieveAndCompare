@@ -88,17 +88,26 @@ export class ExperimentParameters {
         // Define all possible probabilities and rewards
         // structure is [lose, win]
         // ===================================================================== //
-        this.cont[0] = [1., 0.];
-        this.cont[1] = [0.9, 0.1];
-        this.cont[2] = [0.8, 0.2];
-        this.cont[3] = [0.7, 0.3];
-        this.cont[4] = [0.6, 0.4];
-        this.cont[5] = [0.5, 0.5];
-        this.cont[6] = [0.4, 0.6];
-        this.cont[7] = [0.3, 0.7];
-        this.cont[8] = [0.2, 0.8];
-        this.cont[9] = [0.1, 0.9];
-        this.cont[10] = [0., 1.];
+        this.cont[0] = [1., 0.];        // -1
+        this.cont[1] = [0.9, 0.1];      // -.8
+        this.cont[2] = [0.8, 0.2];      // -.6
+        this.cont[3] = [0.7, 0.3];      // -.4
+        this.cont[4] = [0.6, 0.4];// .8
+        this.cont[5] = [0.5, 0.5];// .8
+        this.cont[6] = [0.4, 0.6];// .8
+        this.cont[7] = [0.3, 0.7];// .8
+        this.cont[8] = [0.2, 0.8];// .8
+        this.cont[9] = [0.1, 0.9];// .8
+        this.cont[10] = [0., 1.];// .8
+        this.cont[11] = [.85, .15];// -.7
+        this.cont[12] = [.75, .25];// -.5
+        this.cont[13] = [.65, .35];// -.3
+        this.cont[14] = [.55, .45];// -.1
+        this.cont[15] = [.45, .55];// .1
+        this.cont[16] = [.35, .65];// .3
+        this.cont[17] = [.25, .75];// .5
+        this.cont[18] = [.15, .85];// .7
+
 
         // only magnitudes in the experiment
         this.rew = [-1, 1];
@@ -110,7 +119,8 @@ export class ExperimentParameters {
         }
 
         this.lotteryCont = [];
-        this.selectedCont = [3, 3, 4, 4, 6, 6, 7, 7];
+        this.selectedCont = [3, 13, 4, 14, 15, 6, 16, 7];
+
         let i = 0;
         for (let cont in this.cont) {
             if (this.selectedCont.includes(i)) {
@@ -127,13 +137,13 @@ export class ExperimentParameters {
         this.probs[0] = [9, 1];
 
         this.rewards[1] = [this.rew, this.rew];
-        this.probs[1] = [9, 1];
+        this.probs[1] = [18, 11];
 
         this.rewards[2] = [this.rew, this.rew];
         this.probs[2] = [8, 2];
 
         this.rewards[3] = [this.rew, this.rew];
-        this.probs[3] = [8, 2];
+        this.probs[3] = [17, 12];
 
     }
 
