@@ -28,7 +28,7 @@ function main() {
     // let instructionNum = 0;
     // let questNum = 0;
     let sessionNum = 1;
-    let phaseNum = 2;
+    let phaseNum = 1;
     let instructionNum = 'end';
     let questNum = 0;
 
