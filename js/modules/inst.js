@@ -332,10 +332,10 @@ export class Instructions {
                     + GUI.panelGenerateImg({src: 'images/cards_gif/lotteries/0.png', width: '15%'})
                     + 'Specifically, the green area indicates the chance of winning +1 (+' + this.exp.pointsToPence(1).toFixed(2) + 'p) ; the red area indicates the chance of losing -1 (+'
                     + this.exp.pointsToPence(1).toFixed(2) + 'p).\n'
-                    + 'Pie-charts go from 90% chance of winning a point to 90% chance of losing a point.\n\n'
+                    + 'Pie-charts go from 70% chance of winning a point to 70% chance of losing a point.\n\n'
                     + ' • Sometimes the pie-chart will be hidden an represented by a question mark, in such a way that the odds of winning / losing are unknown.\n\n'
                     + GUI.panelGenerateImg({src: 'images/cards_gif/stim/question.jpg', width: '15%'})
-                    + 'As for regular pie-charts, hidden pie-charts go from 90% chance of winning a point to 90% chance of losing a point.\n\n'
+                    + 'As for regular pie-charts, hidden pie-charts go from 70% chance of winning a point to 70% chance of losing a point.\n\n'
                     + ' • Sometimes you will be asked to choose between two symbols, sometime between two pie-charts, and sometimes between a pie-chart and a symbol.\n',
                 3: ' • (Note : points won during the training do not count for the final payoff!) \n\n'
                     + " • Let's begin with the second training test! \n\n"
@@ -355,10 +355,10 @@ export class Instructions {
                     + GUI.panelGenerateImg({src: 'images/cards_gif/lotteries/0.png', width: '15%'})
                     + 'Specifically, the green area indicates the chance of winning +1 (+' + this.exp.pointsToPence(1).toFixed(2) + 'p) ; the red area indicates the chance of losing -1 (+'
                     + this.exp.pointsToPence(1).toFixed(2) + 'p).\n'
-                    + 'Pie-charts go from 90% chance of winning a point to 90% chance of losing a point.\n\n'
+                    + 'Pie-charts go from 70% chance of winning a point to 70% chance of losing a point.\n\n'
                     + ' • Sometimes the pie-chart will be hidden an represented by a question mark, in such a way that the odds of winning / losing are unknown.\n'
                     + GUI.panelGenerateImg({src: 'images/cards_gif/stim/question.jpg', width: '15%'})
-                    + 'As for regular pie-charts, hidden pie-charts go from 90% chance of winning a point to 90% chance of losing a point.\n\n'
+                    + 'As for regular pie-charts, hidden pie-charts go from 70% chance of winning a point to 70% chance of losing a point.\n\n'
                     + ' • Sometimes you will be asked to choose between two symbols, sometime between two pie-charts, and sometimes between a pie-chart and a symbol.\n',
                 3: '• Note: This test is like the second test of the training.\n'
                     + 'This is the actual game, every point will be included in the final payoff. \n\n Ready?',
