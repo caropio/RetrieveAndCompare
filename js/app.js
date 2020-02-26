@@ -35,8 +35,8 @@ function main() {
     // instantiate experiment parameters
     let exp = new ExperimentParameters(
         {
-            online: true,   // send network requests
-            isTesting: false, // isTesting==in development vs in production
+            online: false,   // send network requests
+            isTesting: true, // isTesting==in development vs in production
             expName: 'RandCHeuristicCounter', // experience name
             completeFeedback: true, // display feedback of both options
             maxPoints: undefined, // max points cumulated all along the experiment
@@ -232,9 +232,9 @@ function stateMachine({instructionNum, sessionNum, phaseNum, questNum, exp} = {}
                     // what will be executed next
                     nextFunc: stateMachine,
                     nextParams: {
-                        instructionNum: 5,
+                        instructionNum: 6,
                         sessionNum: sessionNum,
-                        phaseNum: 2,
+                        phaseNum: 3,
                         exp: exp,
                     }
                 }
@@ -266,9 +266,9 @@ function stateMachine({instructionNum, sessionNum, phaseNum, questNum, exp} = {}
                     // what will be executed next
                     nextFunc: stateMachine,
                     nextParams: {
-                        instructionNum: [6, 10][+(sessionNum===0)],
+                        instructionNum: [[4, 7][isTraining], 9][isLastSession],
                         sessionNum: sessionNum+(sessionNum===0),
-                        phaseNum: [[1, 3][isTraining], 3][isLastSession],
+                        phaseNum: [1, 'end'][isLastSession],
                         exp: exp,
                     }
                 }
@@ -298,9 +298,9 @@ function stateMachine({instructionNum, sessionNum, phaseNum, questNum, exp} = {}
                     // what will be executed next
                     nextFunc: stateMachine,
                     nextParams: {
-                        instructionNum: [[4, 7][isTraining], 9][isLastSession],
+                        instructionNum: 5,
                         sessionNum: sessionNum,
-                        phaseNum: [1, 'end'][isLastSession],
+                        phaseNum: 2,
                         exp: exp,
                     }
                 }
