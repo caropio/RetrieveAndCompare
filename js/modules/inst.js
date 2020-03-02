@@ -314,7 +314,7 @@ export class Instructions {
         if (!isTraining) {
             GUI.setActiveCurrentStep('experiment');
         }
-        GUI.panelSetTitle('Instructions for the second test');
+        GUI.panelSetTitle('Instructions for the third test');
 
         let text;
         if (isTraining) {
@@ -324,7 +324,7 @@ export class Instructions {
                     + ' • Please note that the outcome of your choice will not be displayed on each trial.\n'
                     + 'However, for each choice an outcome will be calculated and taken into account for the final payoff.\n\n'
                     + ' • At the end of the test you will be shown with the final payoff in terms of cumulated points and monetary bonus.',
-                2: ' • In the second test  there will be two kind of options. \n'
+                2: ' • In the third test  there will be two kind of options. \n'
                     + ' • The first kind of options is represented by the symbols you already met during the previous test.\n'
                     + GUI.panelGenerateImg({src: 'images/cards_gif/stim/A.jpg', width: '15%'})
                     + 'Note: the symbols keep the same odds of winning / losing a point as in the first test.\n\n'
@@ -338,7 +338,7 @@ export class Instructions {
                     + 'As for regular pie-charts, hidden pie-charts go from 70% chance of winning a point to 70% chance of losing a point.\n\n'
                     + ' • Sometimes you will be asked to choose between two symbols, sometime between two pie-charts, and sometimes between a pie-chart and a symbol.\n',
                 3: ' • (Note : points won during the training do not count for the final payoff!) \n\n'
-                    + " • Let's begin with the second training test! \n\n"
+                    + " • Let's begin with the third training test! \n\n"
             };
         } else {
             text = {
@@ -347,7 +347,7 @@ export class Instructions {
                     + ' • Please note that the outcome of your choice will not be displayed on each trial.\n'
                     + 'However, for each choice an outcome will be calculated and taken into account for the final payoff.\n\n'
                     + ' • At the end of the test you will be shown with the final payoff in terms of cumulated points and monetary bonus.',
-                2: ' • In the second test  there will be two kind of options. \n'
+                2: ' • In the third test  there will be two kind of options. \n'
                     + ' • The first kind of options is represented by the symbols you already met during the previous test.\n'
                     + GUI.panelGenerateImg({src: 'images/cards_gif/stim_old/2.gif', width: '15%'})
                     + 'Note: the symbols keep the same odds of winning / losing a point as in the first test. \n\n'
@@ -360,7 +360,7 @@ export class Instructions {
                     + GUI.panelGenerateImg({src: 'images/cards_gif/stim/question.jpg', width: '15%'})
                     + 'As for regular pie-charts, hidden pie-charts go from 70% chance of winning a point to 70% chance of losing a point.\n\n'
                     + ' • Sometimes you will be asked to choose between two symbols, sometime between two pie-charts, and sometimes between a pie-chart and a symbol.\n',
-                3: '• Note: This test is like the second test of the training.\n'
+                3: '• Note: This test is like the third test of the training.\n'
                     + 'This is the actual game, every point will be included in the final payoff. \n\n Ready?',
             };
         }
@@ -428,12 +428,12 @@ export class Instructions {
         if (!isTraining) {
             GUI.setActiveCurrentStep('experiment');
         }
-        GUI.panelSetTitle('Instructions for the third test');
+        GUI.panelSetTitle('Instructions for the second test');
 
         let text;
         if (isTraining) {
             text = {
-                1: ' • In each round of the third test you will be presented with the symbols and pie-charts you met in the first and the second test.\n'
+                1: ' • In each round of the second test you will be presented with the symbols and pie-charts you met in the first and the second test.\n'
                     + ' • You will be asked to indicate (in percentages), what are the odds that a given symbol or pie-chart makes you win a point (+1=+' + this.exp.pointsToPence(1).toFixed(2) + 'p).\n\n'
                     + ' • You will be able to do this through moving a slider on the screen and then confirm your final answer by clicking on the confirmation button.\n\n'
                     + ' • 100%  = the symbol (or pie-chart) always gives +1pt.\n'
@@ -447,12 +447,12 @@ export class Instructions {
                     + ' •  Please note that the outcome of your choice will not be displayed on each trial. \n\n'
                     + ' • However, for each choice an outcome will be calculated and taken into account for the final payoff.\n'
                     + 'At the end of the test you will be shown with the final payoff in terms of cumulated points and monetary bonus.',
-                4: ' • Let\'s begin with the third training test!\n\n'
+                4: ' • Let\'s begin with the second training test!\n\n'
                     + ' • Note : points won during the training do not count for the final payoff !)'
             };
         } else {
             text = {
-                1: ' • In each round of the third test you will be presented with the symbols and pie-charts you met in the first and the second test.\n'
+                1: ' • In each round of the second test you will be presented with the symbols and pie-charts you met in the first and the second test.\n'
                     + 'You will be asked to indicate (in percentages), what are the odds that a given symbol or pie-chart makes you win a point (+1=+' + this.exp.pointsToPence(1).toFixed(2) + 'p).\n'
                     + ' • You will be able to do this through moving a slider on the screen and then confirm your final answer by clicking on the confirmation button.\n\n'
                     + ' • 100%  = the symbol (or pie-chart) always gives +1pt.\n'
@@ -466,7 +466,7 @@ export class Instructions {
                     + ' •  Please note that the outcome of your choice will not be displayed on each trial. \n\n'
                     + ' • However, for each choice an outcome will be calculated and taken into account for the final payoff.\n'
                     + 'At the end of the test you will be shown with the final payoff in terms of cumulated points and monetary bonus.',
-                4: '• Note: This test is like the third test of the training.\n\n '
+                4: '• Note: This test is like the second test of the training.\n\n '
                     + 'This is the actual game, every point will be included in the final payoff. \n\n Ready?',
             };
         }

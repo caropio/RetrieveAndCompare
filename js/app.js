@@ -27,9 +27,9 @@ function main() {
     // let phaseNum = 1;
     // let instructionNum = 0;
     // let questNum = 0;
-    let sessionNum = -1;
+    let sessionNum = 0;
     let phaseNum = 1;
-    let instructionNum = 0;
+    let instructionNum = 4;
     let questNum = 0;
 
     // instantiate experiment parameters
@@ -48,8 +48,8 @@ function main() {
                                 // do not allow for new training sessions
             nTrialPerConditionTraining: 5,
             nTrialPerCondition: 30,
-            nSession: 2,
-            nCond: 4,
+            nSession: 1,
+            nCond: 2,
             imgPath: 'images/cards_gif/',
             compLink: 'https://app.prolific.ac/submissions/complete?cc=RNFS5HP5' // prolific completion link
                                                                                 // will be displayed at the end
@@ -195,6 +195,8 @@ function stateMachine({instructionNum, sessionNum, phaseNum, questNum, exp} = {}
             error('Instructions: non-expected state');
     }
 
+
+
     /* ============================ Test Management ================================ */
 
     let trialObj;
@@ -232,9 +234,9 @@ function stateMachine({instructionNum, sessionNum, phaseNum, questNum, exp} = {}
                     // what will be executed next
                     nextFunc: stateMachine,
                     nextParams: {
-                        instructionNum: 6,
+                        instructionNum: 5,
                         sessionNum: sessionNum,
-                        phaseNum: 3,
+                        phaseNum: 2,
                         exp: exp,
                     }
                 }
@@ -266,9 +268,9 @@ function stateMachine({instructionNum, sessionNum, phaseNum, questNum, exp} = {}
                     // what will be executed next
                     nextFunc: stateMachine,
                     nextParams: {
-                        instructionNum: [[4, 7][isTraining], 9][isLastSession],
+                        instructionNum: [6, 10][+(sessionNum===0)],
                         sessionNum: sessionNum+(sessionNum===0),
-                        phaseNum: [1, 'end'][isLastSession],
+                        phaseNum: [[1, 3][isTraining], 3][isLastSession],
                         exp: exp,
                     }
                 }
@@ -298,9 +300,9 @@ function stateMachine({instructionNum, sessionNum, phaseNum, questNum, exp} = {}
                     // what will be executed next
                     nextFunc: stateMachine,
                     nextParams: {
-                        instructionNum: 5,
+                        instructionNum: [[4, 7][isTraining], 9][isLastSession],
                         sessionNum: sessionNum,
-                        phaseNum: 2,
+                        phaseNum: [1, 'end'][isLastSession],
                         exp: exp,
                     }
                 }

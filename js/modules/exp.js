@@ -119,7 +119,7 @@ export class ExperimentParameters {
         }
 
         this.lotteryCont = [];
-        this.selectedCont = [3, 13, 4, 14, 15, 6, 16, 7];
+        this.selectedCont = [0, 1, 2, 3, 4, 6, 7, 8, 9, 10];
 
         let i = 0;
         for (let cont in this.cont) {
@@ -137,13 +137,13 @@ export class ExperimentParameters {
         this.probs[0] = [9, 1];
 
         this.rewards[1] = [this.rew, this.rew];
-        this.probs[1] = [18, 11];
+        this.probs[1] = [6, 4];
 
-        this.rewards[2] = [this.rew, this.rew];
-        this.probs[2] = [8, 2];
-
-        this.rewards[3] = [this.rew, this.rew];
-        this.probs[3] = [17, 12];
+        // this.rewards[2] = [this.rew, this.rew];
+        // this.probs[2] = [8, 2];
+        //
+        // this.rewards[3] = [this.rew, this.rew];
+        // this.probs[3] = [17, 12];
 
     }
 
@@ -172,7 +172,8 @@ export class ExperimentParameters {
         // Create condition arrays
         // ===================================================================== //
         for (let sessionNum = 0; sessionNum < nSession; sessionNum++) {
-
+            let learningOptionIdx = 0;
+            let trainingOptionIdx = 0;
             // learning condition
             for (let i = 0; i < cond.length; i++) {
                 this.expCondition[sessionNum].push(
@@ -425,23 +426,7 @@ export class ExperimentParameters {
                     ]);
                 }
 
-                // 2 ? per sym
-                // mix ambiguity and stim 1
-                let ambiguityFile = '?';
-                let ambiguityContIdx = contIdx1;
-                let ambiguityEV = this.ev[contIdx1];
-                let ambiguityP = this.cont[contIdx1];
-
-                // ambiguity is 2
-                option1Type = 1;
-                let option2Type = 2;
-
-                temp.push([
-                    file1, ambiguityFile, contIdx1, ambiguityContIdx, p1,
-                    ambiguityP, ev1, ambiguityEV, r1, r2, isCatchTrial, option1Type, option2Type
-                ]);
-
-                for (let k = 0; k < nCond - 3; k++) {
+                for (let k = 0; k < nCond; k++) {
                     let [sym1, sym2] = this.trainingContexts[sessionNum][k];
 
                     let sym1contIdx = this.probs[k][0];
@@ -489,7 +474,6 @@ export class ExperimentParameters {
 
                 this.trialObjChoiceElicitationTraining[sessionNum] =
                     this.trialObjChoiceElicitationTraining[sessionNum].concat(shuffle(temp));
-                this.trialObjChoiceElicitationTraining[sessionNum].push(lotVSAmbiguity[catchTrialIdx]);
                 this.trialObjChoiceElicitationTraining[sessionNum].push(catchTrials[catchTrialIdx]);
                 catchTrialIdx++;
 
@@ -513,23 +497,8 @@ export class ExperimentParameters {
 
                 }
 
-                // mix ambiguity and stim 2
-                // 2 ? per sym
-                ambiguityFile = '?';
-                ambiguityContIdx = contIdx2;
-                ambiguityEV = this.ev[contIdx2];
-                ambiguityP = this.cont[contIdx2];
 
-                // ambiguity is 2
-                option1Type = 1;
-                option2Type = 2;
-
-                temp.push([
-                    file2, ambiguityFile, contIdx2, ambiguityContIdx, p2,
-                    ambiguityP, ev2, ambiguityEV, r1, r2, isCatchTrial, option1Type, option2Type
-                ]);
-
-                for (let k = 0; k < nCond - 3; k++) {
+                for (let k = 0; k < nCond; k++) {
                     let [sym1, sym2] = this.trainingContexts[sessionNum][k];
 
                     let sym1contIdx = this.probs[k][0];
@@ -577,7 +546,6 @@ export class ExperimentParameters {
 
                 this.trialObjChoiceElicitationTraining[sessionNum] =
                     this.trialObjChoiceElicitationTraining[sessionNum].concat(shuffle(temp));
-                this.trialObjChoiceElicitationTraining[sessionNum].push(lotVSAmbiguity[catchTrialIdx]);
                 this.trialObjChoiceElicitationTraining[sessionNum].push(catchTrials[catchTrialIdx]);
             }
 
@@ -645,23 +613,6 @@ export class ExperimentParameters {
                     ]);
                 }
 
-                // mix ambiguity and stim 1
-                for (let k = 0; k < 2; k++) {
-                    let ambiguityFile = '?';
-                    let ambiguityContIdx = contIdx1;
-                    let ambiguityEV = this.ev[contIdx1];
-                    let ambiguityP = this.cont[contIdx1];
-
-                    // ambiguity is 2
-                    option1Type = 1;
-                    let option2Type = 2;
-
-                    temp.push([
-                        file1, ambiguityFile, contIdx1, ambiguityContIdx, p1,
-                        ambiguityP, ev1, ambiguityEV, r1, r2, isCatchTrial, option1Type, option2Type
-                    ]);
-                }
-
                 for (let k = 0; k < nCond; k++) {
                     let [sym1, sym2] = this.contexts[sessionNum][k];
 
@@ -711,11 +662,8 @@ export class ExperimentParameters {
 
                 this.trialObjChoiceElicitation[sessionNum] =
                     this.trialObjChoiceElicitation[sessionNum].concat(shuffle(temp));
-                this.trialObjChoiceElicitation[sessionNum].push(lotVSAmbiguity[lotVSAmbiguityIdx]);
-                this.trialObjChoiceElicitation[sessionNum].push(lotVSAmbiguity[lotVSAmbiguityIdx+1]);
                 this.trialObjChoiceElicitation[sessionNum].push(catchTrials[catchTrialIdx]);
                 catchTrialIdx++;
-                lotVSAmbiguityIdx += 2;
 
                 // mix lotteries and stim 2 + lottery and ambiguity
                 temp = [];
@@ -733,23 +681,6 @@ export class ExperimentParameters {
                     temp.push([
                         file2, lotteryFile, contIdx2, lotteryContIdx, p2,
                         lotteryP, ev2, lotteryEV, r1, r2, isCatchTrial, option1Type, option2Type
-                    ]);
-                }
-
-                // mix ambiguity and stim 2
-                for (let k = 0; k < 2; k++) {
-                    let ambiguityFile = '?';
-                    let ambiguityContIdx = contIdx2;
-                    let ambiguityEV = this.ev[contIdx2];
-                    let ambiguityP = this.cont[contIdx2];
-
-                    // ambiguity is 2
-                    option1Type = 1;
-                    let option2Type = 2;
-
-                    temp.push([
-                        file2, ambiguityFile, contIdx2, ambiguityContIdx, p2,
-                        ambiguityP, ev2, ambiguityEV, r1, r2, isCatchTrial, option1Type, option2Type
                     ]);
                 }
 
@@ -799,8 +730,6 @@ export class ExperimentParameters {
 
                 this.trialObjChoiceElicitation[sessionNum] =
                     this.trialObjChoiceElicitation[sessionNum].concat(shuffle(temp));
-                this.trialObjChoiceElicitation[sessionNum].push(lotVSAmbiguity[lotVSAmbiguityIdx]);
-                this.trialObjChoiceElicitation[sessionNum].push(lotVSAmbiguity[lotVSAmbiguityIdx+1]);
                 this.trialObjChoiceElicitation[sessionNum].push(catchTrials[catchTrialIdx]);
                 lotVSAmbiguityIdx += 2;
 
@@ -879,7 +808,7 @@ export class ExperimentParameters {
             }
 
             for (let i = 0; i < this.trialObjSliderElicitation[sessionNum].length; i++) {
-                let ev1 = this.trialObjSliderElicitation[1][i][3];
+                let ev1 = this.trialObjSliderElicitation[sessionNum][i][3];
                 maxPoints += ev1;
             }
         }
