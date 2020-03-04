@@ -332,7 +332,7 @@ export class Instructions {
                     + GUI.panelGenerateImg({src: 'images/cards_gif/lotteries/0.png', width: '15%'})
                     + 'Specifically, the green area indicates the chance of winning +1 (+' + this.exp.pointsToPence(1).toFixed(2) + 'p) ; the red area indicates the chance of losing -1 (+'
                     + this.exp.pointsToPence(1).toFixed(2) + 'p).\n'
-                    + 'Pie-charts go from 70% chance of winning a point to 70% chance of losing a point.\n\n'
+                    + 'Pie-charts go from 100% chance of winning a point to 100% chance of losing a point.\n\n'
                     // + ' • Sometimes the pie-chart will be hidden an represented by a question mark, in such a way that the odds of winning / losing are unknown.\n\n'
                     // + GUI.panelGenerateImg({src: 'images/cards_gif/stim/question.jpg', width: '15%'})
                     // + 'As for regular pie-charts, hidden pie-charts go from 70% chance of winning a point to 70% chance of losing a point.\n\n'
@@ -355,7 +355,7 @@ export class Instructions {
                     + GUI.panelGenerateImg({src: 'images/cards_gif/lotteries/0.png', width: '15%'})
                     + 'Specifically, the green area indicates the chance of winning +1 (+' + this.exp.pointsToPence(1).toFixed(2) + 'p) ; the red area indicates the chance of losing -1 (+'
                     + this.exp.pointsToPence(1).toFixed(2) + 'p).\n'
-                    + 'Pie-charts go from 70% chance of winning a point to 70% chance of losing a point.\n\n'
+                    + 'Pie-charts go from 100% chance of winning a point to 100% chance of losing a point.\n\n'
                     // + ' • Sometimes the pie-chart will be hidden an represented by a question mark, in such a way that the odds of winning / losing are unknown.\n'
                     // + GUI.panelGenerateImg({src: 'images/cards_gif/stim/question.jpg', width: '15%'})
                     // + 'As for regular pie-charts, hidden pie-charts go from 70% chance of winning a point to 70% chance of losing a point.\n\n'
