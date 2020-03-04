@@ -36,7 +36,7 @@ function main() {
     let exp = new ExperimentParameters(
         {
             online: true,   // send network requests
-            isTesting: true, // isTesting==in development vs in production
+            isTesting: false, // isTesting==in development vs in production
             expName: 'RandCHeuristicSimple', // experience name
             completeFeedback: true, // display feedback of both options
             maxPoints: undefined, // max points cumulated all along the experiment
