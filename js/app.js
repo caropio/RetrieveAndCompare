@@ -27,9 +27,9 @@ function main() {
     // let phaseNum = 1;
     // let instructionNum = 0;
     // let questNum = 0;
-    let sessionNum = 0;
+    let sessionNum = -1;
     let phaseNum = 1;
-    let instructionNum = 4;
+    let instructionNum = 0;
     let questNum = 0;
 
     // instantiate experiment parameters
@@ -47,7 +47,7 @@ function main() {
             maxTrainingNum: -2, // if sessionNum == maxTrainingNum
                                 // do not allow for new training sessions
             nTrialPerConditionTraining: 5,
-            nTrialPerCondition: 30,
+            nTrialPerCondition: 60,
             nSession: 1,
             nCond: 2,
             imgPath: 'images/cards_gif/',
@@ -268,9 +268,9 @@ function stateMachine({instructionNum, sessionNum, phaseNum, questNum, exp} = {}
                     // what will be executed next
                     nextFunc: stateMachine,
                     nextParams: {
-                        instructionNum: [6, 10][+(sessionNum===0)],
-                        sessionNum: sessionNum+(sessionNum===0),
-                        phaseNum: [[1, 3][isTraining], 3][isLastSession],
+                        instructionNum: 6,
+                        sessionNum: sessionNum,
+                        phaseNum: 3,
                         exp: exp,
                     }
                 }

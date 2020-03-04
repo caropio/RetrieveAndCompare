@@ -119,8 +119,7 @@ export class ExperimentParameters {
         }
 
         this.lotteryCont = [];
-        this.selectedCont = [0, 1, 2, 3, 4, 6, 7, 8, 9, 10];
-
+        this.selectedCont = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10];
         let i = 0;
         for (let cont in this.cont) {
             if (this.selectedCont.includes(i)) {
@@ -219,15 +218,16 @@ export class ExperimentParameters {
         // ===================================================================== //
         // using cont idx
         let catchTrialsTemp = shuffle([
-            [3, 7],
-            [4, 7],
-            [13, 7],
-            [14, 7],
-            [3, 16],
-            [4, 16],
-            [13, 16],
-            [14, 16],
-            [3, 7]
+            [9, 1],
+            [8, 1],
+            [7, 1],
+            [6, 1],
+            [9, 2],
+            [8, 2],
+            [7, 2],
+            [9, 3],
+            [8, 3],
+            [7, 3],
         ]);
 
         let catchTrials = [];
@@ -426,51 +426,51 @@ export class ExperimentParameters {
                     ]);
                 }
 
-                for (let k = 0; k < nCond; k++) {
-                    let [sym1, sym2] = this.trainingContexts[sessionNum][k];
-
-                    let sym1contIdx = this.probs[k][0];
-                    let sym2contIdx = this.probs[k][1];
-
-                    let symEv1 = this.ev[sym1contIdx];
-                    let symEv2 = this.ev[sym2contIdx];
-
-                    let symP1 = this.cont[sym1contIdx];
-                    let symP2 = this.cont[sym2contIdx];
-
-                    let symR1 = this.rew;
-                    let symR2 = this.rew;
-
-                    let isCatchTrial = false;
-
-                    let option1Type = 0;
-                    let option2Type = 0;
-
-                    if (sym1 !== file1) {
-                        temp.push([
-                            file1, sym1,
-                            contIdx1, sym1contIdx,
-                            p1, symP1,
-                            ev1, symEv1,
-                            r1, symR1,
-                            isCatchTrial,
-                            option1Type,
-                            option2Type
-                        ])
-                    }
-                    if (sym2 !== file1) {
-                        temp.push([
-                            file1, sym2,
-                            contIdx1, sym2contIdx,
-                            p1, symP2,
-                            ev1, symEv2,
-                            r1, symR2,
-                            isCatchTrial,
-                            option1Type,
-                            option2Type
-                        ])
-                    }
-                }
+                // for (let k = 0; k < nCond; k++) {
+                //     let [sym1, sym2] = this.trainingContexts[sessionNum][k];
+                //
+                //     let sym1contIdx = this.probs[k][0];
+                //     let sym2contIdx = this.probs[k][1];
+                //
+                //     let symEv1 = this.ev[sym1contIdx];
+                //     let symEv2 = this.ev[sym2contIdx];
+                //
+                //     let symP1 = this.cont[sym1contIdx];
+                //     let symP2 = this.cont[sym2contIdx];
+                //
+                //     let symR1 = this.rew;
+                //     let symR2 = this.rew;
+                //
+                //     let isCatchTrial = false;
+                //
+                //     let option1Type = 0;
+                //     let option2Type = 0;
+                //
+                //     if (sym1 !== file1) {
+                //         temp.push([
+                //             file1, sym1,
+                //             contIdx1, sym1contIdx,
+                //             p1, symP1,
+                //             ev1, symEv1,
+                //             r1, symR1,
+                //             isCatchTrial,
+                //             option1Type,
+                //             option2Type
+                //         ])
+                //     }
+                //     if (sym2 !== file1) {
+                //         temp.push([
+                //             file1, sym2,
+                //             contIdx1, sym2contIdx,
+                //             p1, symP2,
+                //             ev1, symEv2,
+                //             r1, symR2,
+                //             isCatchTrial,
+                //             option1Type,
+                //             option2Type
+                //         ])
+                //     }
+                // }
 
                 this.trialObjChoiceElicitationTraining[sessionNum] =
                     this.trialObjChoiceElicitationTraining[sessionNum].concat(shuffle(temp));
@@ -498,51 +498,51 @@ export class ExperimentParameters {
                 }
 
 
-                for (let k = 0; k < nCond; k++) {
-                    let [sym1, sym2] = this.trainingContexts[sessionNum][k];
-
-                    let sym1contIdx = this.probs[k][0];
-                    let sym2contIdx = this.probs[k][1];
-
-                    let symEv1 = this.ev[sym1contIdx];
-                    let symEv2 = this.ev[sym2contIdx];
-
-                    let symP1 = this.cont[sym1contIdx];
-                    let symP2 = this.cont[sym2contIdx];
-
-                    let symR1 = this.rew;
-                    let symR2 = this.rew;
-
-                    let isCatchTrial = false;
-
-                    let option1Type = 1;
-                    let option2Type = 1;
-
-                    if (sym1 !== file2) {
-                        temp.push([
-                            file2, sym1,
-                            contIdx2, sym1contIdx,
-                            p2, symP1,
-                            ev2, symEv1,
-                            r2, symR1,
-                            isCatchTrial,
-                            option1Type,
-                            option2Type
-                        ])
-                    }
-                    if (sym2 !== file2) {
-                        temp.push([
-                            file2, sym2,
-                            contIdx2, sym2contIdx,
-                            p2, symP2,
-                            ev2, symEv2,
-                            r2, symR2,
-                            isCatchTrial,
-                            option1Type,
-                            option2Type
-                        ])
-                    }
-                }
+                // for (let k = 0; k < nCond; k++) {
+                //     let [sym1, sym2] = this.trainingContexts[sessionNum][k];
+                //
+                //     let sym1contIdx = this.probs[k][0];
+                //     let sym2contIdx = this.probs[k][1];
+                //
+                //     let symEv1 = this.ev[sym1contIdx];
+                //     let symEv2 = this.ev[sym2contIdx];
+                //
+                //     let symP1 = this.cont[sym1contIdx];
+                //     let symP2 = this.cont[sym2contIdx];
+                //
+                //     let symR1 = this.rew;
+                //     let symR2 = this.rew;
+                //
+                //     let isCatchTrial = false;
+                //
+                //     let option1Type = 1;
+                //     let option2Type = 1;
+                //
+                //     if (sym1 !== file2) {
+                //         temp.push([
+                //             file2, sym1,
+                //             contIdx2, sym1contIdx,
+                //             p2, symP1,
+                //             ev2, symEv1,
+                //             r2, symR1,
+                //             isCatchTrial,
+                //             option1Type,
+                //             option2Type
+                //         ])
+                //     }
+                //     if (sym2 !== file2) {
+                //         temp.push([
+                //             file2, sym2,
+                //             contIdx2, sym2contIdx,
+                //             p2, symP2,
+                //             ev2, symEv2,
+                //             r2, symR2,
+                //             isCatchTrial,
+                //             option1Type,
+                //             option2Type
+                //         ])
+                //     }
+                // }
 
                 this.trialObjChoiceElicitationTraining[sessionNum] =
                     this.trialObjChoiceElicitationTraining[sessionNum].concat(shuffle(temp));
@@ -557,7 +557,8 @@ export class ExperimentParameters {
                 [this.ev[8].toString(), 8, this.cont[8], this.ev[8], this.rew, true]
             );
 
-            this.trialObjSliderElicitationTraining[sessionNum] = shuffle(this.trialObjSliderElicitationTraining[sessionNum]);
+            this.trialObjSliderElicitationTraining[sessionNum] = shuffle(
+                this.trialObjSliderElicitationTraining[sessionNum]);
 
             // Phase 2
             // ===================================================================== //
@@ -613,52 +614,52 @@ export class ExperimentParameters {
                     ]);
                 }
 
-                for (let k = 0; k < nCond; k++) {
-                    let [sym1, sym2] = this.contexts[sessionNum][k];
-
-                    let sym1contIdx = this.probs[k][0];
-                    let sym2contIdx = this.probs[k][1];
-
-                    let symEv1 = this.ev[sym1contIdx];
-                    let symEv2 = this.ev[sym2contIdx];
-
-                    let symP1 = this.cont[sym1contIdx];
-                    let symP2 = this.cont[sym2contIdx];
-
-                    let symR1 = this.rew;
-                    let symR2 = this.rew;
-
-
-                    let isCatchTrial = false;
-
-                    let option1Type = 1;
-                    let option2Type = 1;
-
-                    if (sym1 !== file1) {
-                        temp.push([
-                            file1, sym1,
-                            contIdx1, sym1contIdx,
-                            p1, symP1,
-                            ev1, symEv1,
-                            r1, symR1,
-                            isCatchTrial,
-                            option1Type,
-                            option2Type
-                        ])
-                    }
-                    if (sym2 !== file1) {
-                        temp.push([
-                            file1, sym2,
-                            contIdx1, sym2contIdx,
-                            p1, symP2,
-                            ev1, symEv2,
-                            r1, symR2,
-                            isCatchTrial,
-                            option1Type,
-                            option2Type
-                        ])
-                    }
-                }
+                // for (let k = 0; k < nCond; k++) {
+                //     let [sym1, sym2] = this.contexts[sessionNum][k];
+                //
+                //     let sym1contIdx = this.probs[k][0];
+                //     let sym2contIdx = this.probs[k][1];
+                //
+                //     let symEv1 = this.ev[sym1contIdx];
+                //     let symEv2 = this.ev[sym2contIdx];
+                //
+                //     let symP1 = this.cont[sym1contIdx];
+                //     let symP2 = this.cont[sym2contIdx];
+                //
+                //     let symR1 = this.rew;
+                //     let symR2 = this.rew;
+                //
+                //
+                //     let isCatchTrial = false;
+                //
+                //     let option1Type = 1;
+                //     let option2Type = 1;
+                //
+                //     if (sym1 !== file1) {
+                //         temp.push([
+                //             file1, sym1,
+                //             contIdx1, sym1contIdx,
+                //             p1, symP1,
+                //             ev1, symEv1,
+                //             r1, symR1,
+                //             isCatchTrial,
+                //             option1Type,
+                //             option2Type
+                //         ])
+                //     }
+                //     if (sym2 !== file1) {
+                //         temp.push([
+                //             file1, sym2,
+                //             contIdx1, sym2contIdx,
+                //             p1, symP2,
+                //             ev1, symEv2,
+                //             r1, symR2,
+                //             isCatchTrial,
+                //             option1Type,
+                //             option2Type
+                //         ])
+                //     }
+                // }
 
                 this.trialObjChoiceElicitation[sessionNum] =
                     this.trialObjChoiceElicitation[sessionNum].concat(shuffle(temp));
@@ -684,49 +685,49 @@ export class ExperimentParameters {
                     ]);
                 }
 
-                for (let k = 0; k < nCond; k++) {
-                    let [sym1, sym2] = this.contexts[sessionNum][k];
-
-                    let sym1contIdx = this.probs[k][0];
-                    let sym2contIdx = this.probs[k][1];
-
-                    let symEv1 = this.ev[sym1contIdx];
-                    let symEv2 = this.ev[sym2contIdx];
-
-                    let symP1 = this.cont[sym1contIdx];
-                    let symP2 = this.cont[sym2contIdx];
-
-                    let symR1 = this.rew;
-                    let symR2 = this.rew;
-
-                    let option1Type = 1;
-                    let option2Type = 1;
-
-                    if (sym1 !== file2) {
-                        temp.push([
-                            file2, sym1,
-                            contIdx2, sym1contIdx,
-                            p2, symP1,
-                            ev2, symEv1,
-                            r2, symR1,
-                            isCatchTrial,
-                            option1Type,
-                            option2Type
-                        ])
-                    }
-                    if (sym2 !== file2) {
-                        temp.push([
-                            file2, sym2,
-                            contIdx2, sym2contIdx,
-                            p2, symP2,
-                            ev2, symEv2,
-                            r2, symR2,
-                            isCatchTrial,
-                            option1Type,
-                            option2Type
-                        ])
-                    }
-                }
+                // for (let k = 0; k < nCond; k++) {
+                //     let [sym1, sym2] = this.contexts[sessionNum][k];
+                //
+                //     let sym1contIdx = this.probs[k][0];
+                //     let sym2contIdx = this.probs[k][1];
+                //
+                //     let symEv1 = this.ev[sym1contIdx];
+                //     let symEv2 = this.ev[sym2contIdx];
+                //
+                //     let symP1 = this.cont[sym1contIdx];
+                //     let symP2 = this.cont[sym2contIdx];
+                //
+                //     let symR1 = this.rew;
+                //     let symR2 = this.rew;
+                //
+                //     let option1Type = 1;
+                //     let option2Type = 1;
+                //
+                //     if (sym1 !== file2) {
+                //         temp.push([
+                //             file2, sym1,
+                //             contIdx2, sym1contIdx,
+                //             p2, symP1,
+                //             ev2, symEv1,
+                //             r2, symR1,
+                //             isCatchTrial,
+                //             option1Type,
+                //             option2Type
+                //         ])
+                //     }
+                //     if (sym2 !== file2) {
+                //         temp.push([
+                //             file2, sym2,
+                //             contIdx2, sym2contIdx,
+                //             p2, symP2,
+                //             ev2, symEv2,
+                //             r2, symR2,
+                //             isCatchTrial,
+                //             option1Type,
+                //             option2Type
+                //         ])
+                //     }
+                // }
 
                 this.trialObjChoiceElicitation[sessionNum] =
                     this.trialObjChoiceElicitation[sessionNum].concat(shuffle(temp));

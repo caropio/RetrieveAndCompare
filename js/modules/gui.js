@@ -301,7 +301,7 @@ export class GUI {
                       <button type="button" class="close" data-dismiss="modal">&times;</button>
                       <center><span class="fa ${sym}" style="font-size: 24px; color: ${color};">  ${title}</center>
                     </div>
-                    <div class="modal-body">
+                    <div class="modal-body" >
                     ${message}
                     </div>
                   </div>
@@ -324,9 +324,9 @@ export class GUI {
 
     }
 
-    static generateSlider({min = 0, max = 100, step = 5, initValue = 0, percent = true, n = 1} = {}) {
+    static generateSlider({min = 0, max = 100, step = 5, initValue = 0, percent = true, n = 1, classname=''} = {}) {
         let slider = `<main>
-            <form id="form_${n}">
+            <form id="form_${n}" class="${classname}">
             <div class="range">
             <input id="slider_${n}" name="range" type="range" value="${initValue}" min="${min}" max="${max}" step="${step}">
             <div class="range-output">
@@ -371,7 +371,8 @@ export class GUI {
         $('#skipButton').click(function () {
             if (Obj.skipEnabled) {
                 GUI.displayModalWindow('Select the trial you want to reach.',
-                    GUI.generateSlider({min: 0, max: Obj.nTrial, initValue: Obj.trialNum, step: 1, percent: false, n: 2})
+                    GUI.generateSlider({classname: 'skip-form',
+                        min: 0, max: Obj.nTrial, initValue: Obj.trialNum, step: 1, percent: false, n: 2})
                     , 'info');
 
                 GUI.listenOnSlider({obj: Obj}, function (ev) {
@@ -420,11 +421,11 @@ export class GUI {
 
         let canvas1 = '<canvas id="canvas1" height="620"' +
             ' width="620" class="img-responsive center-block"' +
-            ' style="border: 5px solid transparent; position: relative; top: 0px;">';
+            ' style="border: 7px solid transparent; position: relative; top: 0px;">';
 
         let canvas2 = '<canvas id="canvas2" height="620"' +
             ' width="620" class="img-responsive center-block"' +
-            ' style="border: 5px solid transparent; position: relative; top: 0px;">';
+            ' style="border: 7px solid transparent; position: relative; top: 0px;">';
 
         let options = [[option1, option2], [option2, option1]][+(invertedPosition)];
         let feedbacks = [[feedback1, feedback2], [feedback2, feedback1]][+(invertedPosition)];
