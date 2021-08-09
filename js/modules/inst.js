@@ -199,16 +199,16 @@ export class Instructions {
                     GUI.panelSetParagraph(text[pageNum]);
                 } else {
                     if (event.data.obj.exp.online) {
-                        sendToDB(0,
-                            {
-                                expID: event.data.obj.exp.expID,
-                                id: event.data.obj.exp.subID,
-                                exp: event.data.obj.exp.expName,
-                                browser: event.data.obj.exp.browsInfo,
-                                conversionRate: event.data.obj.exp.conversionRate
-                            },
-                            'php/InsertExpDetails.php'
-                        );
+                        // sendToDB(0,
+                        //     {
+                        //         expID: event.data.obj.exp.expID,
+                        //         id: event.data.obj.exp.subID,
+                        //         exp: event.data.obj.exp.expName,
+                        //         browser: event.data.obj.exp.browsInfo,
+                        //         conversionRate: event.data.obj.exp.conversionRate
+                        //     },
+                        //     'php/InsertExpDetails.php'
+                        // );
                     }
                     nextFunc(nextParams);
                 }
