@@ -88,27 +88,12 @@ export class ChoiceManager {
             condition = this.conditionObj[this.trialNum];
         }
 
-        let params = {
-            stimIdx1: trialObj[0], // key in img dict
-            stimIdx2: trialObj[1],
-            contIdx1: trialObj[2],
-            contIdx2: trialObj[3],
-            p1: trialObj[4],
-            p2: trialObj[5],
-            ev1: trialObj[6],
-            ev2: trialObj[7],
-            r1: trialObj[8],
-            r2: trialObj[9],
-            isCatchTrial: trialObj[10],
-            option1Type: trialObj[11],
-            option2Type: trialObj[12],
-            presentationTime: presentationTime,
-            condition: condition
-        };
+        trialObj["condition"] = condition;
+        trialObj["presentationTime"] = presentationTime;
 
         GUI.displayOptions(
-            params["stimIdx1"],
-            params["stimIdx2"],
+            trialObj["file1"],
+            trialObj["file2"],
             this.imgObj,
             this.feedbackObj,
             this.invertedPosition[this.trialNum]
@@ -122,7 +107,7 @@ export class ChoiceManager {
             clickEnabled = false;
             event.data.obj.skipEnabled = false;
             this.style.borderColor = "black";
-            event.data.obj._clickEvent(1, params);
+            event.data.obj._clickEvent(1, trialObj);
         });
 
         $('#canvas2').click({obj: this}, function (event) {
@@ -131,7 +116,7 @@ export class ChoiceManager {
             clickEnabled = false;
             event.data.obj.skipEnabled = false;
             this.style.borderColor = "black";
-            event.data.obj._clickEvent(2, params);
+            event.data.obj._clickEvent(2, trialObj);
         });
 
     };

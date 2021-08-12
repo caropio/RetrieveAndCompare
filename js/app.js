@@ -29,13 +29,13 @@ function main() {
     // let questNum = 0;
     let sessionNum = -1;
     let phaseNum = 1;
-    let instructionNum = 0;
+    let instructionNum = 'end';
     let questNum = 0;
 
     // instantiate experiment parameters
     let exp = new ExperimentParameters(
         {
-            online: true,   // send network requests
+            online: false,   // send network requests
             isTesting: false, // isTesting==in development vs in production
             expName: 'RandCSimple', // experience name
             completeFeedback: true, // display feedback of both options
@@ -47,9 +47,9 @@ function main() {
             maxTrainingNum: -2, // if sessionNum == maxTrainingNum
                                 // do not allow for new training sessions
             nTrialPerConditionTraining: 5,
-            nTrialPerCondition: 60,
-            nSession: 1,
-            nCond: 2,
+            nTrialPerCondition: 30,
+            nSession: 2,
+            nCond: 4,
             imgPath: 'images/cards_gif/',
             compLink: 'https://app.prolific.ac/submissions/complete?cc=RNFS5HP5' // prolific completion link
                                                                                 // will be displayed at the end
