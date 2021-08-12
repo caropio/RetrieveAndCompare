@@ -78,6 +78,15 @@ export class ChoiceManager {
 
         this.skipEnabled = true;
 
+        if (this.exp.fromCookie) {
+            if (this.exp.trialNum != undefined)
+                this.trialNum = this.exp.trialNum;
+            this.exp.fromCookie = false;
+        } else {
+            this.exp.trialNum = this.trialNum;
+            localStorage['exp'] = JSON.stringify(this.exp);
+        }
+
         let trialObj = this.trialObj[this.trialNum];
 
         let presentationTime = (new Date()).getTime();

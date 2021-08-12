@@ -1,7 +1,8 @@
-import {ExperimentParameters} from "./modules/exp.js";
-import {Instructions} from "./modules/inst.js";
-import {Questionnaire} from "./modules/quest.js";
-import {ChoiceManager, SliderManager} from "./modules/trial_manager.js";
+import { ExperimentParameters } from "./modules/exp.js";
+import { Instructions } from "./modules/inst.js";
+import { Questionnaire } from "./modules/quest.js";
+import { ChoiceManager, SliderManager } from "./modules/trial_manager.js";
+import { readCookies, saveCookie, cookieStored } from './modules/utils.js';
 
 
 // When the page is fully loaded, the main function will be called
@@ -27,42 +28,78 @@ function main() {
     // let phaseNum = 1;
     // let instructionNum = 0;
     // let questNum = 0;
+    let cookieEnabled = 1;
+
     let sessionNum = -1;
     let phaseNum = 1;
-    let instructionNum = 'end';
+    let instructionNum = 0;
     let questNum = 0;
 
     // instantiate experiment parameters
     let exp = new ExperimentParameters(
         {
             online: false,   // send network requests
-            isTesting: false, // isTesting==in development vs in production
+            isTesting: true, // isTesting==in development vs in production
             expName: 'RandCSimple', // experience name
             completeFeedback: true, // display feedback of both options
             maxPoints: undefined, // max points cumulated all along the experiment
-                                 // if undefined or 0, will be computed automatically
+            // if undefined or 0, will be computed automatically
             maxCompensation: 250, // in pence (in addition of the initial endowment)
             feedbackDuration: 1400, // how many milliseconds we present the outcome
             beforeFeedbackDuration: 900, // how many milliseconds before the outcome
             maxTrainingNum: -2, // if sessionNum == maxTrainingNum
-                                // do not allow for new training sessions
+            // do not allow for new training sessions
             nTrialPerConditionTraining: 5,
             nTrialPerCondition: 30,
             nSession: 2,
             nCond: 4,
             imgPath: 'images/cards_gif/',
-            compLink: 'https://app.prolific.ac/submissions/complete?cc=RNFS5HP5' // prolific completion link
-                                                                                // will be displayed at the end
+            compLink: 'https://app.prolific.ac/submissions/complete?cc=RNFS5HP5', // prolific completion link
+            fromCookie: false
+            // will be displayed at the end
         }
     );
-    
-    // Run experiment!!
-    stateMachine({instructionNum, sessionNum, phaseNum, questNum, exp});
+
+    // manage coookies
+   if (cookieStored() && cookieEnabled) {
+       let prevexp = Object;
+       [sessionNum, instructionNum, phaseNum, questNum, prevexp] = readCookies();
+       exp = new ExperimentParameters(
+           {
+               online: prevexp.online,   // send network requests
+               isTesting: prevexp.isTesting, // isTesting==in development vs in production
+               expName: prevexp.expName, // experience name
+               completeFeedback: prevexp.completeFeedback, // display feedback of both options
+               maxPoints: prevexp.maxPoints, // max points cumulated all along the experiment
+               // if undefined or 0, will be computed automatically
+               maxCompensation: prevexp.maxCompensation, // in pence (in addition of the initial endowment)
+               feedbackDuration: prevexp.feedbackDuration, // how many milliseconds we present the outcome
+               beforeFeedbackDuration: prevexp.beforeFeedbackDuration, // how many milliseconds before the outcome
+               maxTrainingNum: prevexp.maxTrainingNum, // if sessionNum == maxTrainingNum
+               // do not allow for new training sessions
+               nTrialPerConditionTraining: prevexp.nTrialPerConditionTraining,
+               nTrialPerCondition: prevexp.nTrialPerCondition,
+               nSession: prevexp.nSession,
+               nCond: prevexp.nCond,
+               imgPath: prevexp.imgPath,
+               compLink: prevexp.compLink, // prolific completion link
+               fromCookie: true,
+               obj: prevexp,
+           }
+       );
+   }
+    // // Run experiment!!
+    stateMachine({ instructionNum, sessionNum, phaseNum, questNum, exp });
 }
 
 
-function stateMachine({instructionNum, sessionNum, phaseNum, questNum, exp} = {}) {
-    
+function stateMachine({ instructionNum, sessionNum, phaseNum, questNum, exp } = {}) {
+
+    saveCookie({
+        instructionNum: instructionNum, sessionNum: sessionNum,
+        phaseNum: phaseNum, questNum: questNum, exp: exp
+    });
+
     let inst = new Instructions(exp);
     let quest = new Questionnaire(exp);
 
@@ -71,7 +108,7 @@ function stateMachine({instructionNum, sessionNum, phaseNum, questNum, exp} = {}
     // if sessionNum < 0, then it is a training session
     // here training sessionNum is in {-1, -2}
     let isTraining = +(sessionNum < 0);
-    let isLastSession = +(sessionNum === (exp.nSession-1));
+    let isLastSession = +(sessionNum === (exp.nSession - 1));
 
     switch (instructionNum) {
         case 0:
@@ -106,7 +143,7 @@ function stateMachine({instructionNum, sessionNum, phaseNum, questNum, exp} = {}
 
         case 3:
             inst.displayInitialInstruction(
-                {pageNum: 1},
+                { pageNum: 1 },
                 // what will be executed next
                 stateMachine,
                 {
@@ -117,7 +154,7 @@ function stateMachine({instructionNum, sessionNum, phaseNum, questNum, exp} = {}
 
         case 4:
             inst.displayInstructionLearning(
-                {pageNum: 1, isTraining: isTraining, phaseNum: 1, sessionNum: sessionNum},
+                { pageNum: 1, isTraining: isTraining, phaseNum: 1, sessionNum: sessionNum },
                 // what will be executed next
                 stateMachine,
                 {
@@ -128,7 +165,7 @@ function stateMachine({instructionNum, sessionNum, phaseNum, questNum, exp} = {}
 
         case 5:
             inst.displayInstructionChoiceElicitation(
-                {pageNum: 1, isTraining: isTraining, phaseNum: 2, sessionNum: sessionNum},
+                { pageNum: 1, isTraining: isTraining, phaseNum: 2, sessionNum: sessionNum },
                 // what will be executed next
                 stateMachine,
                 {
@@ -139,17 +176,17 @@ function stateMachine({instructionNum, sessionNum, phaseNum, questNum, exp} = {}
 
         case 6:
             inst.displayInstructionSliderElicitation(
-                {pageNum: 1, isTraining: isTraining, phaseNum: 3, sessionNum: sessionNum},
+                { pageNum: 1, isTraining: isTraining, phaseNum: 3, sessionNum: sessionNum },
                 // what will be executed next
                 stateMachine,
                 {
                     instructionNum: 'end', exp: exp, sessionNum: sessionNum, phaseNum: 3
                 }
-             );
+            );
             return;
         case 7:
             inst.endTraining(
-                {pageNum: 1, isTraining: 1, phaseNum: 3, sessionNum: sessionNum},
+                { pageNum: 1, isTraining: 1, phaseNum: 3, sessionNum: sessionNum },
                 // what will be executed next
                 stateMachine,
                 {
@@ -159,7 +196,7 @@ function stateMachine({instructionNum, sessionNum, phaseNum, questNum, exp} = {}
             return;
         case 8:
             inst.endExperiment(
-                {pageNum: 1, isTraining: 1, phaseNum: 3, sessionNum: sessionNum},
+                { pageNum: 1, isTraining: 1, phaseNum: 3, sessionNum: sessionNum },
                 // what will be executed next
                 stateMachine,
                 {
@@ -209,12 +246,12 @@ function stateMachine({instructionNum, sessionNum, phaseNum, questNum, exp} = {}
             // select stimuli depending on sessionNum;
             // Using arrays allows to avoid multiple if statements
             trialObj = [
-                exp.trialObjLearning[sessionNum],
-                exp.trialObjLearningTraining[Math.abs(sessionNum) - 1]][isTraining];
+                exp.trialObj['LE'][sessionNum],
+                exp.trialObjTraining['LE'][Math.abs(sessionNum) - 1]][isTraining];
 
             let conditionObj = [
-                exp.expCondition[sessionNum],
-                exp.trainingCondition[Math.abs(sessionNum) - 1]][isTraining];
+                exp.conditions[sessionNum],
+                exp.trainingConditions[Math.abs(sessionNum) - 1]][isTraining];
 
             choice = new ChoiceManager(
                 {
@@ -248,8 +285,8 @@ function stateMachine({instructionNum, sessionNum, phaseNum, questNum, exp} = {}
             // select stimuli depending on sessionNum;
             // Using arrays allows to avoid multiple if statements
             trialObj = [
-                exp.trialObjChoiceElicitation[sessionNum],
-                exp.trialObjChoiceElicitationTraining[Math.abs(sessionNum) - 1]][isTraining];
+                exp.trialObj['ED_EE'][sessionNum],
+                exp.trialObjTraining['ED_EE'][Math.abs(sessionNum) - 1]][isTraining];
 
             choice = new ChoiceManager(
                 {
@@ -268,7 +305,7 @@ function stateMachine({instructionNum, sessionNum, phaseNum, questNum, exp} = {}
                     // what will be executed next
                     nextFunc: stateMachine,
                     nextParams: {
-                        instructionNum: 6,
+                        instructionNum: [[4, 7][isTraining], 9][isLastSession],
                         sessionNum: sessionNum,
                         phaseNum: 3,
                         exp: exp,
@@ -288,7 +325,7 @@ function stateMachine({instructionNum, sessionNum, phaseNum, questNum, exp} = {}
             let slider = new SliderManager(
                 {
                     trialObj: trialObj,
-                    feedbackDuration: exp.feedbackDuration-1500,
+                    feedbackDuration: exp.feedbackDuration - 1500,
                     completeFeedback: exp.completeFeedback,
                     feedbackObj: exp.feedbackImg,
                     imgObj: imgObj,
@@ -323,7 +360,7 @@ function stateMachine({instructionNum, sessionNum, phaseNum, questNum, exp} = {}
     switch (questNum) {
         case 0:
             quest.runCRT(
-                {questNum: 1},
+                { questNum: 1 },
                 stateMachine,
                 {
                     instructionNum: 'end', exp: exp, sessionNum: 0, phaseNum: 'end', questNum: 1
@@ -332,7 +369,7 @@ function stateMachine({instructionNum, sessionNum, phaseNum, questNum, exp} = {}
             return;
         case 1:
             quest.runSES(
-                {questNum: 1},
+                { questNum: 1 },
                 stateMachine,
                 {
                     instructionNum: 8, exp: exp, sessionNum: 0, phaseNum: 'end', questNum: 'end'

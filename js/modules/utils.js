@@ -1,3 +1,80 @@
+
+import Cookies from '../../node_modules/js-cookie/dist/js.cookie.mjs';
+
+
+function saveCookie({ sessionNum, instructionNum, phaseNum, questNum, exp} = {}) {
+    setCookie('sessionNum', sessionNum, 1);
+    setCookie('instructionNum', instructionNum, 1);
+    setCookie('phaseNum', phaseNum,  1);
+    setCookie('questNum', questNum, 1);
+    let expString = JSON.stringify(exp);
+    localStorage['exp'] = expString;
+}
+
+function readCookies(){
+    let sessionNum = parser(getCookie('sessionNum'));
+    let instructionNum = parser(getCookie('instructionNum'));
+    let phaseNum = parser(getCookie('phaseNum'));
+    let questNum = parser(getCookie('questNum'));
+    let exp = JSON.parse(localStorage['exp']);
+    // loadImg(exp, exp.imgPath, exp.nCond, exp.nSession);
+    return [sessionNum, instructionNum, phaseNum, questNum, exp]
+}
+
+function parser(v) {
+    if (v != 'end') {
+        return parseInt(v);
+    }
+    return v;
+}
+
+function cookieStored(){
+    return getCookie('sessionNum') != "";
+}
+
+function clearListCookies()
+{   
+    var cookies = document.cookie.split(";");
+    for (var i = 0; i < cookies.length; i++)
+    {   
+        var spcook =  cookies[i].split("=");
+        deleteCookie(spcook[0]);
+    }
+    function deleteCookie(cookiename)
+    {
+        var d = new Date();
+        d.setDate(d.getDate() - 1);
+        var expires = ";expires="+d;
+        var name=cookiename;
+        //alert(name);
+        var value="";
+        document.cookie = name + "=" + value + expires + "; path=/acc/html";                    
+    }
+    window.location = ""; // TO REFRESH THE PAGE
+}
+function setCookie(cname, cvalue, exdays) {
+    const d = new Date();
+    d.setTime(d.getTime() + (exdays * 24 * 60 * 60 * 1000));
+    let expires = "expires=" + d.toUTCString();
+    document.cookie = cname + "=" + cvalue + ";" + expires + ";path=/";
+}
+
+function getCookie(cname) {
+  let name = cname + "=";
+  let decodedCookie = decodeURIComponent(document.cookie);
+  let ca = decodedCookie.split(';');
+  for(let i = 0; i <ca.length; i++) {
+    let c = ca[i];
+    while (c.charAt(0) == ' ') {
+      c = c.substring(1);
+    }
+    if (c.indexOf(name) == 0) {
+      return c.substring(name.length, c.length);
+    }
+  }
+  return "";
+}
+
 function getKeyCode(event) {
     return event.which;
 }
@@ -175,8 +252,115 @@ function getOS() {
     return OSName;
 }
 
+function loadImg(exp, imgPath, nCond, nSession) {
+        // Get stims, feedbacks, resources
+        let nImg = nCond * 2 * nSession;
+        let nTrainingImg = nCond * 2 * nSession;
+        let imgExt = "gif";
+        let borderColor = "transparent";
 
-export {sum, assert, range, shuffle,
+        exp.images = [];
+        exp.learningOptions = [];
+        for (let i = 2; i < nImg + 2; i++) {
+            exp.learningOptions.push(i);
+            exp.images[i] = new Image();
+            exp.images[i].src = imgPath + "stim_old/" + i + "." + imgExt;
+            exp.images[i].className = "img-responsive center-block";
+            exp.images[i].style.border = "5px solid " + borderColor;
+            exp.images[i].style.position = "relative";
+            exp.images[i].style.top = "0px";
+        }
+
+        let feedbackNames = ["empty", "0", "1", "-1", "-2", "2"];
+        exp.feedbackImg = [];
+        for (let i = 0; i < feedbackNames.length; i++) {
+            let fb = feedbackNames[i];
+            exp.feedbackImg[fb] = new Image();
+            exp.feedbackImg[fb].src = imgPath + "fb/" + fb + "." + imgExt;
+            exp.feedbackImg[fb].className = "img-responsive center-block";
+            exp.feedbackImg[fb].style.border = "5px solid " + borderColor;
+            exp.feedbackImg[fb].style.position = "relative";
+            exp.feedbackImg[fb].style.top = "0px";
+        }
+
+        // Training stims
+        imgExt = "jpg";
+        exp.trainingImg = [];
+        exp.trainingOptions = [];
+        let letters = [
+            null,
+            "A",
+            "B",
+            "C",
+            "D",
+            "E",
+            "F",
+            "G",
+            "H",
+            "I",
+            "J",
+            "K",
+            "L",
+            "M",
+            "N",
+            "O",
+            "P",
+            "Q",
+            "R",
+            "S",
+            "T",
+            "U",
+            "V",
+            "W",
+            "X",
+            "Y",
+            "Z",
+        ];
+        for (let i = 2; i <= nTrainingImg + 1; i++) {
+            let idx = letters[i];
+            exp.trainingOptions.push(idx);
+            exp.trainingImg[idx] = new Image();
+            exp.trainingImg[idx].src = imgPath + "stim/" + idx + "." + imgExt;
+            exp.trainingImg[idx].className = "img-responsive center-block";
+            exp.trainingImg[idx].style.border = "5px solid " + borderColor;
+            exp.trainingImg[idx].style.position = "relative";
+            exp.trainingImg[idx].style.top = "0px";
+        }
+
+        for (let i = 0; i < exp.ev.length; i++) {
+            let idx = exp.ev[i].toString();
+            exp.images[idx] = new Image();
+            exp.images[idx].src = imgPath + "lotteries/" + idx + ".png";
+            exp.images[idx].className = "img-responsive center-block";
+            exp.images[idx].style.border = "5px solid " + borderColor;
+            exp.images[idx].style.position = "relative";
+            exp.images[idx].style.top = "0px";
+            exp.trainingImg[idx] = new Image();
+            exp.trainingImg[idx].src = imgPath + "lotteries/" + idx + ".png";
+            exp.trainingImg[idx].className = "img-responsive center-block";
+            exp.trainingImg[idx].style.border = "5px solid " + borderColor;
+            exp.trainingImg[idx].style.position = "relative";
+            exp.trainingImg[idx].style.top = "0px";
+        }
+        exp.images["?"] = new Image();
+        exp.images["?"].src = imgPath + "stim/question.jpg";
+        exp.images["?"].className = "img-responsive center-block";
+        exp.images["?"].style.border = "5px solid " + borderColor;
+        exp.images["?"].style.position = "relative";
+        exp.images["?"].style.top = "0px";
+        exp.trainingImg["?"] = new Image();
+        exp.trainingImg["?"].src = imgPath + "stim/question.jpg";
+        exp.trainingImg["?"].className = "img-responsive center-block";
+        exp.trainingImg["?"].style.border = "5px solid " + borderColor;
+        exp.trainingImg["?"].style.position = "relative";
+        exp.trainingImg["?"].style.top = "0px";
+    }
+
+
+
+export {
+    sum, assert, range, shuffle,
     getBrowser, getColor, getKeyCode,
-    getOS, isFloat, createDiv, isString, randint, createCode};
+    getOS, isFloat, createDiv, isString, randint, createCode, saveCookie, getCookie, cookieStored, readCookies, clearListCookies
+};
 

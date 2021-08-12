@@ -1,4 +1,3 @@
-//import { debug } from 'console';
 import { range, shuffle, getOS, getBrowser, createCode } from "./utils.js";
 
 
@@ -26,6 +25,8 @@ export class ExperimentParameters {
         nTrialPerConditionTraining,
         nCond,
         nSession,
+        fromCookie,
+        obj
     } = {}) {
         // Initial Experiment Parameters
         // ===================================================================== //
@@ -38,6 +39,7 @@ export class ExperimentParameters {
         this.beforeFeedbackDuration = beforeFeedbackDuration;
 
         this.nSession = nSession;
+        this.nCond = nCond;
 
         this.sumReward = [0, 0, 0, 0, 0, 0, 0];
 
@@ -54,22 +56,33 @@ export class ExperimentParameters {
         this.subID = undefined;
 
         this.compLink = compLink;
+        this.imgPath = imgPath;
 
         // initGameStageDiv
+        
         this._initContingencies();
         this._loadImg(imgPath, nCond, nSession);
-        this._initConditionArrays(
-            nTrialPerCondition,
-            nTrialPerConditionTraining,
-            nCond,
-            nSession
-        );
-        this._initTrialObj(nCond, nSession);
+
+        if (!fromCookie) {
+            this._initConditionArrays(
+                nTrialPerCondition,
+                nTrialPerConditionTraining,
+                nCond,
+                nSession
+            );
+            this._initTrialObj(nCond, nSession);
+        } else {
+            // get previously generated trials from local storage
+            this.trialObj = obj.trialObj;
+            this.trialObjTraining = obj.trialObjTraining;
+            this.conditions = obj.conditions;
+            this.trainingConditions = obj.trainingConditions;
+        }
 
         if (maxPoints) {
             this.maxPoints = maxPoints;
         } else {
-            this.maxPoints = this._computeMaxPoints(nSession);
+            this.maxPoints = this._computeMaxPoints();
         }
 
         // define compensation functions
@@ -77,8 +90,8 @@ export class ExperimentParameters {
         this.conversionRate = (maxCompensation / this.maxPoints).toFixed(2);
         this.pointsToPence = (points) => points * this.conversionRate;
         this.penceToPounds = (pence) => pence / 100;
-        this.pointsToPounds = (points) =>
-            this.penceToPounds(this.pointsToPence(points));
+        this.pointsToPounds = (points) => this.penceToPounds(this.pointsToPence(points));
+
     }
 
     _initContingencies() {
@@ -144,6 +157,8 @@ export class ExperimentParameters {
         //
         this.rewards[3] = [this.rew, this.rew];
         this.probs[3] = [6, 4];
+
+        this.learningCont = this.probs.flat();
     }
 
     _initConditionArrays(
@@ -174,7 +189,7 @@ export class ExperimentParameters {
         for (let sessionNum = 0; sessionNum < nSession; sessionNum++) {
             let learningOptionIdx = 0;
             let trainingOptionIdx = 0;
-            // learning condition
+            // learning condition (0, 1, 2, 3)
             for (let i = 0; i < cond.length; i++) {
                 this.conditions[sessionNum].push(
                     Array(nTrialPerCondition).fill(cond[i]).flat()
@@ -216,7 +231,8 @@ export class ExperimentParameters {
         // ===================================================================== //
     }
 
-    _generateLE({nSession, conditions, contexts } = {}) {
+    _generateLE({ nSession, conditions, contexts } = {}) {
+        // ===================================================================== //
         // Learning Phase -- Trial obj definition
         // ===================================================================== //
         let arrToFill = new Array(nSession).fill().map((x) => []);
@@ -267,9 +283,105 @@ export class ExperimentParameters {
 
     }
 
-    _generateES_EE({}={}) {
-        
+
+    _generateED_EE({ nSession, options, maxLen } = {}) {
+        // ===================================================================== //
+        // Description vs Experience / Experience vs Experience Phase
+        // ===================================================================== //
+        let arrToFill = new Array(nSession).fill().map((x) => []);
+
+        for (let sessionNum = 0; sessionNum < nSession; sessionNum++) {
+            LOOP1: for (let optionNum = 0; optionNum < options.length; optionNum++) {
+                for (let lotteryNum = 0; lotteryNum < this.lotteryCont.length; lotteryNum++) {
+
+                    let [contIdx1, contIdx2] = [this.learningCont[optionNum], this.lotteryCont[lotteryNum]];
+                    let [file1, file2] = [options[optionNum], this.ev[contIdx2].toString()]
+
+                    let ev1 = this.ev[contIdx1];
+                    let ev2 = this.ev[contIdx2];
+
+                    let p1 = this.cont[contIdx1];
+                    let p2 = this.cont[contIdx2];
+
+                    let r1 = this.rew;
+                    let r2 = this.rew;
+
+                    let option1Type = 1;
+                    let option2Type = 0;
+
+                    let isCatchTrial = false;
+
+                    arrToFill[sessionNum].push({
+                        file1: file1,
+                        file2: file2,
+                        contIdx1: contIdx1,
+                        contIdx2: contIdx2,
+                        p1: p1,
+                        p2: p2,
+                        ev1: ev1,
+                        ev2: ev2,
+                        r1: r1,
+                        r2: r2,
+                        isCatchTrial: isCatchTrial,
+                        option1Type: option1Type,
+                        option2Type: option2Type,
+                    });
+
+                    if (arrToFill[sessionNum].length > maxLen) {
+                        var maxLen2 = maxLen + arrToFill[sessionNum].length;
+                        break LOOP1;
+                    }
+
+                }
+            }
+
+            LOOP2: for (let optionNum1 = 0; optionNum1 < options.length; optionNum1++) {
+                for (let optionNum2 = 0; optionNum2 < options.length; optionNum2++) {
+                    if (options[optionNum2] == options[optionNum1]) {
+                        continue;
+                    }
+                    let [contIdx1, contIdx2] = [this.learningCont[optionNum1], this.learningCont[optionNum2]];
+                    let [file1, file2] = [options[optionNum1], options[optionNum2]]
+
+                    let ev1 = this.ev[contIdx1];
+                    let ev2 = this.ev[contIdx2];
+
+                    let p1 = this.cont[contIdx1];
+                    let p2 = this.cont[contIdx2];
+
+                    let r1 = this.rew;
+                    let r2 = this.rew;
+
+                    let option1Type = 1;
+                    let option2Type = 1;
+
+                    let isCatchTrial = false;
+
+                    arrToFill[sessionNum].push({
+                        file1: file1,
+                        file2: file2,
+                        contIdx1: contIdx1,
+                        contIdx2: contIdx2,
+                        p1: p1,
+                        p2: p2,
+                        ev1: ev1,
+                        ev2: ev2,
+                        r1: r1,
+                        r2: r2,
+                        isCatchTrial: isCatchTrial,
+                        option1Type: option1Type,
+                        option2Type: option2Type,
+                    });
+
+                    if (arrToFill[sessionNum].length > maxLen2) {
+                        break LOOP2;
+                    }
+                }
+            }
+        }
+        return arrToFill;
     }
+
 
     _generateCatchTrials() {
         // define catch trials
@@ -284,8 +396,6 @@ export class ExperimentParameters {
             [8, 2],
             [7, 2],
             [9, 3],
-            [8, 3],
-            [7, 3],
         ]);
 
         let catchTrials = [];
@@ -330,13 +440,13 @@ export class ExperimentParameters {
         return catchTrials;
     }
 
-    
+
     _initTrialObj(nCond, nSession) {
-        let steps = ["LE", "ES_EE", "PM"];
+        let phases = ["LE", "ED_EE", "PM"];
         this.trialObj = {};
         this.trialObjTraining = {};
 
-        for (let step of steps) {
+        for (let step of phases) {
             switch (step) {
                 case 'LE':
                     this.trialObj[step] = this._generateLE({
@@ -351,280 +461,60 @@ export class ExperimentParameters {
                     });
                     break;
 
-                case 'ES_EE':
-                    this.trialObj[step] = this._generateES_EE({
+                case 'ED_EE':
+                    this.trialObj[step] = this._generateED_EE({
                         nSession: nSession,
-                        conditions: this.conditions,
-                        contexts: this.contexts,
+                        options: this.contexts[0].flat().flat(),
+                        maxLen: 88
                     });
-                    this.trialObjTraining[step] = this._generateES_EE({
+                    this.trialObjTraining[step] = this._generateED_EE({
                         nSession: nSession,
-                        conditions: this.trainingConditions,
-                        contexts: this.trainingContexts,
+                        options: this.trainingContexts[0].flat().flat(),
+                        maxLen: 20
                     });
                     break;
+                case 'PM':
+                   // this.trialObj[step] = this._generatePM({
+                   //     nSession: nSession,
+                   //     options: this.contexts.flat()
+                   // });
+                   // this.trialObjTraining[step] = this._generatePM({
+                   //     nSession: nSession,
+                   //     options: this.trainingContexts.flat(),
+                   //     maxLen: 25
+                   // });
 
+                    break;
             }
-            debugger;
+        }
+        // insert catch trials randomly in ED_EE phase
+        for (let sessionNum = 0; sessionNum < nSession; sessionNum++) {
+            let trials = this._generateCatchTrials();
+            for (let trialNum = 0; trialNum < trials.length; trialNum++) {
+                this.trialObj['ED_EE'][sessionNum].splice(
+                    Math.floor(Math.random() * (this.trialObj['ED_EE'][sessionNum].length + 1)),
+                    0, trials.pop());
+
+                this.trialObjTraining['ED_EE'][sessionNum].splice(
+                    Math.floor(Math.random() * (this.trialObj['ED_EE'][sessionNum].length + 1)),
+                    0, trials.pop());
+            }
+
         }
     }
 
-    //     for (let i = 0; i < this.trainingCondition[sessionNum].length; i++) {
-
-    //         let idx = this.trainingCondition[sessionNum][i];
-
-    //         let contIdx1 = this.probs[idx][0];
-    //         let contIdx2 = this.probs[idx][1];
-
-    //         let [file1, file2] = this.trainingContexts[sessionNum][idx];
-
-    //         let ev1 = this.ev[contIdx1];
-    //         let ev2 = this.ev[contIdx2];
-
-    //         let p1 = this.cont[contIdx1];
-    //         let p2 = this.cont[contIdx2];
-
-    //         let r1 = this.rew;
-    //         let r2 = this.rew;
-
-    //         let isCatchTrial = false;
-
-    //         let option1Type = 1;
-    //         let option2Type = 1;
-
-    //         this.trialObjLearningTraining[sessionNum].push(
-    //             {file1: file1, file2: file2, contIdx1: contIdx1,
-    //              contIdx2: contIdx2, p1: p1, p2: p2, ev1: ev1,
-    //              ev2: ev2, r1: r1, r2: r2, isCatchTrial: isCatchTrial,
-    //              option1Type: option1Type, option2Type: option2Type}
-    //         );
-
-    //     }
-
-    //     // Elicitation Phase -- Description experience + slider trial obj definition
-    //     // ===================================================================== //
-
-    //     let catchTrialIdx = 0;
-
-    //     // Training
-    //     // ===================================================================== //
-    //     for (let i = 0; i < nCond; i++) {
-
-    //         let [file1, file2] = this.trainingContexts[sessionNum][i];
-
-    //         let contIdx1 = this.probs[i][0];
-    //         let contIdx2 = this.probs[i][1];
-
-    //         let ev1 = this.ev[contIdx1];
-    //         let ev2 = this.ev[contIdx2];
-
-    //         let p1 = this.cont[contIdx1];
-    //         let p2 = this.cont[contIdx2];
-
-    //         let r1 = this.rew;
-    //         let r2 = this.rew;
-
-    //         let isCatchTrial = false;
-
-    //         let option1Type = 1;
-
-    //         this.trialObjSliderElicitationTraining[sessionNum].push(
-    //             [file1, contIdx1, p1, ev1, r1, isCatchTrial, option1Type]
-    //         );
-
-    //         // mix lotteries and stim 1
-    //         let temp = [];
-
-    //         for (let j = 0; j < this.selectedCont.length - 5; j++) {
-
-    //             let idx = this.selectedCont[j];
-    //             let lotteryFile = this.ev[idx].toString();
-    //             let lotteryContIdx = idx;
-    //             let lotteryEV = this.ev[idx];
-    //             let lotteryP = this.cont[idx];
-
-    //             let option1Type = 1;
-    //             let option2Type = 0;
-
-    //             temp.push([
-    //                 file1, lotteryFile, contIdx1, lotteryContIdx, p1, lotteryP,
-    //                 ev1, lotteryEV, r1, r2, isCatchTrial, option1Type, option2Type
-
-    //             ]);
-    //         }
-
-    //         this.trialObjChoiceElicitationTraining[sessionNum] =
-    //             this.trialObjChoiceElicitationTraining[sessionNum].concat(shuffle(temp));
-    //         this.trialObjChoiceElicitationTraining[sessionNum].push(catchTrials[catchTrialIdx]);
-    //         catchTrialIdx++;
-
-    //         // mix lotteries and stim 2
-    //         temp = [];
-    //         for (let j = 0; j < this.selectedCont.length - 5; j++) {
-
-    //             let idx = this.selectedCont[j];
-    //             let lotteryFile = this.ev[idx].toString();
-    //             let lotteryContIdx = idx;
-    //             let lotteryEV = this.ev[idx];
-    //             let lotteryP = this.cont[idx];
-
-    //             let option1Type = 1;
-    //             let option2Type = 0;
-
-    //             temp.push([
-    //                 file2, lotteryFile, contIdx2, lotteryContIdx, p2, lotteryP,
-    //                 ev2, lotteryEV, r1, r2, isCatchTrial, option1Type, option2Type
-    //             ]);
-
-    //         }
-
-    //         this.trialObjChoiceElicitationTraining[sessionNum] =
-    //             this.trialObjChoiceElicitationTraining[sessionNum].concat(shuffle(temp));
-    //         this.trialObjChoiceElicitationTraining[sessionNum].push(catchTrials[catchTrialIdx]);
-    //     }
-
-    //     // add catch trials to slider
-    //     this.trialObjSliderElicitationTraining[sessionNum].push(
-    //         [this.ev[2].toString(), 2, this.cont[2], this.ev[2], this.rew, true]
-    //     );
-    //     this.trialObjSliderElicitationTraining[sessionNum].push(
-    //         [this.ev[8].toString(), 8, this.cont[8], this.ev[8], this.rew, true]
-    //     );
-
-    //     this.trialObjSliderElicitationTraining[sessionNum] = shuffle(
-    //         this.trialObjSliderElicitationTraining[sessionNum]);
-
-    //     // Phase 2
-    //     // ===================================================================== //
-
-    //     catchTrialIdx = 0;
-    //     let lotVSAmbiguityIdx = 0;
-
-    //     for (let i = 0; i < nCond; i++) {
-
-    //         let [file1, file2] = this.contexts[sessionNum][i];
-
-    //         let contIdx1 = this.probs[i][0];
-    //         let contIdx2 = this.probs[i][1];
-
-    //         let ev1 = this.ev[contIdx1];
-    //         let ev2 = this.ev[contIdx2];
-
-    //         let p1 = this.cont[contIdx1];
-    //         let p2 = this.cont[contIdx2];
-
-    //         let r1 = this.rew;
-    //         let r2 = this.rew;
-
-    //         let isCatchTrial = false;
-
-    //         let option1Type = 1;
-
-    //         this.trialObjSliderElicitation[sessionNum].push(
-    //             [file1, contIdx1, p1, ev1, r1, isCatchTrial, option1Type]
-    //         );
-
-    //         this.trialObjSliderElicitation[sessionNum].push(
-    //             [file2, contIdx2, p2, ev2, r2, isCatchTrial, option1Type]
-    //         );
-
-    //         // mix lotteries and stim 1
-    //         let temp = [];
-    //         for (let j = 0; j < this.selectedCont.length; j++) {
-
-    //             let idx = this.selectedCont[j];
-    //             let lotteryFile = this.ev[idx].toString();
-    //             let lotteryContIdx = idx;
-    //             let lotteryEV = this.ev[idx];
-    //             let lotteryP = this.cont[idx];
-
-    //             // ambiguity is 2
-    //             let option1Type = 1;
-    //             let option2Type = 0;
-
-    //             temp.push([
-    //                 file1, lotteryFile, contIdx1, lotteryContIdx, p1,
-    //                 lotteryP, ev1, lotteryEV, r1, r2, isCatchTrial, option1Type, option2Type
-    //             ]);
-    //         }
-
-    //         this.trialObjChoiceElicitation[sessionNum] =
-    //             this.trialObjChoiceElicitation[sessionNum].concat(shuffle(temp));
-    //         this.trialObjChoiceElicitation[sessionNum].push(catchTrials[catchTrialIdx]);
-    //         catchTrialIdx++;
-
-    //         // mix lotteries and stim 2 + lottery and ambiguity
-    //         temp = [];
-    //         for (let j = 0; j < this.selectedCont.length; j++) {
-
-    //             let idx = this.selectedCont[j];
-    //             let lotteryFile = this.ev[idx].toString();
-    //             let lotteryContIdx = idx;
-    //             let lotteryEV = this.ev[idx];
-    //             let lotteryP = this.cont[idx];
-
-    //             let option1Type = 1;
-    //             let option2Type = 0;
-
-    //             temp.push([
-    //                 file2, lotteryFile, contIdx2, lotteryContIdx, p2,
-    //                 lotteryP, ev2, lotteryEV, r1, r2, isCatchTrial, option1Type, option2Type
-    //             ]);
-    //         }
-
-    //         this.trialObjChoiceElicitation[sessionNum] =
-    //             this.trialObjChoiceElicitation[sessionNum].concat(shuffle(temp));
-    //         this.trialObjChoiceElicitation[sessionNum].push(catchTrials[catchTrialIdx]);
-    //         lotVSAmbiguityIdx += 2;
-
-    //     }
-    //     // add catch trials to slider
-    //     this.trialObjSliderElicitation[sessionNum].push(
-    //         [this.ev[1].toString(), 1, this.cont[1], this.ev[1], this.rew, true]
-    //     );
-    //     this.trialObjSliderElicitation[sessionNum].push(
-    //         [this.ev[9].toString(), 9, this.cont[9], this.ev[9], this.rew, true]
-    //     );
-
-    //     this.trialObjSliderElicitation[sessionNum] = shuffle(this.trialObjSliderElicitation[sessionNum]);
-    // }
-
-    //}
-    _computeMaxPoints(nSession) {
+    _computeMaxPoints() {
         // using expected value compute what will be the final score
         // if the subject makes optimal choices
         // here we have one session so we compute it once
 
         let maxPoints = 0;
-
-        for (let sessionNum = 0; sessionNum < nSession; sessionNum++) {
-            for (let i = 0; i < this.trialObjLearning[sessionNum].length; i++) {
-                let ev1 = this.trialObjLearning[sessionNum][i][6];
-                let ev2 = this.trialObjLearning[sessionNum][i][7];
-
-                maxPoints += Math.max(ev1, ev2);
-            }
-
-            for (
-                let i = 0;
-                i < this.trialObjChoiceElicitation[sessionNum].length;
-                i++
-            ) {
-                let ev1 = this.trialObjChoiceElicitation[sessionNum][i][6];
-                let ev2 = this.trialObjChoiceElicitation[sessionNum][i][7];
-
-                maxPoints += Math.max(ev1, ev2);
-            }
-
-            for (
-                let i = 0;
-                i < this.trialObjSliderElicitation[sessionNum].length;
-                i++
-            ) {
-                let ev1 = this.trialObjSliderElicitation[sessionNum][i][3];
-                maxPoints += ev1;
-            }
+        let trialObj = Object.values(this.trialObj).flat().flat();
+        for (let i = 0; i < trialObj.length; i++) {
+            let ev = Math.max(trialObj['ev1'], trialObj['ev2'])
+            maxPoints += ev;
         }
+
 
         return Math.round(maxPoints);
     }

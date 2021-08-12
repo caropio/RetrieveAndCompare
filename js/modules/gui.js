@@ -398,8 +398,10 @@ export class GUI {
     static _getOptions(id1, id2, img, feedbackImg) {
 
         let option1 = img[id1];
+
         option1.id = "option1";
         option1 = option1.outerHTML;
+
 
         let option2 = img[id2];
         option2.id = "option2";
