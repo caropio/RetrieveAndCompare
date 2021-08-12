@@ -40,20 +40,7 @@ export class ExperimentParameters {
 
         this.nSession = nSession;
         this.nCond = nCond;
-
-        this.sumReward = [0, 0, 0, 0, 0, 0, 0];
-
-        this.totalReward = 0;
-
         this.maxTrainingNum = maxTrainingNum;
-
-        this.initTime = new Date().getTime();
-
-        this.expID = createCode();
-
-        this.browsInfo = getOS() + " - " + getBrowser();
-
-        this.subID = undefined;
 
         this.compLink = compLink;
         this.imgPath = imgPath;
@@ -64,6 +51,14 @@ export class ExperimentParameters {
         this._loadImg(imgPath, nCond, nSession);
 
         if (!fromCookie) {
+            this.sumReward = [0, 0, 0, 0, 0, 0, 0];
+            this.totalReward = 0;
+
+            this.initTime = new Date().getTime();
+            this.expID = createCode();
+            this.browsInfo = getOS() + " - " + getBrowser();
+            this.subID = undefined;
+
             this._initConditionArrays(
                 nTrialPerCondition,
                 nTrialPerConditionTraining,
@@ -77,6 +72,12 @@ export class ExperimentParameters {
             this.trialObjTraining = obj.trialObjTraining;
             this.conditions = obj.conditions;
             this.trainingConditions = obj.trainingConditions;
+            this.subID = obj.subID;
+            this.browsInfo = obj.browsInfo;
+            this.initTime = obj.initTime;
+            this.expID = obj.expID;
+            this.sumReward = obj.sumReward;
+            this.totalReward = obj.totalReward;
         }
 
         if (maxPoints) {
