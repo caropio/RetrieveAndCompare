@@ -206,7 +206,7 @@ function stateMachine({ instructionNum, sessionNum, phaseNum, questNum, exp } = 
             return;
         case 7:
             inst.endTraining(
-                { pageNum: 1, isTraining: 1, phaseNum: 3, sessionNum: sessionNum },
+                { pageNum: 1, isTraining: 1, phaseNum: 3, sessionNum: sessionNum, maxTrainingNum: exp.maxTrainingNum},
                 // what will be executed next
                 stateMachine,
                 {

@@ -41,6 +41,7 @@ export class ExperimentParameters {
         this.nSession = nSession;
         this.nCond = nCond;
         this.maxTrainingNum = maxTrainingNum;
+        this.maxCompensation = maxCompensation;
 
         this.compLink = compLink;
         this.imgPath = imgPath;
@@ -518,20 +519,17 @@ export class ExperimentParameters {
     _computeMaxPoints() {
         // using expected value compute what will be the final score
         // if the subject makes optimal choices
-        // here we have one session so we compute it once
 
-        try {
         let maxPoints = 0;
-        for (let sessionNum = 0; sessionNum < this.nSession; sessionNum++) {
-            let trialObj = Object.values(this.trialObj[sessionNum]).flat().flat();
-            for (let i = 0; i < trialObj.length; i++) {
-                let ev = Math.max(trialObj['ev1'], trialObj['ev2'])
-                maxPoints += ev;
-            }
-        }} catch {
-            var maxPoints = 30;
-        }
+        // get all trials
+        let trialObj = Object.values(this.trialObj).flat().flat();
 
+        // TO DO: remove harcoded number of phases
+        for (let i = 0; i < trialObj.length; i++) {
+            let ev = Math.max(trialObj[i]['ev1'], trialObj[i]['ev2'])
+            maxPoints += ev;
+        }
+        
         return Math.round(maxPoints);
     }
 
