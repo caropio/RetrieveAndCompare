@@ -238,7 +238,7 @@ function stateMachine({ instructionNum, sessionNum, phaseNum, questNum, exp } = 
                 // what will be executed next
                 stateMachine,
                 {
-                    instructionNum: 4, exp: exp, sessionNum: sessionNum, phaseNum: phaseNum, questNum: questNum
+                    instructionNum: 4, exp: exp, sessionNum: sessionNum+1, phaseNum: phaseNum, questNum: questNum
                 }
             );
             return;
@@ -325,9 +325,9 @@ function stateMachine({ instructionNum, sessionNum, phaseNum, questNum, exp } = 
                     // what will be executed next
                     nextFunc: stateMachine,
                     nextParams: {
-                        instructionNum: [[4, 7][isTraining], 9][isLastSession],
+                        instructionNum: 6,
                         sessionNum: sessionNum,
-                        phaseNum: [1, 'end'][isLastSession],
+                        phaseNum: 3,
                         exp: exp,
                     }
                 }
@@ -339,8 +339,8 @@ function stateMachine({ instructionNum, sessionNum, phaseNum, questNum, exp } = 
 
             // select stimuli depending on sessionNum;
             trialObj = [
-                exp.trialObjSliderElicitation[sessionNum],
-                exp.trialObjSliderElicitationTraining[Math.abs(sessionNum) - 1]][isTraining];
+                exp.trialObj[phaseNum][sessionNum],
+                exp.trialObjTraining[phaseNum][Math.abs(sessionNum) - 1]][isTraining];
 
             let slider = new SliderManager(
                 {
@@ -357,7 +357,7 @@ function stateMachine({ instructionNum, sessionNum, phaseNum, questNum, exp } = 
                     // what will be executed next
                     nextFunc: stateMachine,
                     nextParams: {
-                        instructionNum: [[4, 7][isTraining], 9][isLastSession],
+                        instructionNum: [[10, 7][isTraining], 9][isLastSession],
                         sessionNum: sessionNum,
                         phaseNum: [1, 'end'][isLastSession],
                         exp: exp,

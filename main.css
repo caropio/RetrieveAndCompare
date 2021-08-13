@@ -598,6 +598,28 @@ body {
     background-color: rgba(50, 174, 151, 1);
 }
 
+
+input[type="radio"] {
+    /* remove standard background appearance */
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    appearance: none;
+    /* create custom radiobutton appearance */
+    display: inline-block;
+    width: 15px;
+    height: 15px;
+    padding: 2px;
+    /* background-color only for content */
+    background-clip: content-box;
+    border: 2px solid #bbbbbb;
+    background-color: #e7e6e7;
+    border-radius: 50%;
+}
+
+input[type='radio']:checked {
+    background-color: rgba(50, 174, 151, 1) !important;
+    /* color: rgba(50, 174, 151, 1); */
+}
 /* Customize the label (the container) */
 .checkcontainer {
     display: block;

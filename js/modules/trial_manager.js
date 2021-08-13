@@ -352,6 +352,15 @@ export class SliderManager {
 
         GUI.initGameStageDiv();
 
+        if (this.exp.fromCookie) {
+            if (this.exp.trialNum != undefined)
+                this.trialNum = this.exp.trialNum;
+            this.exp.fromCookie = false;
+        } else {
+            this.exp.trialNum = this.trialNum;
+            localStorage['exp'] = JSON.stringify(this.exp);
+        }
+
         this.skipEnabled = true;
 
         let trialObj = this.trialObj[this.trialNum];
@@ -359,14 +368,13 @@ export class SliderManager {
         let presentationTime = (new Date()).getTime();
 
         let params = {
-            stimIdx: trialObj[0],
-            contIdx: trialObj[1],
-            p1: trialObj[2],
-            ev1: trialObj[3],
-            r1: trialObj[4],
-            isCatchTrial: trialObj[5],
-            option1Type: trialObj[6],
-            option2Type: trialObj[7],
+            stimIdx: trialObj['file1'],
+            contIdx: trialObj['contIdx1'],
+            p1: trialObj['p1'],
+            ev1: trialObj['ev1'],
+            r1: trialObj['r1'],
+            isCatchTrial: trialObj['isCatchTrial'],
+            option1Type: trialObj['option1Type'],
             presentationTime: presentationTime
         };
 

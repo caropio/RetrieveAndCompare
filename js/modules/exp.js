@@ -49,7 +49,7 @@ export class ExperimentParameters {
         this.fromCookie = fromCookie;
 
         // initGameStageDiv
-        
+
         this._initContingencies();
         this._loadImg(imgPath, nCond, nSession);
 
@@ -191,9 +191,9 @@ export class ExperimentParameters {
 
         // Create condition arrays
         // ===================================================================== //
+        let learningOptionIdx = 0;
+        let trainingOptionIdx = 0;
         for (let sessionNum = 0; sessionNum < nSession; sessionNum++) {
-            let learningOptionIdx = 0;
-            let trainingOptionIdx = 0;
             // learning condition (0, 1, 2, 3)
             for (let i = 0; i < cond.length; i++) {
                 this.conditions[sessionNum].push(
@@ -289,6 +289,44 @@ export class ExperimentParameters {
     }
 
 
+    _generatePM({ nSession, options } = {}) {
+        // ===================================================================== //
+        // Probability matching Phase (Slider) -- Trial obj definition
+        // ===================================================================== //
+        let arrToFill = new Array(nSession).fill().map(() => []);
+
+        for (let sessionNum = 0; sessionNum < nSession; sessionNum++) {
+            for (let optionNum = 0; optionNum < options[sessionNum].length; optionNum++) {
+
+                let contIdx1 = this.learningCont[optionNum];
+                let file1 = options[sessionNum][optionNum];
+
+                let ev1 = this.ev[contIdx1];
+
+                let p1 = this.cont[contIdx1];
+
+                let r1 = this.rew;
+
+                let option1Type = 1;
+
+                let isCatchTrial = false;
+
+                arrToFill[sessionNum].push({
+                    file1: file1,
+                    contIdx1: contIdx1,
+                    p1: p1,
+                    ev1: ev1,
+                    r1: r1,
+                    isCatchTrial: isCatchTrial,
+                    option1Type: option1Type,
+                });
+            }
+
+        }
+
+        return arrToFill;
+    }
+
     _generateED_EE({ nSession, options, maxLen } = {}) {
         // ===================================================================== //
         // Description vs Experience / Experience vs Experience Phase
@@ -296,11 +334,11 @@ export class ExperimentParameters {
         let arrToFill = new Array(nSession).fill().map((x) => []);
 
         for (let sessionNum = 0; sessionNum < nSession; sessionNum++) {
-            LOOP1: for (let optionNum = 0; optionNum < options.length; optionNum++) {
+            LOOP1: for (let optionNum = 0; optionNum < options[sessionNum].length; optionNum++) {
                 for (let lotteryNum = 0; lotteryNum < this.lotteryCont.length; lotteryNum++) {
 
                     let [contIdx1, contIdx2] = [this.learningCont[optionNum], this.lotteryCont[lotteryNum]];
-                    let [file1, file2] = [options[optionNum], this.ev[contIdx2].toString()]
+                    let [file1, file2] = [options[sessionNum][optionNum], this.ev[contIdx2].toString()]
 
                     let ev1 = this.ev[contIdx1];
                     let ev2 = this.ev[contIdx2];
@@ -340,13 +378,13 @@ export class ExperimentParameters {
                 }
             }
 
-            LOOP2: for (let optionNum1 = 0; optionNum1 < options.length; optionNum1++) {
-                for (let optionNum2 = 0; optionNum2 < options.length; optionNum2++) {
-                    if (options[optionNum2] == options[optionNum1]) {
+            LOOP2: for (let optionNum1 = 0; optionNum1 < options[sessionNum].length; optionNum1++) {
+                for (let optionNum2 = 0; optionNum2 < options[sessionNum].length; optionNum2++) {
+                    if (options[sessionNum][optionNum2] == options[sessionNum][optionNum1]) {
                         continue;
                     }
                     let [contIdx1, contIdx2] = [this.learningCont[optionNum1], this.learningCont[optionNum2]];
-                    let [file1, file2] = [options[optionNum1], options[optionNum2]]
+                    let [file1, file2] = [options[sessionNum][optionNum1], options[sessionNum][optionNum2]]
 
                     let ev1 = this.ev[contIdx1];
                     let ev2 = this.ev[contIdx2];
@@ -387,8 +425,45 @@ export class ExperimentParameters {
         return arrToFill;
     }
 
+    _generateCatchTrialsOneOption() {
+        // define catch trials for slider
+        // ===================================================================== //
+        // using cont idx
+        let catchTrialsTemp = shuffle([1,  9]);
 
-    _generateCatchTrials() {
+        let catchTrials = [];
+        for (let i = 0; i < catchTrialsTemp.length; i++) {
+            let contIdx1 = catchTrialsTemp[i];
+
+            let ev1 = this.ev[contIdx1];
+
+            let file1 = ev1.toString();
+
+            let p1 = this.cont[contIdx1];
+
+            let r1 = this.rew;
+
+            let isCatchTrial = true;
+
+            let option1Type = 0;
+
+            catchTrials[i] = {
+                file1: file1,
+                contIdx1: contIdx1,
+                p1: p1,
+                ev1: ev1,
+                r1: r1,
+                isCatchTrial: isCatchTrial,
+                option1Type: option1Type,
+            };
+        }
+
+        return catchTrials;
+    }
+
+
+
+    _generateCatchTrialsTwoOptions() {
         // define catch trials
         // ===================================================================== //
         // using cont idx
@@ -444,7 +519,15 @@ export class ExperimentParameters {
 
         return catchTrials;
     }
-
+    
+    _getOptionsPerSession(contexts) {
+        let nSess = contexts.length;
+        let options = new Array(nSess).fill().map(()=>[]);
+        for (let sessionNum = 0; sessionNum < nSess; sessionNum++) {
+            options[sessionNum] = contexts[sessionNum].flat();
+        }
+        return options;
+    }
 
     _initTrialObj(nCond, nSession) {
         let phases = [1, 2, 3];
@@ -469,46 +552,64 @@ export class ExperimentParameters {
                 case 2:
                     this.trialObj[step] = this._generateED_EE({
                         nSession: nSession,
-                        options: this.contexts[0].flat().flat(),
-                        maxLen: 88
+                        options: this._getOptionsPerSession(this.contexts),
+                        maxLen: 144
                     });
                     this.trialObjTraining[step] = this._generateED_EE({
                         nSession: nSession,
-                        options: this.trainingContexts[0].flat().flat(),
-                        maxLen: 20
+                        options: this._getOptionsPerSession(this.trainingContexts),
+                        maxLen: 25
                     });
                     break;
                 case 3:
-                   // this.trialObj[step] = this._generatePM({
-                   //     nSession: nSession,
-                   //     options: this.contexts.flat()
-                   // });
-                   // this.trialObjTraining[step] = this._generatePM({
-                   //     nSession: nSession,
-                   //     options: this.trainingContexts.flat(),
-                   //     maxLen: 25
-                   // });
+                    this.trialObj[step] = this._generatePM({
+                        nSession: nSession,
+                        options: this._getOptionsPerSession(this.contexts),
+                    });
+                    this.trialObjTraining[step] = this._generatePM({
+                        nSession: nSession,
+                        options: this._getOptionsPerSession(this.trainingContexts)
+                    });
 
                     break;
             }
         }
 
         this._insertCatchTrials()
-        
+
     }
 
-    _insertCatchTrials(trialObj) {
+    _insertCatchTrials() {
         // insert catch trials randomly in 2nd phase
         for (let sessionNum = 0; sessionNum < this.nSession; sessionNum++) {
-            let trials1 = this._generateCatchTrials();
-            let trials2 = this._generateCatchTrials();
-            for (let trialNum = 0; trialNum < trials1.length; trialNum++) {
+            let trials1 = this._generateCatchTrialsTwoOptions();
+            let count = trials1.length;
+            let trials2 = this._generateCatchTrialsTwoOptions();
+            for (let trialNum = 0; trialNum < count; trialNum++) {
                 this.trialObj[2][sessionNum].splice(
                     Math.floor(Math.random() * (this.trialObj[2][sessionNum].length + 1)),
                     0, trials1.pop());
 
                 this.trialObjTraining[2][sessionNum].splice(
-                    Math.floor(Math.random() * (this.trialObj[2][sessionNum].length + 1)),
+                    Math.floor(Math.random() * (this.trialObjTraining[2][sessionNum].length + 1)),
+                    0, trials2.pop());
+
+            }
+
+        }
+
+        // insert catch trials randomly in 3rd phase
+        for (let sessionNum = 0; sessionNum < this.nSession; sessionNum++) {
+            let trials1 = this._generateCatchTrialsOneOption();
+            let count = trials1.length;
+            let trials2 = this._generateCatchTrialsOneOption();
+            for (let trialNum = 0; trialNum < count; trialNum++) {
+                this.trialObj[3][sessionNum].splice(
+                    Math.floor(Math.random() * (this.trialObj[3][sessionNum].length + 1)),
+                    0, trials1.pop());
+
+                this.trialObjTraining[3][sessionNum].splice(
+                    Math.floor(Math.random() * (this.trialObjTraining[3][sessionNum].length + 1)),
                     0, trials2.pop());
 
             }
@@ -526,10 +627,15 @@ export class ExperimentParameters {
 
         // TO DO: remove harcoded number of phases
         for (let i = 0; i < trialObj.length; i++) {
-            let ev = Math.max(trialObj[i]['ev1'], trialObj[i]['ev2'])
+            let ev;
+            if (trialObj[i]['ev2'] == undefined) {
+                ev = trialObj[i]['ev1'];
+            } else {
+                ev = Math.max(trialObj[i]['ev1'], trialObj[i]['ev2'])
+            }
             maxPoints += ev;
         }
-        
+
         return Math.round(maxPoints);
     }
 

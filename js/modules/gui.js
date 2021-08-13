@@ -177,7 +177,7 @@ export class GUI {
             + canvas1 + '</div><div id = "Middle" class="col-xs-4 col-md-4"></div><div class="col-xs-3 col-md-3">'
             + '</div><div class="col-xs-1 col-md-1"></div></div>';
 
-        let Title = '<h4 align = "center" style="margin-bottom: 2%;">What are the odds this symbol gives a +1?</h4>';
+        let Title = '<h3 align = "center" style="margin-bottom: 2%;">What are the odds this symbol gives a +1?</h3>';
         let Images = '<div id = "stimrow" style="transform: translate(0%, -100%);position:relative;"> ' +
             '<div class="col-xs-1 col-md-1"></div>  <div class="col-xs-3 col-md-3">'
             + '</div><div id = "Middle" class="col-xs-4 col-md-4">' + option + '</div></div>';

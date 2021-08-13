@@ -115,9 +115,6 @@ export class Instructions {
 
     nextSession(nextFunc, nextParams) {
 
-        let oldSession = nextParams['sessionNum']
-        let newSession = nextParams['sessionNum'] + 1
-
         GUI.panelFlush()
         GUI.panelShow()
         GUI.setActiveCurrentStep('training')
