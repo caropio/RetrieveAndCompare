@@ -67,9 +67,11 @@ function main() {
     if (cookieStored() && cookieEnabled) {
         GUI.displayChoiceModalWindow('Continue experiment?',
             'Do you want to continue the experiment where you left off?', 'Continue', 'Reset',
+            // if continue
             function () {
                 cookieManagement();
             },
+            // if reset
             function () {
                 // // Run experiment!!
                 stateMachine({ instructionNum, sessionNum, phaseNum, questNum, exp });
