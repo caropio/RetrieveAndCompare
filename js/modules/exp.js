@@ -446,13 +446,13 @@ export class ExperimentParameters {
 
 
     _initTrialObj(nCond, nSession) {
-        let phases = ["LE", "ED_EE", "PM"];
+        let phases = [1, 2, 3];
         this.trialObj = {};
         this.trialObjTraining = {};
 
         for (let step of phases) {
             switch (step) {
-                case 'LE':
+                case 1:
                     this.trialObj[step] = this._generateLE({
                         nSession: nSession,
                         conditions: this.conditions,
@@ -465,7 +465,7 @@ export class ExperimentParameters {
                     });
                     break;
 
-                case 'ED_EE':
+                case 2:
                     this.trialObj[step] = this._generateED_EE({
                         nSession: nSession,
                         options: this.contexts[0].flat().flat(),
@@ -477,7 +477,7 @@ export class ExperimentParameters {
                         maxLen: 20
                     });
                     break;
-                case 'PM':
+                case 3:
                    // this.trialObj[step] = this._generatePM({
                    //     nSession: nSession,
                    //     options: this.contexts.flat()
@@ -491,17 +491,25 @@ export class ExperimentParameters {
                     break;
             }
         }
-        // insert catch trials randomly in ED_EE phase
-        for (let sessionNum = 0; sessionNum < nSession; sessionNum++) {
-            let trials = this._generateCatchTrials();
-            for (let trialNum = 0; trialNum < trials.length; trialNum++) {
-                this.trialObj['ED_EE'][sessionNum].splice(
-                    Math.floor(Math.random() * (this.trialObj['ED_EE'][sessionNum].length + 1)),
-                    0, trials.pop());
 
-                this.trialObjTraining['ED_EE'][sessionNum].splice(
-                    Math.floor(Math.random() * (this.trialObj['ED_EE'][sessionNum].length + 1)),
-                    0, trials.pop());
+        this._insertCatchTrials()
+        
+    }
+
+    _insertCatchTrials(trialObj) {
+        // insert catch trials randomly in 2nd phase
+        for (let sessionNum = 0; sessionNum < this.nSession; sessionNum++) {
+            let trials1 = this._generateCatchTrials();
+            let trials2 = this._generateCatchTrials();
+            for (let trialNum = 0; trialNum < trials1.length; trialNum++) {
+                this.trialObj[2][sessionNum].splice(
+                    Math.floor(Math.random() * (this.trialObj[2][sessionNum].length + 1)),
+                    0, trials1.pop());
+
+                this.trialObjTraining[2][sessionNum].splice(
+                    Math.floor(Math.random() * (this.trialObj[2][sessionNum].length + 1)),
+                    0, trials2.pop());
+
             }
 
         }

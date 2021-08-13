@@ -62,7 +62,7 @@ function main() {
     );
 
     // manage cookies
-    // if user closes/reload the tab he has the possibility
+    // if user closes/reload the tab he/she has the possibility
     // to continue where he left off
     if (cookieStored() && cookieEnabled) {
         GUI.displayChoiceModalWindow('Continue experiment?',
@@ -263,8 +263,8 @@ function stateMachine({ instructionNum, sessionNum, phaseNum, questNum, exp } = 
             // select stimuli depending on sessionNum;
             // Using arrays allows to avoid multiple if statements
             trialObj = [
-                exp.trialObj['LE'][sessionNum],
-                exp.trialObjTraining['LE'][Math.abs(sessionNum) - 1]][isTraining];
+                exp.trialObj[phaseNum][sessionNum],
+                exp.trialObjTraining[phaseNum][Math.abs(sessionNum) - 1]][isTraining];
 
             let conditionObj = [
                 exp.conditions[sessionNum],
@@ -302,8 +302,8 @@ function stateMachine({ instructionNum, sessionNum, phaseNum, questNum, exp } = 
             // select stimuli depending on sessionNum;
             // Using arrays allows to avoid multiple if statements
             trialObj = [
-                exp.trialObj['ED_EE'][sessionNum],
-                exp.trialObjTraining['ED_EE'][Math.abs(sessionNum) - 1]][isTraining];
+                exp.trialObj[phaseNum][sessionNum],
+                exp.trialObjTraining[phaseNum][Math.abs(sessionNum) - 1]][isTraining];
 
             choice = new ChoiceManager(
                 {
@@ -324,7 +324,7 @@ function stateMachine({ instructionNum, sessionNum, phaseNum, questNum, exp } = 
                     nextParams: {
                         instructionNum: [[4, 7][isTraining], 9][isLastSession],
                         sessionNum: sessionNum,
-                        phaseNum: 3,
+                        phaseNum: [1, 'end'][isLastSession],
                         exp: exp,
                     }
                 }
