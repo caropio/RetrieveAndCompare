@@ -22,12 +22,12 @@ function main() {
 
     // initGameStageDiv main parameters
     /* ============================================================================= */
-    // these three variables indicate what
+    // these four variables indicate what
     // has to be run in the state machine (i.e. current state of the experiment)
     // initial values are:
-    // let sessionNum = -1;
-    // let phaseNum = 1;
-    // let instructionNum = 0;
+    // let sessionNum = -1; training sessions are < 0 
+    // let phaseNum = 1; phases starts at 1
+    // let instructionNum = 0; 
     // let questNum = 0;
     let cookieEnabled = 1;
 
@@ -57,12 +57,11 @@ function main() {
             imgPath: 'images/cards_gif/',
             compLink: 'https://app.prolific.ac/submissions/complete?cc=RNFS5HP5', // prolific completion link
             fromCookie: false
-            // will be displayed at the end
         }
     );
 
     // manage cookies
-    // if user closes/reload the tab he/she has the possibility
+    // if user closes/reloads the tab he/she has the possibility
     // to continue where he left off
     if (cookieStored() && cookieEnabled) {
         GUI.displayChoiceModalWindow('Continue experiment?',
@@ -85,6 +84,7 @@ function main() {
 
 function cookieManagement() {
     let [sessionNum, instructionNum, phaseNum, questNum, prevexp] = readCookies();
+    // instantiate new exp with previous exp parameters
     let exp = new ExperimentParameters(
         {
             online: prevexp.online,   // send network requests
@@ -111,6 +111,7 @@ function cookieManagement() {
     // // Run experiment!!
     stateMachine({ instructionNum, sessionNum, phaseNum, questNum, exp });
 }
+
 
 function stateMachine({ instructionNum, sessionNum, phaseNum, questNum, exp } = {}) {
 
