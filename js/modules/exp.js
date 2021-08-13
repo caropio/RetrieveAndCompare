@@ -1,4 +1,4 @@
-import { range, shuffle, getOS, getBrowser, createCode } from "./utils.js";
+import { range, shuffle, getOS, getBrowser, createCode, getIDfromURL } from "./utils.js";
 
 
 export class ExperimentParameters {
@@ -45,6 +45,8 @@ export class ExperimentParameters {
         this.compLink = compLink;
         this.imgPath = imgPath;
 
+        this.fromCookie = fromCookie;
+
         // initGameStageDiv
         
         this._initContingencies();
@@ -57,7 +59,7 @@ export class ExperimentParameters {
             this.initTime = new Date().getTime();
             this.expID = createCode();
             this.browsInfo = getOS() + " - " + getBrowser();
-            this.subID = undefined;
+            this.subID = getIDfromURL();
 
             this._initConditionArrays(
                 nTrialPerCondition,
@@ -78,6 +80,7 @@ export class ExperimentParameters {
             this.expID = obj.expID;
             this.sumReward = obj.sumReward;
             this.totalReward = obj.totalReward;
+            this.trialNum = obj.trialNum;
         }
 
         if (maxPoints) {
@@ -509,13 +512,17 @@ export class ExperimentParameters {
         // if the subject makes optimal choices
         // here we have one session so we compute it once
 
+        try {
         let maxPoints = 0;
-        let trialObj = Object.values(this.trialObj).flat().flat();
-        for (let i = 0; i < trialObj.length; i++) {
-            let ev = Math.max(trialObj['ev1'], trialObj['ev2'])
-            maxPoints += ev;
+        for (let sessionNum = 0; sessionNum < this.nSession; sessionNum++) {
+            let trialObj = Object.values(this.trialObj[sessionNum]).flat().flat();
+            for (let i = 0; i < trialObj.length; i++) {
+                let ev = Math.max(trialObj['ev1'], trialObj['ev2'])
+                maxPoints += ev;
+            }
+        }} catch {
+            var maxPoints = 30;
         }
-
 
         return Math.round(maxPoints);
     }

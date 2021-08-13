@@ -33,6 +33,11 @@ export class ChoiceManager {
         this.imgObj = imgObj;
 
         this.sessionNum = sessionNum;
+        if (sessionNum >= 0) {
+            GUI.setActiveCurrentStep('experiment');
+        } else {
+            GUI.setActiveCurrentStep('training');
+        }
         this.phaseNum = phaseNum;
 
         this.feedbackDuration = feedbackDuration;
@@ -313,6 +318,11 @@ export class SliderManager {
         this.nTrial = trialObj.length;
 
         this.sessionNum = sessionNum;
+        if (sessionNum >= 0) {
+            GUI.setActiveCurrentStep('experiment');
+        } else {
+            GUI.setActiveCurrentStep('training');
+        }
         this.phaseNum = phaseNum;
 
         this.imgObj = imgObj;

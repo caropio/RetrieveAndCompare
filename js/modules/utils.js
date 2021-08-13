@@ -1,7 +1,4 @@
 
-import Cookies from '../../node_modules/js-cookie/dist/js.cookie.mjs';
-
-
 function saveCookie({ sessionNum, instructionNum, phaseNum, questNum, exp} = {}) {
     setCookie('sessionNum', sessionNum, 1);
     setCookie('instructionNum', instructionNum, 1);
@@ -9,6 +6,11 @@ function saveCookie({ sessionNum, instructionNum, phaseNum, questNum, exp} = {})
     setCookie('questNum', questNum, 1);
     let expString = JSON.stringify(exp);
     localStorage['exp'] = expString;
+}
+
+function getIDfromURL() {
+    const urlParams = new URLSearchParams(document.location.search);
+    return urlParams.get('prolific_id');
 }
 
 function readCookies(){
@@ -361,6 +363,6 @@ function loadImg(exp, imgPath, nCond, nSession) {
 export {
     sum, assert, range, shuffle,
     getBrowser, getColor, getKeyCode,
-    getOS, isFloat, createDiv, isString, randint, createCode, saveCookie, getCookie, cookieStored, readCookies, clearListCookies
+    getOS, isFloat, createDiv, isString, randint, createCode, saveCookie, getCookie, cookieStored, readCookies, clearListCookies, getIDfromURL
 };
 

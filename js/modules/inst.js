@@ -33,10 +33,11 @@ export class Instructions {
     setUserID(nextFunc, nextParams) {
 
         GUI.panelFlush();
+        GUI.panelSetTitle('Identification')
 
         // prolific id is 24 characters
         GUI.panelInsertParagraph('Please enter your Prolific id.');
-        GUI.panelInsertInput({maxlength: 24, size: 24, id: "ID"});
+        GUI.panelInsertInput({maxlength: 24, size: 24, id: "ID", value: this.exp.subID});
         GUI.panelInsertButton({
             id: "toConsent", value: "Next",
             clickArgs: {obj: this},

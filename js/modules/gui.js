@@ -1,4 +1,4 @@
-import {createDiv, range, randint} from './utils.js'
+import { createDiv, range, randint } from './utils.js'
 
 
 export class GUI {
@@ -32,8 +32,15 @@ export class GUI {
     // }
 
     static setActiveCurrentStep(id) {
-        if (!$('#' + id).attr('class').includes('active')) {
-            $('#' + id).attr('class', 'md-step active');
+        let steps = ['instructions', 'training', 'experiment', 'questionnaire'];
+        for (let step of steps) {
+            if (step === id) {
+                if (!$('#' + step).attr('class').includes('active')) {
+                    $('#' + step).attr('class', 'md-step active');
+                }
+            } else {
+                $('#' + step).attr('class', 'md-step');
+            }
         }
     }
 
@@ -53,12 +60,12 @@ export class GUI {
         $('#card-content').append('<div class="card-title">' + title + '</div>');
     }
 
-    static panelInsertImage({src = '', width = '100%', height = '100%'} = {}) {
+    static panelInsertImage({ src = '', width = '100%', height = '100%' } = {}) {
         $('#card-content').append(
             '<img class="card-img card-center" src="' + src + '" style="width: ' + width + '; height: ' + height + ' ;" >');
     }
 
-    static panelGenerateImg({src = '', width = '100%'} = {}) {
+    static panelGenerateImg({ src = '', width = '100%' } = {}) {
         return '<img class="card-img card-center" src="' + src + '" style="width: ' + width + ';" >';
     }
 
@@ -70,44 +77,46 @@ export class GUI {
         $('#card-content').empty();
     }
 
-    static panelInsertDiv({id = "", align = "center"}) {
+    static panelInsertDiv({ id = "", align = "center" }) {
         $('#card-content').append('<div id="' + id + '" align="' + align + '"></div>');
     }
 
     static panelInsertButton({
-                                 classname = "btn btn-default card-button card-center",
-                                 clickArgs = undefined,
-                                 clickFunc = undefined,
-                                 id = "",
-                                 div = "card-content",
-                                 value = ""
-                             } = {}) {
+        classname = "btn btn-default card-button card-center",
+        clickArgs = undefined,
+        clickFunc = undefined,
+        id = "",
+        div = "card-content",
+        value = ""
+    } = {}) {
         $('#' + div).append(
             '<input type="button" class="' + classname + '" id="' + id + '" value="' + value + '">');
         $('#' + id).click(clickArgs, clickFunc);
     }
 
     static panelInsertInput({
-                                classname = 'card-center',
-                                maxlength = "24",
-                                size = "24",
-                                id = "textbox_id",
-                                div = "card-content",
-                            } = {}) {
+        classname = 'card-center',
+        maxlength = "24",
+        size = "24",
+        value= "",
+        id = "textbox_id",
+        div = "card-content",
+    } = {}) {
         $('#' + div).append(
-            '<input class="' + classname + '" type="text" maxlength="' + maxlength + '" size="' + size + '" id="' + id
+            '<input class="' + classname + '" type="text" maxlength="' + maxlength +
+             '" size="' + size + '" id="' + id + '" value="' + value 
             + '">');
     }
 
     static panelInsertCheckBox({
-                                   classname = "",
-                                   id = "",
-                                   value = "",
-                                   div = "card-content",
-                                   text = "no text",
-                                   clickFunc = undefined,
-                                   clickArgs = undefined
-                               } = {}) {
+        classname = "",
+        id = "",
+        value = "",
+        div = "card-content",
+        text = "no text",
+        clickFunc = undefined,
+        clickArgs = undefined
+    } = {}) {
         $('#' + div).append('<label id="label_' + id + '" class="checkcontainer">' + text);
 
         let label = $('#label_' + id);
@@ -173,7 +182,7 @@ export class GUI {
             '<div class="col-xs-1 col-md-1"></div>  <div class="col-xs-3 col-md-3">'
             + '</div><div id = "Middle" class="col-xs-4 col-md-4">' + option + '</div></div>';
 
-        let Slider = GUI.generateSlider({min: 0, max: 100, step: 5, initValue: initValue});
+        let Slider = GUI.generateSlider({ min: 0, max: 100, step: 5, initValue: initValue });
 
         let str = Title + Images + myCanvas + Slider;
         $('#TextBoxDiv').html(str);
@@ -182,8 +191,8 @@ export class GUI {
 
     }
 
-    static showFeedback({showFeedback, completeFeedback, feedbackDuration, beforeFeedbackDuration,
-                            choice, thisReward, reward1, reward2, feedbackObj}) {
+    static showFeedback({ showFeedback, completeFeedback, feedbackDuration, beforeFeedbackDuration,
+        choice, thisReward, reward1, reward2, feedbackObj }) {
         let pic1 = document.getElementById("option1");
         let pic2 = document.getElementById("option2");
 
@@ -204,8 +213,8 @@ export class GUI {
             }
 
             // setTimeout(function () {
-                GUI.slideCard(pic1, cv1, showFeedback, feedbackDuration, beforeFeedbackDuration);
-                GUI.slideCard(pic2, cv2, showFeedback, feedbackDuration, beforeFeedbackDuration);
+            GUI.slideCard(pic1, cv1, showFeedback, feedbackDuration, beforeFeedbackDuration);
+            GUI.slideCard(pic2, cv2, showFeedback, feedbackDuration, beforeFeedbackDuration);
             // }, 100);
 
         } else {
@@ -213,7 +222,7 @@ export class GUI {
                 fb.src = feedbackObj['' + thisReward].src;
             }
             // setTimeout(function () {
-                GUI.slideCard(pic, cv, showFeedback, feedbackDuration, beforeFeedbackDuration);
+            GUI.slideCard(pic, cv, showFeedback, feedbackDuration, beforeFeedbackDuration);
             // }, 100);
         }
     }
@@ -252,7 +261,7 @@ export class GUI {
             } else {
                 setTimeout(function () {
                     clearInterval(scroll);
-                }, feedbackDuration+150);
+                }, feedbackDuration + 150);
             }
 
         };
@@ -299,7 +308,7 @@ export class GUI {
                   <div class="modal-content">
                     <div class="modal-header">
                       <button type="button" class="close" data-dismiss="modal">&times;</button>
-                      <center><span class="fa ${sym}" style="font-size: 24px; color: ${color};">  ${title}</center>
+                      <center><h2><span class="fa ${sym}" style="font-size: 24px; color: ${color};">  ${title}</h2></center>
                     </div>
                     <div class="modal-body" >
                     ${message}
@@ -324,7 +333,51 @@ export class GUI {
 
     }
 
-    static generateSlider({min = 0, max = 100, step = 5, initValue = 0, percent = true, n = 1, classname=''} = {}) {
+    static displayChoiceModalWindow(title, message, button1Text, button2Text, func1, func2) {
+        /*
+        Method used to display modal choices window
+         */
+
+        let str = `
+            <div class="modal fade" id="myModal" role="dialog">
+                <div class="modal-dialog modal-sm">
+                  <div class="modal-content">
+                    <div class="modal-header">
+                      <center><h2> ${title}</h2></center>
+                    </div>
+                    <div class="modal-body" >
+                   <center> ${message}</center>
+                    </div>
+                    <div align="center">
+                      <button type="button" id="refuse" data-dismiss="modal" class="btn btn-default card-button" style="
+                        background-color: rgba(200, 81, 81, 0.86) !important;
+                        border-color: rgba(200, 81, 81, 0.4) !important;"
+                        >${button2Text}</button>
+                      <button type="button" id="accept" data-dismiss="modal" class="btn btn-default card-button">${button1Text}</button>
+                      </div>
+                  </div>
+                </div>
+            </div>`;
+
+        let modalWin = $('#Modal');
+        let myModal = $('#myModal');
+
+        if (!modalWin.html().includes('myModal')) {
+            modalWin.html(str);
+            modalWin.show();
+            myModal = $('#myModal');
+            $('#accept').click(func1);
+            $('#refuse').click(func2);
+        }
+        myModal.modal({ backdrop: 'static', keyboard: false });
+        myModal.on('hidden.bs.modal', function () {
+            modalWin.empty();
+            modalWin.hide();
+        });
+
+    }
+
+    static generateSlider({ min = 0, max = 100, step = 5, initValue = 0, percent = true, n = 1, classname = '' } = {}) {
         let slider = `<main>
             <form id="form_${n}" class="${classname}">
             <div class="range">
@@ -371,11 +424,13 @@ export class GUI {
         $('#skipButton').click(function () {
             if (Obj.skipEnabled) {
                 GUI.displayModalWindow('Select the trial you want to reach.',
-                    GUI.generateSlider({classname: 'skip-form',
-                        min: 0, max: Obj.nTrial, initValue: Obj.trialNum, step: 1, percent: false, n: 2})
+                    GUI.generateSlider({
+                        classname: 'skip-form',
+                        min: 0, max: Obj.nTrial, initValue: Obj.trialNum, step: 1, percent: false, n: 2
+                    })
                     , 'info');
 
-                GUI.listenOnSlider({obj: Obj}, function (ev) {
+                GUI.listenOnSlider({ obj: Obj }, function (ev) {
 
                     let slider = document.getElementById('slider_2');
                     // ev.data.obj.skip = true;

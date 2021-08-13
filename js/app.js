@@ -1,6 +1,7 @@
 import { ExperimentParameters } from "./modules/exp.js";
 import { Instructions } from "./modules/inst.js";
 import { Questionnaire } from "./modules/quest.js";
+import { GUI } from "./modules/gui.js";
 import { ChoiceManager, SliderManager } from "./modules/trial_manager.js";
 import { readCookies, saveCookie, cookieStored } from './modules/utils.js';
 
@@ -60,38 +61,54 @@ function main() {
         }
     );
 
-    // manage coookies
-   if (cookieStored() && cookieEnabled) {
-       let prevexp = Object;
-       [sessionNum, instructionNum, phaseNum, questNum, prevexp] = readCookies();
-       exp = new ExperimentParameters(
-           {
-               online: prevexp.online,   // send network requests
-               isTesting: prevexp.isTesting, // isTesting==in development vs in production
-               expName: prevexp.expName, // experience name
-               completeFeedback: prevexp.completeFeedback, // display feedback of both options
-               maxPoints: prevexp.maxPoints, // max points cumulated all along the experiment
-               // if undefined or 0, will be computed automatically
-               maxCompensation: prevexp.maxCompensation, // in pence (in addition of the initial endowment)
-               feedbackDuration: prevexp.feedbackDuration, // how many milliseconds we present the outcome
-               beforeFeedbackDuration: prevexp.beforeFeedbackDuration, // how many milliseconds before the outcome
-               maxTrainingNum: prevexp.maxTrainingNum, // if sessionNum == maxTrainingNum
-               // do not allow for new training sessions
-               nTrialPerConditionTraining: prevexp.nTrialPerConditionTraining,
-               nTrialPerCondition: prevexp.nTrialPerCondition,
-               nSession: prevexp.nSession,
-               nCond: prevexp.nCond,
-               imgPath: prevexp.imgPath,
-               compLink: prevexp.compLink, // prolific completion link
-               fromCookie: true,
-               obj: prevexp,
-           }
-       );
-   }
+    // manage cookies
+    // if user closes/reload the tab he has the possibility
+    // to continue where he left off
+    if (cookieStored() && cookieEnabled) {
+        GUI.displayChoiceModalWindow('Continue experiment?',
+            'Do you want to continue the experiment where you left off?', 'Continue', 'Reset',
+            function () {
+                cookieManagement();
+            },
+            function () {
+                // // Run experiment!!
+                stateMachine({ instructionNum, sessionNum, phaseNum, questNum, exp });
+            }
+        );
+    } else {
+        // // Run experiment!!
+        stateMachine({ instructionNum, sessionNum, phaseNum, questNum, exp });
+    }
+}
+
+function cookieManagement() {
+    let [sessionNum, instructionNum, phaseNum, questNum, prevexp] = readCookies();
+    let exp = new ExperimentParameters(
+        {
+            online: prevexp.online,   // send network requests
+            isTesting: prevexp.isTesting, // isTesting==in development vs in production
+            expName: prevexp.expName, // experience name
+            completeFeedback: prevexp.completeFeedback, // display feedback of both options
+            maxPoints: prevexp.maxPoints, // max points cumulated all along the experiment
+            // if undefined or 0, will be computed automatically
+            maxCompensation: prevexp.maxCompensation, // in pence (in addition of the initial endowment)
+            feedbackDuration: prevexp.feedbackDuration, // how many milliseconds we present the outcome
+            beforeFeedbackDuration: prevexp.beforeFeedbackDuration, // how many milliseconds before the outcome
+            maxTrainingNum: prevexp.maxTrainingNum, // if sessionNum == maxTrainingNum
+            // do not allow for new training sessions
+            nTrialPerConditionTraining: prevexp.nTrialPerConditionTraining,
+            nTrialPerCondition: prevexp.nTrialPerCondition,
+            nSession: prevexp.nSession,
+            nCond: prevexp.nCond,
+            imgPath: prevexp.imgPath,
+            compLink: prevexp.compLink, // prolific completion link
+            fromCookie: true,
+            obj: prevexp,
+        }
+    );
     // // Run experiment!!
     stateMachine({ instructionNum, sessionNum, phaseNum, questNum, exp });
 }
-
 
 function stateMachine({ instructionNum, sessionNum, phaseNum, questNum, exp } = {}) {
 
