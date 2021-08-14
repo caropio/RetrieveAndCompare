@@ -27,12 +27,9 @@ export class GUI {
         $('#' + id).show();
     }
 
-    // static setCardTransition() {
-    //     $('.card-wrapper').css('height', $('#card-content').height());
-    // }
-
     static setActiveCurrentStep(id) {
-        let steps = ['instructions', 'training', 'experiment', 'questionnaire'];
+        let steps = ['instructions', 'training',
+            'experiment', 'questionnaire'];
         for (let step of steps) {
             if (step === id) {
                 if (!$('#' + step).attr('class').includes('active')) {
@@ -98,13 +95,13 @@ export class GUI {
         classname = 'card-center',
         maxlength = "24",
         size = "24",
-        value= "",
+        value = "",
         id = "textbox_id",
         div = "card-content",
     } = {}) {
         $('#' + div).append(
             '<input class="' + classname + '" type="text" maxlength="' + maxlength +
-             '" size="' + size + '" id="' + id + '" value="' + value 
+            '" size="' + size + '" id="' + id + '" value="' + value
             + '">');
     }
 
@@ -130,11 +127,11 @@ export class GUI {
 
     static panelShow() {
         $('#game').hide();
-        $('#panel').show(800);
+        $('#panel').slideDown(500);
     }
 
     static panelHide() {
-        $('#panel').hide(800);
+        $('#panel').hide(500);
     }
 
     static hideOptions() {
@@ -292,7 +289,7 @@ export class GUI {
         let sym;
         let color;
         if (type === 'info') {
-            sym = 'fa-check';
+            sym = 'fa-info-circle';
             color = 'green';
         } else if (type === 'error') {
             sym = 'fa-window-close';
@@ -308,7 +305,7 @@ export class GUI {
                   <div class="modal-content">
                     <div class="modal-header">
                       <button type="button" class="close" data-dismiss="modal">&times;</button>
-                      <center><h2><span class="fa ${sym}" style="font-size: 24px; color: ${color};">  ${title}</h2></center>
+                      <center><span style="font-size: 30px" class="fa ${sym}"></span><h2>  ${title}</h2></center>
                     </div>
                     <div class="modal-body" >
                     ${message}
@@ -353,7 +350,8 @@ export class GUI {
                         background-color: rgba(200, 81, 81, 0.86) !important;
                         border-color: rgba(200, 81, 81, 0.4) !important;"
                         >${button2Text}</button>
-                      <button type="button" id="accept" data-dismiss="modal" class="btn btn-default card-button">${button1Text}</button>
+                      <button type="button" id="accept" data-dismiss="modal" 
+                      class="btn btn-default card-button">${button1Text}</button>
                       </div>
                   </div>
                 </div>

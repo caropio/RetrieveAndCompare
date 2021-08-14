@@ -82,6 +82,7 @@ function main() {
     }
 }
 
+
 function cookieManagement() {
     let [sessionNum, instructionNum, phaseNum, questNum, prevexp] = readCookies();
     // instantiate new exp with previous exp parameters
@@ -120,7 +121,9 @@ function stateMachine({ instructionNum, sessionNum, phaseNum, questNum, exp } = 
         phaseNum: phaseNum, questNum: questNum, exp: exp
     });
 
-    let inst = new Instructions(exp);
+    if (instructionNum != 'end')
+        var inst = new Instructions(exp);
+    
     let quest = new Questionnaire(exp);
 
     /* ============================ Instructions Management ========================== */

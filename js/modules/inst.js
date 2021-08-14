@@ -6,6 +6,7 @@ export class Instructions {
 
     constructor(exp) {
         this.exp = exp
+        GUI.panelShow()
     }
 
     goFullscreen(nextFunc, nextParams) {
