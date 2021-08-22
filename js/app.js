@@ -271,9 +271,6 @@ function stateMachine({ instructionNum, sessionNum, phaseNum, questNum, exp } = 
                 exp.trialObj[phaseNum][sessionNum],
                 exp.trialObjTraining[phaseNum][Math.abs(sessionNum) - 1]][isTraining];
 
-            let conditionObj = [
-                exp.conditions[sessionNum],
-                exp.trainingConditions[Math.abs(sessionNum) - 1]][isTraining];
 
             choice = new ChoiceManager(
                 {
@@ -283,7 +280,6 @@ function stateMachine({ instructionNum, sessionNum, phaseNum, questNum, exp } = 
                     completeFeedback: exp.completeFeedback,
                     feedbackObj: exp.feedbackImg,
                     imgObj: imgObj,
-                    conditionObj: conditionObj,
                     sessionNum: sessionNum,
                     phaseNum: phaseNum,
                     exp: exp,

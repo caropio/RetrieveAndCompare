@@ -270,6 +270,7 @@ export class ExperimentParameters {
                     file2: file2,
                     contIdx1: contIdx1,
                     contIdx2: contIdx2,
+                    condition: idx,
                     p1: p1,
                     p2: p2,
                     ev1: ev1,
@@ -314,6 +315,7 @@ export class ExperimentParameters {
                 arrToFill[sessionNum].push({
                     file1: file1,
                     contIdx1: contIdx1,
+                    condition: -1,
                     p1: p1,
                     ev1: ev1,
                     r1: r1,
@@ -326,6 +328,62 @@ export class ExperimentParameters {
 
         return arrToFill;
     }
+
+    _generateNoFixedLE({ nSession, options, maxLen } = {}) {
+        // ===================================================================== //
+        // Learning with no fixed conditions
+        // ===================================================================== //
+        let arrToFill = new Array(nSession).fill().map((x) => []);
+
+        for (let sessionNum = 0; sessionNum < nSession; sessionNum++) {
+            LOOP: for (let optionNum1 = 0; optionNum1 < options[sessionNum].length; optionNum1++) {
+                for (let optionNum2 = 0; optionNum2 < options[sessionNum].length; optionNum2++) {
+                    if (options[sessionNum][optionNum2] == options[sessionNum][optionNum1]) {
+                        continue;
+                    }
+                    let [contIdx1, contIdx2] = [this.learningCont[optionNum1], this.learningCont[optionNum2]];
+                    let [file1, file2] = [options[sessionNum][optionNum1], options[sessionNum][optionNum2]]
+
+                    let ev1 = this.ev[contIdx1];
+                    let ev2 = this.ev[contIdx2];
+
+                    let p1 = this.cont[contIdx1];
+                    let p2 = this.cont[contIdx2];
+
+                    let r1 = this.rew;
+                    let r2 = this.rew;
+
+                    let option1Type = 1;
+                    let option2Type = 1;
+
+                    let isCatchTrial = false;
+
+                    arrToFill[sessionNum].push({
+                        file1: file1,
+                        file2: file2,
+                        contIdx1: contIdx1,
+                        contIdx2: contIdx2,
+                        condition: -1,
+                        p1: p1,
+                        p2: p2,
+                        ev1: ev1,
+                        ev2: ev2,
+                        r1: r1,
+                        r2: r2,
+                        isCatchTrial: isCatchTrial,
+                        option1Type: option1Type,
+                        option2Type: option2Type,
+                    });
+
+                    if (arrToFill[sessionNum].length > maxLen) {
+                        break LOOP;
+                    }
+                }
+            }
+        }
+        return arrToFill;
+    }
+
 
     _generateED_EE({ nSession, options, maxLen } = {}) {
         // ===================================================================== //
@@ -359,6 +417,7 @@ export class ExperimentParameters {
                         file2: file2,
                         contIdx1: contIdx1,
                         contIdx2: contIdx2,
+                        condition: -1,
                         p1: p1,
                         p2: p2,
                         ev1: ev1,
@@ -405,6 +464,7 @@ export class ExperimentParameters {
                         file2: file2,
                         contIdx1: contIdx1,
                         contIdx2: contIdx2,
+                        condition: -1,
                         p1: p1,
                         p2: p2,
                         ev1: ev1,
@@ -450,6 +510,7 @@ export class ExperimentParameters {
             catchTrials[i] = {
                 file1: file1,
                 contIdx1: contIdx1,
+                condition: -1,
                 p1: p1,
                 ev1: ev1,
                 r1: r1,
@@ -505,6 +566,7 @@ export class ExperimentParameters {
                 file2: file2,
                 contIdx1: contIdx1,
                 contIdx2: contIdx2,
+                condition: -1,
                 p1: p1,
                 p2: p2,
                 ev1: ev1,
@@ -537,15 +599,15 @@ export class ExperimentParameters {
         for (let step of phases) {
             switch (step) {
                 case 1:
-                    this.trialObj[step] = this._generateLE({
+                    this.trialObj[step] = this._generateNoFixedLE({
                         nSession: nSession,
-                        conditions: this.conditions,
-                        contexts: this.contexts,
+                        options: this._getOptionsPerSession(this.contexts),
+                        maxLen: 150
                     });
-                    this.trialObjTraining[step] = this._generateLE({
+                    this.trialObjTraining[step] = this._generateNoFixedLE({
                         nSession: nSession,
-                        conditions: this.trainingConditions,
-                        contexts: this.trainingContexts,
+                        options: this._getOptionsPerSession(this.trainingContexts),
+                        maxLen: 25
                     });
                     break;
 

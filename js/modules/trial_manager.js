@@ -49,9 +49,6 @@ export class ChoiceManager {
         this.nextFunc = nextFunc;
         this.nextParams = nextParams;
 
-        if (elicitationType === -1) {
-            this.conditionObj = conditionObj;
-        }
 
         // initGameStageDiv non parametric variables
         this.trialNum = 0;
@@ -96,13 +93,6 @@ export class ChoiceManager {
 
         let presentationTime = (new Date()).getTime();
 
-        let condition = -1;
-
-        if (this.elicitationType === -1) {
-            condition = this.conditionObj[this.trialNum];
-        }
-
-        trialObj["condition"] = condition;
         trialObj["presentationTime"] = presentationTime;
 
         GUI.displayOptions(
