@@ -6,7 +6,6 @@ export class Instructions {
 
     constructor(exp) {
         this.exp = exp
-        GUI.panelShow()
     }
 
     goFullscreen(nextFunc, nextParams) {
@@ -582,10 +581,7 @@ export class Instructions {
                 id: 'toTraining', value: 'Restart training',
                 div: 'buttonBox', classname: 'btn btn-default card-button',
                 clickFunc: function (event) {
-                    event.data.obj.exp.sumReward[0] = 0
-                    event.data.obj.exp.sumReward[1] = 0
-                    event.data.obj.exp.sumReward[2] = 0
-                    event.data.obj.exp.sumReward[3] = 0
+                    event.data.obj.exp.sumReward.fill(0)
                     nextParams['phaseNum'] = 1
                     nextParams['sessionNum'] = -2
                     nextParams['instructionNum'] = 4
@@ -599,10 +595,7 @@ export class Instructions {
             id: 'next', value: 'Next', clickArgs: { obj: this },
             div: 'buttonBox', classname: 'btn btn-default card-button',
             clickFunc: function (event) {
-                event.data.obj.exp.sumReward[0] = 0
-                event.data.obj.exp.sumReward[1] = 0
-                event.data.obj.exp.sumReward[2] = 0
-                event.data.obj.exp.sumReward[3] = 0
+                event.data.obj.exp.sumReward.fill(0)
 
                 GUI.setActiveCurrentStep('experiment')
                 setTimeout(

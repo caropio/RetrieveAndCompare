@@ -5,7 +5,6 @@ import { GUI } from "./modules/gui.js";
 import { ChoiceManager, SliderManager } from "./modules/trial_manager.js";
 import { readCookies, saveCookie, cookieStored } from './modules/utils.js';
 
-
 // When the page is fully loaded, the main function will be called
 $(document).ready(main);
 
@@ -121,9 +120,9 @@ function stateMachine({ instructionNum, sessionNum, phaseNum, questNum, exp } = 
         phaseNum: phaseNum, questNum: questNum, exp: exp
     });
 
+    let inst;
     if (instructionNum != 'end')
-        var inst = new Instructions(exp);
-    
+        inst = new Instructions(exp);
     let quest = new Questionnaire(exp);
 
     /* ============================ Instructions Management ========================== */
