@@ -601,19 +601,18 @@ export class ExperimentParameters {
         for (let step of phases) {
             switch (step) {
                 case 1:
-                    this.trialObj[step] = this._generateNoFixedLE({
+                    this.trialObj[step] = this._generateLE({
                         nSession: nSession,
-                        options: this._getOptionsPerSession(this.contexts),
-                        maxLen: 150,
-                        nRepeat: 2
+                        conditions: this.conditions,
+                        contexts: this.contexts,
                     });
-                    this.trialObjTraining[step] = this._generateNoFixedLE({
+                    this.trialObjTraining[step] = this._generateLE({
                         nSession: nSession,
-                        options: this._getOptionsPerSession(this.trainingContexts),
-                        maxLen: 25,
-                        nRepeat: 2
+                        conditions: this.trainingConditions,
+                        contexts: this.trainingContexts,
                     });
                     break;
+
 
                 case 2:
                     this.trialObj[step] = this._generateED_EE({

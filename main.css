@@ -6,6 +6,12 @@
     font-family: Arial, Helvetica, sans-serif;
 }
 
+.body-wrapper {
+    width: 70%;
+    height: 100%;
+    margin: auto;
+}
+
 .DivElements {
     margin-right: auto;
     margin-left: auto;
@@ -234,6 +240,9 @@ form {
 #Top  {
     margin-top: 25%;
 }
+.swiper-button-next, .swiper-button-prev {
+    top: 30% !important;
+}
 
 .card {
     position: relative;
@@ -248,9 +257,10 @@ form {
     border: 1px solid rgba(0, 0, 0, .125);
     border-radius: .35rem;
     margin: auto;
-    margin-top: 5%;
-    margin-bottom: 2%;
-    width: 45%;
+    /* margin-top: 5%; */
+    /* margin-bottom: 2%; */
+    width: 70%;
+    top: 20%;
     box-shadow: 2px 2px 2px 1px rgba(0, 0, 0, 0.2);
 }
 
