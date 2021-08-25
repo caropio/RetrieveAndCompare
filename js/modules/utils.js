@@ -8,9 +8,9 @@ function saveCookie({ sessionNum, instructionNum, phaseNum, questNum, exp} = {})
     localStorage['exp'] = expString;
 }
 
-function getIDfromURL() {
+function getfromURL(param) {
     const urlParams = new URLSearchParams(document.location.search);
-    return urlParams.get('prolific_id');
+    return urlParams.get(param);
 }
 
 function readCookies(){
@@ -32,6 +32,14 @@ function parser(v) {
 
 function cookieStored(){
     return getCookie('sessionNum') != "";
+}
+
+function save(k, v) {
+    localStorage[k] = v;
+}
+
+function load(k) {
+    return localStorage[k]
 }
 
 function clearListCookies()
@@ -254,115 +262,11 @@ function getOS() {
     return OSName;
 }
 
-function loadImg(exp, imgPath, nCond, nSession) {
-        // Get stims, feedbacks, resources
-        let nImg = nCond * 2 * nSession;
-        let nTrainingImg = nCond * 2 * nSession;
-        let imgExt = "gif";
-        let borderColor = "transparent";
-
-        exp.images = [];
-        exp.learningOptions = [];
-        for (let i = 2; i < nImg + 2; i++) {
-            exp.learningOptions.push(i);
-            exp.images[i] = new Image();
-            exp.images[i].src = imgPath + "stim_old/" + i + "." + imgExt;
-            exp.images[i].className = "img-responsive center-block";
-            exp.images[i].style.border = "5px solid " + borderColor;
-            exp.images[i].style.position = "relative";
-            exp.images[i].style.top = "0px";
-        }
-
-        let feedbackNames = ["empty", "0", "1", "-1", "-2", "2"];
-        exp.feedbackImg = [];
-        for (let i = 0; i < feedbackNames.length; i++) {
-            let fb = feedbackNames[i];
-            exp.feedbackImg[fb] = new Image();
-            exp.feedbackImg[fb].src = imgPath + "fb/" + fb + "." + imgExt;
-            exp.feedbackImg[fb].className = "img-responsive center-block";
-            exp.feedbackImg[fb].style.border = "5px solid " + borderColor;
-            exp.feedbackImg[fb].style.position = "relative";
-            exp.feedbackImg[fb].style.top = "0px";
-        }
-
-        // Training stims
-        imgExt = "jpg";
-        exp.trainingImg = [];
-        exp.trainingOptions = [];
-        let letters = [
-            null,
-            "A",
-            "B",
-            "C",
-            "D",
-            "E",
-            "F",
-            "G",
-            "H",
-            "I",
-            "J",
-            "K",
-            "L",
-            "M",
-            "N",
-            "O",
-            "P",
-            "Q",
-            "R",
-            "S",
-            "T",
-            "U",
-            "V",
-            "W",
-            "X",
-            "Y",
-            "Z",
-        ];
-        for (let i = 2; i <= nTrainingImg + 1; i++) {
-            let idx = letters[i];
-            exp.trainingOptions.push(idx);
-            exp.trainingImg[idx] = new Image();
-            exp.trainingImg[idx].src = imgPath + "stim/" + idx + "." + imgExt;
-            exp.trainingImg[idx].className = "img-responsive center-block";
-            exp.trainingImg[idx].style.border = "5px solid " + borderColor;
-            exp.trainingImg[idx].style.position = "relative";
-            exp.trainingImg[idx].style.top = "0px";
-        }
-
-        for (let i = 0; i < exp.ev.length; i++) {
-            let idx = exp.ev[i].toString();
-            exp.images[idx] = new Image();
-            exp.images[idx].src = imgPath + "lotteries/" + idx + ".png";
-            exp.images[idx].className = "img-responsive center-block";
-            exp.images[idx].style.border = "5px solid " + borderColor;
-            exp.images[idx].style.position = "relative";
-            exp.images[idx].style.top = "0px";
-            exp.trainingImg[idx] = new Image();
-            exp.trainingImg[idx].src = imgPath + "lotteries/" + idx + ".png";
-            exp.trainingImg[idx].className = "img-responsive center-block";
-            exp.trainingImg[idx].style.border = "5px solid " + borderColor;
-            exp.trainingImg[idx].style.position = "relative";
-            exp.trainingImg[idx].style.top = "0px";
-        }
-        exp.images["?"] = new Image();
-        exp.images["?"].src = imgPath + "stim/question.jpg";
-        exp.images["?"].className = "img-responsive center-block";
-        exp.images["?"].style.border = "5px solid " + borderColor;
-        exp.images["?"].style.position = "relative";
-        exp.images["?"].style.top = "0px";
-        exp.trainingImg["?"] = new Image();
-        exp.trainingImg["?"].src = imgPath + "stim/question.jpg";
-        exp.trainingImg["?"].className = "img-responsive center-block";
-        exp.trainingImg["?"].style.border = "5px solid " + borderColor;
-        exp.trainingImg["?"].style.position = "relative";
-        exp.trainingImg["?"].style.top = "0px";
-    }
-
-
 
 export {
     sum, assert, range, shuffle,
     getBrowser, getColor, getKeyCode,
-    getOS, isFloat, createDiv, isString, randint, createCode, saveCookie, getCookie, cookieStored, readCookies, clearListCookies, getIDfromURL
+    getOS, isFloat, createDiv, isString, randint, createCode,
+     saveCookie, getCookie, cookieStored, readCookies, clearListCookies, getfromURL
 };
 

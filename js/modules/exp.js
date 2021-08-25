@@ -1,4 +1,4 @@
-import { range, shuffle, getOS, getBrowser, createCode, getIDfromURL } from "./utils.js";
+import { range, shuffle, getOS, getBrowser, createCode, getfromURL } from "./utils.js";
 
 
 export class ExperimentParameters {
@@ -60,7 +60,7 @@ export class ExperimentParameters {
             this.initTime = new Date().getTime();
             this.expID = createCode();
             this.browsInfo = getOS() + " - " + getBrowser();
-            this.subID = getIDfromURL();
+            this.subID = getfromURL('prolific_id');
 
             this._initConditionArrays(
                 nTrialPerCondition,

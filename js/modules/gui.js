@@ -6,8 +6,13 @@ export class GUI {
     Class to display graphic contents
      */
 
+    /* =================== class members ================== */
+    static steps = ['introduction', 'training', 'experiment', 'questionnaire'];
+    
+
 
     /* =================== public methods ================== */
+    
 
     static initGameStageDiv() {
         GUI.panelFlush();
@@ -28,9 +33,7 @@ export class GUI {
     }
 
     static setActiveCurrentStep(id) {
-        let steps = ['instructions', 'training',
-            'experiment', 'questionnaire'];
-        for (let step of steps) {
+        for (let step of this.steps) {
             if (step === id) {
                 if (!$('#' + step).attr('class').includes('active')) {
                     $('#' + step).attr('class', 'md-step active');
@@ -48,8 +51,20 @@ export class GUI {
 
     }
 
+    static panelSetDotParagraph(text) {
+        $('.card-text').remove();
+        $('#card-content').prepend('<div class="card-text">' + '• ' + text + '</div>');
+        //this.setCardTransition();
+
+    }
+
     static panelInsertParagraph(text) {
         $('#card-content').append('<div class="card-text">' + text + '</div>');
+        //this.setCardTransition();
+    }
+
+    static panelInsertDotParagraph(text) {
+        $('#card-content').append('<div class="card-text">' + '• ' + text + '</div>');
         //this.setCardTransition();
     }
 
