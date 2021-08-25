@@ -260,9 +260,11 @@ function stateMachine({ instructionNum, sessionNum, phaseNum, questNum, exp } = 
 
     // select stimuli depending on sessionNum;
     // Using arrays allows to avoid multiple if statements
-    let trialObj = [
-        exp.trialObj[phaseNum][sessionNum],
-        exp.trialObjTraining[phaseNum][Math.abs(sessionNum) - 1]][isTraining];
+    let trialObj;
+    if (phaseNum !== 'end')
+        trialObj = [
+            exp.trialObj[phaseNum][sessionNum],
+            exp.trialObjTraining[phaseNum][Math.abs(sessionNum) - 1]][isTraining];
 
 
     let imgObj = [exp.images, exp.trainingImg][isTraining];
