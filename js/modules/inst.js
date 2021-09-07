@@ -414,11 +414,11 @@ export class Instructions {
         let pageNum = funcParams['pageNum']
         let phaseNum = funcParams['phaseNum']
         let isTraining = funcParams['isTraining']
-        let sessionNum = funcParams['sessionNum'] + 1
+        // let sessionNum = funcParams['sessionNum'] + 1
         let points = this.exp.sumReward[phaseNum - 1]
-        let pence = this.exp.pointsToPence(points).toFixed(2)
-        let pounds = this.exp.pointsToPounds(points).toFixed(2)
-        let nPages = 4
+        // let pence = this.exp.pointsToPence(points).toFixed(2)
+        // let pounds = this.exp.pointsToPounds(points).toFixed(2)
+        let nPages = 2
 
         GUI.panelFlush()
         GUI.panelShow()
@@ -428,45 +428,20 @@ export class Instructions {
         }
         GUI.panelSetTitle('Instructions for the third test')
 
-        let text
+        let text = {
+            1: ` • In each round of the third test you will be presented with the symbols and pie-charts you met in the first and the second test.\n
+                     • You will be asked to indicate (in percentages), what are the odds that a given symbol or pie-chart makes you win a point (+1=+' ${this.exp.pointsToPence(1).toFixed(2)}p).\n\n
+                     • You will be able to do this through moving a slider on the screen and then confirm your final answer by clicking on the confirmation button.\n\n
+                     • 100%  = the symbol (or pie-chart) always gives +1pt.\n
+                     • 50%  = the symbol (or pie-chart) always gives +1pt or -1pt with equal chances.\n
+                     • 0% = the symbol (or pie-chart) always gives -1pt.\n`
+        }
         if (isTraining) {
-            text = {
-                1: ' • In each round of the third test you will be presented with the symbols and pie-charts you met in the first and the second test.\n'
-                    + ' • You will be asked to indicate (in percentages), what are the odds that a given symbol or pie-chart makes you win a point (+1=+' + this.exp.pointsToPence(1).toFixed(2) + 'p).\n\n'
-                    + ' • You will be able to do this through moving a slider on the screen and then confirm your final answer by clicking on the confirmation button.\n\n'
-                    + ' • 100%  = the symbol (or pie-chart) always gives +1pt.\n'
-                    + ' • 50%  = the symbol (or pie-chart) always gives +1pt or -1pt with equal chances.\n'
-                    + ' • 0% = the symbol (or pie-chart) always gives -1pt.\n',
-                2: ' • After confirming your choice (denoted C hereafter) the computer will draw a random lottery number (denoted L hereafter) between 0 and 100.\n'
-                    + ' • If C is bigger than L, you win the reward with the probabilities associated to the symbol.\n'
-                    + ' • If C is smaller than L, the program will spin a wheel of fortune and you will win a reward of +1 point with a probability of L%, otherwise you will lose -1 point.\n',
-                3: ' • To sum up, the higher the percentage you give, the higher the chances are the outcome will be determined by the symbol or the pie-chart.\n'
-                    + 'Conversely, the lower the percentage, the higher the chances are the outcome will be determined by the random lottery number.\n\n'
-                    + ' •  Please note that the outcome of your choice will not be displayed on each trial. \n\n'
-                    + ' • However, for each choice an outcome will be calculated and taken into account for the final payoff.\n'
-                    + 'At the end of the test you will be shown with the final payoff in terms of cumulated points and monetary bonus.',
-                4: ' • Let\'s begin with the third training test!\n\n'
-                    + ' • Note : points won during the training do not count for the final payoff !)'
-            }
+            text[2] = ' • Let\'s begin with the third training test!\n\n'
+                + ' • Note : points won during the training do not count for the final payoff !)';
         } else {
-            text = {
-                1: ' • In each round of the third test you will be presented with the symbols and pie-charts you met in the first and the second test.\n'
-                    + 'You will be asked to indicate (in percentages), what are the odds that a given symbol or pie-chart makes you win a point (+1=+' + this.exp.pointsToPence(1).toFixed(2) + 'p).\n'
-                    + ' • You will be able to do this through moving a slider on the screen and then confirm your final answer by clicking on the confirmation button.\n\n'
-                    + ' • 100%  = the symbol (or pie-chart) always gives +1pt.\n'
-                    + ' • 50%  = the symbol (or pie-chart) always gives +1pt or -1pt with equal chances.\n'
-                    + ' • 0% = the symbol (or pie-chart) always gives -1pt.\n',
-                2: ' • After confirming your choice (denoted C hereafter) the computer will draw a random lottery number (denoted L hereafter) between 0 and 100.\n'
-                    + ' • If C is bigger than L, you win the reward with the probabilities associated to the symbol.\n'
-                    + ' • If C is smaller than L, the program will spin a wheel of fortune and you will win a reward of +1 point with a probability of L%, otherwise you will lose -1 point.\n',
-                3: ' • To sum up, the higher the percentage you give, the higher the chances are the outcome will be determined by the symbol or the pie-chart.\n'
-                    + 'Conversely, the lower the percentage, the higher the chances are the outcome will be determined by the random lottery number.\n\n'
-                    + ' •  Please note that the outcome of your choice will not be displayed on each trial. \n\n'
-                    + ' • However, for each choice an outcome will be calculated and taken into account for the final payoff.\n'
-                    + 'At the end of the test you will be shown with the final payoff in terms of cumulated points and monetary bonus.',
-                4: '• Note: This test is like the third test of the training.\n\n '
-                    + 'This is the actual game, every point will be included in the final payoff. \n\n Ready?',
-            }
+            text[2] = ' • Let\'s begin with the third training test!\n\n'
+                + ' • Note: This test is like the third test of the training.\n\n '
         }
 
         GUI.panelSetParagraph(text[pageNum])

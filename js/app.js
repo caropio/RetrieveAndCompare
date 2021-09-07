@@ -262,10 +262,8 @@ function stateMachine({ instructionNum, sessionNum, phaseNum, questNum, exp } = 
     // Using arrays allows to avoid multiple if statements
     let trialObj;
     if (phaseNum !== 'end')
-        trialObj = [
-            exp.trialObj[phaseNum][sessionNum],
-            exp.trialObjTraining[phaseNum][Math.abs(sessionNum) - 1]][isTraining];
-
+        trialObj = isTraining ? 
+        exp.trialObjTraining[phaseNum][Math.abs(sessionNum) - 1] : exp.trialObj[phaseNum][sessionNum];
 
     let imgObj = [exp.images, exp.trainingImg][isTraining];
     let choice;

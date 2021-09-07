@@ -2,7 +2,7 @@
     display: block;
     margin-right: auto;
     margin-left: auto;
-    background-color: #DDDDDD;
+    background-color: #fafafa;
     font-family: Arial, Helvetica, sans-serif;
 }
 
@@ -245,13 +245,18 @@ form {
     word-wrap: break-word;
     background-color: #fff;
     background-clip: border-box;
-    border: 1px solid rgba(0, 0, 0, .125);
+    /*border: 1px solid rgba(0, 0, 0, .125);*/
     border-radius: .35rem;
     margin: auto;
     margin-top: 5%;
     margin-bottom: 2%;
     width: 45%;
-    box-shadow: 2px 2px 2px 1px rgba(0, 0, 0, 0.2);
+    box-shadow:#9C9C9C 0px 2px 4px 0px;
+    /*box-shadow: 2px 2px 2px 1px rgba(0, 0, 0, 0.2);*/
+}
+.card:hover {
+    transition: linear 500ms;
+    box-shadow:#9C9C9C 1px 4px 6px 1px;
 }
 
 .card-wrapper {

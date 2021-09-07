@@ -46,6 +46,7 @@ export class ExperimentParameters {
         this.compLink = compLink;
         this.imgPath = imgPath;
 
+
         this.fromCookie = fromCookie;
 
         // initGameStageDiv
@@ -61,6 +62,8 @@ export class ExperimentParameters {
             this.expID = createCode();
             this.browsInfo = getOS() + " - " + getBrowser();
             this.subID = getfromURL('prolific_id');
+
+            this.noFixFirst = +(Math.random() < .5);
 
             this._initConditionArrays(
                 nTrialPerCondition,
@@ -81,6 +84,7 @@ export class ExperimentParameters {
             this.expID = obj.expID;
             this.sumReward = obj.sumReward;
             this.totalReward = obj.totalReward;
+            this.noFixFirst = obj.noFixFirst;
             this.trialNum = obj.trialNum;
         }
 
@@ -290,7 +294,7 @@ export class ExperimentParameters {
     }
 
 
-    _generatePM({ nSession, options } = {}) {
+    _generatePM({ nSession, nRepeat, options } = {}) {
         // ===================================================================== //
         // Probability matching Phase (Slider) -- Trial obj definition
         // ===================================================================== //
@@ -298,32 +302,35 @@ export class ExperimentParameters {
 
         for (let sessionNum = 0; sessionNum < nSession; sessionNum++) {
             for (let optionNum = 0; optionNum < options[sessionNum].length; optionNum++) {
+                for (let repeatNum = 0; repeatNum < nRepeat; repeatNum++) {
 
-                let contIdx1 = this.learningCont[optionNum];
-                let file1 = options[sessionNum][optionNum];
+                    let contIdx1 = this.learningCont[optionNum];
+                    let file1 = options[sessionNum][optionNum];
 
-                let ev1 = this.ev[contIdx1];
+                    let ev1 = this.ev[contIdx1];
 
-                let p1 = this.cont[contIdx1];
+                    let p1 = this.cont[contIdx1];
 
-                let r1 = this.rew;
+                    let r1 = this.rew;
 
-                let option1Type = 1;
+                    let option1Type = 1;
 
-                let isCatchTrial = false;
+                    let isCatchTrial = false;
 
-                arrToFill[sessionNum].push({
-                    file1: file1,
-                    contIdx1: contIdx1,
-                    condition: -1,
-                    p1: p1,
-                    ev1: ev1,
-                    r1: r1,
-                    isCatchTrial: isCatchTrial,
-                    option1Type: option1Type,
-                });
+                    arrToFill[sessionNum].push({
+                        file1: file1,
+                        contIdx1: contIdx1,
+                        condition: -1,
+                        p1: p1,
+                        ev1: ev1,
+                        r1: r1,
+                        isCatchTrial: isCatchTrial,
+                        option1Type: option1Type,
+                    });
+                }
+
             }
-
+            arrToFill[sessionNum] = shuffle(arrToFill[sessionNum]);
         }
 
         return arrToFill;
@@ -601,18 +608,44 @@ export class ExperimentParameters {
         for (let step of phases) {
             switch (step) {
                 case 1:
-                    this.trialObj[step] = this._generateNoFixedLE({
-                        nSession: nSession,
-                        options: this._getOptionsPerSession(this.contexts),
-                        maxLen: 150,
-                        nRepeat: 2
-                    });
+                    if (this.noFixFirst) {
+                        this.trialObj[step] = this._generateNoFixedLE({
+                            nSession: 1,
+                            options: [this._getOptionsPerSession(this.contexts)[0]],
+                            maxLen: 150,
+                            nRepeat: 2
+                        });
+                        this.trialObj[step].push(
+                            this._generateLE({
+                                nSession: 1,
+                                conditions: [this.conditions[1]],
+                                contexts: [this.contexts[1]]
+                            })[0]
+                        );
+                    } else {
+                        this.trialObj[step] = this._generateLE({
+                            nSession: 1,
+                            conditions: [this.conditions[0]],
+                            contexts: [this.contexts[0]]
+                        });
+
+                        this.trialObj[step].push(
+                            this._generateNoFixedLE({
+                                nSession: 1,
+                                options: [this._getOptionsPerSession(this.contexts)[1]],
+                                maxLen: 150,
+                                nRepeat: 2
+                            })[0]
+                        );
+                                                
+                    }
                     this.trialObjTraining[step] = this._generateNoFixedLE({
                         nSession: nSession,
                         options: this._getOptionsPerSession(this.trainingContexts),
                         maxLen: 25,
                         nRepeat: 2
                     });
+                    
                     break;
 
                 case 2:
@@ -630,10 +663,12 @@ export class ExperimentParameters {
                 case 3:
                     this.trialObj[step] = this._generatePM({
                         nSession: nSession,
+                        nRepeat: 2, 
                         options: this._getOptionsPerSession(this.contexts),
                     });
                     this.trialObjTraining[step] = this._generatePM({
                         nSession: nSession,
+                        nRepeat: 2, 
                         options: this._getOptionsPerSession(this.trainingContexts)
                     });
 
@@ -691,7 +726,6 @@ export class ExperimentParameters {
         // get all trials
         let trialObj = Object.values(this.trialObj).flat().flat();
 
-        // TO DO: remove harcoded number of phases
         for (let i = 0; i < trialObj.length; i++) {
             let ev;
             if (trialObj[i]['ev2'] == undefined) {
@@ -699,8 +733,12 @@ export class ExperimentParameters {
             } else {
                 ev = Math.max(trialObj[i]['ev1'], trialObj[i]['ev2'])
             }
+            if (ev == NaN || ev == undefined) {
+                debugger;
+            }
             maxPoints += ev;
         }
+        console.log(maxPoints);
 
         return Math.round(maxPoints);
     }
