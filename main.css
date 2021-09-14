@@ -251,13 +251,14 @@ form {
     margin-top: 5%;
     margin-bottom: 2%;
     width: 45%;
-    box-shadow:#9C9C9C 0px 2px 4px 0px;
+    box-shadow:#9C9C9C 0px 2px 2px 0px;
+    transition: height .4s linear;
     /*box-shadow: 2px 2px 2px 1px rgba(0, 0, 0, 0.2);*/
 }
-.card:hover {
+/* .card:hover {
     transition: linear 500ms;
     box-shadow:#9C9C9C 1px 4px 6px 1px;
-}
+} */
 
 .card-wrapper {
     transition: height .4s;
@@ -424,7 +425,7 @@ body {
             height: 70%;
         }
 
-        #TextBoxDiv {
+        #stim-box {
             height: 80%;
         }
 
@@ -721,7 +722,7 @@ input[type='radio']:checked {
     padding-left: 15%;
     padding-right: 15%;
 }
-#TextBoxDiv {
+#stim-box {
     margin-top: 5%;
 }
 

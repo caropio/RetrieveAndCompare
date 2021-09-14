@@ -1,9 +1,9 @@
 
-function saveCookie({ sessionNum, instructionNum, phaseNum, questNum, exp} = {}) {
-    setCookie('sessionNum', sessionNum, 1);
-    setCookie('instructionNum', instructionNum, 1);
-    setCookie('phaseNum', phaseNum,  1);
-    setCookie('questNum', questNum, 1);
+function saveState({ sessionNum, instructionNum, phaseNum, questNum, exp} = {}) {
+    save('sessionNum', sessionNum);
+    save('instructionNum', instructionNum);
+    save('phaseNum', phaseNum);
+    save('questNum', questNum);
     let expString = JSON.stringify(exp);
     localStorage['exp'] = expString;
 }
@@ -13,11 +13,11 @@ function getfromURL(param) {
     return urlParams.get(param);
 }
 
-function readCookies(){
-    let sessionNum = parser(getCookie('sessionNum'));
-    let instructionNum = parser(getCookie('instructionNum'));
-    let phaseNum = parser(getCookie('phaseNum'));
-    let questNum = parser(getCookie('questNum'));
+function loadState(){
+    let sessionNum = parseInt(load('sessionNum'));
+    let instructionNum = parseInt(load('instructionNum'));
+    let phaseNum = parseInt(load('phaseNum'));
+    let questNum = parseInt(load('questNum'));
     let exp = JSON.parse(localStorage['exp']);
     // loadImg(exp, exp.imgPath, exp.nCond, exp.nSession);
     return [sessionNum, instructionNum, phaseNum, questNum, exp]
@@ -30,8 +30,8 @@ function parser(v) {
     return v;
 }
 
-function cookieStored(){
-    return getCookie('sessionNum') != "";
+function stateStored(){
+    return 'sessionNum' in localStorage
 }
 
 function save(k, v) {
@@ -267,6 +267,6 @@ export {
     sum, assert, range, shuffle,
     getBrowser, getColor, getKeyCode,
     getOS, isFloat, createDiv, isString, randint, createCode,
-     saveCookie, getCookie, cookieStored, readCookies, clearListCookies, getfromURL
+     stateStored, loadState, saveState, clearListCookies, getfromURL
 };
 

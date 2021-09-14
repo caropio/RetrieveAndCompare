@@ -738,7 +738,6 @@ export class ExperimentParameters {
             }
             maxPoints += ev;
         }
-        console.log(maxPoints);
 
         return Math.round(maxPoints);
     }

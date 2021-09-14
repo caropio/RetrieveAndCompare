@@ -3,7 +3,7 @@ import { Instructions } from "./modules/inst.js";
 import { Questionnaire } from "./modules/quest.js";
 import { GUI } from "./modules/gui.js";
 import { ChoiceManager, SliderManager } from "./modules/trial_manager.js";
-import { readCookies, saveCookie, cookieStored } from './modules/utils.js';
+import { saveState, stateStored, loadState } from './modules/utils.js';
 
 // When the page is fully loaded, the main function will be called
 $(document).ready(main);
@@ -28,7 +28,7 @@ function main() {
     // let phaseNum = 1; phases starts at 1
     // let instructionNum = 0; 
     // let questNum = 0;
-    let cookieEnabled = 1;
+    let stateEnabled = 1;
 
     let sessionNum = -1;
     let phaseNum = 1;
@@ -59,15 +59,15 @@ function main() {
         }
     );
 
-    // manage cookies
+    // manage state
     // if user closes/reloads the tab he/she has the possibility
     // to continue where he left off
-    if (cookieStored() && cookieEnabled) {
+    if (stateStored() && stateEnabled) {
         GUI.displayChoiceModalWindow('Continue experiment?',
             'Do you want to continue the experiment where you left off?', 'Continue', 'Reset',
             // if continue
             function () {
-                cookieManagement();
+                stateManagement();
             },
             // if reset
             function () {
@@ -82,8 +82,8 @@ function main() {
 }
 
 
-function cookieManagement() {
-    let [sessionNum, instructionNum, phaseNum, questNum, prevexp] = readCookies();
+function stateManagement() {
+    let [sessionNum, instructionNum, phaseNum, questNum, prevexp] = loadState();
     // instantiate new exp with previous exp parameters
     let exp = new ExperimentParameters(
         {
@@ -115,11 +115,12 @@ function cookieManagement() {
 
 function stateMachine({ instructionNum, sessionNum, phaseNum, questNum, exp } = {}) {
 
-    saveCookie({
+    saveState({
         instructionNum: instructionNum, sessionNum: sessionNum,
         phaseNum: phaseNum, questNum: questNum, exp: exp
     });
 
+    // debugger;
     let inst;
     if (instructionNum != 'end')
         inst = new Instructions(exp);
@@ -251,7 +252,7 @@ function stateMachine({ instructionNum, sessionNum, phaseNum, questNum, exp } = 
             break;
 
         default:
-            error('Instructions: non-expected state');
+            console.error('Instructions: non-expected state');
     }
 
 

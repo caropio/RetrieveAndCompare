@@ -599,7 +599,7 @@ export class Instructions {
             + 'With your initial endowment, you won a total bonus of ' + (parseFloat(pence) + 250) + ' pence = ' + (parseFloat(pounds) + 2.5) + ' pounds!<br><br>' +
             'Thank you for playing!<br><br><a href="' + this.exp.compLink + '">Please click the link to complete this study</a><br></h3><br>'
 
-        $('#TextBoxDiv').html(Title)
+        $('#stim-box').html(Title)
     }
 
 }

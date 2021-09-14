@@ -278,7 +278,7 @@ export class ChoiceManager {
             }, 500, {obj: this});
         } else {
             GUI.hideSkipButton();
-            $('#TextBoxDiv').fadeOut(500);
+            $('#stim-box').fadeOut(500);
             setTimeout(function (event) {
                 $('#Stage').empty();
                 GUI.panelShow();
@@ -496,7 +496,7 @@ export class SliderManager {
         } else {
             GUI.hideSkipButton();
             setTimeout(function (event) {
-                    $('#TextBoxDiv').fadeOut(500);
+                    $('#stim-box').fadeOut(500);
                     setTimeout(function (event) {
                         $('#Stage').empty();
                         $('#Bottom').empty();

@@ -17,11 +17,11 @@ export class GUI {
     static initGameStageDiv() {
         GUI.panelFlush();
         GUI.panelHide();
-        if ($('#TextBoxDiv').length === 0) {
-            createDiv('game', 'TextBoxDiv');
+        if ($('#stim-box').length === 0) {
+            createDiv('game', 'stim-box');
         }
         $('#game').fadeIn(400);
-        $('#TextBoxDiv').fadeIn(400);
+        $('#stim-box').fadeIn(400);
     }
 
     static hideElement(id) {
@@ -171,7 +171,7 @@ export class GUI {
 
     static displayOptionSlider(id, imgObj, initValue) {
 
-        GUI.showElement('TextBoxDiv');
+        GUI.showElement('stim-box');
         let option = imgObj[id];
         option.id = "option1";
         option = option.outerHTML;
@@ -197,7 +197,7 @@ export class GUI {
         let Slider = GUI.generateSlider({ min: 0, max: 100, step: 5, initValue: initValue });
 
         let str = Title + Images + myCanvas + Slider;
-        $('#TextBoxDiv').html(str);
+        $('#stim-box').html(str);
 
         return document.getElementById('slider_1');
 
@@ -279,12 +279,11 @@ export class GUI {
         };
 
         function draw() {
+            console.log('Drawing...');
 
             ctx.clearRect(0, 0, canvas.width, canvas.height);
 
-            if (y > img.height) {
-                y = -img.height + y;
-            }
+            y = (-img.height + y) * (y > img.height) + y * (y < img.height);
 
             if (y > 0) {
                 ctx.drawImage(img, x, -img.height + y, img.width, img.height);
@@ -517,7 +516,7 @@ export class GUI {
             + canvas[0] + '</div><div id = "Middle" class="col-xs-4 col-md-4"></div><div class="col-xs-3 col-md-3">'
             + canvas[1] + '</div><div class="col-xs-1 col-md-1"></div></div>';
 
-        $('#TextBoxDiv').html(Feedback + Images + myCanvas);
+        $('#stim-box').html(Feedback + Images + myCanvas);
     }
 
 }

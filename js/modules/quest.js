@@ -173,7 +173,7 @@ export class Questionnaire {
             + '<input type="button"  class="btn btn-default card-button" id="Next" value="Next" > </div><div class="col-xs-1 col-md-1"></div></div>';
 
 
-        $('#TextBoxDiv').html(Title + Info + Ticks + Buttons);
+        $('#stim-box').html(Title + Info + Ticks + Buttons);
 
         Question_time = (new Date()).getTime();
 
@@ -209,7 +209,7 @@ export class Questionnaire {
                     );
                 }
 
-                $('#TextBoxDiv').remove();
+                $('#stim-box').remove();
                 $('#Stage').empty();
                 $('#Bottom').empty();
 
@@ -534,7 +534,7 @@ export class Questionnaire {
 
         }
 
-        $('#TextBoxDiv').html(Title + Info + Ticks + Buttons);
+        $('#stim-box').html(Title + Info + Ticks + Buttons);
 
         Question_time = (new Date()).getTime();
 
@@ -571,7 +571,7 @@ export class Questionnaire {
                     );
                 }
 
-                $('#TextBoxDiv').remove();
+                $('#stim-box').remove();
                 $('#Stage').empty();
                 $('#Bottom').empty();
 

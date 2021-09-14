@@ -224,8 +224,8 @@ function sendToDB(call, data, url) {
 class GUI {
 
     static init() {
-        if ($('#TextBoxDiv').length === 0) {
-            createDiv('Stage', 'TextBoxDiv');
+        if ($('#stim-box').length === 0) {
+            createDiv('Stage', 'stim-box');
         }
     }
 
@@ -287,7 +287,7 @@ class GUI {
             + canvas[0] + '</div><div id = "Middle" class="col-xs-4 col-md-4"></div><div class="col-xs-3 col-md-3">'
             + canvas[1] + '</div><div class="col-xs-1 col-md-1"></div></div>';
 
-        $('#TextBoxDiv').html(Title + Feedback + Images + myCanvas);
+        $('#stim-box').html(Title + Feedback + Images + myCanvas);
     }
 
     static displayOptionSlider(option) {
@@ -634,7 +634,7 @@ class ChoiceManager {
             }, this.feedbackDuration, {obj: this});
         } else {
             setTimeout(function (event) {
-                    $('#TextBoxDiv').fadeOut(500);
+                    $('#stim-box').fadeOut(500);
                     setTimeout(function (event) {
                         $('#Stage').empty();
                         $('#Bottom').empty();
@@ -708,7 +708,7 @@ class SliderManager {
 
         let str = GUI.displayOptionSlider(option1);
 
-        $('#TextBoxDiv').html(str);
+        $('#stim-box').html(str);
 
         rangeInputRun();
 
@@ -844,7 +844,7 @@ class Instructions {
             '<input align="center" id="fullscreen" type="button" value="Enable fullscreen"' +
             ' class="btn btn-default" onclick="openFullscreen();"></div>';
 
-        $('#TextBoxDiv').html(Title);
+        $('#stim-box').html(Title);
         $('#Bottom').html(Button);
 
         let elem = document.documentElement;
@@ -873,7 +873,7 @@ class Instructions {
 
         let TextInput = '';
 
-        $('#TextBoxDiv').html(Title + TextInput);
+        $('#stim-box').html(Title + TextInput);
 
         $('#Bottom').html(Buttons);
 
@@ -881,7 +881,7 @@ class Instructions {
 
             if (document.getElementById('textbox_id').value !== '') {
                 event.data.obj.exp.subID = document.getElementById('textbox_id').value;
-                $('#TextBoxDiv').remove();
+                $('#stim-box').remove();
                 $('#Stage').empty();
                 $('#Bottom').empty();
                 nextFunc(nextParams);
@@ -931,14 +931,14 @@ class Instructions {
 
         let Buttons = '<div align="center"><input align="center" type="button"  class="btn btn-default" id="toInstructions" value="Next" ></div>';
 
-        $('#TextBoxDiv').html(Title + Info + Ticks);
+        $('#stim-box').html(Title + Info + Ticks);
         $('#Bottom').html(Buttons);
 
         $('#toInstructions').click(function () {
             if ($("input:checkbox:not(:checked)").length > 0) {
                 alert('You must tick all check boxes to continue.');
             } else {
-                $('#TextBoxDiv').remove();
+                $('#stim-box').remove();
                 $('#Stage').empty();
                 $('#Bottom').empty();
                 nextFunc(nextParams);
@@ -970,7 +970,7 @@ class Instructions {
                     + '<br> Across the three phases of the experiment, you can win a bonus up to ' + this.exp.maxPoints + ' points = ' + this.exp.pointsToPounds(this.exp.maxPoints).toFixed(2) + ' pounds!';
                 break;
         }
-        $('#TextBoxDiv').html(Title + Info);
+        $('#stim-box').html(Title + Info);
 
         let Buttons = '<div align="center"><input align="center" type="button"  class="btn btn-default" id="Back" value="Back" >\n\
 		<input align="center" type="button"  class="btn btn-default" id="Next" value="Next" >\n\
@@ -992,7 +992,7 @@ class Instructions {
 
         $('#Back').click({obj: this}, function (event) {
 
-            $('#TextBoxDiv').remove();
+            $('#stim-box').remove();
             $('#Stage').empty();
             $('#Bottom').empty();
 
@@ -1005,7 +1005,7 @@ class Instructions {
 
         $('#Next').click({obj: this}, function (event) {
 
-            $('#TextBoxDiv').remove();
+            $('#stim-box').remove();
             $('#Stage').empty();
             $('#Bottom').empty();
             event.data.obj.displayInitialInstruction({pageNum: pageNum + 1}, nextFunc, nextParams);
@@ -1013,7 +1013,7 @@ class Instructions {
 
         $('#Start').click({obj: this}, function (event) {
 
-            $('#TextBoxDiv').remove();
+            $('#stim-box').remove();
             $('#Stage').empty();
             $('#Bottom').empty();
 
@@ -1084,7 +1084,7 @@ class Instructions {
                 break;
         }
 
-        $('#TextBoxDiv').html(Title + Info);
+        $('#stim-box').html(Title + Info);
 
         let Buttons = '<div align="center"><input align="center" type="button"  class="btn btn-default" id="Back" value="Back" >\n\
 		<input align="center" type="button"  class="btn btn-default" id="Next" value="Next" >\n\
@@ -1106,7 +1106,7 @@ class Instructions {
 
         $('#Back').click({obj: this}, function (event) {
 
-            $('#TextBoxDiv').remove();
+            $('#stim-box').remove();
             $('#Stage').empty();
             $('#Bottom').empty();
 
@@ -1120,7 +1120,7 @@ class Instructions {
         });
         $('#Next').click({obj: this}, function (event) {
 
-            $('#TextBoxDiv').remove();
+            $('#stim-box').remove();
             $('#Stage').empty();
             $('#Bottom').empty();
             funcParams['pageNum'] += 1;
@@ -1129,7 +1129,7 @@ class Instructions {
 
         $('#Start').click({obj: this}, function (event) {
 
-            $('#TextBoxDiv').remove();
+            $('#stim-box').remove();
             $('#Stage').empty();
             $('#Bottom').empty();
 
@@ -1209,7 +1209,7 @@ class Instructions {
 
         }
 
-        $('#TextBoxDiv').html(Title + Info);
+        $('#stim-box').html(Title + Info);
 
         let Buttons = '<div align="center"><input align="center" type="button"  class="btn btn-default" id="Back" value="Back" >\n\
             <input align="center" type="button"  class="btn btn-default" id="Next" value="Next" >\n\
@@ -1231,7 +1231,7 @@ class Instructions {
 
         $('#Back').click({obj: this}, function (event) {
 
-            $('#TextBoxDiv').remove();
+            $('#stim-box').remove();
             $('#Stage').empty();
             $('#Bottom').empty();
 
@@ -1245,7 +1245,7 @@ class Instructions {
 
         $('#Next').click({obj: this}, function (event) {
 
-            $('#TextBoxDiv').remove();
+            $('#stim-box').remove();
             $('#Stage').empty();
             $('#Bottom').empty();
             funcParams['pageNum'] += 1;
@@ -1255,7 +1255,7 @@ class Instructions {
 
         $('#Start').click(function () {
 
-            $('#TextBoxDiv').remove();
+            $('#stim-box').remove();
             $('#Stage').empty();
             $('#Bottom').empty();
 
@@ -1273,7 +1273,7 @@ class Instructions {
                 go = 'Go!';
             }
 
-            $('#TextBoxDiv').remove();
+            $('#stim-box').remove();
             $('#Stage').empty();
             $('#Bottom').empty();
 
@@ -1364,7 +1364,7 @@ class Instructions {
                 break;
         }
 
-        $('#TextBoxDiv').html(Title + Info);
+        $('#stim-box').html(Title + Info);
 
         let Buttons = '<div align="center"><input align="center" type="button"  class="btn btn-default" id="Back" value="Back" >\n\
             <input align="center" type="button"  class="btn btn-default" id="Next" value="Next" >\n\
@@ -1386,7 +1386,7 @@ class Instructions {
 
         $('#Back').click({obj: this}, function (event) {
 
-            $('#TextBoxDiv').remove();
+            $('#stim-box').remove();
             $('#Stage').empty();
             $('#Bottom').empty();
 
@@ -1400,7 +1400,7 @@ class Instructions {
 
         $('#Next').click({obj: this}, function (event) {
 
-            $('#TextBoxDiv').remove();
+            $('#stim-box').remove();
             $('#Stage').empty();
             $('#Bottom').empty();
 
@@ -1412,7 +1412,7 @@ class Instructions {
 
         $('#Start').click(function () {
 
-            $('#TextBoxDiv').remove();
+            $('#stim-box').remove();
             $('#Stage').empty();
             $('#Bottom').empty();
 
@@ -1430,7 +1430,7 @@ class Instructions {
                 go = 'Go!';
             }
 
-            $('#TextBoxDiv').remove();
+            $('#stim-box').remove();
             $('#Stage').empty();
             $('#Bottom').empty();
 
@@ -1486,7 +1486,7 @@ class Instructions {
             + 'Finally note that the real test will involve different symbols (i.e., not encountered in the training).<br>'
             + 'If you want you can do the training a second time.</h3><br><br>';
 
-        $('#TextBoxDiv').html(Title + Info);
+        $('#stim-box').html(Title + Info);
 
         let Buttons = '<div align="center">\n\
             <input align="center" type="button"  class="btn btn-default" id="Training" value="Play training again" >\n\
@@ -1500,7 +1500,7 @@ class Instructions {
 
         $('#Training').click({obj: this}, function (event) {
 
-            $('#TextBoxDiv').remove();
+            $('#stim-box').remove();
             $('#Stage').empty();
             $('#Bottom').empty();
 
@@ -1519,7 +1519,7 @@ class Instructions {
 
         $('#Next').click({obj: this}, function (event) {
 
-            $('#TextBoxDiv').remove();
+            $('#stim-box').remove();
             $('#Stage').empty();
             $('#Bottom').empty();
             nextFunc(nextParams);
@@ -1543,7 +1543,7 @@ class Instructions {
 
         let url = '<center><a href="' + this.exp.link + '">Click here.</a></center>';
 
-        $('#TextBoxDiv').html(Title + url);
+        $('#stim-box').html(Title + url);
     }
 
 
@@ -1558,7 +1558,7 @@ function Questionnaire() {
 
     function run() {
 
-        createDiv('Stage', 'TextBoxDiv');
+        createDiv('Stage', 'stim-box');
 
         var Title = '<H3 align = "center">QUESTIONNAIRE</H3>';
 
@@ -1568,7 +1568,7 @@ function Questionnaire() {
             'Note that the experiment will be considered completed (and the payment issued) only if the questionnaires are correctly filled.<br><br>' +
             'Please click "Start" when you are ready.</H3><br><br>';
 
-        $('#TextBoxDiv').html(Title + Info);
+        $('#stim-box').html(Title + Info);
 
         var Buttons = '<div align="center"><input align="center" type="button"  class="btn btn-default" id="Start" value=' + startBut + ' ></div>';
 
@@ -1576,7 +1576,7 @@ function Questionnaire() {
 
         $('#Start').click(function () {
 
-            $('#TextBoxDiv').remove();
+            $('#stim-box').remove();
             $('#Stage').empty();
             $('#Bottom').empty();
             playQuestionnaire_CRT(1);
@@ -1587,7 +1587,7 @@ function Questionnaire() {
 
         var NumQuestions = 7; /*mettre a jour le nombre de pages (questions) via le script*/
 
-        createDiv('Stage', 'TextBoxDiv');
+        createDiv('Stage', 'stim-box');
 
         var Title = '<H2 align = "center"></H2>';
         var Info;
@@ -1738,7 +1738,7 @@ function Questionnaire() {
         var Buttons = '<div class="row"><div class="col-xs-3 col-md-3"></div><div id = "Middle" class="col-xs-7 col-md-7"> <input type="button"  class="btn btn-default" id="Next" value="Next" > </div><div class="col-xs-1 col-md-1"></div></div>';
 
 
-        $('#TextBoxDiv').html(Title + Info + Ticks);
+        $('#stim-box').html(Title + Info + Ticks);
 
         Question_time = (new Date()).getTime();
 
@@ -1758,7 +1758,7 @@ function Questionnaire() {
 
                 SendQuestDataDB(0);
 
-                $('#TextBoxDiv').remove();
+                $('#stim-box').remove();
                 $('#Stage').empty();
                 $('#Bottom').empty();
 
@@ -1816,7 +1816,7 @@ function Questionnaire() {
 
         var NumQuestions = 13;
 
-        createDiv('Stage', 'TextBoxDiv');
+        createDiv('Stage', 'stim-box');
 
         var Title = '<H2 align = "center"></H2>';
         var Info;
@@ -2115,7 +2115,7 @@ function Questionnaire() {
 
         }
 
-        $('#TextBoxDiv').html(Title + Info + Ticks);
+        $('#stim-box').html(Title + Info + Ticks);
 
         Question_time = (new Date()).getTime();
 
@@ -2136,7 +2136,7 @@ function Questionnaire() {
 
                 SendQuestDataDB(0);
 
-                $('#TextBoxDiv').remove();
+                $('#stim-box').remove();
                 $('#Stage').empty();
                 $('#Bottom').empty();
 
