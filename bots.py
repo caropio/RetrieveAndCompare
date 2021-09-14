@@ -98,11 +98,13 @@ class QLearningAgent(Bot):
 
             el = self.find('next')
             if el is not None:
+                time.sleep(1)
                 el.click()
                 continue
 
             el = self.find('ok_1')
             if el is not None:
+                time.sleep(1)
                 el.click()
                 continue
 
@@ -113,7 +115,7 @@ class QLearningAgent(Bot):
                 v2 = self.q[s2]
                 learn = True
                 if "png" in s2:
-                    v2 = int(s2.replace('.png', ''))
+                    v2 = float(s2.replace('.png', ''))
                     learn = False
                 
                 a = self.make_choice([v1, v2])
