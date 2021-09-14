@@ -13,7 +13,7 @@ export class Instructions {
         GUI.panelSetTitle('Introduction')
         GUI.panelInsertParagraph('To continue the experiment, you must enable fullscreen')
         GUI.panelInsertButton({
-            id: 'fullscreen', value: 'Next',
+            id: 'next', value: 'Next',
             clickFunc: function () {
                 let elem = document.documentElement
                 if (elem.requestFullscreen) {
@@ -39,7 +39,7 @@ export class Instructions {
         GUI.panelInsertParagraph('Please enter your Prolific id.')
         GUI.panelInsertInput({ maxlength: 24, size: 24, id: 'ID', value: this.exp.subID })
         GUI.panelInsertButton({
-            id: 'toConsent', value: 'Next',
+            id: 'next', value: 'Next',
             clickArgs: { obj: this },
             clickFunc: function (event) {
                 let answer = document.getElementById('ID').value
@@ -101,10 +101,11 @@ export class Instructions {
             id: 'c3'
         })
 
+        let isTesting = this.exp.isTesting;
         GUI.panelInsertButton({
             value: 'Next', id: 'next',
             clickFunc: function () {
-                if ($('input:checkbox:not(:checked)').length > 0) {
+                if (($('input:checkbox:not(:checked)').length > 0) && (!isTesting)) {
                     GUI.displayModalWindow('Error', 'You must tick all check boxes to continue.', 'error')
                 } else {
                     nextFunc(nextParams)

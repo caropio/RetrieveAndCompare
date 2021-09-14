@@ -164,6 +164,7 @@ export class ChoiceManager {
         }
 
         let [reward1, reward2, thisReward, otherReward, correctChoice] = this._getReward(choice, params);
+        GUI.setOutcomes(thisReward, otherReward);
         this._showReward(reward1, reward2, thisReward, choice);
 
         if (this.exp.online) {
@@ -200,7 +201,7 @@ export class ChoiceManager {
                     elic_distance: -1,
                     p_lottery: -1
                 },
-                'php/InsertLearningDataDB.php'
+                '/php/InsertLearningDataDB.php'
             );
         }
 

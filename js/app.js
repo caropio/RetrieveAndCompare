@@ -30,17 +30,17 @@ function main() {
     // let questNum = 0;
     let stateEnabled = 1;
 
-    let sessionNum = -1;
+    let sessionNum = 0;
     let phaseNum = 1;
-    let instructionNum = 0;
+    let instructionNum = 1;
     let questNum = 0;
 
     // instantiate experiment parameters
     let exp = new ExperimentParameters(
         {
-            online: false,   // send network requests
+            online:true,   // send network requests
             isTesting: true, // isTesting==in development vs in production
-            expName: 'RandCSimple', // experience name
+            expName: 'TestNofixed', // experience name
             completeFeedback: true, // display feedback of both options
             maxPoints: undefined, // max points cumulated all along the experiment
             // if undefined or 0, will be computed automatically
@@ -120,7 +120,6 @@ function stateMachine({ instructionNum, sessionNum, phaseNum, questNum, exp } = 
         phaseNum: phaseNum, questNum: questNum, exp: exp
     });
 
-    // debugger;
     let inst;
     if (instructionNum != 'end')
         inst = new Instructions(exp);

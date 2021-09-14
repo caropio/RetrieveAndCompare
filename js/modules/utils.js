@@ -14,10 +14,10 @@ function getfromURL(param) {
 }
 
 function loadState(){
-    let sessionNum = parseInt(load('sessionNum'));
-    let instructionNum = parseInt(load('instructionNum'));
-    let phaseNum = parseInt(load('phaseNum'));
-    let questNum = parseInt(load('questNum'));
+    let sessionNum = parser(load('sessionNum'));
+    let instructionNum = parser(load('instructionNum'));
+    let phaseNum = parser(load('phaseNum'));
+    let questNum = parser(load('questNum'));
     let exp = JSON.parse(localStorage['exp']);
     // loadImg(exp, exp.imgPath, exp.nCond, exp.nSession);
     return [sessionNum, instructionNum, phaseNum, questNum, exp]

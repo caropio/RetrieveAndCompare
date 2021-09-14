@@ -14,6 +14,10 @@ export class GUI {
     /* =================== public methods ================== */
     
 
+    static setOutcomes(thisReward, otherReward) {
+        $('#out').val(thisReward);
+        $('#cfout').val(otherReward);
+    }
     static initGameStageDiv() {
         GUI.panelFlush();
         GUI.panelHide();
@@ -518,6 +522,8 @@ export class GUI {
 
         $('#stim-box').html(Feedback + Images + myCanvas);
     }
+
+
 
 }
 
