@@ -201,7 +201,7 @@ export class ChoiceManager {
                     elic_distance: -1,
                     p_lottery: -1
                 },
-                '/php/InsertLearningDataDB.php'
+                'php/InsertLearningDataDB.php'
             );
         }
 
