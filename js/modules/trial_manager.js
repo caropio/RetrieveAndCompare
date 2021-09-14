@@ -156,11 +156,11 @@ export class ChoiceManager {
         let symR;
 
         if (!invertedPosition) {
-            symL = params['stimIdx1'];
-            symR = params['stimIdx2'];
+            symL = params['file1'];
+            symR = params['file2'];
         } else {
-            symL = params['stimIdx2'];
-            symR = params['stimIdx1'];
+            symL = params['file2'];
+            symR = params['file1'];
         }
 
         let [reward1, reward2, thisReward, otherReward, correctChoice] = this._getReward(choice, params);
