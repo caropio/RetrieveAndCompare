@@ -63,7 +63,7 @@ export class ExperimentParameters {
             this.browsInfo = getOS() + " - " + getBrowser();
             this.subID = getfromURL('prolific_id');
 
-            this.noFixFirst = 0;//+(Math.random() < .5);
+            this.noFixFirst = 1;//+(Math.random() < .5);
 
             this._initConditionArrays(
                 nTrialPerCondition,

@@ -67,11 +67,25 @@ class Bot:
     def get_value(self, el_id):
         return self.driver.find_element_by_id(el_id).get_attribute('value')
 
+    def set_value(self, el_id, v):
+        self.driver.execute_script(f"$('#{el_id}').val({v})")
+
     def get_option(self, n):
         return self.driver.find_element_by_id(f'option{n}').get_attribute('src').split('/')[-1]
 
     def set_choice(self, n):
         self.driver.find_element_by_id(f'canvas{n}').click()
+    
+    def find_and_click(self, el_id):
+        el = self.find(el_id)
+        if el is not None:
+            try:
+                el.click()
+                return True
+            except:
+                pass
+        return None
+
 
 
 class QLearningAgent(Bot):
@@ -96,19 +110,25 @@ class QLearningAgent(Bot):
         t = 0
         while True:
 
-            el = self.find('next')
-            if el is not None:
-                time.sleep(1)
-                el.click()
+            if self.find_and_click('next'):
                 continue
-
+                
             el = self.find('ok_1')
             if el is not None:
-                time.sleep(1)
-                el.click()
-                continue
+                s = self.get_option(1)
+                if "png" in s:
+                    v = float(s.replace('.png', ''))
+                elif s in self.q:
+                    v = self.q[s]
+                else:
+                    v = 0
 
-            el = self.find('option1')
+                v = ((v + 1)/2)*100
+
+                self.set_value('slider', v)
+                el.click()
+
+            el = self.find('option2')
             if el is not None:
                 s1, s2 = self.get_state()
                 v1 = self.q[s1]
@@ -156,6 +176,8 @@ class QLearningAgent(Bot):
                 self.q[opt] = 1. * self.q0
             
         return opt1, opt2
+
+
 
 
 def plot(q, ax):
