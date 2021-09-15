@@ -31,7 +31,7 @@ function main() {
     let stateEnabled = 1;
 
     let sessionNum = 0;
-    let phaseNum = 3;
+    let phaseNum = 1;
     let instructionNum = 'end';
     let questNum = 0;
 
