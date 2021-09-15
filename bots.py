@@ -114,6 +114,10 @@ class QLearningAgent(Bot):
                 v1 = self.q[s1]
                 v2 = self.q[s2]
                 learn = True
+                if "png" in s1:
+                    v1 = float(s1.replace('.png', ''))
+                    learn = False
+
                 if "png" in s2:
                     v2 = float(s2.replace('.png', ''))
                     learn = False
