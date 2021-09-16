@@ -164,7 +164,10 @@ export class ChoiceManager {
         }
 
         let [reward1, reward2, thisReward, otherReward, correctChoice] = this._getReward(choice, params);
-        GUI.setOutcomes(thisReward, otherReward);
+
+        if (this.exp.isTesting)
+            GUI.setOutcomes(thisReward, otherReward);
+
         this._showReward(reward1, reward2, thisReward, choice);
 
         if (this.exp.online) {

@@ -66,6 +66,9 @@ class Bot:
 
     def get_value(self, el_id):
         return self.driver.find_element_by_id(el_id).get_attribute('value')
+    
+    def get_phaseNum(self):
+        return self.driver.execute_script('return localStorage["phaseNum"]')
 
     def set_value(self, el_id, v):
         self.driver.execute_script(f"$('#{el_id}').val({v})")
@@ -110,54 +113,65 @@ class QLearningAgent(Bot):
         t = 0
         while True:
 
-            if self.find_and_click('next'):
+            try:
+                if self.find_and_click('next'):
+                    continue
+                    
+                el = self.find('ok_1')
+                if el is not None:
+                    s = self.get_option(1)
+                    if "png" in s:
+                        v = float(s.replace('.png', ''))
+                    elif s in self.q:
+                        v = self.q[s]
+                    else:
+                        v = 0
+
+                    v = ((v + 1)/2)*100
+
+                    # q.put({'reset': True})
+                    self.set_value('slider_1', v)
+                    el.click()
+
+                el = self.find('option2')
+                if el is not None:
+                    s1, s2 = self.get_state()
+                    v1 = self.q[s1]
+                    v2 = self.q[s2]
+                    learn = int(self.get_phaseNum()) == 1
+                    heuristic = False
+
+                    if "png" in s1:
+                        v1 = float(s1.replace('.png', ''))
+                        learn = False
+
+                    if "png" in s2:
+                        v2 = float(s2.replace('.png', ''))
+                        learn = False
+                        heuristic = v1 == self.q[s1]
+                    
+                    
+                    a = self.make_choice([v1, v2])
+                    s = [s1, s2][a]
+
+                    if heuristic:
+                        a = int(v2 > 0)
+                    self.set_choice(a+1)
+
+                    out = int(self.get_value('out'))
+                    cfout = int(self.get_value('cfout'))
+                    cfa = int((a+1) == 1)
+                    cfs = s2 if s == s1 else s1
+
+                    if learn:
+                        self.learn(s, out)
+                        self.learn(cfs, cfout)
+
+                    # q.put({'reset': False, 'data': [corr, t]})
+            except Exception as e:
+                print(f'Error: {e}')
+                time.sleep(1)
                 continue
-                
-            el = self.find('ok_1')
-            if el is not None:
-                s = self.get_option(1)
-                if "png" in s:
-                    v = float(s.replace('.png', ''))
-                elif s in self.q:
-                    v = self.q[s]
-                else:
-                    v = 0
-
-                v = ((v + 1)/2)*100
-
-                self.set_value('slider', v)
-                el.click()
-
-            el = self.find('option2')
-            if el is not None:
-                s1, s2 = self.get_state()
-                v1 = self.q[s1]
-                v2 = self.q[s2]
-                learn = True
-                if "png" in s1:
-                    v1 = float(s1.replace('.png', ''))
-                    learn = False
-
-                if "png" in s2:
-                    v2 = float(s2.replace('.png', ''))
-                    learn = False
-                
-                a = self.make_choice([v1, v2])
-                s = [s1, s2][a]
-                self.set_choice(a+1)
-
-                out = int(self.get_value('out'))
-                cfout = int(self.get_value('cfout'))
-                cfa = int((a+1) == 1)
-                cfs = s2 if s == s1 else s1
-
-                if learn:
-                    self.learn(s, out)
-                # self.learn(cfs, cfout)
-
-                corr = a == 0
-
-                q.put([corr, t])
 
             time.sleep(3)
             t += 1
@@ -166,11 +180,6 @@ class QLearningAgent(Bot):
         opt1 = self.get_option(1)
         opt2 = self.get_option(2)
 
-        # k = '_'.join([opt1, opt2])
-
-        # if k not in self.q:
-            # self.q[k] = np.ones(2, dtype=float) * self.q0
-        
         for opt in (opt1, opt2):
             if opt not in self.q:
                 self.q[opt] = 1. * self.q0
@@ -236,25 +245,33 @@ if __name__ == '__main__':
     d = {}
 
     while True:
-        out, t = q.get()
-        if t not in d:
-            d[t] = []
+        out = q.get()
+        if out['reset']:
+            d = {}
+        try: 
+            t = out['data'][0]
+            out = out['data'][1]
+            
+            if t not in d:
+                d[t] = []
 
-        d[t].append(out)
+            d[t].append(out)
 
-        m = np.array([np.mean(d[i]) for i in range(max(d.keys()))])
-        sem = np.array([stats.sem(d[i]) for i in range(max(d.keys()))])
-        x = list(range(len(m)))
+            m = np.array([np.mean(d[i]) for i in range(max(d.keys()))])
+            sem = np.array([stats.sem(d[i]) for i in range(max(d.keys()))])
+            x = list(range(len(m)))
 
-        ax.clear()
+            ax.clear()
 
-        ax.plot(x, m, color='C0')
-        ax.fill_between(x=x, y1=m+sem, y2=m-sem, color='C0', alpha=.2)
+            ax.plot(x, m, color='C0')
+            ax.fill_between(x=x, y1=m+sem, y2=m-sem, color='C0', alpha=.2)
 
-        ax.set_ylim([0, 1])
+            ax.set_ylim([0, 1])
 
-        ax.set_xlabel('t')
-        ax.set_ylabel('Correct choice rate')
+            ax.set_xlabel('t')
+            ax.set_ylabel('Correct choice rate')
 
-        plt.draw()
-        plt.pause(.1)
+            plt.draw()
+            plt.pause(.1)
+        except:
+            pass

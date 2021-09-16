@@ -30,9 +30,9 @@ function main() {
     // let questNum = 0;
     let stateEnabled = 1;
 
-    let sessionNum = 0;
+    let sessionNum = -1;
     let phaseNum = 1;
-    let instructionNum = 'end';
+    let instructionNum = 0;
     let questNum = 0;
 
     // instantiate experiment parameters
@@ -40,7 +40,7 @@ function main() {
         {
             online:true,   // send network requests
             isTesting: true, // isTesting==in development vs in production
-            expName: 'TestNofixed', // experience name
+            expName: 'TestNofixed2', // experience name
             completeFeedback: true, // display feedback of both options
             maxPoints: undefined, // max points cumulated all along the experiment
             // if undefined or 0, will be computed automatically
@@ -51,6 +51,7 @@ function main() {
             // do not allow for new training sessions
             nTrialPerConditionTraining: 5,
             nTrialPerCondition: 30,
+            noFixFirst: true,
             nSession: 2,
             nCond: 4,
             imgPath: 'images/cards_gif/',

@@ -26,6 +26,7 @@ export class ExperimentParameters {
         nCond,
         nSession,
         fromCookie,
+        noFixFirst,
         obj
     } = {}) {
         // Initial Experiment Parameters
@@ -63,7 +64,7 @@ export class ExperimentParameters {
             this.browsInfo = getOS() + " - " + getBrowser();
             this.subID = getfromURL('prolific_id');
 
-            this.noFixFirst = 1;//+(Math.random() < .5);
+            this.noFixFirst = noFixFirst;
 
             this._initConditionArrays(
                 nTrialPerCondition,
