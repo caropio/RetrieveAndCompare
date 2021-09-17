@@ -112,9 +112,9 @@ export class ChoiceManager {
             event.data.obj.skipEnabled = false;
             this.style.borderColor = "black";
 
-            $('#canvas2').removeClass('animate');
-            $('#canvas2').removeClass('clickable');
-            $('#canvas1').toggleClass('animate');
+            // $('#canvas2').removeClass('animate');
+            // $('#canvas2').removeClass('clickable');
+            // $('#canvas1').toggleClass('animate');
 
             event.data.obj._clickEvent(1, trialObj);
         });
@@ -126,9 +126,9 @@ export class ChoiceManager {
             event.data.obj.skipEnabled = false;
             this.style.borderColor = "black";
 
-            $('#canvas1').removeClass('animate');
-            $('#canvas1').removeClass('clickable');
-            $('#canvas2').toggleClass('animate');
+            // $('#canvas1').removeClass('animate');
+            // $('#canvas1').removeClass('clickable');
+            // $('#canvas2').toggleClass('animate');
             event.data.obj._clickEvent(2, trialObj);
         });
 

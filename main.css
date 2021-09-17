@@ -1,6 +1,6 @@
 .clickable {
     cursor: pointer;
-    transition: all 900ms ease-in-out;
+    /* transition: all 900ms ease-in-out; */
 }
 
 .animate {
