@@ -30,7 +30,7 @@ function main() {
     // let questNum = 0;
     let stateEnabled = 1;
 
-    let sessionNum = 1;
+    let sessionNum = -1;
     let phaseNum = 1;
     let instructionNum = 0;
     let questNum = 0;
