@@ -1,5 +1,10 @@
 .clickable {
     cursor: pointer;
+    transition: all 900ms ease-in-out;
+}
+
+.animate {
+    transform: scale(1.3);
 }
 
 

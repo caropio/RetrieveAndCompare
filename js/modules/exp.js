@@ -104,6 +104,88 @@ export class ExperimentParameters {
 
     }
 
+    _initTrialObj(nCond, nSession) {
+        let phases = [1, 2, 3];
+        this.trialObj = {};
+        this.trialObjTraining = {};
+
+        for (let step of phases) {
+            switch (step) {
+                case 1:
+                    if (this.noFixFirst) {
+                        this.trialObj[step] = this._generateNoFixedLE({
+                            nSession: 1,
+                            options: [this._getOptionsPerSession(this.contexts)[0]],
+                            maxLen: 150,
+                            nRepeat: 2
+                        });
+                        this.trialObj[step].push(
+                            this._generateLE({
+                                nSession: 1,
+                                conditions: [this.conditions[1]],
+                                contexts: [this.contexts[1]]
+                            })[0]
+                        );
+                    } else {
+                        this.trialObj[step] = this._generateLE({
+                            nSession: 1,
+                            conditions: [this.conditions[0]],
+                            contexts: [this.contexts[0]]
+                        });
+
+                        this.trialObj[step].push(
+                            this._generateNoFixedLE({
+                                nSession: 1,
+                                options: [this._getOptionsPerSession(this.contexts)[1]],
+                                maxLen: 150,
+                                nRepeat: 2
+                            })[0]
+                        );
+                                                
+                    }
+                    this.trialObjTraining[step] = this._generateNoFixedLE({
+                        nSession: nSession,
+                        options: this._getOptionsPerSession(this.trainingContexts),
+                        maxLen: 25,
+                        nRepeat: 2
+                    });
+                    
+                    break;
+
+                case 2:
+                    this.trialObj[step] = this._generateED_EE({
+                        nSession: nSession,
+                        options: this._getOptionsPerSession(this.contexts),
+                        maxLen: 144
+                    });
+                    this.trialObjTraining[step] = this._generateED_EE({
+                        nSession: nSession,
+                        options: this._getOptionsPerSession(this.trainingContexts),
+                        maxLen: 7, 
+                    });
+                    break;
+                case 3:
+                    this.trialObj[step] = this._generatePM({
+                        nSession: nSession,
+                        nRepeat: 2, 
+                        options: this._getOptionsPerSession(this.contexts),
+                    });
+                    this.trialObjTraining[step] = this._generatePM({
+                        nSession: nSession,
+                        nRepeat: 2, 
+                        options: this._getOptionsPerSession(this.trainingContexts)
+                    });
+
+                    break;
+            }
+        }
+
+        this._insertCatchTrials()
+
+    }
+
+
+
     _initContingencies() {
         this.cont = [];
         this.probs = [];
@@ -601,86 +683,6 @@ export class ExperimentParameters {
         return options;
     }
 
-    _initTrialObj(nCond, nSession) {
-        let phases = [1, 2, 3];
-        this.trialObj = {};
-        this.trialObjTraining = {};
-
-        for (let step of phases) {
-            switch (step) {
-                case 1:
-                    if (this.noFixFirst) {
-                        this.trialObj[step] = this._generateNoFixedLE({
-                            nSession: 1,
-                            options: [this._getOptionsPerSession(this.contexts)[0]],
-                            maxLen: 150,
-                            nRepeat: 2
-                        });
-                        this.trialObj[step].push(
-                            this._generateLE({
-                                nSession: 1,
-                                conditions: [this.conditions[1]],
-                                contexts: [this.contexts[1]]
-                            })[0]
-                        );
-                    } else {
-                        this.trialObj[step] = this._generateLE({
-                            nSession: 1,
-                            conditions: [this.conditions[0]],
-                            contexts: [this.contexts[0]]
-                        });
-
-                        this.trialObj[step].push(
-                            this._generateNoFixedLE({
-                                nSession: 1,
-                                options: [this._getOptionsPerSession(this.contexts)[1]],
-                                maxLen: 150,
-                                nRepeat: 2
-                            })[0]
-                        );
-                                                
-                    }
-                    this.trialObjTraining[step] = this._generateNoFixedLE({
-                        nSession: nSession,
-                        options: this._getOptionsPerSession(this.trainingContexts),
-                        maxLen: 25,
-                        nRepeat: 2
-                    });
-                    
-                    break;
-
-                case 2:
-                    this.trialObj[step] = this._generateED_EE({
-                        nSession: nSession,
-                        options: this._getOptionsPerSession(this.contexts),
-                        maxLen: 144
-                    });
-                    this.trialObjTraining[step] = this._generateED_EE({
-                        nSession: nSession,
-                        options: this._getOptionsPerSession(this.trainingContexts),
-                        maxLen: 25
-                    });
-                    break;
-                case 3:
-                    this.trialObj[step] = this._generatePM({
-                        nSession: nSession,
-                        nRepeat: 2, 
-                        options: this._getOptionsPerSession(this.contexts),
-                    });
-                    this.trialObjTraining[step] = this._generatePM({
-                        nSession: nSession,
-                        nRepeat: 2, 
-                        options: this._getOptionsPerSession(this.trainingContexts)
-                    });
-
-                    break;
-            }
-        }
-
-        this._insertCatchTrials()
-
-    }
-
     _insertCatchTrials() {
         // insert catch trials randomly in 2nd phase
         for (let sessionNum = 0; sessionNum < this.nSession; sessionNum++) {
@@ -812,7 +814,7 @@ export class ExperimentParameters {
             this.trainingOptions.push(idx);
             this.trainingImg[idx] = new Image();
             this.trainingImg[idx].src = imgPath + "stim/" + idx + "." + imgExt;
-            this.trainingImg[idx].className = "img-responsive center-block";
+            this.trainingImg[idx].className = "img-responsive center-block ";
             this.trainingImg[idx].style.border = "5px solid " + borderColor;
             this.trainingImg[idx].style.position = "relative";
             this.trainingImg[idx].style.top = "0px";
@@ -822,13 +824,13 @@ export class ExperimentParameters {
             let idx = this.ev[i].toString();
             this.images[idx] = new Image();
             this.images[idx].src = imgPath + "lotteries/" + idx + ".png";
-            this.images[idx].className = "img-responsive center-block";
+            this.images[idx].className = "img-responsive center-block ";
             this.images[idx].style.border = "5px solid " + borderColor;
             this.images[idx].style.position = "relative";
             this.images[idx].style.top = "0px";
             this.trainingImg[idx] = new Image();
             this.trainingImg[idx].src = imgPath + "lotteries/" + idx + ".png";
-            this.trainingImg[idx].className = "img-responsive center-block";
+            this.trainingImg[idx].className = "img-responsive center-block ";
             this.trainingImg[idx].style.border = "5px solid " + borderColor;
             this.trainingImg[idx].style.position = "relative";
             this.trainingImg[idx].style.top = "0px";
@@ -841,7 +843,7 @@ export class ExperimentParameters {
         this.images["?"].style.top = "0px";
         this.trainingImg["?"] = new Image();
         this.trainingImg["?"].src = imgPath + "stim/question.jpg";
-        this.trainingImg["?"].className = "img-responsive center-block";
+        this.trainingImg["?"].className = "img-responsive center-block ";
         this.trainingImg["?"].style.border = "5px solid " + borderColor;
         this.trainingImg["?"].style.position = "relative";
         this.trainingImg["?"].style.top = "0px";

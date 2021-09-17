@@ -1,5 +1,6 @@
 import { GUI } from './gui.js'
 import { sendToDB } from './request.js'
+import {decode} from './utils.js'
 
 
 export class Instructions {
@@ -129,8 +130,9 @@ export class Instructions {
             • Please note that previous symbols are now replaced by new ones. 
         `)
 
+        GUI.panelInsertDiv({id: 'buttonBox'});
         GUI.panelInsertButton({
-            id: 'next', value: 'Next', clickArgs: { obj: this },
+            id: 'next', value: 'Next', clickArgs: { obj: this }, div: 'buttonBox',
             classname: 'btn btn-default card-button',
             clickFunc: function (event) {
                 setTimeout(
@@ -323,13 +325,13 @@ export class Instructions {
                     + ' • Please note that the outcome of your choice will not be displayed on each trial.\n'
                     + 'However, for each choice an outcome will be calculated and taken into account for the final payoff.\n\n'
                     + ' • At the end of the test you will be shown with the final payoff in terms of cumulated points and monetary bonus.',
-                2: ' • In the third test  there will be two kind of options. \n'
+                2: ' • In the second test  there will be two kind of options. \n'
                     + ' • The first kind of options is represented by the symbols you already met during the previous test.\n'
                     + GUI.panelGenerateImg({ src: 'images/cards_gif/stim/A.jpg', width: '15%' })
                     + 'Note: the symbols keep the same odds of winning / losing a point as in the first test.\n\n'
                     + ' • The second kind of options is represented by pie-charts explicitly describing the odds of winning / losing a point.\n'
                     + GUI.panelGenerateImg({ src: 'images/cards_gif/lotteries/0.png', width: '15%' })
-                    + 'Specifically, the green area indicates the chance of winning +1 (+' + this.exp.pointsToPence(1).toFixed(2) + 'p) ; the red area indicates the chance of losing -1 (+'
+                    + 'Specifically, the green area indicates the chance of winning +1 (+' + this.exp.pointsToPence(1).toFixed(2) + 'p) ; the red area indicates the chance of losing -1 (-'
                     + this.exp.pointsToPence(1).toFixed(2) + 'p).\n'
                     + 'Pie-charts go from 100% chance of winning a point to 100% chance of losing a point.\n\n'
                     // + ' • Sometimes the pie-chart will be hidden an represented by a question mark, in such a way that the odds of winning / losing are unknown.\n\n'
@@ -346,13 +348,13 @@ export class Instructions {
                     + ' • Please note that the outcome of your choice will not be displayed on each trial.\n'
                     + 'However, for each choice an outcome will be calculated and taken into account for the final payoff.\n\n'
                     + ' • At the end of the test you will be shown with the final payoff in terms of cumulated points and monetary bonus.',
-                2: ' • In the third test  there will be two kind of options. \n'
+                2: ' • In the second test  there will be two kind of options. \n'
                     + ' • The first kind of options is represented by the symbols you already met during the previous test.\n'
                     + GUI.panelGenerateImg({ src: 'images/cards_gif/stim_old/2.gif', width: '15%' })
                     + 'Note: the symbols keep the same odds of winning / losing a point as in the first test. \n\n'
                     + ' • The second kind of options is represented by pie-charts explicitly describing the odds of winning / losing a point.\n'
                     + GUI.panelGenerateImg({ src: 'images/cards_gif/lotteries/0.png', width: '15%' })
-                    + 'Specifically, the green area indicates the chance of winning +1 (+' + this.exp.pointsToPence(1).toFixed(2) + 'p) ; the red area indicates the chance of losing -1 (+'
+                    + 'Specifically, the green area indicates the chance of winning +1 (+' + this.exp.pointsToPence(1).toFixed(2) + 'p) ; the red area indicates the chance of losing -1 (-'
                     + this.exp.pointsToPence(1).toFixed(2) + 'p).\n'
                     + 'Pie-charts go from 100% chance of winning a point to 100% chance of losing a point.\n\n'
                     // + ' • Sometimes the pie-chart will be hidden an represented by a question mark, in such a way that the odds of winning / losing are unknown.\n'
@@ -431,7 +433,7 @@ export class Instructions {
 
         let text = {
             1: ` • In each round of the third test you will be presented with the symbols and pie-charts you met in the first and the second test.\n
-                     • You will be asked to indicate (in percentages), what are the odds that a given symbol or pie-chart makes you win a point (+1=+' ${this.exp.pointsToPence(1).toFixed(2)}p).\n\n
+                     • You will be asked to indicate (in percentages), what are the odds that a given symbol or pie-chart makes you win a point (+1=+${this.exp.pointsToPence(1).toFixed(2)}p).\n\n
                      • You will be able to do this through moving a slider on the screen and then confirm your final answer by clicking on the confirmation button.\n\n
                      • 100%  = the symbol (or pie-chart) always gives +1pt.\n
                      • 50%  = the symbol (or pie-chart) always gives +1pt or -1pt with equal chances.\n
@@ -598,7 +600,7 @@ export class Instructions {
             + 'Test 2: ' + this.exp.sumReward[2] + ' = ' + this.exp.pointsToPounds(this.exp.sumReward[2]) + ' pounds' + '<br>'
             + 'Test 3: ' + this.exp.sumReward[3] + ' = ' + this.exp.pointsToPounds(this.exp.sumReward[3]) + ' pounds' + '<br>'
             + 'With your initial endowment, you won a total bonus of ' + (parseFloat(pence) + 250) + ' pence = ' + (parseFloat(pounds) + 2.5) + ' pounds!<br><br>' +
-            'Thank you for playing!<br><br><a href="' + this.exp.compLink + '">Please click the link to complete this study</a><br></h3><br>'
+            'Thank you for playing!<br><br><a href="' + decode(this.exp.compLink) + '">Please click the link to complete this study</a><br></h3><br>'
 
         $('#stim-box').html(Title)
     }

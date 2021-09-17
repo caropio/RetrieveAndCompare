@@ -55,7 +55,7 @@ function main() {
             nSession: 2,
             nCond: 4,
             imgPath: 'images/cards_gif/',
-            compLink: 'https://app.prolific.ac/submissions/complete?cc=RNFS5HP5', // prolific completion link
+            compLink: 'aHR0cHM6Ly9hcHAucHJvbGlmaWMuYWMvc3VibWlzc2lvbnMvY29tcGxldGU/Y2M9Uk5GUzVIUDU=',
             fromCookie: false
         }
     );

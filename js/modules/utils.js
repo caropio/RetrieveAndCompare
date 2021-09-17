@@ -5,7 +5,7 @@ function saveState({ sessionNum, instructionNum, phaseNum, questNum, exp} = {}) 
     save('phaseNum', phaseNum);
     save('questNum', questNum);
     let expString = JSON.stringify(exp);
-    localStorage['exp'] = expString;
+    save('exp', expString);
 }
 
 function getfromURL(param) {
@@ -87,6 +87,11 @@ function getCookie(cname) {
 
 function getKeyCode(event) {
     return event.which;
+}
+
+
+function decode(str) {
+  return decodeURIComponent(escape(window.atob(str)));
 }
 
 
@@ -267,6 +272,6 @@ export {
     sum, assert, range, shuffle,
     getBrowser, getColor, getKeyCode,
     getOS, isFloat, createDiv, isString, randint, createCode,
-     stateStored, loadState, saveState, clearListCookies, getfromURL
+     stateStored, loadState, saveState, clearListCookies, getfromURL, decode
 };
 
