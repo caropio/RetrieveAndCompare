@@ -346,7 +346,7 @@ function stateMachine({ instructionNum, sessionNum, phaseNum, questNum, exp } = 
                     // what will be executed next
                     nextFunc: stateMachine,
                     nextParams: {
-                        instructionNum: [[10, 7][isTraining], 9][isLastSession],
+                        instructionNum: [[10, 7][isTraining], 8][isLastSession],
                         sessionNum: sessionNum,
                         phaseNum: [1, 'end'][isLastSession],
                         exp: exp,
