@@ -596,9 +596,9 @@ export class Instructions {
 
         let Title = '<h3 align = "center">The game is over!<br>' +
             'You ' + wonlost + points + ' points in total, which is ' + pence + ' pence = ' + pounds + ' pounds!<br><br>'
-            + 'Test 1: ' + this.exp.sumReward[1] + ' = ' + this.exp.pointsToPounds(this.exp.sumReward[1]) + ' pounds' + '<br>'
-            + 'Test 2: ' + this.exp.sumReward[2] + ' = ' + this.exp.pointsToPounds(this.exp.sumReward[2]) + ' pounds' + '<br>'
-            + 'Test 3: ' + this.exp.sumReward[3] + ' = ' + this.exp.pointsToPounds(this.exp.sumReward[3]) + ' pounds' + '<br>'
+            + 'Test 1: ' + this.exp.sumReward[1] + ' = ' + this.exp.pointsToPounds(this.exp.sumReward[1]).toFixed(2) + ' pounds' + '<br>'
+            + 'Test 2: ' + this.exp.sumReward[2] + ' = ' + this.exp.pointsToPounds(this.exp.sumReward[2]).toFixed(2) + ' pounds' + '<br>'
+            + 'Test 3: ' + this.exp.sumReward[3] + ' = ' + this.exp.pointsToPounds(this.exp.sumReward[3]).toFixed(2) + ' pounds' + '<br>'
             + 'With your initial endowment, you won a total bonus of ' + (parseFloat(pence) + 250) + ' pence = ' + (parseFloat(pounds) + 2.5) + ' pounds!<br><br>' +
             'Thank you for playing!<br><br><a href="' + decode(this.exp.compLink) + '">Please click the link to complete this study</a><br></h3><br>'
 
