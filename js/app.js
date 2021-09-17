@@ -50,7 +50,7 @@ function main() {
             maxTrainingNum: -2, // if sessionNum == maxTrainingNum
             // do not allow for new training sessions
             nTrialPerConditionTraining: 5,
-            nTrialPerCondition: 30,
+            nTrialPerCondition: 28,
             noFixFirst: true,
             nSession: 2,
             nCond: 4,
