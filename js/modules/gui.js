@@ -7,7 +7,7 @@ export class GUI {
      */
 
     /* =================== class members ================== */
-    static steps = ['introduction', 'training', 'experiment', 'questionnaire'];
+    static steps = ['introduction', 'training', 'experiment']; //, 'questionnaire'];
     
 
 
@@ -49,8 +49,11 @@ export class GUI {
     }
 
     static panelSetParagraph(text) {
+        // this.panelHide()
+        $('#panel').hide()
         $('.card-text').remove();
         $('#card-content').prepend('<div class="card-text">' + text + '</div>');
+        this.panelShow()
         //this.setCardTransition();
 
     }
@@ -146,7 +149,7 @@ export class GUI {
 
     static panelShow() {
         $('#game').hide();
-        $('#panel').slideDown(500);
+        $('#panel').fadeIn(500);
     }
 
     static panelHide() {
