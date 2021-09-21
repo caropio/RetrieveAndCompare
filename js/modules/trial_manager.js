@@ -105,33 +105,25 @@ export class ChoiceManager {
 
         let clickEnabled = true;
 
-        $('#canvas1').click({obj: this}, (event) => {
+        $('#canvas1').click({obj: this}, function (event) {
             if (!clickEnabled)
                 return;
             clickEnabled = false;
             event.data.obj.skipEnabled = false;
-            this.className = this.className.replace('clickable', '');
+            $('.clickable').removeClass('clickable');
             this.style.borderColor = "black";
-
-            // $('#canvas2').removeClass('animate');
-            // $('#canvas2').removeClass('clickable');
-            // $('#canvas1').toggleClass('animate');
-
             event.data.obj._clickEvent(1, trialObj);
         });
 
-        $('#canvas2').click({obj: this}, (event) => {
+        $('#canvas2').click({obj: this}, function (event) {
             if (!clickEnabled)
                 return;
             clickEnabled = false;
 
             event.data.obj.skipEnabled = false;
             this.style.borderColor = "black";
-            this.className = this.className.replace('clickable', '');
+            $('.clickable').removeClass('clickable');
 
-            // $('#canvas1').removeClass('animate');
-            // $('#canvas1').removeClass('clickable');
-            // $('#canvas2').toggleClass('animate');
             event.data.obj._clickEvent(2, trialObj);
         });
 
