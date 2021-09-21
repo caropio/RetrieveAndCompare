@@ -1,14 +1,22 @@
 .clickable {
     cursor: pointer;
     transition: all 100ms ease-in-out;
+    /* border-radius: 8%; */
 }
 
 .clickable:hover {
-    border: 6px gray solid !important;
+    border: 9px gray solid !important;
+    /* border-radius: 8%; */
+    /* box-shadow: grey 0px 2px 4px 0px; */
 }
 
 .animate {
     transform: scale(1.3);
+}
+
+.rounded {
+    /* border-radius: 8%; */
+    /* box-shadow: grey 0px 2px 4px 0px; */
 }
 
 

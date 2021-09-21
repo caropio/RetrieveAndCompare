@@ -759,7 +759,7 @@ export class ExperimentParameters {
             this.images[i] = new Image();
             this.images[i].src = imgPath + "stim_old/" + i + "." + imgExt;
             this.images[i].className = "img-responsive center-block";
-            this.images[i].style.border = "5px solid " + borderColor;
+            this.images[i].style.border = "10px solid " + borderColor;
             this.images[i].style.position = "relative";
             this.images[i].style.top = "0px";
         }
@@ -814,7 +814,7 @@ export class ExperimentParameters {
             this.trainingOptions.push(idx);
             this.trainingImg[idx] = new Image();
             this.trainingImg[idx].src = imgPath + "stim/" + idx + "." + imgExt;
-            this.trainingImg[idx].className = "img-responsive center-block ";
+            this.trainingImg[idx].className = "img-responsive rounded center-block ";
             this.trainingImg[idx].style.border = "5px solid " + borderColor;
             this.trainingImg[idx].style.position = "relative";
             this.trainingImg[idx].style.top = "0px";

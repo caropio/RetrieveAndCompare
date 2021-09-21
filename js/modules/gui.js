@@ -224,6 +224,7 @@ export class GUI {
         let cv = [cv2, cv1][+(choice === 1)];
         let fb = [fb2, fb1][+(choice === 1)];
 
+
         if (completeFeedback) {
             if (showFeedback) {
                 fb1.src = feedbackObj['' + reward1].src;
@@ -253,6 +254,7 @@ export class GUI {
         img.width = pic.width;
         img.height = pic.height;
 
+        
         let speed = 5;
         let y = 0;
 
@@ -298,6 +300,7 @@ export class GUI {
             ctx.drawImage(img, x, y, img.width, img.height);
 
             y += dy;
+
         }
     }
 

@@ -105,12 +105,11 @@ export class ChoiceManager {
 
         let clickEnabled = true;
 
-        $('#canvas1').click({obj: this}, function (event) {
+        $('#canvas1').click({obj: this}, (event) => {
             if (!clickEnabled)
                 return;
             clickEnabled = false;
             event.data.obj.skipEnabled = false;
-            // debugger
             this.className = this.className.replace('clickable', '');
             this.style.borderColor = "black";
 
@@ -121,12 +120,11 @@ export class ChoiceManager {
             event.data.obj._clickEvent(1, trialObj);
         });
 
-        $('#canvas2').click({obj: this}, function (event) {
+        $('#canvas2').click({obj: this}, (event) => {
             if (!clickEnabled)
                 return;
             clickEnabled = false;
 
-            // debugger
             event.data.obj.skipEnabled = false;
             this.style.borderColor = "black";
             this.className = this.className.replace('clickable', '');
