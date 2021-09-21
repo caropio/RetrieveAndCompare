@@ -50,10 +50,9 @@ export class GUI {
 
     static panelSetParagraph(text) {
         // this.panelHide()
-        $('#panel').hide()
+        // $('#panel').hide()
         $('.card-text').remove();
         $('#card-content').prepend('<div class="card-text">' + text + '</div>');
-        this.panelShow()
         //this.setCardTransition();
 
     }

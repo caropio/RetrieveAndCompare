@@ -110,6 +110,8 @@ export class ChoiceManager {
                 return;
             clickEnabled = false;
             event.data.obj.skipEnabled = false;
+            // debugger
+            this.className = this.className.replace('clickable', '');
             this.style.borderColor = "black";
 
             // $('#canvas2').removeClass('animate');
@@ -123,8 +125,11 @@ export class ChoiceManager {
             if (!clickEnabled)
                 return;
             clickEnabled = false;
+
+            // debugger
             event.data.obj.skipEnabled = false;
             this.style.borderColor = "black";
+            this.className = this.className.replace('clickable', '');
 
             // $('#canvas1').removeClass('animate');
             // $('#canvas1').removeClass('clickable');
