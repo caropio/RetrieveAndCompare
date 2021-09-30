@@ -501,11 +501,11 @@ export class GUI {
 
         let canvas1 = '<canvas id="canvas1" height="620"' +
             ' width="620" class="img-responsive center-block clickable"' +
-            ' style="border: 7px solid transparent; position: relative; top: 0px;">';
+            ' style="border: 5px solid transparent; position: relative; top: 0px;">';
 
         let canvas2 = '<canvas id="canvas2" height="620"' +
             ' width="620" class="img-responsive center-block clickable"' +
-            ' style="border: 7px solid transparent; position: relative; top: 0px;">';
+            ' style="border: 5px solid transparent; position: relative; top: 0px;">';
 
         let options = [[option1, option2], [option2, option1]][+(invertedPosition)];
         let feedbacks = [[feedback1, feedback2], [feedback2, feedback1]][+(invertedPosition)];

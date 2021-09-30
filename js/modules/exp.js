@@ -759,7 +759,7 @@ export class ExperimentParameters {
             this.images[i] = new Image();
             this.images[i].src = imgPath + "stim_old/" + i + "." + imgExt;
             this.images[i].className = "img-responsive center-block";
-            this.images[i].style.border = "10px solid " + borderColor;
+            this.images[i].style.border = "5px solid " + borderColor;
             this.images[i].style.position = "relative";
             this.images[i].style.top = "0px";
         }

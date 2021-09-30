@@ -119,11 +119,9 @@ export class ChoiceManager {
             if (!clickEnabled)
                 return;
             clickEnabled = false;
-
             event.data.obj.skipEnabled = false;
             this.style.borderColor = "black";
             $('.clickable').removeClass('clickable');
-
             event.data.obj._clickEvent(2, trialObj);
         });
 

@@ -431,7 +431,7 @@ export class Instructions {
         GUI.panelSetTitle('Instructions for the third test')
 
         let text = {
-            1: ` • In each round of the third test you will be presented with the symbols and pie-charts you met in the first and the second test.\n
+            1: ` • In each round of the third test you will be presented with the symbols and pie-charts you met in the first and the second test. This is the occasion to test your knowledge of each symbol average outcome. \n
                      • You will be asked to indicate (in percentages), what are the odds that a given symbol or pie-chart makes you win a point (+1=+${this.exp.pointsToPence(1).toFixed(2)}p).\n\n
                      • You will be able to do this through moving a slider on the screen and then confirm your final answer by clicking on the confirmation button.\n\n
                      • 100%  = the symbol (or pie-chart) always gives +1pt.\n
