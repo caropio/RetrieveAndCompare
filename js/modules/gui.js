@@ -287,7 +287,6 @@ export class GUI {
         };
 
         function draw() {
-            console.log('Drawing...');
 
             ctx.clearRect(0, 0, canvas.width, canvas.height);
 
