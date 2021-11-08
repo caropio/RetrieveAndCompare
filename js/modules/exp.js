@@ -156,7 +156,7 @@ export class ExperimentParameters {
                     this.trialObj[step] = this._generateED_EE({
                         nSession: nSession,
                         options: this._getOptionsPerSession(this.contexts),
-                        maxLen: 144
+                        maxLen: 160
                     });
                     this.trialObjTraining[step] = this._generateED_EE({
                         nSession: nSession,
@@ -167,12 +167,12 @@ export class ExperimentParameters {
                 case 3:
                     this.trialObj[step] = this._generatePM({
                         nSession: nSession,
-                        nRepeat: 2, 
+                        nRepeat: 1, 
                         options: this._getOptionsPerSession(this.contexts),
                     });
                     this.trialObjTraining[step] = this._generatePM({
                         nSession: nSession,
-                        nRepeat: 2, 
+                        nRepeat: 1, 
                         options: this._getOptionsPerSession(this.trainingContexts)
                     });
 
@@ -588,7 +588,7 @@ export class ExperimentParameters {
         // define catch trials for slider
         // ===================================================================== //
         // using cont idx
-        let catchTrialsTemp = shuffle([1, 9]);
+        let catchTrialsTemp = shuffle([1, 2, 3, 4, 6, 7, 8, 9]);
 
         let catchTrials = [];
         for (let i = 0; i < catchTrialsTemp.length; i++) {
