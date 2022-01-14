@@ -168,11 +168,21 @@ export class ExperimentParameters {
                     this.trialObj[step] = this._generatePM({
                         nSession: nSession,
                         nRepeat: 1, 
+                        option1Type: 1,
                         options: this._getOptionsPerSession(this.contexts),
                     });
+                    this.trialObj[step].push(...this._generatePM({
+                        nSession: nSession,
+                        nRepeat: 1, 
+                        option1Type: 0,
+                        options: [range(0, 10, 1), range(0, 10, 1)],
+                    }));
+
+                    debugger
                     this.trialObjTraining[step] = this._generatePM({
                         nSession: nSession,
                         nRepeat: 1, 
+                        option1Type: 1,
                         options: this._getOptionsPerSession(this.trainingContexts)
                     });
 
@@ -377,7 +387,7 @@ export class ExperimentParameters {
     }
 
 
-    _generatePM({ nSession, nRepeat, options } = {}) {
+    _generatePM({ nSession, nRepeat, options, option1Type} = {}) {
         // ===================================================================== //
         // Probability matching Phase (Slider) -- Trial obj definition
         // ===================================================================== //
@@ -387,16 +397,22 @@ export class ExperimentParameters {
             for (let optionNum = 0; optionNum < options[sessionNum].length; optionNum++) {
                 for (let repeatNum = 0; repeatNum < nRepeat; repeatNum++) {
 
-                    let contIdx1 = this.learningCont[optionNum];
-                    let file1 = options[sessionNum][optionNum];
+                    let contIdx1;
+                    let file1;
 
+                    if (option1Type === 1) {
+                        contIdx1 = this.learningCont[optionNum];
+                        file1 = options[sessionNum][optionNum];
+                    } else {
+                        contIdx1 = this.lotteryCont[optionNum];
+                        file1 = this.ev[contIdx1].toString();
+                    }
+                    
                     let ev1 = this.ev[contIdx1];
 
                     let p1 = this.cont[contIdx1];
 
                     let r1 = this.rew;
-
-                    let option1Type = 1;
 
                     let isCatchTrial = false;
 

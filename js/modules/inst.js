@@ -227,7 +227,7 @@ export class Instructions {
         GUI.panelFlush()
         GUI.setActiveCurrentStep('training')
         if (!isTraining) {
-            GUI.setActiveCurrentStep('experiment')
+            GUI.setActiveCurrentStep('experiment'+sessionNum)
         }
         GUI.panelSetTitle('Instructions for the first test')
 
@@ -312,7 +312,7 @@ export class Instructions {
         GUI.panelShow()
         GUI.setActiveCurrentStep('training')
         if (!isTraining) {
-            GUI.setActiveCurrentStep('experiment')
+            GUI.setActiveCurrentStep('experiment'+sessionNum)
         }
         GUI.panelSetTitle('Instructions for the second test')
 
@@ -416,7 +416,7 @@ export class Instructions {
         let pageNum = funcParams['pageNum']
         let phaseNum = funcParams['phaseNum']
         let isTraining = funcParams['isTraining']
-        // let sessionNum = funcParams['sessionNum'] + 1
+        let sessionNum = funcParams['sessionNum'] + 1
         let points = this.exp.sumReward[phaseNum - 1]
         // let pence = this.exp.pointsToPence(points).toFixed(2)
         // let pounds = this.exp.pointsToPounds(points).toFixed(2)
@@ -426,7 +426,7 @@ export class Instructions {
         GUI.panelShow()
         GUI.setActiveCurrentStep('training')
         if (!isTraining) {
-            GUI.setActiveCurrentStep('experiment')
+            GUI.setActiveCurrentStep('experiment'+sessionNum)
         }
         GUI.panelSetTitle('Instructions for the third test')
 
@@ -574,7 +574,7 @@ export class Instructions {
             clickFunc: function (event) {
                 event.data.obj.exp.sumReward.fill(0)
 
-                GUI.setActiveCurrentStep('experiment')
+                GUI.setActiveCurrentStep('experiment'+(sessionNum+1))
                 setTimeout(
                     nextFunc(nextParams), 800
                 )
