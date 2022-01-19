@@ -169,11 +169,11 @@ export class GUI {
         //$('#game').fadeOut(500);
     }
 
+
     static displayOptions(id1, id2, img, feedbackImg, invertedPosition) {
         let [option1, option2, feedback1, feedback2] = GUI._getOptions(id1, id2, img, feedbackImg);
         GUI._displayTwoOptions(option1, option2, feedback1, feedback2, invertedPosition);
     }
-
 
     static displayOptionSlider(id, imgObj, initValue) {
 
@@ -472,6 +472,7 @@ export class GUI {
 
     static _getOptions(id1, id2, img, feedbackImg) {
 
+        debugger;
         let option1 = img[id1];
 
         option1.id = "option1";

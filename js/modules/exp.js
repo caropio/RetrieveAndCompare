@@ -112,45 +112,50 @@ export class ExperimentParameters {
         for (let step of phases) {
             switch (step) {
                 case 1:
-                    if (this.noFixFirst) {
-                        this.trialObj[step] = this._generateNoFixedLE({
-                            nSession: 1,
-                            options: [this._getOptionsPerSession(this.contexts)[0]],
-                            maxLen: 112,
-                            nRepeat: 2
-                        });
-                        this.trialObj[step].push(
-                            this._generateLE({
-                                nSession: 1,
-                                conditions: [this.conditions[1]],
-                                contexts: [this.contexts[1]],
-                                maxLen: 112,
-                            })[0]
-                        );
-                    } else {
-                        this.trialObj[step] = this._generateLE({
-                            nSession: 1,
-                            conditions: [this.conditions[0]],
-                            contexts: [this.contexts[0]],
-                            maxLen: 112,
+                    // if (this.noFixFirst) {
+                        // this.trialObj[step] = this._generateNoFixedLE({
+                    //         nSession: 1,
+                    //         options: [this._getOptionsPerSession(this.contexts)[0]],
+                    //         maxLen: 112,
+                    //         nRepeat: 2
+                    //     });
+                    //     this.trialObj[step].push(
+                    //         this._generateLE({
+                    //             nSession: 1,
+                    //             conditions: [this.conditions[1]],
+                    //             contexts: [this.contexts[1]],
+                    //             maxLen: 112,
+                    //         })[0]
+                    //     );
+                    // } else {
+                    //                         //     this.trialObj[step].push(
+                    //         this._generateNoFixedLE({
+                    //             nSession: 1,
+                    //             options: [this._getOptionsPerSession(this.contexts)[1]],
+                    //             maxLen: 112,
+                    //             nRepeat: 2
+                    //         })[0]
+                    //     );
+                                                
+                    // }
+                    
+                    this.trialObj[step] = this._generateLE({
+                            nSession: nSession,
+                            conditions: this.conditions,
+                            contexts: this.contexts,
+                            maxLen: 120,
                         });
 
-                        this.trialObj[step].push(
-                            this._generateNoFixedLE({
-                                nSession: 1,
-                                options: [this._getOptionsPerSession(this.contexts)[1]],
-                                maxLen: 112,
-                                nRepeat: 2
-                            })[0]
-                        );
-                                                
-                    }
+
                     this.trialObjTraining[step] = this._generateNoFixedLE({
-                        nSession: nSession,
-                        options: this._getOptionsPerSession(this.trainingContexts),
-                        maxLen: 12,
+                        nSession: 1,
+                        options: [this._getOptionsPerSession(this.trainingContexts)[1]],
                         nRepeat: 2,
+                        maxLen: 12,
+                        // nRepeat: 2,
                     });
+                    
+                    debugger;
                     
                     break;
 
@@ -180,7 +185,7 @@ export class ExperimentParameters {
                         nRepeat: 1, 
                         option1Type: 0,
                         maxLen: 30,
-                        options: [range(0, 10, 1), range(0, 10, 1)],
+                        options: [[1, 9], [1, 9]],
                     }).flat();
                     this.trialObj[step][0].push(... lot);
                     this.trialObj[step][1].push(... lot);
