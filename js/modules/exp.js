@@ -147,15 +147,14 @@ export class ExperimentParameters {
                         });
 
 
-                    this.trialObjTraining[step] = this._generateNoFixedLE({
+                    this.trialObjTraining[step] = this._generateLE({
                         nSession: 1,
-                        options: [this._getOptionsPerSession(this.trainingContexts)[1]],
+                        conditions: this.trainingConditions,
+                        contexts: this.trainingContexts,
                         nRepeat: 2,
                         maxLen: 12,
                         // nRepeat: 2,
                     });
-                    
-                    debugger;
                     
                     break;
 
