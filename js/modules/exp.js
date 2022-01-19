@@ -185,6 +185,9 @@ export class ExperimentParameters {
                     this.trialObj[step][0].push(... lot);
                     this.trialObj[step][1].push(... lot);
 
+                    this.trialObj[step][0] = shuffle(this.trialObj[step][0]);
+                    this.trialObj[step][1] = shuffle(this.trialObj[step][1]);
+
                     this.trialObjTraining[step] = this._generatePM({
                         nSession: 2,
                         nRepeat: 1, 
