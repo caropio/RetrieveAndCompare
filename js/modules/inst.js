@@ -153,9 +153,10 @@ export class Instructions {
         GUI.panelSetTitle('General Instructions')
 
         let text = {
-            1: ' • This experiment is composed of 2 main phases. \n\n'
-                + ' • The first phase is a training phase consisting in 3 different cognitive tests.\n\n'
-                + ' • The second phase constitutes the actual experiment and is composed of longer versions of the 3 cognitive tests .\n\n',
+            1: ' • This experiment is composed of 3 main steps. \n\n'
+                + ' • The first step is a training phase consisting in 3 different cognitive tests.\n\n'
+                + ' • The actual experiment starts with the second step, i.e. the first phase of the experiment. It is composed of longer versions of the 3 cognitive tests .\n\n'
+                + ' • The third step is the second phase of the experiment. It is also composed of longer versions of the 3 cognitive tests .\n\n',
             2: ' • In addition of the fixed compensation provided by Prolific, you have been endowed with an additional 2.5 pounds. \n\n'
                 + ' • Depending on your choices you can either double this endowment or lose it. \n\n'
                 + ' • Following experimental economics methodological standards, no deception is involved concerning the calculation of the final payoff.\n\n'
