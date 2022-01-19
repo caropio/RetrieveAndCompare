@@ -116,28 +116,30 @@ export class ExperimentParameters {
                         this.trialObj[step] = this._generateNoFixedLE({
                             nSession: 1,
                             options: [this._getOptionsPerSession(this.contexts)[0]],
-                            maxLen: 150,
+                            maxLen: 112,
                             nRepeat: 2
                         });
                         this.trialObj[step].push(
                             this._generateLE({
                                 nSession: 1,
                                 conditions: [this.conditions[1]],
-                                contexts: [this.contexts[1]]
+                                contexts: [this.contexts[1]],
+                                maxLen: 112,
                             })[0]
                         );
                     } else {
                         this.trialObj[step] = this._generateLE({
                             nSession: 1,
                             conditions: [this.conditions[0]],
-                            contexts: [this.contexts[0]]
+                            contexts: [this.contexts[0]],
+                            maxLen: 112,
                         });
 
                         this.trialObj[step].push(
                             this._generateNoFixedLE({
                                 nSession: 1,
                                 options: [this._getOptionsPerSession(this.contexts)[1]],
-                                maxLen: 150,
+                                maxLen: 112,
                                 nRepeat: 2
                             })[0]
                         );
@@ -146,8 +148,8 @@ export class ExperimentParameters {
                     this.trialObjTraining[step] = this._generateNoFixedLE({
                         nSession: nSession,
                         options: this._getOptionsPerSession(this.trainingContexts),
-                        maxLen: 25,
-                        nRepeat: 2
+                        maxLen: 12,
+                        nRepeat: 2,
                     });
                     
                     break;
@@ -161,31 +163,38 @@ export class ExperimentParameters {
                     this.trialObjTraining[step] = this._generateED_EE({
                         nSession: nSession,
                         options: this._getOptionsPerSession(this.trainingContexts),
-                        maxLen: 25, 
+                        maxLen: 12, 
                     });
                     break;
                 case 3:
+
                     this.trialObj[step] = this._generatePM({
                         nSession: nSession,
                         nRepeat: 1, 
                         option1Type: 1,
+                        maxLen: 30,
                         options: this._getOptionsPerSession(this.contexts),
                     });
-                    this.trialObj[step].push(...this._generatePM({
-                        nSession: nSession,
+                    let lot = this._generatePM({
+                        nSession: 1,
                         nRepeat: 1, 
                         option1Type: 0,
+                        maxLen: 30,
                         options: [range(0, 10, 1), range(0, 10, 1)],
-                    }));
+                    }).flat();
+                    this.trialObj[step][0].push(... lot);
+                    this.trialObj[step][1].push(... lot);
 
-                    debugger
                     this.trialObjTraining[step] = this._generatePM({
-                        nSession: nSession,
+                        nSession: 2,
                         nRepeat: 1, 
                         option1Type: 1,
-                        options: this._getOptionsPerSession(this.trainingContexts)
+                        maxLen: 4,
+                        options: this._getOptionsPerSession(this.trainingContexts),
                     });
 
+                    // debugger;
+                    
                     break;
             }
         }
@@ -333,7 +342,7 @@ export class ExperimentParameters {
         // ===================================================================== //
     }
 
-    _generateLE({ nSession, conditions, contexts } = {}) {
+    _generateLE({ nSession, conditions, contexts, maxLen} = {}) {
         // ===================================================================== //
         // Learning Phase -- Trial obj definition
         // ===================================================================== //
@@ -382,12 +391,12 @@ export class ExperimentParameters {
 
         }
 
-        return arrToFill;
+        return this._setMaxLen(arrToFill, maxLen);
 
     }
 
 
-    _generatePM({ nSession, nRepeat, options, option1Type} = {}) {
+    _generatePM({ nSession, nRepeat, options, option1Type, maxLen} = {}) {
         // ===================================================================== //
         // Probability matching Phase (Slider) -- Trial obj definition
         // ===================================================================== //
@@ -428,11 +437,14 @@ export class ExperimentParameters {
                     });
                 }
 
+                arrToFill[sessionNum] = shuffle(arrToFill[sessionNum]);
+                // if (arrToFill[sessionNum].length >= maxLen) {
+                    // break;
+                // }   
             }
-            arrToFill[sessionNum] = shuffle(arrToFill[sessionNum]);
         }
 
-        return arrToFill;
+        return this._setMaxLen(arrToFill, maxLen);
     }
 
     _generateNoFixedLE({ nSession, nRepeat, options, maxLen } = {}) {
@@ -482,14 +494,14 @@ export class ExperimentParameters {
                             option2Type: option2Type,
                         });
 
-                        if (arrToFill[sessionNum].length > maxLen) {
-                            break LOOP;
-                        }
+                        // if (arrToFill[sessionNum].length > maxLen) {
+                            // break LOOP;
+                        // }
                     }
                 }
             }
         }
-        return arrToFill;
+        return this._setMaxLen(arrToFill, maxLen);
     }
 
 
@@ -588,15 +600,23 @@ export class ExperimentParameters {
 
                 arrToFill[sessionNum].push(shuffle(tempArray));
 
-                if (arrToFill[sessionNum].flat().length > maxLen) {
-                    break LOOP1;
-                }
+                // if (arrToFill[sessionNum].flat().length > maxLen) {
+                    // break LOOP1;
+                // }
             }
             
 
             arrToFill[sessionNum] = arrToFill[sessionNum].flat();
         }
 
+        return this._setMaxLen(arrToFill, maxLen);
+    }
+    
+    _setMaxLen(arrToFill, maxLen) {
+        for (let i = 0; i < arrToFill.length; i++) {
+            arrToFill[i] = arrToFill[i].slice(0, maxLen);
+        }
+        // debugger;
         return arrToFill;
     }
 
@@ -711,37 +731,37 @@ export class ExperimentParameters {
         for (let sessionNum = 0; sessionNum < this.nSession; sessionNum++) {
             let trials1 = this._generateCatchTrialsTwoOptions();
             let count = trials1.length;
-            let trials2 = this._generateCatchTrialsTwoOptions();
+            // let trials2 = this._generateCatchTrialsTwoOptions();
             for (let trialNum = 0; trialNum < count; trialNum++) {
                 this.trialObj[2][sessionNum].splice(
                     Math.floor(Math.random() * (this.trialObj[2][sessionNum].length + 1)),
                     0, trials1.pop());
 
-                this.trialObjTraining[2][sessionNum].splice(
-                    Math.floor(Math.random() * (this.trialObjTraining[2][sessionNum].length + 1)),
-                    0, trials2.pop());
+                // this.trialObjTraining[2][sessionNum].splice(
+                    // Math.floor(Math.random() * (this.trialObjTraining[2][sessionNum].length + 1)),
+                    // 0, trials2.pop());
 
             }
 
         }
 
         // insert catch trials randomly in 3rd phase
-        for (let sessionNum = 0; sessionNum < this.nSession; sessionNum++) {
-            let trials1 = this._generateCatchTrialsOneOption();
-            let count = trials1.length;
-            let trials2 = this._generateCatchTrialsOneOption();
-            for (let trialNum = 0; trialNum < count; trialNum++) {
-                this.trialObj[3][sessionNum].splice(
-                    Math.floor(Math.random() * (this.trialObj[3][sessionNum].length + 1)),
-                    0, trials1.pop());
+        // for (let sessionNum = 0; sessionNum < this.nSession; sessionNum++) {
+            // let trials1 = this._generateCatchTrialsOneOption();
+            // let count = trials1.length;
+            // let trials2 = this._generateCatchTrialsOneOption();
+            // for (let trialNum = 0; trialNum < count; trialNum++) {
+                // this.trialObj[3][sessionNum].splice(
+                    // Math.floor(Math.random() * (this.trialObj[3][sessionNum].length + 1)),
+                    // 0, trials1.pop());
 
-                this.trialObjTraining[3][sessionNum].splice(
-                    Math.floor(Math.random() * (this.trialObjTraining[3][sessionNum].length + 1)),
-                    0, trials2.pop());
+                // this.trialObjTraining[3][sessionNum].splice(
+                    // Math.floor(Math.random() * (this.trialObjTraining[3][sessionNum].length + 1)),
+                    // 0, trials2.pop());
 
-            }
+            // }
 
-        }
+        // }
     }
 
     _computeMaxPoints() {

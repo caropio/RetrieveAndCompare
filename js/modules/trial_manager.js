@@ -34,7 +34,7 @@ export class ChoiceManager {
 
         this.sessionNum = sessionNum;
         if (sessionNum >= 0) {
-            GUI.setActiveCurrentStep('experiment');
+            GUI.setActiveCurrentStep('experiment'+(sessionNum+1));
         } else {
             GUI.setActiveCurrentStep('training');
         }
@@ -315,7 +315,7 @@ export class SliderManager {
 
         this.sessionNum = sessionNum;
         if (sessionNum >= 0) {
-            GUI.setActiveCurrentStep('experiment');
+            GUI.setActiveCurrentStep('experiment'+(sessionNum+1));
         } else {
             GUI.setActiveCurrentStep('training');
         }

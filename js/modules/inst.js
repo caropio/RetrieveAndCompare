@@ -120,7 +120,8 @@ export class Instructions {
         GUI.panelFlush()
         GUI.panelShow()
         GUI.setActiveCurrentStep('training')
-        GUI.setActiveCurrentStep('experiment')
+        let sessionNum = nextParams['sessionNum']+1;
+        GUI.setActiveCurrentStep('experiment'+sessionNum)
 
         GUI.panelSetTitle('End of the first part')
 
