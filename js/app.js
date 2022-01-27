@@ -39,7 +39,7 @@ function main() {
     let exp = new ExperimentParameters(
         {
             online: true,   // send network requests
-            isTesting: false, // isTesting==in development vs in production
+            isTesting: true, // isTesting==in development vs in production
             expName: 'NoFixed1', // experience name
             completeFeedback: true, // display feedback of both options
             maxPoints: undefined, // max points cumulated all along the experiment
@@ -51,7 +51,7 @@ function main() {
             // do not allow for new training sessions
             nTrialPerConditionTraining: 5,
             nTrialPerCondition: 28,
-            noFixFirst: true,
+            noFixFirst: false,
             nSession: 2,
             nCond: 4,
             imgPath: 'images/cards_gif/',
