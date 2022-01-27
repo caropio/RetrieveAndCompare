@@ -1,6 +1,6 @@
 import { GUI } from './gui.js'
 import { sendToDB } from './request.js'
-import {decode} from './utils.js'
+import { decode } from './utils.js'
 
 
 export class Instructions {
@@ -120,8 +120,8 @@ export class Instructions {
         GUI.panelFlush()
         GUI.panelShow()
         GUI.setActiveCurrentStep('training')
-        let sessionNum = nextParams['sessionNum']+1;
-        GUI.setActiveCurrentStep('experiment'+sessionNum)
+        let sessionNum = nextParams['sessionNum'] + 1;
+        GUI.setActiveCurrentStep('experiment' + sessionNum)
 
         GUI.panelSetTitle('End of the first part')
 
@@ -131,7 +131,7 @@ export class Instructions {
             • Please note that previous symbols are now replaced by new ones. 
         `)
 
-        GUI.panelInsertDiv({id: 'buttonBox'});
+        GUI.panelInsertDiv({ id: 'buttonBox' });
         GUI.panelInsertButton({
             id: 'next', value: 'Next', clickArgs: { obj: this }, div: 'buttonBox',
             classname: 'btn btn-default card-button',
@@ -229,8 +229,9 @@ export class Instructions {
         GUI.panelFlush()
         GUI.setActiveCurrentStep('training')
         if (!isTraining) {
-            GUI.setActiveCurrentStep('experiment'+sessionNum)
+            GUI.setActiveCurrentStep('experiment' + sessionNum)
         }
+
         GUI.panelSetTitle('Instructions for the first test')
 
         let text = {
@@ -314,7 +315,7 @@ export class Instructions {
         GUI.panelShow()
         GUI.setActiveCurrentStep('training')
         if (!isTraining) {
-            GUI.setActiveCurrentStep('experiment'+sessionNum)
+            GUI.setActiveCurrentStep('experiment' + sessionNum)
         }
         GUI.panelSetTitle('Instructions for the second test')
 
@@ -428,7 +429,7 @@ export class Instructions {
         GUI.panelShow()
         GUI.setActiveCurrentStep('training')
         if (!isTraining) {
-            GUI.setActiveCurrentStep('experiment'+sessionNum)
+            GUI.setActiveCurrentStep('experiment' + sessionNum)
         }
         GUI.panelSetTitle('Instructions for the third test')
 
@@ -576,7 +577,7 @@ export class Instructions {
             clickFunc: function (event) {
                 event.data.obj.exp.sumReward.fill(0)
 
-                GUI.setActiveCurrentStep('experiment'+(sessionNum+1))
+                GUI.setActiveCurrentStep('experiment' + (sessionNum + 1))
                 setTimeout(
                     nextFunc(nextParams), 800
                 )
