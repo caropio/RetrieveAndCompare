@@ -38,9 +38,9 @@ function main() {
     // instantiate experiment parameters
     let exp = new ExperimentParameters(
         {
-            online: true,   // send network requests
-            isTesting: false, // isTesting==in development vs in production
-            expName: 'NoFixed1', // experience name
+            online: false,   // send network requests
+            isTesting: true, // isTesting==in development vs in production
+            expName: 'Feedback1', // experience name
             completeFeedback: true, // display feedback of both options
             maxPoints: undefined, // max points cumulated all along the experiment
             // if undefined or 0, will be computed automatically
@@ -50,8 +50,7 @@ function main() {
             maxTrainingNum: -2, // if sessionNum == maxTrainingNum
             // do not allow for new training sessions
             nTrialPerConditionTraining: 5,
-            nTrialPerCondition: 28,
-            noFixFirst: true,
+            nTrialPerCondition: 30,
             nSession: 2,
             nCond: 4,
             imgPath: 'images/cards_gif/',
@@ -314,7 +313,7 @@ function stateMachine({ instructionNum, sessionNum, phaseNum, questNum, exp } = 
                     phaseNum: phaseNum,
                     exp: exp,
                     elicitationType: 0,
-                    showFeedback: false,
+                    showFeedback: [-1, 0].includes(sessionNum),
                     maxTrials: undefined,
                     // what will be executed next
                     nextFunc: stateMachine,

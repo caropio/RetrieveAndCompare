@@ -1,4 +1,4 @@
-import { createDiv, range, randint } from './utils.js'
+import { sleep, createDiv, range, randint } from './utils.js'
 
 
 export class GUI {
@@ -109,6 +109,35 @@ export class GUI {
     } = {}) {
         $('#' + div).append(
             '<input type="button" class="' + classname + '" id="' + id + '" value="' + value + '">');
+        
+        // if (id=='next') {
+        //     let prevFunc = clickFunc;
+        //     clickFunc = async (clickArgs) =>  {
+        //         let el = document.getElementById('panel');
+        //         el.style.left=0;
+
+        //         await sleep(250);
+
+        //         el.style.left=-1800;
+        //         // setTimeout(() => el.style.left = -800, 2000);
+        //         await sleep(300);
+
+                
+        //         el.style.display = 'none';
+        //         el.style.left = 1800;
+        //         let html = el.outerHTML;
+        //         el.remove();
+
+        //         $('body').append(html);
+        //         $('#panel').css('display', 'flex');
+        //         await sleep(50);
+        //         prevFunc(clickArgs);
+        //         document.getElementById('panel').style.left = 0;
+
+        //         await sleep(300);
+        //         // // $('#panel').css('right', 0);
+        //     }
+        // }
         $('#' + id).click(clickArgs, clickFunc);
     }
 

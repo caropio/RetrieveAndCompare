@@ -26,7 +26,6 @@ export class ExperimentParameters {
         nCond,
         nSession,
         fromCookie,
-        noFixFirst,
         obj
     } = {}) {
         // Initial Experiment Parameters
@@ -64,7 +63,6 @@ export class ExperimentParameters {
             this.browsInfo = getOS() + " - " + getBrowser();
             this.subID = getfromURL('prolific_id');
 
-            this.noFixFirst = noFixFirst;
 
             this._initConditionArrays(
                 nTrialPerCondition,
@@ -72,7 +70,7 @@ export class ExperimentParameters {
                 nCond,
                 nSession
             );
-            this._initTrialObj(nCond, nSession);
+            this._initTrialObj(nSession);
         } else {
             // get previously generated trials from local storage
             this.trialObj = obj.trialObj;
@@ -85,7 +83,6 @@ export class ExperimentParameters {
             this.expID = obj.expID;
             this.sumReward = obj.sumReward;
             this.totalReward = obj.totalReward;
-            this.noFixFirst = obj.noFixFirst;
             this.trialNum = obj.trialNum;
         }
 
@@ -104,7 +101,7 @@ export class ExperimentParameters {
 
     }
 
-    _initTrialObj(nCond, nSession) {
+    _initTrialObj(nSession) {
         let phases = [1, 2, 3];
         this.trialObj = {};
         this.trialObjTraining = {};
@@ -112,46 +109,20 @@ export class ExperimentParameters {
         for (let step of phases) {
             switch (step) {
                 case 1:
-                    if (this.noFixFirst) {
-                        this.trialObj[step] = this._generateNoFixedLE({
-                            nSession: 1,
-                            options: [this._getOptionsPerSession(this.contexts)[0]],
-                            maxLen: 112,
-                            nRepeat: 2
-                        });
-                        this.trialObj[step].push(
-                            this._generateLE({
-                                nSession: 1,
-                                conditions: [this.conditions[1]],
-                                contexts: [this.contexts[1]],
-                                maxLen: 112,
-                            })[0]
-                        );
-                    } else {
-                        this.trialObj[step] = this._generateLE({
-                            nSession: 1,
-                            conditions: [this.conditions[0]],
-                            contexts: [this.contexts[0]],
-                            maxLen: 112,
-                        });
+                    this.trialObj[step] = this._generateNoFixedLE({
+                        nSession: nSession,
+                        options: this._getOptionsPerSession(this.contexts),
+                        maxLen: 112,
+                        nRepeat: 2
+                    });
 
-                        this.trialObj[step].push(
-                            this._generateNoFixedLE({
-                                nSession: 1,
-                                options: [this._getOptionsPerSession(this.contexts)[1]],
-                                maxLen: 112,
-                                nRepeat: 2
-                            })[0]
-                        );
-                                                
-                    }
                     this.trialObjTraining[step] = this._generateNoFixedLE({
                         nSession: nSession,
                         options: this._getOptionsPerSession(this.trainingContexts),
                         maxLen: 12,
-                        nRepeat: 2,
+                        nRepeat: 1
                     });
-                    
+
                     break;
 
                 case 2:
@@ -163,41 +134,41 @@ export class ExperimentParameters {
                     this.trialObjTraining[step] = this._generateED_EE({
                         nSession: nSession,
                         options: this._getOptionsPerSession(this.trainingContexts),
-                        maxLen: 12, 
+                        maxLen: 12,
                     });
                     break;
                 case 3:
 
                     this.trialObj[step] = this._generatePM({
                         nSession: nSession,
-                        nRepeat: 1, 
+                        nRepeat: 1,
                         option1Type: 1,
                         maxLen: 30,
                         options: this._getOptionsPerSession(this.contexts),
                     });
                     let lot = this._generatePM({
                         nSession: 1,
-                        nRepeat: 1, 
+                        nRepeat: 1,
                         option1Type: 0,
                         maxLen: 30,
                         options: [range(0, 10, 1), range(0, 10, 1)],
                     }).flat();
-                    this.trialObj[step][0].push(... lot);
-                    this.trialObj[step][1].push(... lot);
+                    this.trialObj[step][0].push(...lot);
+                    this.trialObj[step][1].push(...lot);
 
                     this.trialObj[step][0] = shuffle(this.trialObj[step][0]);
                     this.trialObj[step][1] = shuffle(this.trialObj[step][1]);
 
                     this.trialObjTraining[step] = this._generatePM({
                         nSession: 2,
-                        nRepeat: 1, 
+                        nRepeat: 1,
                         option1Type: 1,
                         maxLen: 4,
                         options: this._getOptionsPerSession(this.trainingContexts),
                     });
 
                     // debugger;
-                    
+
                     break;
             }
         }
@@ -345,7 +316,7 @@ export class ExperimentParameters {
         // ===================================================================== //
     }
 
-    _generateLE({ nSession, conditions, contexts, maxLen} = {}) {
+    _generateLE({ nSession, conditions, contexts, maxLen } = {}) {
         // ===================================================================== //
         // Learning Phase -- Trial obj definition
         // ===================================================================== //
@@ -399,7 +370,7 @@ export class ExperimentParameters {
     }
 
 
-    _generatePM({ nSession, nRepeat, options, option1Type, maxLen} = {}) {
+    _generatePM({ nSession, nRepeat, options, option1Type, maxLen } = {}) {
         // ===================================================================== //
         // Probability matching Phase (Slider) -- Trial obj definition
         // ===================================================================== //
@@ -419,7 +390,7 @@ export class ExperimentParameters {
                         contIdx1 = this.lotteryCont[optionNum];
                         file1 = this.ev[contIdx1].toString();
                     }
-                    
+
                     let ev1 = this.ev[contIdx1];
 
                     let p1 = this.cont[contIdx1];
@@ -442,7 +413,7 @@ export class ExperimentParameters {
 
                 arrToFill[sessionNum] = shuffle(arrToFill[sessionNum]);
                 // if (arrToFill[sessionNum].length >= maxLen) {
-                    // break;
+                // break;
                 // }   
             }
         }
@@ -479,6 +450,7 @@ export class ExperimentParameters {
                         let option2Type = 1;
 
                         let isCatchTrial = false;
+                        // debugger;
 
                         arrToFill[sessionNum].push({
                             file1: file1,
@@ -498,7 +470,7 @@ export class ExperimentParameters {
                         });
 
                         // if (arrToFill[sessionNum].length > maxLen) {
-                            // break LOOP;
+                        // break LOOP;
                         // }
                     }
                 }
@@ -556,7 +528,7 @@ export class ExperimentParameters {
                         option2Type: option2Type,
                     });
 
-                    
+
 
                 }
 
@@ -604,17 +576,17 @@ export class ExperimentParameters {
                 arrToFill[sessionNum].push(shuffle(tempArray));
 
                 // if (arrToFill[sessionNum].flat().length > maxLen) {
-                    // break LOOP1;
+                // break LOOP1;
                 // }
             }
-            
+
 
             arrToFill[sessionNum] = arrToFill[sessionNum].flat();
         }
 
         return this._setMaxLen(arrToFill, maxLen);
     }
-    
+
     _setMaxLen(arrToFill, maxLen) {
         for (let i = 0; i < arrToFill.length; i++) {
             arrToFill[i] = arrToFill[i].slice(0, maxLen);
@@ -741,8 +713,8 @@ export class ExperimentParameters {
                     0, trials1.pop());
 
                 // this.trialObjTraining[2][sessionNum].splice(
-                    // Math.floor(Math.random() * (this.trialObjTraining[2][sessionNum].length + 1)),
-                    // 0, trials2.pop());
+                // Math.floor(Math.random() * (this.trialObjTraining[2][sessionNum].length + 1)),
+                // 0, trials2.pop());
 
             }
 
@@ -750,19 +722,19 @@ export class ExperimentParameters {
 
         // insert catch trials randomly in 3rd phase
         // for (let sessionNum = 0; sessionNum < this.nSession; sessionNum++) {
-            // let trials1 = this._generateCatchTrialsOneOption();
-            // let count = trials1.length;
-            // let trials2 = this._generateCatchTrialsOneOption();
-            // for (let trialNum = 0; trialNum < count; trialNum++) {
-                // this.trialObj[3][sessionNum].splice(
-                    // Math.floor(Math.random() * (this.trialObj[3][sessionNum].length + 1)),
-                    // 0, trials1.pop());
+        // let trials1 = this._generateCatchTrialsOneOption();
+        // let count = trials1.length;
+        // let trials2 = this._generateCatchTrialsOneOption();
+        // for (let trialNum = 0; trialNum < count; trialNum++) {
+        // this.trialObj[3][sessionNum].splice(
+        // Math.floor(Math.random() * (this.trialObj[3][sessionNum].length + 1)),
+        // 0, trials1.pop());
 
-                // this.trialObjTraining[3][sessionNum].splice(
-                    // Math.floor(Math.random() * (this.trialObjTraining[3][sessionNum].length + 1)),
-                    // 0, trials2.pop());
+        // this.trialObjTraining[3][sessionNum].splice(
+        // Math.floor(Math.random() * (this.trialObjTraining[3][sessionNum].length + 1)),
+        // 0, trials2.pop());
 
-            // }
+        // }
 
         // }
     }

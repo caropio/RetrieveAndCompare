@@ -275,6 +275,8 @@ form {
     width: 45%;
     box-shadow:#9C9C9C 0px 2px 2px 0px;
     transition: height .4s linear;
+    
+    /*transition: all .5s ease-in-out;
     /*box-shadow: 2px 2px 2px 1px rgba(0, 0, 0, 0.2);*/
 }
 /* .card:hover {

@@ -267,11 +267,15 @@ function getOS() {
     return OSName;
 }
 
+function sleep(ms) {
+    return new Promise(resolve => setTimeout(resolve, ms));
+}
+
 
 export {
     sum, assert, range, shuffle,
     getBrowser, getColor, getKeyCode,
     getOS, isFloat, createDiv, isString, randint, createCode,
-     stateStored, loadState, saveState, clearListCookies, getfromURL, decode
+     stateStored, loadState, saveState, clearListCookies, getfromURL, decode, sleep
 };
 

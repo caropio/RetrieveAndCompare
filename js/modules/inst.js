@@ -43,6 +43,7 @@ export class Instructions {
             id: 'next', value: 'Next',
             clickArgs: { obj: this },
             clickFunc: function (event) {
+                debugger;
                 let answer = document.getElementById('ID').value
 
                 if (answer.length === 24 || event.data.obj.exp.isTesting) {
@@ -324,8 +325,8 @@ export class Instructions {
             text = {
                 1: ' • In each round you have to choose between one of two items displayed on either side of the screen. \n'
                     + 'You can select one of the two symbols by left-clicking on it.\n\n'
-                    + ' • Please note that the outcome of your choice will not be displayed on each trial.\n'
-                    + 'However, for each choice an outcome will be calculated and taken into account for the final payoff.\n\n'
+                    + ' • The outcome of your choice, as well as the outcome of the unchosen option, will be displayed on each trial.\n\n'
+                + GUI.panelGenerateImg({ src: 'images/instructions/2.png', width: '40%' })
                     + ' • At the end of the test you will be shown with the final payoff in terms of cumulated points and monetary bonus.',
                 2: ' • In the second test  there will be two kind of options. \n'
                     + ' • The first kind of options is represented by the symbols you already met during the previous test.\n'
@@ -339,7 +340,7 @@ export class Instructions {
                     // + ' • Sometimes the pie-chart will be hidden an represented by a question mark, in such a way that the odds of winning / losing are unknown.\n\n'
                     // + GUI.panelGenerateImg({src: 'images/cards_gif/stim/question.jpg', width: '15%'})
                     // + 'As for regular pie-charts, hidden pie-charts go from 70% chance of winning a point to 70% chance of losing a point.\n\n'
-                    + ' • Sometimes you will be asked to choose between a pie-chart and a symbol, and sometimes between two pie-charts.\n',
+                    + ' • Sometimes you will be asked to choose between two symbols, a pie-chart and a symbol, and sometimes between two pie-charts.\n',
                 3: ' • (Note : points won during the training do not count for the final payoff!) \n\n'
                     + ' • Let\'s begin with the second training test! \n\n'
             }
@@ -347,8 +348,9 @@ export class Instructions {
             text = {
                 1: ' • In each round you have to choose between one of two items displayed on either side of the screen. \n'
                     + 'You can select one of the two symbols by left-clicking on it.\n\n'
-                    + ' • Please note that the outcome of your choice will not be displayed on each trial.\n'
-                    + 'However, for each choice an outcome will be calculated and taken into account for the final payoff.\n\n'
+                    + [' • The outcome of your choice, as well as the outcome of the unchosen option, will be displayed on each trial.\n', ' • <b>This time however, outcomes are not displayed.</b>\n '][+(sessionNum==2)]
+                    + 'Please note that the outcome of your choice will still be taken into account for the final payoff.\n\n'
+                + [GUI.panelGenerateImg({ src: 'images/instructions/2.png', width: '40%' }), ''][+(sessionNum==2)]
                     + ' • At the end of the test you will be shown with the final payoff in terms of cumulated points and monetary bonus.',
                 2: ' • In the second test  there will be two kind of options. \n'
                     + ' • The first kind of options is represented by the symbols you already met during the previous test.\n'
@@ -362,7 +364,7 @@ export class Instructions {
                     // + ' • Sometimes the pie-chart will be hidden an represented by a question mark, in such a way that the odds of winning / losing are unknown.\n'
                     // + GUI.panelGenerateImg({src: 'images/cards_gif/stim/question.jpg', width: '15%'})
                     // + 'As for regular pie-charts, hidden pie-charts go from 70% chance of winning a point to 70% chance of losing a point.\n\n'
-                    + ' • Sometimes you will be asked to choose between a pie-chart and a symbol, and sometimes between two pie-charts.\n',
+                    + ' • Sometimes you will be asked to choose between two symbols, a pie-chart and a symbol, and sometimes between two pie-charts.\n',
                 3: '• Note: This test is like the second test of the training.\n'
                     + 'This is the actual game, every point will be included in the final payoff. \n\n Ready?',
             }
