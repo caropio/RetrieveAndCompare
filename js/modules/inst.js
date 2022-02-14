@@ -43,7 +43,6 @@ export class Instructions {
             id: 'next', value: 'Next',
             clickArgs: { obj: this },
             clickFunc: function (event) {
-                debugger;
                 let answer = document.getElementById('ID').value
 
                 if (answer.length === 24 || event.data.obj.exp.isTesting) {
