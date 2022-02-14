@@ -323,9 +323,8 @@ export class Instructions {
         if (isTraining) {
             text = {
                 1: ' • In each round you have to choose between one of two items displayed on either side of the screen. \n'
-                    + 'You can select one of the two symbols by left-clicking on it.\n\n'
-                    + ' • The outcome of your choice, as well as the outcome of the unchosen option, will be displayed on each trial.\n\n'
-                + GUI.panelGenerateImg({ src: 'images/instructions/2.png', width: '40%' })
+                    + ' • You can select one of the two symbols by left-clicking on it.\n'
+                    + ' • In this test, outcomes are not displayed. \n'
                     + ' • At the end of the test you will be shown with the final payoff in terms of cumulated points and monetary bonus.',
                 2: ' • In the second test  there will be two kind of options. \n'
                     + ' • The first kind of options is represented by the symbols you already met during the previous test.\n'
@@ -347,9 +346,9 @@ export class Instructions {
             text = {
                 1: ' • In each round you have to choose between one of two items displayed on either side of the screen. \n'
                     + 'You can select one of the two symbols by left-clicking on it.\n\n'
-                    + [' • The outcome of your choice, as well as the outcome of the unchosen option, will be displayed on each trial.\n', ' • <b>This time however, outcomes are not displayed.</b>\n '][+(sessionNum==2)]
+                    + [' • This time, the outcome of your choice, as well as the outcome of the unchosen option, will be displayed on each trial.\n', ' • <b>In this test, outcomes are not displayed.</b>\n '][+(sessionNum==1)]
                     + 'Please note that the outcome of your choice will still be taken into account for the final payoff.\n\n'
-                + [GUI.panelGenerateImg({ src: 'images/instructions/2.png', width: '40%' }), ''][+(sessionNum==2)]
+                + [GUI.panelGenerateImg({ src: 'images/instructions/2.png', width: '40%' }), ''][+(sessionNum==1)]
                     + ' • At the end of the test you will be shown with the final payoff in terms of cumulated points and monetary bonus.',
                 2: ' • In the second test  there will be two kind of options. \n'
                     + ' • The first kind of options is represented by the symbols you already met during the previous test.\n'
