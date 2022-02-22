@@ -16,7 +16,7 @@ for l in letters:
     # import pdb; pdb.set_trace()
 
     # convert image to numpy array
-    color = [255, 255, 255]
+    color = [250, 250, 250]
 
     data = asarray(image).copy()
     data.setflags(write=1)
@@ -32,4 +32,4 @@ for l in letters:
     # create Pillow image
     image2 = Image.fromarray(data)
 
-    image2.save(f'{l.replace(".gif", "")}_white.gif')
+    image2.save(f'{l.replace(".gif", "")}.gif')

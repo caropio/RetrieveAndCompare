@@ -30,7 +30,7 @@ function main() {
     // let questNum = 0;
     let stateEnabled = 1;
 
-    let sessionNum = -1;
+    let sessionNum = 0;
     let phaseNum = 1;
     let instructionNum = 0;
     let questNum = 'end';
@@ -38,8 +38,8 @@ function main() {
     // instantiate experiment parameters
     let exp = new ExperimentParameters(
         {
-            online: true,   // send network requests
-            isTesting: false, // isTesting==in development vs in production
+            online: false,   // send network requests
+            isTesting: true, // isTesting==in development vs in production
             expName: 'Feedback2', // experience name
             completeFeedback: true, // display feedback of both options
             maxPoints: undefined, // max points cumulated all along the experiment
