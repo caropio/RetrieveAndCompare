@@ -256,8 +256,9 @@ export class GUI {
 
         if (completeFeedback) {
             if (showFeedback) {
-                fb1.src = feedbackObj['' + reward1].src;
-                fb2.src = feedbackObj['' + reward2].src;
+                // debugger
+                fb1.src = feedbackObj[reward1 + ''].src;
+                fb2.src = feedbackObj[reward2 + ''].src;
             }
 
             // setTimeout(function () {

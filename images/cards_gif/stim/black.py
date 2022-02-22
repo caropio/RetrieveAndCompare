@@ -5,7 +5,12 @@ from numpy import asarray, newaxis, expand_dims, zeros
 
 
 # letters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ'
-letters = ['../fb/empty.gif', '../fb/-1.gif', '../fb/1.gif']
+values = [.2, .4, .6, .8]
+for i in values.copy():
+    values += [-i,]
+
+letters = [f'../lotteries/{i}.png' for i in values]
+# letters = ['../fb/empty.gif', '../fb/-1.gif', '../fb/1.gif']
 
 # load the image
 
@@ -16,7 +21,7 @@ for l in letters:
     # import pdb; pdb.set_trace()
 
     # convert image to numpy array
-    color = [250, 250, 250]
+    color = [255, 255, 255]
 
     data = asarray(image).copy()
     data.setflags(write=1)
@@ -32,4 +37,4 @@ for l in letters:
     # create Pillow image
     image2 = Image.fromarray(data)
 
-    image2.save(f'{l.replace(".gif", "")}.gif')
+    image2.save(f'{l.replace(".png", "_white")}.png')

@@ -279,6 +279,7 @@ function stateMachine({ instructionNum, sessionNum, phaseNum, questNum, exp } = 
                     beforeFeedbackDuration: exp.beforeFeedbackDuration,
                     completeFeedback: exp.completeFeedback,
                     feedbackObj: exp.feedbackImg,
+                    outcomeType: [1, 2][+(sessionNum==0)],
                     imgObj: imgObj,
                     sessionNum: sessionNum,
                     phaseNum: phaseNum,

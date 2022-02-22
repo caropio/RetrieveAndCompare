@@ -22,7 +22,8 @@ export class ChoiceManager {
                     feedbackObj,
                     maxTrials,
                     nextFunc,
-                    nextParams
+                    nextParams,
+                    outcomeType
                 } = {}) {
 
         // members
@@ -31,6 +32,8 @@ export class ChoiceManager {
         this.trialObj = trialObj;
         this.feedbackObj = feedbackObj;
         this.imgObj = imgObj;
+
+        this.outcomeType = outcomeType;
 
         this.sessionNum = sessionNum;
         if (sessionNum >= 0) {
@@ -170,7 +173,10 @@ export class ChoiceManager {
         if (this.exp.isTesting)
             GUI.setOutcomes(thisReward, otherReward);
 
-        this._showReward(reward1, reward2, thisReward, choice);
+        this._showReward(
+            reward1  + '_' + this.outcomeType,
+             reward2 + '_' + this.outcomeType,
+              thisReward, choice);
 
         if (this.exp.online) {
             sendToDB(0,
@@ -234,10 +240,10 @@ export class ChoiceManager {
         let otherReward;
         let correctChoice;
 
-        reward1 = r1[+(Math.random() < p1[1])];
-        reward2 = r2[+(Math.random() < p2[1])];
-        thisReward = [reward2, reward1][+(choice === 1)];
-        otherReward = [reward1, reward2][+(choice === 1)];
+        reward1 = ev1;
+        reward2 = ev2;
+        thisReward = [ev2, ev1][+(choice === 1)];
+        otherReward = [ev2, ev1][+(choice === 1)];
         correctChoice = [+(ev2 >= ev1), +(ev1 >= ev2)][+(choice === 1)];
 
         this.exp.sumReward[this.phaseNum] += thisReward;
