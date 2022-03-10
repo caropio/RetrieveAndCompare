@@ -116,7 +116,7 @@ export class GUI {
         //         let el = document.getElementById('panel');
         //         el.style.left=0;
 
-        //         await sleep(250);
+        //         await sleep(50);
 
         //         el.style.left=-1800;
         //         // setTimeout(() => el.style.left = -800, 2000);
@@ -137,6 +137,37 @@ export class GUI {
         //         await sleep(300);
         //         // // $('#panel').css('right', 0);
         //     }
+        // } 
+        // if (id=='back') {
+        //     let prevFunc = clickFunc;
+        //     clickFunc = async (clickArgs) =>  {
+
+        //         let el = document.getElementById('panel');
+        //         el.style.left=0;
+
+        //         await sleep(50);
+
+        //         el.style.left=1800;
+        //         // setTimeout(() => el.style.left = -800, 2000);
+        //         await sleep(300);
+
+                
+        //         el.style.display = 'none';
+        //         el.style.left = -1800;
+        //         let html = el.outerHTML;
+        //         el.remove();
+
+        //         $('body').append(html);
+        //         $('#panel').css('display', 'flex');
+        //         await sleep(50);
+        //         prevFunc(clickArgs);
+        //         document.getElementById('panel').style.left = 0;
+
+        //         await sleep(300);
+        //         // // $('#panel').css('right', 0);
+        //     }
+        //     debugger;
+
         // }
         $('#' + id).click(clickArgs, clickFunc);
     }
@@ -466,6 +497,9 @@ export class GUI {
     }
 
     static insertSkipButton(Obj) {
+        if ($('#skipButton').length) {
+            $('#skipButton').remove();
+        }
         let button = '<input type="button" class="btn btn-default card-button" id="skipButton" value="Skip trials" >';
         let timeline = $('#timeline');
 

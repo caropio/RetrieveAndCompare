@@ -426,11 +426,18 @@ export class ExperimentParameters {
         // Learning with no fixed conditions
         // ===================================================================== //
         let arrToFill = new Array(nSession).fill().map((x) => []);
+        let optionNums = shuffle(range(0, options[0].length-1));
 
         for (let sessionNum = 0; sessionNum < nSession; sessionNum++) {
             LOOP: for (let repeatNum = 0; repeatNum < nRepeat; repeatNum++) {
-                for (let optionNum1 = 0; optionNum1 < options[sessionNum].length; optionNum1++) {
-                    for (let optionNum2 = 0; optionNum2 < options[sessionNum].length; optionNum2++) {
+                for (let count1 = 0; count1 < options[sessionNum].length; count1++) {
+
+                    let optionNum1 = optionNums[count1];
+                    let tempArray = [];
+
+                    for (let count2 = 0; count2 < options[sessionNum].length; count2++) {
+
+                        let optionNum2 = optionNums[count2];
                         if (options[sessionNum][optionNum2] == options[sessionNum][optionNum1]) {
                             continue;
                         }
@@ -451,8 +458,7 @@ export class ExperimentParameters {
 
                         let isCatchTrial = false;
                         // debugger;
-
-                        arrToFill[sessionNum].push({
+                        tempArray.push({
                             file1: file1,
                             file2: file2,
                             contIdx1: contIdx1,
@@ -467,14 +473,17 @@ export class ExperimentParameters {
                             isCatchTrial: isCatchTrial,
                             option1Type: option1Type,
                             option2Type: option2Type,
-                        });
+                        })
 
                         // if (arrToFill[sessionNum].length > maxLen) {
                         // break LOOP;
                         // }
                     }
+
+                    arrToFill[sessionNum].push(shuffle(tempArray));
                 }
             }
+            arrToFill[sessionNum] = arrToFill[sessionNum].flat();
         }
         return this._setMaxLen(arrToFill, maxLen);
     }
@@ -485,14 +494,18 @@ export class ExperimentParameters {
         // Description vs Experience / Experience vs Experience Phase
         // ===================================================================== //
         let arrToFill = new Array(nSession).fill().map((x) => []);
+        let nOption = options[0].length;
+        let optionNums = shuffle(range(0, nOption-1));
+        let lotteryNums = shuffle(range(0, this.lotteryCont.length-1));
 
         for (let sessionNum = 0; sessionNum < nSession; sessionNum++) {
-            LOOP1: for (let optionNum1 = 0; optionNum1 < options[sessionNum].length; optionNum1++) {
-
+            LOOP1: for (let count1 = 0; count1 < nOption; count1++) {
+                let optionNum1 = optionNums[count1];
                 let tempArray = [];
 
-                for (let lotteryNum = 0; lotteryNum < this.lotteryCont.length; lotteryNum++) {
+                for (let countLot = 0; countLot < this.lotteryCont.length; countLot++) {
 
+                    let lotteryNum = lotteryNums[countLot];
                     let [contIdx1, contIdx2] = [this.learningCont[optionNum1], this.lotteryCont[lotteryNum]];
                     let [file1, file2] = [options[sessionNum][optionNum1], this.ev[contIdx2].toString()]
 
@@ -532,7 +545,9 @@ export class ExperimentParameters {
 
                 }
 
-                for (let optionNum2 = 0; optionNum2 < options[sessionNum].length; optionNum2++) {
+                for (let count2 = 0; count2 < nOption; count2++) {
+
+                    let optionNum2 = optionNums[count2];
                     if (options[sessionNum][optionNum2] == options[sessionNum][optionNum1]) {
                         continue;
                     }

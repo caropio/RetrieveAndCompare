@@ -38,9 +38,9 @@ function main() {
     // instantiate experiment parameters
     let exp = new ExperimentParameters(
         {
-            online: false,   // send network requests
+            online: true,   // send network requests
             isTesting: true, // isTesting==in development vs in production
-            expName: 'Feedback2', // experience name
+            expName: 'EvOutcome', // experience name
             completeFeedback: true, // display feedback of both options
             maxPoints: undefined, // max points cumulated all along the experiment
             // if undefined or 0, will be computed automatically
@@ -58,6 +58,42 @@ function main() {
             fromCookie: false
         }
     );
+
+    // if (exp.isTesting) {
+    //     $('#experiment2').click(() => {
+    //         ((instructionNum, sessionNum, phaseNum, questNum, exp) => {
+    //         sessionNum = 1;
+    //         phaseNum = 1;
+    //         instructionNum = 4;
+    //         stateMachine(
+    //             { instructionNum, sessionNum, phaseNum, questNum, exp }
+    //         )})(instructionNum, sessionNum, phaseNum, questNum, exp);
+    //     });
+    //     $('#experiment1').click(() => {
+    //         ((instructionNum, sessionNum, phaseNum, questNum, exp) => {
+    //         sessionNum = 0;
+    //         phaseNum = 1;
+    //         instructionNum = 4;
+    //         stateMachine(
+    //             {instructionNum, sessionNum, phaseNum, questNum, exp}
+    //         )})(instructionNum, sessionNum, phaseNum, questNum, exp);
+    //     });
+
+    //     $('#training').click(() => {
+    //         sessionNum = -1;
+    //         phaseNum = 1;
+    //         instructionNum = 4;
+    //         stateMachine({ instructionNum, sessionNum, phaseNum, questNum, exp })
+    //     });
+
+    //     $('#introduction').click(() => {
+    //         sessionNum = -1;
+    //         phaseNum = 1;
+    //         instructionNum = 1;
+    //         stateMachine({ instructionNum, sessionNum, phaseNum, questNum, exp })
+    //     });
+
+    // }
 
     // manage state
     // if user closes/reloads the tab he/she has the possibility
@@ -120,6 +156,8 @@ function stateMachine({ instructionNum, sessionNum, phaseNum, questNum, exp } = 
         phaseNum: phaseNum, questNum: questNum, exp: exp
     });
 
+    
+    
     let inst;
     if (instructionNum != 'end')
         inst = new Instructions(exp);

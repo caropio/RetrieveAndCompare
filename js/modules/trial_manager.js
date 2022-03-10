@@ -65,7 +65,7 @@ export class ChoiceManager {
         this.invertedPosition = shuffle(
             Array.from(Array(this.nTrial), x => randint(0, 1))
         );
-
+        
         if (this.exp.isTesting) {
             this._isTesting();
         }
