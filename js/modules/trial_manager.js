@@ -267,6 +267,7 @@ export class ChoiceManager {
             reward1: reward1,
             reward2: reward2
         });
+
     }
 
     next(nTrial = undefined) {

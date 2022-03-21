@@ -38,14 +38,14 @@ function main() {
     // instantiate experiment parameters
     let exp = new ExperimentParameters(
         {
-            online: true,   // send network requests
+            online: false,   // send network requests
             isTesting: true, // isTesting==in development vs in production
             expName: 'EvOutcome', // experience name
             completeFeedback: true, // display feedback of both options
             maxPoints: undefined, // max points cumulated all along the experiment
             // if undefined or 0, will be computed automatically
             maxCompensation: 250, // in pence (in addition of the initial endowment)
-            feedbackDuration: 1400, // how many milliseconds we present the outcome
+            feedbackDuration: 11400, // how many milliseconds we present the outcome
             beforeFeedbackDuration: 900, // how many milliseconds before the outcome
             maxTrainingNum: -2, // if sessionNum == maxTrainingNum
             // do not allow for new training sessions

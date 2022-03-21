@@ -342,7 +342,7 @@ export class GUI {
             } else {
                 setTimeout(function () {
                     clearInterval(scroll);
-                }, feedbackDuration + 150);
+                }, feedbackDuration);
             }
 
         };
