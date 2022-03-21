@@ -45,7 +45,7 @@ function main() {
             maxPoints: undefined, // max points cumulated all along the experiment
             // if undefined or 0, will be computed automatically
             maxCompensation: 250, // in pence (in addition of the initial endowment)
-            feedbackDuration: 11400, // how many milliseconds we present the outcome
+            feedbackDuration: 1400, // how many milliseconds we present the outcome
             beforeFeedbackDuration: 900, // how many milliseconds before the outcome
             maxTrainingNum: -2, // if sessionNum == maxTrainingNum
             // do not allow for new training sessions
@@ -156,7 +156,6 @@ function stateMachine({ instructionNum, sessionNum, phaseNum, questNum, exp } = 
         phaseNum: phaseNum, questNum: questNum, exp: exp
     });
 
-    
     
     let inst;
     if (instructionNum != 'end')
@@ -317,7 +316,7 @@ function stateMachine({ instructionNum, sessionNum, phaseNum, questNum, exp } = 
                     beforeFeedbackDuration: exp.beforeFeedbackDuration,
                     completeFeedback: exp.completeFeedback,
                     feedbackObj: exp.feedbackImg,
-                    outcomeType: [1, 2][+(sessionNum==0)],
+                    outcomeType: [0, 2][+([-1, 0].includes(sessionNum))],
                     imgObj: imgObj,
                     sessionNum: sessionNum,
                     phaseNum: phaseNum,
@@ -352,7 +351,7 @@ function stateMachine({ instructionNum, sessionNum, phaseNum, questNum, exp } = 
                     phaseNum: phaseNum,
                     exp: exp,
                     elicitationType: 0,
-                    showFeedback: [1].includes(sessionNum),
+                    showFeedback: false,
                     maxTrials: undefined,
                     // what will be executed next
                     nextFunc: stateMachine,

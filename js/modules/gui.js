@@ -10,7 +10,7 @@ export class GUI {
     static steps = ['introduction', 'training', 'experiment1', 'experiment2']; //, 'questionnaire'];
     
 
-
+ 
     /* =================== public methods ================== */
     
 
@@ -316,6 +316,7 @@ export class GUI {
         img.height = pic.height;
 
         
+        console.log(img.width);
         let speed = 5;
         let y = 0;
 

@@ -236,14 +236,14 @@ export class Instructions {
 
         let text = {
             1: ' • In each round you have to choose between one of two symbols displayed on either side of the screen. \n'
-                + 'You can select one of the two symbols by left-clicking on it.\n\n'
+                + ' • In a first step, you will have to select one of the two symbols by left-clicking on it.\n\n'
                 + [GUI.panelGenerateImg({ src: 'images/instructions/1.png', width: '40%' }),
                 GUI.panelGenerateImg({ src: 'images/instructions/3.png', width: '40%' })][+(isTraining)]
                 + '• After a choice, you can win/lose the following outcomes:\n\n'
                 + '1 point = +' + this.exp.pointsToPence(1).toFixed(2) + ' pence\n'
                 + '-1 points = -' + this.exp.pointsToPence(1).toFixed(2) + ' pence\n\n'
-                + ' • However, please note that this numerical outcome will not be directly displayed. Instead, you will see the odds of losing/winning a point \n'
-                + 'associated to the two symbols previously displayed. The chance of losing is represented by the red part of a pie-chart, while the chance of winning is represented by the green part.\n'
+                + ' • However, please note that this numerical outcome will not be directly displayed. Instead, in a second step, you will see the odds of losing/winning a point'
+                + ' associated to the two symbols previously displayed. The chance of losing is represented by the red part of a pie-chart, while the chance of winning is represented by the green part.\n'
                 + GUI.panelGenerateImg({ src: 'images/instructions/4.png', width: '40%' })
                 + 'In the above example, the option on the left has been selected (its border is highlighted in black). It will yield either +1, either -1, according to the odds displayed by the pie-chart.\n\n'
                 + ' • Please note that only the outcome of your choice will be taken into account in the final payoff.\n',

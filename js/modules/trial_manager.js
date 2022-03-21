@@ -1,6 +1,6 @@
-import {sendToDB} from "./request.js"
-import {randint, shuffle, range} from "./utils.js";
-import {GUI} from "./gui.js";
+import { sendToDB } from "./request.js"
+import { randint, shuffle, range } from "./utils.js";
+import { GUI } from "./gui.js";
 
 
 export class ChoiceManager {
@@ -9,22 +9,22 @@ export class ChoiceManager {
     Private methods are prefixed with _
      */
     constructor({
-                    exp,
-                    trialObj,
-                    imgObj,
-                    sessionNum,
-                    phaseNum,
-                    feedbackDuration,
-                    completeFeedback,
-                    showFeedback,
-                    elicitationType,
-                    conditionObj,
-                    feedbackObj,
-                    maxTrials,
-                    nextFunc,
-                    nextParams,
-                    outcomeType
-                } = {}) {
+        exp,
+        trialObj,
+        imgObj,
+        sessionNum,
+        phaseNum,
+        feedbackDuration,
+        completeFeedback,
+        showFeedback,
+        elicitationType,
+        conditionObj,
+        feedbackObj,
+        maxTrials,
+        nextFunc,
+        nextParams,
+        outcomeType
+    } = {}) {
 
         // members
         this.exp = exp;
@@ -37,7 +37,7 @@ export class ChoiceManager {
 
         this.sessionNum = sessionNum;
         if (sessionNum >= 0) {
-            GUI.setActiveCurrentStep('experiment'+(sessionNum+1));
+            GUI.setActiveCurrentStep('experiment' + (sessionNum + 1));
         } else {
             GUI.setActiveCurrentStep('training');
         }
@@ -65,7 +65,7 @@ export class ChoiceManager {
         this.invertedPosition = shuffle(
             Array.from(Array(this.nTrial), x => randint(0, 1))
         );
-        
+
         if (this.exp.isTesting) {
             this._isTesting();
         }
@@ -108,7 +108,7 @@ export class ChoiceManager {
 
         let clickEnabled = true;
 
-        $('#canvas1').click({obj: this}, function (event) {
+        $('#canvas1').click({ obj: this }, function (event) {
             if (!clickEnabled)
                 return;
             clickEnabled = false;
@@ -118,7 +118,7 @@ export class ChoiceManager {
             event.data.obj._clickEvent(1, trialObj);
         });
 
-        $('#canvas2').click({obj: this}, function (event) {
+        $('#canvas2').click({ obj: this }, function (event) {
             if (!clickEnabled)
                 return;
             clickEnabled = false;
@@ -173,10 +173,17 @@ export class ChoiceManager {
         if (this.exp.isTesting)
             GUI.setOutcomes(thisReward, otherReward);
 
-        this._showReward(
-            reward1  + '_' + this.outcomeType,
-             reward2 + '_' + this.outcomeType,
-              thisReward, choice);
+        if (this.outcomeType) {
+            this._showReward(
+                reward1 + '_' + this.outcomeType,
+                reward2 + '_' + this.outcomeType,
+                thisReward, choice);
+        } else {
+            this._showReward(
+                reward1,
+                reward2,
+                thisReward, choice);
+        }
 
         if (this.exp.online) {
             sendToDB(0,
@@ -218,7 +225,7 @@ export class ChoiceManager {
 
         setTimeout(function (event) {
             event.obj.next()
-        }, this.feedbackDuration + this.beforeFeedbackDuration * (+(this.showFeedback)), {obj: this});
+        }, this.feedbackDuration + this.beforeFeedbackDuration * (+(this.showFeedback)), { obj: this });
     }
 
     _getReward(choice, params) {
@@ -280,7 +287,7 @@ export class ChoiceManager {
                 } else {
                     event.obj.run();
                 }
-            }, 500, {obj: this});
+            }, 500, { obj: this });
             return;
         }
         this.trialNum++;
@@ -288,7 +295,7 @@ export class ChoiceManager {
             GUI.hideOptions();
             setTimeout(function (event) {
                 event.obj.run();
-            }, 500, {obj: this});
+            }, 500, { obj: this });
         } else {
             GUI.hideSkipButton();
             $('#stim-box').fadeOut(500);
@@ -296,7 +303,7 @@ export class ChoiceManager {
                 $('#Stage').empty();
                 GUI.panelShow();
                 event.obj.nextFunc(event.obj.nextParams);
-            }, 500, {obj: this});
+            }, 500, { obj: this });
         }
     };
 }
@@ -305,16 +312,16 @@ export class ChoiceManager {
 export class SliderManager {
 
     constructor({
-                    exp,
-                    trialObj,
-                    imgObj,
-                    sessionNum,
-                    phaseNum,
-                    feedbackDuration,
-                    elicitationType,
-                    nextFunc,
-                    nextParams
-                } = {}) {
+        exp,
+        trialObj,
+        imgObj,
+        sessionNum,
+        phaseNum,
+        feedbackDuration,
+        elicitationType,
+        nextFunc,
+        nextParams
+    } = {}) {
         // members
         this.exp = exp;
         this.trialObj = trialObj;
@@ -322,7 +329,7 @@ export class SliderManager {
 
         this.sessionNum = sessionNum;
         if (sessionNum >= 0) {
-            GUI.setActiveCurrentStep('experiment'+(sessionNum+1));
+            GUI.setActiveCurrentStep('experiment' + (sessionNum + 1));
         } else {
             GUI.setActiveCurrentStep('training');
         }
@@ -387,7 +394,7 @@ export class SliderManager {
 
         let slider = GUI.displayOptionSlider(params['stimIdx'], this.imgObj, initValue);
 
-        GUI.listenOnSlider({obj: this, slider: slider}, function (event) {
+        GUI.listenOnSlider({ obj: this, slider: slider }, function (event) {
             if (clickEnabled) {
                 clickEnabled = false;
                 event.data.obj.skipEnabled = false;
@@ -495,7 +502,7 @@ export class SliderManager {
                 } else {
                     event.obj.run();
                 }
-            }, 500, {obj: this});
+            }, 500, { obj: this });
             return;
         }
         this.trialNum++;
@@ -504,18 +511,18 @@ export class SliderManager {
                 GUI.hideOptions();
                 setTimeout(function (event) {
                     event.obj.run();
-                }, 500, {obj: event.obj});
-            }, this.feedbackDuration, {obj: this});
+                }, 500, { obj: event.obj });
+            }, this.feedbackDuration, { obj: this });
         } else {
             GUI.hideSkipButton();
             setTimeout(function (event) {
-                    $('#stim-box').fadeOut(500);
-                    setTimeout(function (event) {
-                        $('#Stage').empty();
-                        $('#Bottom').empty();
-                        event.obj.nextFunc(event.obj.nextParams);
-                    }, 500, {obj: event.obj})
-                }, this.feedbackDuration, {obj: this}
+                $('#stim-box').fadeOut(500);
+                setTimeout(function (event) {
+                    $('#Stage').empty();
+                    $('#Bottom').empty();
+                    event.obj.nextFunc(event.obj.nextParams);
+                }, 500, { obj: event.obj })
+            }, this.feedbackDuration, { obj: this }
             );
         }
     };
