@@ -168,20 +168,20 @@ export class ChoiceManager {
             symR = params['file1'];
         }
 
-        let [reward1, reward2, thisReward, otherReward, correctChoice] = this._getReward(choice, params);
+        let [reward1, reward2, ev1, ev2, thisReward, otherReward, correctChoice] = this._getReward(choice, params);
 
         if (this.exp.isTesting)
             GUI.setOutcomes(thisReward, otherReward);
 
         if (this.outcomeType) {
             this._showReward(
-                reward1 + '_' + this.outcomeType,
-                reward2 + '_' + this.outcomeType,
+                ev1 + '_' + this.outcomeType,
+                ev2 + '_' + this.outcomeType,
                 thisReward, choice);
         } else {
             this._showReward(
-                reward1,
-                reward2,
+                reward1 + '', 
+                reward2 + '',
                 thisReward, choice);
         }
 
@@ -247,10 +247,12 @@ export class ChoiceManager {
         let otherReward;
         let correctChoice;
 
-        reward1 = ev1;
-        reward2 = ev2;
-        thisReward = [ev2, ev1][+(choice === 1)];
-        otherReward = [ev2, ev1][+(choice === 1)];
+        reward1 = r1[+(Math.random()<p1[1])];
+        reward2 = r2[+(Math.random()<p2[1])];
+
+        thisReward = [reward2, reward1][+(choice === 1)];
+        otherReward = [reward1, reward2][+(choice === 1)];
+
         correctChoice = [+(ev2 >= ev1), +(ev1 >= ev2)][+(choice === 1)];
 
         this.exp.sumReward[this.phaseNum] += thisReward;
@@ -258,7 +260,7 @@ export class ChoiceManager {
         // if session is not training add to total reward
         this.exp.totalReward += thisReward * !([-1, -2].includes(this.sessionNum));
 
-        return [reward1, reward2, thisReward, otherReward, correctChoice];
+        return [reward1, reward2, ev1, ev2, thisReward, otherReward, correctChoice];
 
     };
 

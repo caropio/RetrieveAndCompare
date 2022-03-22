@@ -224,7 +224,6 @@ export class Instructions {
         let pageNum = funcParams['pageNum']
         let isTraining = funcParams['isTraining']
         let sessionNum = funcParams['sessionNum'] + 1
-        let nPages = 2
 
         GUI.panelFlush()
         GUI.setActiveCurrentStep('training')
@@ -234,317 +233,337 @@ export class Instructions {
 
         GUI.panelSetTitle('Instructions for the first test')
 
-        let text = {
-            1: ' • In each round you have to choose between one of two symbols displayed on either side of the screen. \n'
-                + ' • In a first step, you will have to select one of the two symbols by left-clicking on it.\n\n'
-                + [GUI.panelGenerateImg({ src: 'images/instructions/1.png', width: '40%' }),
-                GUI.panelGenerateImg({ src: 'images/instructions/3.png', width: '40%' })][+(isTraining)]
-                + '• After a choice, you can win/lose the following outcomes:\n\n'
-                + '1 point = +' + this.exp.pointsToPence(1).toFixed(2) + ' pence\n'
-                + '-1 points = -' + this.exp.pointsToPence(1).toFixed(2) + ' pence\n\n'
-                + ' • However, please note that this numerical outcome will not be directly displayed. Instead, in a second step, you will see the odds of losing/winning a point'
-                + ' associated to the two symbols previously displayed. The chance of losing is represented by the red part of a pie-chart, while the chance of winning is represented by the green part.\n'
-                + GUI.panelGenerateImg({ src: 'images/instructions/4.png', width: '40%' })
-                + 'In the above example, the option on the left has been selected (its border is highlighted in black). It will yield either +1, either -1, according to the odds displayed by the pie-chart.\n\n'
-                + ' • Please note that only the outcome of your choice will be taken into account in the final payoff.\n',
-            2: ' • The different symbols are not equal in terms of outcome (and more precisely, in terms of odds of winning of losing/winning): in a given pair, one is in average more advantageous compared to the other. \n'
-                + 'At the end of the test you will be shown with the final payoff in terms of cumulated points and monetary bonus.\n\n'
-                + ['• Note: This test is like the first test of the training.\n'
-                    + 'This is the actual game, every point will be included in the final payoff. \n\n Ready?',
-                ' • Let\'s begin with the first training test! \n\n'
-                + '(Note : points won during the training do not count for the final payoff!)'][+(isTraining)]
-        }
-
-        GUI.panelSetParagraph(text[pageNum])
-
-        // to center two buttons inline
-        GUI.panelInsertDiv({ id: 'buttonBox' })
-
-        GUI.panelInsertButton({
-            id: 'back', value: 'Back',
-            div: 'buttonBox', classname: 'btn btn-default card-button',
-            clickFunc: function () {
-                if (pageNum > 1) {
-                    pageNum--
-                    GUI.panelSetParagraph(text[pageNum])
-                }
-                if (pageNum === 1) {
-                    GUI.hideElement('back')
-                }
-            }
-        })
-
-        // If pagenum is 1 we can't go back
-        if (pageNum === 1) {
-            GUI.hideElement('back')
-        }
-
-        GUI.panelInsertButton({
-            id: 'next', value: 'Next', clickArgs: { obj: this },
-            div: 'buttonBox', classname: 'btn btn-default card-button',
-            clickFunc: function (event) {
-
-                GUI.showElement('back')
-                if (pageNum < nPages) {
-                    pageNum++
-                    GUI.panelSetParagraph(text[pageNum])
-                } else {
-                    GUI.panelFlush()
-                    GUI.panelHide()
-
-                    setTimeout(
-                        nextFunc(nextParams), 800
-                    )
-
-                }
-            }
-        })
-    }
-
-    displayInstructionChoiceElicitation(funcParams, nextFunc, nextParams) {
-
-        let pageNum = funcParams['pageNum']
-        let phaseNum = funcParams['phaseNum']
-        let isTraining = funcParams['isTraining']
-        let sessionNum = funcParams['sessionNum'] + 1
-        let points = this.exp.sumReward[phaseNum - 1]
-        let pence = this.exp.pointsToPence(points).toFixed(2)
-        let pounds = this.exp.pointsToPounds(points).toFixed(2)
-        let nPages = 3
-
-        GUI.panelFlush()
-        GUI.panelShow()
-        GUI.setActiveCurrentStep('training')
-
-        if (!isTraining) {
-            GUI.setActiveCurrentStep('experiment' + sessionNum)
-        }
-
-        GUI.panelSetTitle('Instructions for the second test')
-
-        let text
-        if (isTraining) {
+        let text;
+        if ([0, 1].includes(sessionNum)) {
             text = {
-                1: ' • In each round you have to choose between one of two items displayed on either side of the screen. \n'
-                    + ' • You can select one of the two symbols by left-clicking on it.\n'
-                    + ' • The outcome of your choice, as well as the outcome of the unchosen option, will be displayed on each trial.\n'
-                    + ' • At the end of the test you will be shown with the final payoff in terms of cumulated points and monetary bonus.',
-                2: ' • In the second test  there will be two kind of options. \n'
-                    + ' • The first kind of options is represented by the symbols you already met during the previous test.\n'
-                    + GUI.panelGenerateImg({ src: 'images/cards_gif/stim/A.jpg', width: '15%' })
-                    + 'Note: the symbols keep the same odds of winning / losing a point as in the first test.\n\n'
-                    + ' • The second kind of options is represented by pie-charts explicitly describing the odds of winning / losing a point.\n'
-                    + GUI.panelGenerateImg({ src: 'images/cards_gif/lotteries/0.png', width: '15%' })
-                    + 'Specifically, the green area indicates the chance of winning +1 (+' + this.exp.pointsToPence(1).toFixed(2) + 'p) ; the red area indicates the chance of losing -1 (-'
-                    + this.exp.pointsToPence(1).toFixed(2) + 'p).\n'
-                    + 'Pie-charts go from 100% chance of winning a point to 100% chance of losing a point.\n\n'
-                    // + ' • Sometimes the pie-chart will be hidden an represented by a question mark, in such a way that the odds of winning / losing are unknown.\n\n'
-                    // + GUI.panelGenerateImg({src: 'images/cards_gif/stim/question.jpg', width: '15%'})
-                    // + 'As for regular pie-charts, hidden pie-charts go from 70% chance of winning a point to 70% chance of losing a point.\n\n'
-                    + ' • Sometimes you will be asked to choose between two symbols, a pie-chart and a symbol, and sometimes between two pie-charts.\n',
-                3: ' • (Note : points won during the training do not count for the final payoff!) \n\n'
-                    + ' • Let\'s begin with the second training test! \n\n'
+                1: ' • In each round you have to choose between one of two symbols displayed on either side of the screen. \n'
+                    + ' • In a first step, you will have to select one of the two symbols by left-clicking on it.\n\n'
+                    + '<center><b>Options</b></center>\n'
+                    + [GUI.panelGenerateImg({ src: 'images/instructions/1.png', width: '40%' }),
+                    GUI.panelGenerateImg({ src: 'images/instructions/3.png', width: '40%' })][+(isTraining)]
+                    + '• After a choice, you can win/lose the following outcomes:\n\n'
+                    + '1 point = +' + this.exp.pointsToPence(1).toFixed(2) + ' pence\n'
+                    + '-1 points = -' + this.exp.pointsToPence(1).toFixed(2) + ' pence\n\n',
+                2: ' • However, please note that this numerical outcome will not be directly displayed. Instead, in a second step, you will see the odds of losing/winning a point'
+                    + ' associated to the two symbols previously displayed. Odds are represented by a pie-chart. Specifically, the green area indicates the chance of winning +1 (+1.32p) ; the red area indicates the chance of losing -1 (-1.32p).'
+                    + ' Pie-charts go from 100% chance of winning a point to 100% chance of losing a point. \n\n'
+                    + '<center><b>Outcomes</b></center>\n'
+                    + GUI.panelGenerateImg({ src: 'images/instructions/4.png', width: '40%' })
+                    + 'In the above example, the option on the left has been selected (its border is highlighted in black), and the outcome (the pie-chart) is shown. It will yield either +1, either -1, according to the odds displayed by the pie-chart.\n\n'
+                    + ' • Please note that only the outcome of your choice will be taken into account in the final payoff.\n',
+                3: ' • The different symbols are not equal in terms of outcome (and more precisely, in terms of odds of winning of losing/winning): in a given pair, one is in average more advantageous compared to the other. \n'
+                    + 'At the end of the test you will be shown with the final payoff in terms of cumulated points and monetary bonus.\n\n'
+                    + ['• Note: This test is like the first test of the training.\n'
+                        + 'This is the actual game, every point will be included in the final payoff. \n\n Ready?',
+                    ' • Let\'s begin with the first training test! \n\n'
+                    + '(Note : points won during the training do not count for the final payoff!)'][+(isTraining)]
             }
-        } else {
-            text = {
-                1: ' • In each round you have to choose between one of two items displayed on either side of the screen. \n'
-                    + 'You can select one of the two symbols by left-clicking on it.\n\n'
-                    + ' • The outcome of your choice, as well as the outcome of the unchosen option, will be displayed on each trial.\n'
-                    + GUI.panelGenerateImg({ src: 'images/instructions/2.png', width: '40%' })
-                    + ' • At the end of the test you will be shown with the final payoff in terms of cumulated points and monetary bonus.',
-                2: ' • In the second test  there will be two kind of options. \n'
-                    + ' • The first kind of options is represented by the symbols you already met during the previous test.\n'
-                    + GUI.panelGenerateImg({ src: 'images/cards_gif/stim_old/2.gif', width: '15%' })
-                    + 'Note: the symbols keep the same odds of winning / losing a point as in the first test. \n\n'
-                    + ' • The second kind of options is represented by pie-charts explicitly describing the odds of winning / losing a point.\n'
-                    + GUI.panelGenerateImg({ src: 'images/cards_gif/lotteries/0.png', width: '15%' })
-                    + 'Specifically, the green area indicates the chance of winning +1 (+' + this.exp.pointsToPence(1).toFixed(2) + 'p) ; the red area indicates the chance of losing -1 (-'
-                    + this.exp.pointsToPence(1).toFixed(2) + 'p).\n'
-                    + 'Pie-charts go from 100% chance of winning a point to 100% chance of losing a point.\n\n'
-                    // + ' • Sometimes the pie-chart will be hidden an represented by a question mark, in such a way that the odds of winning / losing are unknown.\n'
-                    // + GUI.panelGenerateImg({src: 'images/cards_gif/stim/question.jpg', width: '15%'})
-                    // + 'As for regular pie-charts, hidden pie-charts go from 70% chance of winning a point to 70% chance of losing a point.\n\n'
-                    + ' • Sometimes you will be asked to choose between two symbols, a pie-chart and a symbol, and sometimes between two pie-charts.\n',
-                3: '• Note: This test is like the second test of the training.\n'
-                    + 'This is the actual game, every point will be included in the final payoff. \n\n Ready?',
-            }
-        }
-
-        GUI.panelSetParagraph(text[pageNum])
-
-        // to center two buttons inline
-        GUI.panelInsertDiv({ id: 'buttonBox' })
-
-        GUI.panelInsertButton({
-            id: 'back', value: 'Back',
-            div: 'buttonBox', classname: 'btn btn-default card-button',
-            clickFunc: function () {
-                if (pageNum > 1) {
-                    pageNum--
-                    GUI.panelSetParagraph(text[pageNum])
-                }
-                if (pageNum === 1) {
-                    GUI.hideElement('back')
+            } else {
+                text = {
+                    1: ' • In each round you have to choose between one of two symbols displayed on either side of the screen. \n'
+                        + ' • In a first step, you will have to select one of the two symbols by left-clicking on it.\n\n'
+                        + GUI.panelGenerateImg({ src: 'images/instructions/1.png', width: '40%' })
+                        + '• After a choice, you can win/lose the following outcomes:\n\n'
+                        + '1 point = +' + this.exp.pointsToPence(1).toFixed(2) + ' pence\n'
+                        + '-1 points = -' + this.exp.pointsToPence(1).toFixed(2) + ' pence\n\n'
+                        + GUI.panelGenerateImg({ src: 'images/instructions/2.png', width: '40%' })
+                        + ' • Please note that only the outcome of your choice will be taken into account in the final payoff.\n',
+                    2: ' • The different symbols are not equal in terms of outcome (and more precisely, in terms of odds of winning of losing/winning): in a given pair, one is in average more advantageous compared to the other. \n'
+                        + 'At the end of the test you will be shown with the final payoff in terms of cumulated points and monetary bonus.\n\n'
+                        + 'This is the actual game, every point will be included in the final payoff. \n\n Ready?'
                 }
             }
-        })
+            let nPages = Object.keys(text).length;
 
-        // If pagenum is 1 we can't go back
-        if (pageNum === 1) {
-            GUI.hideElement('back')
+            GUI.panelSetParagraph(text[pageNum])
+
+            // to center two buttons inline
+            GUI.panelInsertDiv({ id: 'buttonBox' })
+
+            GUI.panelInsertButton({
+                id: 'back', value: 'Back',
+                div: 'buttonBox', classname: 'btn btn-default card-button',
+                clickFunc: function () {
+                    if (pageNum > 1) {
+                        pageNum--
+                        GUI.panelSetParagraph(text[pageNum])
+                    }
+                    if (pageNum === 1) {
+                        GUI.hideElement('back')
+                    }
+                }
+            })
+
+            // If pagenum is 1 we can't go back
+            if (pageNum === 1) {
+                GUI.hideElement('back')
+            }
+
+            GUI.panelInsertButton({
+                id: 'next', value: 'Next', clickArgs: { obj: this },
+                div: 'buttonBox', classname: 'btn btn-default card-button',
+                clickFunc: function (event) {
+
+                    GUI.showElement('back')
+                    if (pageNum < nPages) {
+                        pageNum++
+                        GUI.panelSetParagraph(text[pageNum])
+                    } else {
+                        GUI.panelFlush()
+                        GUI.panelHide()
+
+                        setTimeout(
+                            nextFunc(nextParams), 800
+                        )
+
+                    }
+                }
+            })
         }
 
-        GUI.panelInsertButton({
-            id: 'next', value: 'Next', clickArgs: { obj: this },
-            div: 'buttonBox', classname: 'btn btn-default card-button',
-            clickFunc: function (event) {
+        displayInstructionChoiceElicitation(funcParams, nextFunc, nextParams) {
 
-                GUI.showElement('back')
-                if (pageNum < nPages) {
-                    pageNum++
-                    GUI.panelSetParagraph(text[pageNum])
-                } else {
-                    GUI.panelFlush()
-                    GUI.panelHide()
+            let pageNum = funcParams['pageNum']
+            let phaseNum = funcParams['phaseNum']
+            let isTraining = funcParams['isTraining']
+            let sessionNum = funcParams['sessionNum'] + 1
+            let points = this.exp.sumReward[phaseNum - 1]
+            let pence = this.exp.pointsToPence(points).toFixed(2)
+            let pounds = this.exp.pointsToPounds(points).toFixed(2)
+            let nPages = 3
 
-                    setTimeout(
-                        nextFunc(nextParams), 800
-                    )
+            GUI.panelFlush()
+            GUI.panelShow()
+            GUI.setActiveCurrentStep('training')
 
+            if (!isTraining) {
+                GUI.setActiveCurrentStep('experiment' + sessionNum)
+            }
+
+            GUI.panelSetTitle('Instructions for the second test')
+
+            let text
+            if (isTraining) {
+                text = {
+                    1: ' • In each round you have to choose between one of two items displayed on either side of the screen. \n'
+                        + ' • You can select one of the two symbols by left-clicking on it.\n'
+                        + ' • Please note that in this test, <b>no outcome will be displayed</b>, such that after a choice, the next pair of options will be shown without intermediate step.\n'
+                        + ' • At the end of the test you will be shown with the final payoff in terms of cumulated points and monetary bonus.',
+                    2: ' • In the second test  there will be two kind of options. \n'
+                        + ' • The first kind of options is represented by the symbols you already met during the previous test.\n'
+                        + GUI.panelGenerateImg({ src: 'images/cards_gif/stim/A.jpg', width: '15%' })
+                        + 'Note: the symbols keep the same odds of winning / losing a point as in the first test.\n\n'
+                        + ' • The second kind of options is represented by pie-charts explicitly describing the odds of winning / losing a point.\n'
+                        + GUI.panelGenerateImg({ src: 'images/cards_gif/lotteries/0.png', width: '15%' })
+                        + 'Specifically, the green area indicates the chance of winning +1 (+' + this.exp.pointsToPence(1).toFixed(2) + 'p) ; the red area indicates the chance of losing -1 (-'
+                        + this.exp.pointsToPence(1).toFixed(2) + 'p).\n'
+                        + 'Pie-charts go from 100% chance of winning a point to 100% chance of losing a point.\n\n'
+                        // + ' • Sometimes the pie-chart will be hidden an represented by a question mark, in such a way that the odds of winning / losing are unknown.\n\n'
+                        // + GUI.panelGenerateImg({src: 'images/cards_gif/stim/question.jpg', width: '15%'})
+                        // + 'As for regular pie-charts, hidden pie-charts go from 70% chance of winning a point to 70% chance of losing a point.\n\n'
+                        + ' • Sometimes you will be asked to choose between two symbols, a pie-chart and a symbol, and sometimes between two pie-charts.\n',
+                    3: ' • (Note : points won during the training do not count for the final payoff!) \n\n'
+                        + ' • Let\'s begin with the second training test! \n\n'
+                }
+            } else {
+                text = {
+                    1: ' • In each round you have to choose between one of two items displayed on either side of the screen. \n'
+                        + 'You can select one of the two symbols by left-clicking on it.\n\n'
+                        + ' • Please note that in this test, <b>no outcome will be displayed</b>, such that after a choice, the next pair of options will be shown without intermediate step.\n'
+                        + ' • At the end of the test you will be shown with the final payoff in terms of cumulated points and monetary bonus.',
+                    2: ' • In the second test  there will be two kind of options. \n'
+                        + ' • The first kind of options is represented by the symbols you already met during the previous test.\n'
+                        + GUI.panelGenerateImg({ src: 'images/cards_gif/stim_old/2.gif', width: '15%' })
+                        + 'Note: the symbols keep the same odds of winning / losing a point as in the first test. \n\n'
+                        + ' • The second kind of options is represented by pie-charts explicitly describing the odds of winning / losing a point.\n'
+                        + GUI.panelGenerateImg({ src: 'images/cards_gif/lotteries/0.png', width: '15%' })
+                        + 'Specifically, the green area indicates the chance of winning +1 (+' + this.exp.pointsToPence(1).toFixed(2) + 'p) ; the red area indicates the chance of losing -1 (-'
+                        + this.exp.pointsToPence(1).toFixed(2) + 'p).\n'
+                        + 'Pie-charts go from 100% chance of winning a point to 100% chance of losing a point.\n\n'
+                        // + ' • Sometimes the pie-chart will be hidden an represented by a question mark, in such a way that the odds of winning / losing are unknown.\n'
+                        // + GUI.panelGenerateImg({src: 'images/cards_gif/stim/question.jpg', width: '15%'})
+                        // + 'As for regular pie-charts, hidden pie-charts go from 70% chance of winning a point to 70% chance of losing a point.\n\n'
+                        + ' • Sometimes you will be asked to choose between two symbols, a pie-chart and a symbol, and sometimes between two pie-charts.\n',
+                    3: '• Note: This test is like the second test of the training.\n'
+                        + 'This is the actual game, every point will be included in the final payoff. \n\n Ready?',
                 }
             }
-        })
-    }
 
-    displayInstructionSliderElicitation(funcParams, nextFunc, nextParams) {
+            GUI.panelSetParagraph(text[pageNum])
 
-        let pageNum = funcParams['pageNum']
-        let phaseNum = funcParams['phaseNum']
-        let isTraining = funcParams['isTraining']
-        let sessionNum = funcParams['sessionNum'] + 1
-        let points = this.exp.sumReward[phaseNum - 1]
-        // let pence = this.exp.pointsToPence(points).toFixed(2)
-        // let pounds = this.exp.pointsToPounds(points).toFixed(2)
-        let nPages = 2
+            // to center two buttons inline
+            GUI.panelInsertDiv({ id: 'buttonBox' })
 
-        GUI.panelFlush()
-        GUI.panelShow()
-        GUI.setActiveCurrentStep('training')
-        if (!isTraining) {
-            GUI.setActiveCurrentStep('experiment' + sessionNum)
+            GUI.panelInsertButton({
+                id: 'back', value: 'Back',
+                div: 'buttonBox', classname: 'btn btn-default card-button',
+                clickFunc: function () {
+                    if (pageNum > 1) {
+                        pageNum--
+                        GUI.panelSetParagraph(text[pageNum])
+                    }
+                    if (pageNum === 1) {
+                        GUI.hideElement('back')
+                    }
+                }
+            })
+
+            // If pagenum is 1 we can't go back
+            if (pageNum === 1) {
+                GUI.hideElement('back')
+            }
+
+            GUI.panelInsertButton({
+                id: 'next', value: 'Next', clickArgs: { obj: this },
+                div: 'buttonBox', classname: 'btn btn-default card-button',
+                clickFunc: function (event) {
+
+                    GUI.showElement('back')
+                    if (pageNum < nPages) {
+                        pageNum++
+                        GUI.panelSetParagraph(text[pageNum])
+                    } else {
+                        GUI.panelFlush()
+                        GUI.panelHide()
+
+                        setTimeout(
+                            nextFunc(nextParams), 800
+                        )
+
+                    }
+                }
+            })
         }
-        GUI.panelSetTitle('Instructions for the third test')
 
-        let text = {
-            1: ` • In each round of the third test you will be presented with the symbols and pie-charts you met in the first and the second test. This is the occasion to test your knowledge of each symbol average outcome. \n
+        displayInstructionSliderElicitation(funcParams, nextFunc, nextParams) {
+
+            let pageNum = funcParams['pageNum']
+            let phaseNum = funcParams['phaseNum']
+            let isTraining = funcParams['isTraining']
+            let sessionNum = funcParams['sessionNum'] + 1
+            let points = this.exp.sumReward[phaseNum - 1]
+            // let pence = this.exp.pointsToPence(points).toFixed(2)
+            // let pounds = this.exp.pointsToPounds(points).toFixed(2)
+            let nPages = 2
+
+            GUI.panelFlush()
+            GUI.panelShow()
+            GUI.setActiveCurrentStep('training')
+            if (!isTraining) {
+                GUI.setActiveCurrentStep('experiment' + sessionNum)
+            }
+            GUI.panelSetTitle('Instructions for the third test')
+
+            let text = {
+                1: ` • In each round of the third test you will be presented with the symbols and pie-charts you met in the first and the second test. This is the occasion to test your knowledge of each symbol average outcome. \n
                      • You will be asked to indicate (in percentages), what are the odds that a given symbol or pie-chart makes you win a point (+1=+${this.exp.pointsToPence(1).toFixed(2)}p).\n\n
                      • You will be able to do this through moving a slider on the screen and then confirm your final answer by clicking on the confirmation button.\n\n
                      • 100%  = the symbol (or pie-chart) always gives +1pt.\n
                      • 50%  = the symbol (or pie-chart) always gives +1pt or -1pt with equal chances.\n
                      • 0% = the symbol (or pie-chart) always gives -1pt.\n`
-        }
-        if (isTraining) {
-            text[2] = ' • Let\'s begin with the third training test!\n\n'
-                + ' • Note : points won during the training do not count for the final payoff !)';
-        } else {
-            text[2] = ' • Let\'s begin with the third training test!\n\n'
-                + ' • Note: This test is like the third test of the training.\n\n '
-        }
-
-        GUI.panelSetParagraph(text[pageNum])
-
-        // to center two buttons inline
-        GUI.panelInsertDiv({ id: 'buttonBox' })
-
-        GUI.panelInsertButton({
-            id: 'back', value: 'Back',
-            div: 'buttonBox', classname: 'btn btn-default card-button',
-            clickFunc: function () {
-                if (pageNum > 1) {
-                    pageNum--
-                    GUI.panelSetParagraph(text[pageNum])
-                }
-                if (pageNum === 1) {
-                    GUI.hideElement('back')
-                }
             }
-        })
+            if (isTraining) {
+                text[2] = ' • Let\'s begin with the third training test!\n\n'
+                    + ' • Note : points won during the training do not count for the final payoff !)';
+            } else {
+                text[2] = ' • Let\'s begin with the third training test!\n\n'
+                    + ' • Note: This test is like the third test of the training.\n\n '
+            }
 
-        // If pagenum is 1 we can't go back
-        if (pageNum === 1) {
-            GUI.hideElement('back')
+            GUI.panelSetParagraph(text[pageNum])
+
+            // to center two buttons inline
+            GUI.panelInsertDiv({ id: 'buttonBox' })
+
+            GUI.panelInsertButton({
+                id: 'back', value: 'Back',
+                div: 'buttonBox', classname: 'btn btn-default card-button',
+                clickFunc: function () {
+                    if (pageNum > 1) {
+                        pageNum--
+                        GUI.panelSetParagraph(text[pageNum])
+                    }
+                    if (pageNum === 1) {
+                        GUI.hideElement('back')
+                    }
+                }
+            })
+
+            // If pagenum is 1 we can't go back
+            if (pageNum === 1) {
+                GUI.hideElement('back')
+            }
+
+            GUI.panelInsertButton({
+                id: 'next', value: 'Next', clickArgs: { obj: this },
+                div: 'buttonBox', classname: 'btn btn-default card-button',
+                clickFunc: function (event) {
+
+                    GUI.showElement('back')
+                    if (pageNum < nPages) {
+                        pageNum++
+                        GUI.panelSetParagraph(text[pageNum])
+                    } else {
+                        GUI.panelFlush()
+                        GUI.panelHide()
+
+                        setTimeout(
+                            nextFunc(nextParams), 800
+                        )
+
+                    }
+                }
+            })
         }
 
-        GUI.panelInsertButton({
-            id: 'next', value: 'Next', clickArgs: { obj: this },
-            div: 'buttonBox', classname: 'btn btn-default card-button',
-            clickFunc: function (event) {
+        displayInstructionQuestionnaire(nextFunc, nextParams) {
 
-                GUI.showElement('back')
-                if (pageNum < nPages) {
-                    pageNum++
-                    GUI.panelSetParagraph(text[pageNum])
-                } else {
-                    GUI.panelFlush()
-                    GUI.panelHide()
+            GUI.panelFlush()
+            GUI.panelShow()
+            GUI.setActiveCurrentStep('questionnaire')
+            GUI.panelSetTitle('Questionnaire')
 
+            GUI.panelSetParagraph(
+                ` • You will now have to answer a few questions.\n\n
+              • This won\'t take more than a few more minutes. Your answers remain anonymous and will not be disclosed.\n\n
+              • Note that the experiment will be considered completed (and the payment issued) only if the questionnaires are correctly filled.\n\n
+              • Please click "Start" when you are ready.`)
+
+            GUI.panelInsertButton({
+                id: 'next', value: 'Start', clickArgs: { obj: this },
+                classname: 'btn btn-default card-button card-center',
+                clickFunc: function (event) {
                     setTimeout(
                         nextFunc(nextParams), 800
                     )
 
                 }
-            }
-        })
-    }
+            })
 
-    displayInstructionQuestionnaire(nextFunc, nextParams) {
+        }
 
-        GUI.panelFlush()
-        GUI.panelShow()
-        GUI.setActiveCurrentStep('questionnaire')
-        GUI.panelSetTitle('Questionnaire')
+        endTraining(funcParams, nextFunc, nextParams) {
 
-        GUI.panelSetParagraph(
-            ` • You will now have to answer a few questions.\n\n
-              • This won\'t take more than a few more minutes. Your answers remain anonymous and will not be disclosed.\n\n
-              • Note that the experiment will be considered completed (and the payment issued) only if the questionnaires are correctly filled.\n\n
-              • Please click "Start" when you are ready.`)
+            let totalPoints
+            let pence
+            let pounds
+            let wonlost
+            let sessionNum = funcParams['sessionNum'];
+            let maxTrainingNum = funcParams['maxTrainingNum'];
 
-        GUI.panelInsertButton({
-            id: 'next', value: 'Start', clickArgs: { obj: this },
-            classname: 'btn btn-default card-button card-center',
-            clickFunc: function (event) {
-                setTimeout(
-                    nextFunc(nextParams), 800
-                )
+            totalPoints = this.exp.sumReward[1] + this.exp.sumReward[2] + this.exp.sumReward[3]
+            pence = this.exp.pointsToPence(totalPoints).toFixed(2)
+            pounds = this.exp.pointsToPounds(totalPoints).toFixed(2)
 
-            }
-        })
+            wonlost = ['won', 'lost'][+(totalPoints < 0)]
 
-    }
+            GUI.panelFlush()
+            GUI.panelShow()
+            GUI.setActiveCurrentStep('training')
 
-    endTraining(funcParams, nextFunc, nextParams) {
+            GUI.panelSetTitle('End of training')
 
-        let totalPoints
-        let pence
-        let pounds
-        let wonlost
-        let sessionNum = funcParams['sessionNum'];
-        let maxTrainingNum = funcParams['maxTrainingNum'];
-
-        totalPoints = this.exp.sumReward[1] + this.exp.sumReward[2] + this.exp.sumReward[3]
-        pence = this.exp.pointsToPence(totalPoints).toFixed(2)
-        pounds = this.exp.pointsToPounds(totalPoints).toFixed(2)
-
-        wonlost = ['won', 'lost'][+(totalPoints < 0)]
-
-        GUI.panelFlush()
-        GUI.panelShow()
-        GUI.setActiveCurrentStep('training')
-
-        GUI.panelSetTitle('End of training')
-
-        GUI.panelSetParagraph(`• The training is over!\n\n
+            GUI.panelSetParagraph(`• The training is over!\n\n
          • Overall, in this training, you ${wonlost} ${totalPoints} points = ${pence} pence = ${pounds} pounds!\n\n
          Test 1: ${this.exp.sumReward[1]}\n
          Test 2: ${this.exp.sumReward[2]}\n
@@ -555,58 +574,58 @@ export class Instructions {
          • If you want you can do the training a second time.
         `)
 
-        // to center two buttons inline
-        GUI.panelInsertDiv({ id: 'buttonBox' })
+            // to center two buttons inline
+            GUI.panelInsertDiv({ id: 'buttonBox' })
 
-        if (sessionNum != maxTrainingNum) {
+            if (sessionNum != maxTrainingNum) {
+                GUI.panelInsertButton({
+                    id: 'toTraining', value: 'Restart training',
+                    div: 'buttonBox', classname: 'btn btn-default card-button',
+                    clickFunc: function (event) {
+                        event.data.obj.exp.sumReward.fill(0)
+                        nextParams['phaseNum'] = 1
+                        nextParams['sessionNum'] = -2
+                        nextParams['instructionNum'] = 4
+                        nextFunc(nextParams)
+                    },
+                    clickArgs: { obj: this }
+                })
+            }
+
             GUI.panelInsertButton({
-                id: 'toTraining', value: 'Restart training',
+                id: 'next', value: 'Next', clickArgs: { obj: this },
                 div: 'buttonBox', classname: 'btn btn-default card-button',
                 clickFunc: function (event) {
                     event.data.obj.exp.sumReward.fill(0)
-                    nextParams['phaseNum'] = 1
-                    nextParams['sessionNum'] = -2
-                    nextParams['instructionNum'] = 4
-                    nextFunc(nextParams)
-                },
-                clickArgs: { obj: this }
+
+                    GUI.setActiveCurrentStep('experiment' + (sessionNum + 1))
+                    setTimeout(
+                        nextFunc(nextParams), 800
+                    )
+
+                }
             })
         }
 
-        GUI.panelInsertButton({
-            id: 'next', value: 'Next', clickArgs: { obj: this },
-            div: 'buttonBox', classname: 'btn btn-default card-button',
-            clickFunc: function (event) {
-                event.data.obj.exp.sumReward.fill(0)
+        endExperiment() {
 
-                GUI.setActiveCurrentStep('experiment' + (sessionNum + 1))
-                setTimeout(
-                    nextFunc(nextParams), 800
-                )
+            GUI.initGameStageDiv()
 
-            }
-        })
+            let points = this.exp.totalReward
+            let pence = this.exp.pointsToPence(points).toFixed(2)
+            let pounds = this.exp.pointsToPounds(points).toFixed(2)
+
+            let wonlost = [' won ', ' lost '][+(points < 0)]
+
+            let Title = '<h3 align = "center">The game is over!<br>' +
+                'You ' + wonlost + points + ' points in total, which is ' + pence + ' pence = ' + pounds + ' pounds!<br><br>'
+                + 'Test 1: ' + this.exp.sumReward[1] + ' = ' + this.exp.pointsToPounds(this.exp.sumReward[1]).toFixed(2) + ' pounds' + '<br>'
+                + 'Test 2: ' + this.exp.sumReward[2] + ' = ' + this.exp.pointsToPounds(this.exp.sumReward[2]).toFixed(2) + ' pounds' + '<br>'
+                + 'Test 3: ' + this.exp.sumReward[3] + ' = ' + this.exp.pointsToPounds(this.exp.sumReward[3]).toFixed(2) + ' pounds' + '<br>'
+                + 'With your initial endowment, you won a total bonus of ' + (parseFloat(pence) + 250) + ' pence = ' + (parseFloat(pounds) + 2.5) + ' pounds!<br><br>' +
+                'Thank you for playing!<br><br><a href="' + decode(this.exp.compLink) + '">Please click the link to complete this study</a><br></h3><br>'
+
+            $('#stim-box').html(Title)
+        }
+
     }
-
-    endExperiment() {
-
-        GUI.initGameStageDiv()
-
-        let points = this.exp.totalReward
-        let pence = this.exp.pointsToPence(points).toFixed(2)
-        let pounds = this.exp.pointsToPounds(points).toFixed(2)
-
-        let wonlost = [' won ', ' lost '][+(points < 0)]
-
-        let Title = '<h3 align = "center">The game is over!<br>' +
-            'You ' + wonlost + points + ' points in total, which is ' + pence + ' pence = ' + pounds + ' pounds!<br><br>'
-            + 'Test 1: ' + this.exp.sumReward[1] + ' = ' + this.exp.pointsToPounds(this.exp.sumReward[1]).toFixed(2) + ' pounds' + '<br>'
-            + 'Test 2: ' + this.exp.sumReward[2] + ' = ' + this.exp.pointsToPounds(this.exp.sumReward[2]).toFixed(2) + ' pounds' + '<br>'
-            + 'Test 3: ' + this.exp.sumReward[3] + ' = ' + this.exp.pointsToPounds(this.exp.sumReward[3]).toFixed(2) + ' pounds' + '<br>'
-            + 'With your initial endowment, you won a total bonus of ' + (parseFloat(pence) + 250) + ' pence = ' + (parseFloat(pounds) + 2.5) + ' pounds!<br><br>' +
-            'Thank you for playing!<br><br><a href="' + decode(this.exp.compLink) + '">Please click the link to complete this study</a><br></h3><br>'
-
-        $('#stim-box').html(Title)
-    }
-
-}

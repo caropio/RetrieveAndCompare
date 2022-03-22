@@ -283,8 +283,7 @@ export class GUI {
         let pic = [pic2, pic1][+(choice === 1)];
         let cv = [cv2, cv1][+(choice === 1)];
         let fb = [fb2, fb1][+(choice === 1)];
-
-
+        
         if (completeFeedback) {
             if (showFeedback) {
                 // debugger
@@ -316,7 +315,6 @@ export class GUI {
         img.height = pic.height;
 
         
-        console.log(img.width);
         let speed = 5;
         let y = 0;
 
