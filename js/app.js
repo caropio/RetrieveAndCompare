@@ -30,9 +30,9 @@ function main() {
     // let questNum = 0;
     let stateEnabled = 1;
 
-    let sessionNum = -1;
+    let sessionNum = 1;
     let phaseNum = 1;
-    let instructionNum = 0;
+    let instructionNum = 'end';
     let questNum = 'end';
 
     // instantiate experiment parameters
@@ -50,7 +50,7 @@ function main() {
             maxTrainingNum: -2, // if sessionNum == maxTrainingNum
             // do not allow for new training sessions
             nTrialPerConditionTraining: 5,
-            nTrialPerCondition: 28,
+            nTrialPerCondition: 30,
             nSession: 2,
             nCond: 4,
             imgPath: 'images/cards_gif/',
@@ -316,7 +316,7 @@ function stateMachine({ instructionNum, sessionNum, phaseNum, questNum, exp } = 
                     beforeFeedbackDuration: exp.beforeFeedbackDuration,
                     completeFeedback: exp.completeFeedback,
                     feedbackObj: exp.feedbackImg,
-                    outcomeType: [0, 2][+([-1, 0].includes(sessionNum))],
+                    outcomeType: [1, 2][+([-1, 0].includes(sessionNum))],
                     imgObj: imgObj,
                     sessionNum: sessionNum,
                     phaseNum: phaseNum,

@@ -273,6 +273,7 @@ export class Instructions {
                         + 'This is the actual game, every point will be included in the final payoff. \n\n Ready?'
                 }
             }
+
             let nPages = Object.keys(text).length;
 
             GUI.panelSetParagraph(text[pageNum])

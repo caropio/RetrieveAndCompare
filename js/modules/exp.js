@@ -109,19 +109,13 @@ export class ExperimentParameters {
         for (let step of phases) {
             switch (step) {
                 case 1:
-                    this.trialObj[step] = this._generateNoFixedLE({
+                    this.trialObj[step] = this._generateLE({
                         nSession: nSession,
-                        options: this._getOptionsPerSession(this.contexts),
-                        maxLen: 112,
-                        nRepeat: 2
+                        conditions: this.conditions,
+                        contexts: this.contexts,
+                        maxLen: 120,
                     });
 
-                    this.trialObjTraining[step] = this._generateNoFixedLE({
-                        nSession: nSession,
-                        options: this._getOptionsPerSession(this.trainingContexts),
-                        maxLen: 12,
-                        nRepeat: 1
-                    });
 
                     break;
 
@@ -812,10 +806,10 @@ export class ExperimentParameters {
                 this.feedbackImg[fb].style.top = "0px";
             } else {
                 // let fb1 = fb + '_1';
-                let fb1 = fb + '';
-                imgExt = 'gif';
+                let fb1 = fb + '_1';
+                imgExt = 'png';
                 this.feedbackImg[fb1] = new Image();
-                this.feedbackImg[fb1].src = imgPath + "fb/" + fb1 + "_white." + imgExt;
+                this.feedbackImg[fb1].src = imgPath + "fb/" + fb1 + "." + imgExt;
                 this.feedbackImg[fb1].className = "img-responsive center-block";
                 this.feedbackImg[fb1].style.border = "5px solid " + borderColor;
                 this.feedbackImg[fb1].style.position = "relative";
