@@ -115,7 +115,12 @@ export class ExperimentParameters {
                         contexts: this.contexts,
                         maxLen: 120,
                     });
-
+                    this.trialObjTraining[step] = this._generateLE({
+                        nSession: nSession,
+                        conditions: this.conditions,
+                        contexts: this.contexts,
+                        maxLen: 12,
+                    });
 
                     break;
 
