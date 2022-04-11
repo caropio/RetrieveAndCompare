@@ -117,8 +117,8 @@ export class ExperimentParameters {
                     });
                     this.trialObjTraining[step] = this._generateLE({
                         nSession: nSession,
-                        conditions: this.conditions,
-                        contexts: this.contexts,
+                        conditions: this.trainingConditions,
+                        contexts: this.trainingContexts,
                         maxLen: 12,
                     });
 
@@ -811,6 +811,15 @@ export class ExperimentParameters {
                 this.feedbackImg[fb].style.top = "0px";
             } else {
                 // let fb1 = fb + '_1';
+                let fb0 = fb;
+                imgExt = 'gif';
+                this.feedbackImg[fb0] = new Image();
+                this.feedbackImg[fb0].src = imgPath + "fb/" + fb0 + "." + imgExt;
+                this.feedbackImg[fb0].className = "img-responsive center-block";
+                this.feedbackImg[fb0].style.border = "5px solid " + borderColor;
+                this.feedbackImg[fb0].style.position = "relative";
+                this.feedbackImg[fb0].style.top = "0px";
+
                 let fb1 = fb + '_1';
                 imgExt = 'png';
                 this.feedbackImg[fb1] = new Image();

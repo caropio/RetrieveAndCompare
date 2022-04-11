@@ -565,10 +565,10 @@ export class Instructions {
             GUI.panelSetTitle('End of training')
 
             GUI.panelSetParagraph(`• The training is over!\n\n
-         • Overall, in this training, you ${wonlost} ${totalPoints} points = ${pence} pence = ${pounds} pounds!\n\n
-         Test 1: ${this.exp.sumReward[1]}\n
-         Test 2: ${this.exp.sumReward[2]}\n
-         Test 3: ${this.exp.sumReward[3]}\n\n
+         • Overall, in this training, you ${wonlost} ${totalPoints.toFixed(2)} points = ${pence} pence = ${pounds} pounds!\n\n
+         Test 1: ${this.exp.sumReward[1].toFixed(2)}\n
+         Test 2: ${this.exp.sumReward[2].toFixed(2)}\n
+         Test 3: ${this.exp.sumReward[3].toFixed(2)}\n\n
          • Now, you are about to start the first phase of the experiment. Note that from now on the points will be counted in your final payoff.\n
            Also note that the experiment includes much more trials and more points are at stake, compared to the training.\n
            Finally note that the real test will involve different symbols (i.e., not encountered in the training).\n\n

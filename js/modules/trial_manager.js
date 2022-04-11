@@ -115,6 +115,7 @@ export class ChoiceManager {
             event.data.obj.skipEnabled = false;
             $('.clickable').removeClass('clickable');
             this.style.borderColor = "black";
+            this.style.borderWidth = "10px";
             event.data.obj._clickEvent(1, trialObj);
         });
 
@@ -123,6 +124,7 @@ export class ChoiceManager {
                 return;
             clickEnabled = false;
             event.data.obj.skipEnabled = false;
+            this.style.borderWidth = "10px";
             this.style.borderColor = "black";
             $('.clickable').removeClass('clickable');
             event.data.obj._clickEvent(2, trialObj);
@@ -247,8 +249,15 @@ export class ChoiceManager {
         let otherReward;
         let correctChoice;
 
-        reward1 = r1[+(Math.random()<p1[1])];
-        reward2 = r2[+(Math.random()<p2[1])];
+        if (this.outcomeType === 0) {
+            reward1 = r1[+(Math.random()<p1[1])];
+            reward2 = r2[+(Math.random()<p2[1])];
+        } else {
+            reward1 = ev1;
+            reward2 = ev2;
+        }
+        console.log(reward1);
+        console.log(reward2);
 
         thisReward = [reward2, reward1][+(choice === 1)];
         otherReward = [reward1, reward2][+(choice === 1)];
