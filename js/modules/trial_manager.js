@@ -148,6 +148,10 @@ export class ChoiceManager {
 
         let option1Type = params['option1Type'];
         let option2Type = params['option2Type'];
+        
+        if (option1Type+option2Type) {
+            
+        }
 
         let isCatchTrial = +(params['isCatchTrial']);
 
@@ -249,7 +253,7 @@ export class ChoiceManager {
         let otherReward;
         let correctChoice;
 
-        if (this.outcomeType === 0) {
+        if ([0, 2].includes(this.outcomeType)) {
             reward1 = r1[+(Math.random()<p1[1])];
             reward2 = r2[+(Math.random()<p2[1])];
         } else {

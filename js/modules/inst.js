@@ -264,10 +264,16 @@ export class Instructions {
                         + ' • In a first step, you will have to select one of the two symbols by left-clicking on it.\n\n'
                         + GUI.panelGenerateImg({ src: 'images/instructions/1.png', width: '40%' })
                         + '• After a choice, you can win/lose the following outcomes:\n\n'
-                        + '1 point = +' + this.exp.pointsToPence(1).toFixed(2) + ' pence\n'
-                        + '-1 points = -' + this.exp.pointsToPence(1).toFixed(2) + ' pence\n\n'
-                        + GUI.panelGenerateImg({ src: 'images/instructions/2.png', width: '40%' })
-                        + ' • Please note that only the outcome of your choice will be taken into account in the final payoff.\n',
+                        + '0.8 point = +' + this.exp.pointsToPence(.8).toFixed(2) + ' pence\n'
+                        + '0.6 point = +' + this.exp.pointsToPence(.6).toFixed(2) + ' pence\n'
+                        + '0.4 point = +' + this.exp.pointsToPence(.4).toFixed(2) + ' pence\n'
+                        + '0.2 point = +' + this.exp.pointsToPence(.2).toFixed(2) + ' pence\n\n'
+                        + '-0.8 point = ' + this.exp.pointsToPence(-.8).toFixed(2) + ' pence\n'
+                        + '-0.6 point = ' + this.exp.pointsToPence(-.6).toFixed(2) + ' pence\n'
+                        + '-0.4 point = ' + this.exp.pointsToPence(-.4).toFixed(2) + ' pence\n'
+                        + '-0.2 point = ' + this.exp.pointsToPence(-.2).toFixed(2) + ' pence\n'
+                        + ' • Please note that only the outcome of your choice will be taken into account in the final payoff.\n'
+                        + GUI.panelGenerateImg({ src: 'images/instructions/6.png', width: '40%' }),
                     2: ' • The different symbols are not equal in terms of outcome (and more precisely, in terms of odds of winning of losing/winning): in a given pair, one is in average more advantageous compared to the other. \n'
                         + 'At the end of the test you will be shown with the final payoff in terms of cumulated points and monetary bonus.\n\n'
                         + 'This is the actual game, every point will be included in the final payoff. \n\n Ready?'
