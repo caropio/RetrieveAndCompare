@@ -51,7 +51,7 @@ export class ExperimentParameters {
 
         // initGameStageDiv
 
-        this._initContingencies();
+        this._initContingencies(nSession);
         this._loadImg(imgPath, nCond, nSession);
 
         if (!fromCookie) {
@@ -178,10 +178,11 @@ export class ExperimentParameters {
 
 
 
-    _initContingencies() {
+    _initContingencies(nSession) {
         this.cont = [];
-        this.probs = [];
-        this.rewards = [];
+        this.probs = new Array(nSession).fill().map((x) => []);
+        this.rewards = new Array(nSession).fill().map((x) => []);
+        this.learningCont = new Array(nSession).fill().map((x) => []);
         this.ev = [];
         this.rew = undefined;
 
@@ -215,13 +216,28 @@ export class ExperimentParameters {
         for (let i = 0; i < this.cont.length; i++) {
             this.ev[i] = math.round(math.multiply(this.rew, this.cont[i]), 2);
         }
+        // ===================================================================== //
+        // SESSION 1 
+        // ===================================================================== //
 
-        this.lotteryCont = [];
+        this.lotteryCont = [[], []];
         this.selectedCont = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10];
         let i = 0;
         for (let cont in this.cont) {
             if (this.selectedCont.includes(i)) {
-                this.lotteryCont.push(cont);
+                this.lotteryCont[0].push(cont);
+            }
+            i++;
+        }
+        // ===================================================================== //
+        // SESSION 2
+        // ===================================================================== //
+
+        this.selectedCont = [3, 13, 4, 14, 15, 6, 16, 7];
+        i = 0;
+        for (let cont in this.cont) {
+            if (this.selectedCont.includes(i)) {
+                this.lotteryCont[1].push(cont);
             }
             i++;
         }
@@ -230,19 +246,39 @@ export class ExperimentParameters {
         // structure is [option 1, option 2]
         // option 1 is always the best here
         // ===================================================================== //
-        this.rewards[0] = [this.rew, this.rew];
-        this.probs[0] = [9, 1];
+        // SESSION 1 
+        // ===================================================================== //
+        this.rewards[0][0] = [this.rew, this.rew];
+        this.probs[0][0] = [9, 1];
 
-        this.rewards[1] = [this.rew, this.rew];
-        this.probs[1] = [8, 2];
+        this.rewards[0][1] = [this.rew, this.rew];
+        this.probs[0][1] = [8, 2];
 
-        this.rewards[2] = [this.rew, this.rew];
-        this.probs[2] = [7, 3];
+        this.rewards[0][2] = [this.rew, this.rew];
+        this.probs[0][2] = [7, 3];
         //
-        this.rewards[3] = [this.rew, this.rew];
-        this.probs[3] = [6, 4];
+        this.rewards[0][3] = [this.rew, this.rew];
+        this.probs[0][3] = [6, 4];
 
-        this.learningCont = this.probs.flat();
+        this.learningCont[0] = this.probs[0].flat();
+
+        // ===================================================================== //
+        // SESSION 1 
+        // ===================================================================== //
+        this.rewards[1][0] = [this.rew, this.rew];
+        this.probs[1][0] = [9, 1];
+
+        this.rewards[1][1] = [this.rew, this.rew];
+        this.probs[1][1] = [18, 11];
+
+        this.rewards[1][2] = [this.rew, this.rew];
+        this.probs[1][2] = [8, 2];
+        //
+        this.rewards[1][3] = [this.rew, this.rew];
+        this.probs[1][3] = [17, 12];
+
+        this.learningCont[1] = this.probs[1].flat();
+
     }
 
     _initConditionArrays(
@@ -325,8 +361,8 @@ export class ExperimentParameters {
             for (let i = 0; i < conditions[sessionNum].length; i++) {
                 let idx = conditions[sessionNum][i];
 
-                let contIdx1 = this.probs[idx][0];
-                let contIdx2 = this.probs[idx][1];
+                let contIdx1 = this.probs[sessionNum][idx][0];
+                let contIdx2 = this.probs[sessionNum][idx][1];
 
                 let [file1, file2] = contexts[sessionNum][idx];
 
@@ -383,10 +419,10 @@ export class ExperimentParameters {
                     let file1;
 
                     if (option1Type === 1) {
-                        contIdx1 = this.learningCont[optionNum];
+                        contIdx1 = this.learningCont[sessionNum][optionNum];
                         file1 = options[sessionNum][optionNum];
                     } else {
-                        contIdx1 = this.lotteryCont[optionNum];
+                        contIdx1 = this.lotteryCont[sessionNum][optionNum];
                         file1 = this.ev[contIdx1].toString();
                     }
 
@@ -495,18 +531,27 @@ export class ExperimentParameters {
         let arrToFill = new Array(nSession).fill().map((x) => []);
         let nOption = options[0].length;
         let optionNums = shuffle(range(0, nOption-1));
-        let lotteryNums = shuffle(range(0, this.lotteryCont.length-1));
 
         for (let sessionNum = 0; sessionNum < nSession; sessionNum++) {
+
+            let lotteryNums = shuffle(range(0, this.lotteryCont[sessionNum].length-1));
+
             LOOP1: for (let count1 = 0; count1 < nOption; count1++) {
+
                 let optionNum1 = optionNums[count1];
                 let tempArray = [];
 
-                for (let countLot = 0; countLot < this.lotteryCont.length; countLot++) {
+                for (let countLot = 0; countLot < this.lotteryCont[sessionNum].length; countLot++) {
 
                     let lotteryNum = lotteryNums[countLot];
-                    let [contIdx1, contIdx2] = [this.learningCont[optionNum1], this.lotteryCont[lotteryNum]];
-                    let [file1, file2] = [options[sessionNum][optionNum1], this.ev[contIdx2].toString()]
+                    let [contIdx1, contIdx2] = [
+                        this.learningCont[sessionNum][optionNum1],
+                        this.lotteryCont[sessionNum][lotteryNum]
+                    ];
+                    let [file1, file2] = [
+                        options[sessionNum][optionNum1],
+                         this.ev[contIdx2].toString()
+                    ];
 
                     let ev1 = this.ev[contIdx1];
                     let ev2 = this.ev[contIdx2];
@@ -550,8 +595,14 @@ export class ExperimentParameters {
                     if (options[sessionNum][optionNum2] == options[sessionNum][optionNum1]) {
                         continue;
                     }
-                    let [contIdx1, contIdx2] = [this.learningCont[optionNum1], this.learningCont[optionNum2]];
-                    let [file1, file2] = [options[sessionNum][optionNum1], options[sessionNum][optionNum2]]
+                    let [contIdx1, contIdx2] = [
+                        this.learningCont[sessionNum][optionNum1],
+                         this.learningCont[sessionNum][optionNum2]
+                    ];
+                    let [file1, file2] = [
+                        options[sessionNum][optionNum1],
+                        options[sessionNum][optionNum2]
+                    ];
 
                     let ev1 = this.ev[contIdx1];
                     let ev2 = this.ev[contIdx2];
@@ -597,7 +648,6 @@ export class ExperimentParameters {
 
             arrToFill[sessionNum] = arrToFill[sessionNum].flat();
         }
-
         return this._setMaxLen(arrToFill, maxLen);
     }
 
@@ -769,7 +819,7 @@ export class ExperimentParameters {
                 ev = Math.max(trialObj[i]['ev1'], trialObj[i]['ev2'])
             }
             if (ev == NaN || ev == undefined) {
-                debugger;
+                // debugger;
             }
             maxPoints += ev;
         }

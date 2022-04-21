@@ -150,7 +150,7 @@ export class ChoiceManager {
         let option2Type = params['option2Type'];
         
         if (option1Type+option2Type) {
-            
+
         }
 
         let isCatchTrial = +(params['isCatchTrial']);
@@ -260,9 +260,7 @@ export class ChoiceManager {
             reward1 = ev1;
             reward2 = ev2;
         }
-        console.log(reward1);
-        console.log(reward2);
-
+        
         thisReward = [reward2, reward1][+(choice === 1)];
         otherReward = [reward1, reward2][+(choice === 1)];
 
