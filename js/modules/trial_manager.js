@@ -263,6 +263,8 @@ export class ChoiceManager {
         
         thisReward = [reward2, reward1][+(choice === 1)];
         otherReward = [reward1, reward2][+(choice === 1)];
+        
+        this.exp.outcomeList.push(thisReward);
 
         correctChoice = [+(ev2 >= ev1), +(ev1 >= ev2)][+(choice === 1)];
 

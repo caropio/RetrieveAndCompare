@@ -63,7 +63,11 @@ export class ExperimentParameters {
             this.browsInfo = getOS() + " - " + getBrowser();
             this.subID = getfromURL('prolific_id');
 
-
+            
+            // outcome list, used to produce the bonus
+            // at the end of the experiment an outcome is picked randomly
+            this.outcomeList = [];
+            
             this._initConditionArrays(
                 nTrialPerCondition,
                 nTrialPerConditionTraining,
@@ -84,6 +88,7 @@ export class ExperimentParameters {
             this.sumReward = obj.sumReward;
             this.totalReward = obj.totalReward;
             this.trialNum = obj.trialNum;
+            this.outcomeList = obj.outcomeList;
         }
 
         if (maxPoints) {
@@ -98,6 +103,7 @@ export class ExperimentParameters {
         this.pointsToPence = (points) => points * this.conversionRate;
         this.penceToPounds = (pence) => pence / 100;
         this.pointsToPounds = (points) => this.penceToPounds(this.pointsToPence(points));
+        
 
     }
 
