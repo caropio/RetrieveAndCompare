@@ -66,8 +66,20 @@ export class ExperimentParameters {
             
             // outcome list, used to produce the bonus
             // at the end of the experiment an outcome is picked randomly
-            this.outcomeList = [];
+            this.outcomeList = {
+               "-2": {1:[], 2:[], 3:[]},
+               "-1": {1:[], 2:[], 3:[]},
+               1: {1:[], 2:[], 3:[]},
+               0: {1:[], 2:[], 3:[]},
+            };
             
+            this.selectedOutcome = {
+               "-2": {1:undefined, 2:undefined,3:undefined},
+               "-1": {1:undefined, 2:undefined,3:undefined},
+               0: {1:undefined, 2:undefined,3:undefined},
+               1: {1:undefined, 2:undefined,3:undefined},
+            };
+
             this._initConditionArrays(
                 nTrialPerCondition,
                 nTrialPerConditionTraining,
@@ -89,6 +101,7 @@ export class ExperimentParameters {
             this.totalReward = obj.totalReward;
             this.trialNum = obj.trialNum;
             this.outcomeList = obj.outcomeList;
+            this.selectedOutcome = obj.selectedOutcome;
         }
 
         if (maxPoints) {

@@ -264,7 +264,9 @@ export class ChoiceManager {
         thisReward = [reward2, reward1][+(choice === 1)];
         otherReward = [reward1, reward2][+(choice === 1)];
         
-        this.exp.outcomeList.push(thisReward);
+        
+        // debugger;
+        this.exp.outcomeList[this.sessionNum][this.phaseNum].push(thisReward);
 
         correctChoice = [+(ev2 >= ev1), +(ev1 >= ev2)][+(choice === 1)];
 
@@ -272,6 +274,13 @@ export class ChoiceManager {
 
         // if session is not training add to total reward
         this.exp.totalReward += thisReward * !([-1, -2].includes(this.sessionNum));
+        
+        if (this.trialNum === this.nTrial-1) {
+            this.exp.selectedOutcome[this.sessionNum][this.phaseNum] = 
+            this.exp.outcomeList[this.sessionNum][this.phaseNum][
+                randint(0, this.exp.outcomeList[this.sessionNum][this.phaseNum].length-1)];
+
+        }
 
         return [reward1, reward2, ev1, ev2, thisReward, otherReward, correctChoice];
 
