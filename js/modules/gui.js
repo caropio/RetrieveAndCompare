@@ -232,7 +232,7 @@ export class GUI {
     }
 
 
-    static displayOptionSlider(id, imgObj, initValue) {
+    static displayOneOption(id, imgObj, initValue, slider, title) {
 
         GUI.showElement('stim-box');
         let option = imgObj[id];
@@ -252,18 +252,19 @@ export class GUI {
             + canvas1 + '</div><div id = "Middle" class="col-xs-4 col-md-4"></div><div class="col-xs-3 col-md-3">'
             + '</div><div class="col-xs-1 col-md-1"></div></div>';
 
-        let Title = '<h3 align = "center" style="margin-bottom: 2%;">What are the odds this symbol gives a +1?</h3>';
+        let Title = '<h3 align = "center" style="margin-bottom: 2%;">' + title + '</h3>';
         let Images = '<div id = "stimrow" style="transform: translate(0%, -100%);position:relative;"> ' +
             '<div class="col-xs-1 col-md-1"></div>  <div class="col-xs-3 col-md-3">'
             + '</div><div id = "Middle" class="col-xs-4 col-md-4">' + option + '</div></div>';
 
-        let Slider = GUI.generateSlider({ min: 0, max: 100, step: 5, initValue: initValue });
-
-        let str = Title + Images + myCanvas + Slider;
+        if (slider) {
+            let Slider = GUI.generateSlider({ min: 0, max: 100, step: 5, initValue: initValue });
+            let str = Title + Images + myCanvas + Slider;
+        } else {
+            let str = Title + Images + myCanvas;
+        }
         $('#stim-box').html(str);
-
         return document.getElementById('slider_1');
-
     }
 
     static showFeedback({ showFeedback, completeFeedback, feedbackDuration, beforeFeedbackDuration,
@@ -301,6 +302,19 @@ export class GUI {
             GUI.slideCard(pic, cv, showFeedback, feedbackDuration, beforeFeedbackDuration);
             // }, 100);
         }
+    }
+
+    static showSingleFeedback({feedbackDuration, beforeFeedbackDuration,
+        reward1, feedbackObj}) {
+        let pic1 = document.getElementById("option1");
+
+        let cv1 = document.getElementById("canvas1");
+
+        let fb1 = document.getElementById("feedback1");
+
+        fb1.src = feedbackObj[reward1 + ''].src;
+
+        GUI.slideCard(pic1, cv1, true, feedbackDuration, beforeFeedbackDuration);
     }
 
     static slideCard(pic, cv, showFeedback, feedbackDuration, beforeFeedbackDuration) {

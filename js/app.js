@@ -3,6 +3,7 @@ import { Instructions } from "./modules/inst.js";
 import { Questionnaire } from "./modules/quest.js";
 import { GUI } from "./modules/gui.js";
 import { ChoiceManager, SliderManager } from "./modules/trial_manager.js";
+import { RandomSelector } from "./modules/random_selector.js";
 import { saveState, stateStored, loadState } from './modules/utils.js';
 
 // When the page is fully loaded, the main function will be called
@@ -335,6 +336,17 @@ function stateMachine({ instructionNum, sessionNum, phaseNum, questNum, exp } = 
                 }
             );
             choice.run();
+            let rd = new RandomSelector({
+                exp: exp,
+                trialObj: trialObj,
+                imgObj:imgObj,
+                sessionNum: sessionNum,
+                phaseNum: phaseNum,
+                feedbackDuration: 2000,
+                beforeFeedbackDuration: 3000,
+                feedbackObj: feedbackObj
+            });
+            rd.run()
             return;
 
         case 2:

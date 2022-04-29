@@ -161,7 +161,7 @@ export class Instructions {
                 + ' • Depending on your choices you can either double this endowment or lose it. \n\n'
                 + ' • Following experimental economics methodological standards, no deception is involved concerning the calculation of the final payoff.\n\n'
                 + ' • Across the three phases of the experiment, you can win a bonus up to '
-                + this.exp.maxPoints + ' points = ' + this.exp.pointsToPounds(this.exp.maxPoints).toFixed(2) + ' pounds!',
+                + ' 4 points = ' + this.exp.pointPoundValue*4 + ' pounds!',
             3: ' • Points won during the training are not included in the final payoff.'
                 + ' • Your progression in the experiment is displayed on the timeline on top of the page'
         }
@@ -244,8 +244,11 @@ export class Instructions {
                 + GUI.panelGenerateImg({ src: 'images/instructions/2.png', width: '40%' }),
             // 2: ' • You '
             2: ' • The different symbols are not equal in terms of outcome (and more precisely, in terms of odds of winning of losing/winning): in a given pair, one is in average more advantageous compared to the other. \n'
-                + 'At the end of the test you will be shown with the final payoff in terms of cumulated points and monetary bonus.\n\n'
-                + 'This is the actual game, every point will be included in the final payoff. \n\n Ready?'
+                + ' •  At the end of each test you will be shown with the final payoff.\n\n'
+                + ' •  <b>In order to compute your payoff, among all the outcomes you obtained, only one of them will be selected (randomly). </b> Thus, after each test, you can win/lose the following amount:'
+                + '+ 1 point=' + this.exp.pointPoundValue + ' pounds\n'
+                + '- 1 point=' + -1*this.exp.pointPoundValue + ' pounds\n'
+                + 'Ready?'
         }
 
         let nPages = Object.keys(text).length;

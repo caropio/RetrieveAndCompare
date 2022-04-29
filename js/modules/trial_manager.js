@@ -277,9 +277,9 @@ export class ChoiceManager {
         
         if (this.trialNum === this.nTrial-1) {
             this.exp.selectedOutcome[this.sessionNum][this.phaseNum] = 
-            this.exp.outcomeList[this.sessionNum][this.phaseNum][
-                randint(0, this.exp.outcomeList[this.sessionNum][this.phaseNum].length-1)];
-
+                this.exp.outcomeList[this.sessionNum][this.phaseNum][
+                    randint(0, this.exp.outcomeList[this.sessionNum][this.phaseNum].length-1)];
+            console.log(this.exp.selectedOutcome);
         }
 
         return [reward1, reward2, ev1, ev2, thisReward, otherReward, correctChoice];
@@ -416,7 +416,7 @@ export class SliderManager {
         let initValue = range(25, 75, 5)[Math.floor(Math.random() * 10)];
         let clickEnabled = true;
 
-        let slider = GUI.displayOptionSlider(params['stimIdx'], this.imgObj, initValue);
+        let slider = GUI.displayOneOption(params['stimIdx'], this.imgObj, initValue, true, 'What are the odds this symbol gives a +1?');
 
         GUI.listenOnSlider({ obj: this, slider: slider }, function (event) {
             if (clickEnabled) {

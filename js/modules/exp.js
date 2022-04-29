@@ -112,10 +112,12 @@ export class ExperimentParameters {
 
         // define compensation functions
         // ===================================================================== //
+        self.pointPoundValue = .62;
         this.conversionRate = (maxCompensation / this.maxPoints).toFixed(2);
         this.pointsToPence = (points) => points * this.conversionRate;
         this.penceToPounds = (pence) => pence / 100;
-        this.pointsToPounds = (points) => this.penceToPounds(this.pointsToPence(points));
+        // this.pointsToPounds = (points) => this.penceToPounds(this.pointsToPence(points));
+        this.pointsToPounds = (points) => points*.62;
         
 
     }
@@ -865,48 +867,17 @@ export class ExperimentParameters {
             this.images[i].style.top = "0px";
         }
 
-        let feedbackNames = ["empty", '-0.8', '-0.6', '-0.4', '-0.2', '0.2', '0.4', '0.6', '0.8', '-1', '1'];
+        let feedbackNames = ["empty", '-1', '1'];
         this.feedbackImg = [];
         imgExt = 'png';
         for (let i = 0; i < feedbackNames.length; i++) {
             let fb = feedbackNames[i];
-
-            if (fb==="empty") {
-                this.feedbackImg[fb] = new Image();
-                this.feedbackImg[fb].src = imgPath + "fb/" + fb + "." + 'gif'
-                this.feedbackImg[fb].className = "img-responsive center-block";
-                this.feedbackImg[fb].style.border = "5px solid " + borderColor;
-                this.feedbackImg[fb].style.position = "relative";
-                this.feedbackImg[fb].style.top = "0px";
-            } else {
-                // let fb1 = fb + '_1';
-                let fb0 = fb;
-                imgExt = 'gif';
-                this.feedbackImg[fb0] = new Image();
-                this.feedbackImg[fb0].src = imgPath + "fb/" + fb0 + "." + imgExt;
-                this.feedbackImg[fb0].className = "img-responsive center-block";
-                this.feedbackImg[fb0].style.border = "5px solid " + borderColor;
-                this.feedbackImg[fb0].style.position = "relative";
-                this.feedbackImg[fb0].style.top = "0px";
-
-                let fb1 = fb + '_1';
-                imgExt = 'png';
-                this.feedbackImg[fb1] = new Image();
-                this.feedbackImg[fb1].src = imgPath + "fb/" + fb1 + "." + imgExt;
-                this.feedbackImg[fb1].className = "img-responsive center-block";
-                this.feedbackImg[fb1].style.border = "5px solid " + borderColor;
-                this.feedbackImg[fb1].style.position = "relative";
-                this.feedbackImg[fb1].style.top = "0px";
-                let fb2 = fb + '_2';
-                imgExt = 'png';
-                this.feedbackImg[fb2] = new Image();
-                this.feedbackImg[fb2].src = imgPath + "lotteries/" + fb + "_white." + imgExt;
-                this.feedbackImg[fb2].className = "img-responsive center-block";
-                this.feedbackImg[fb2].style.border = "5px solid " + borderColor;
-                this.feedbackImg[fb2].style.position = "relative";
-                this.feedbackImg[fb2].style.top = "0px";
-            }
-           
+            this.feedbackImg[fb] = new Image();
+            this.feedbackImg[fb].src = imgPath + "fb/" + fb + "_white." + 'gif'
+            this.feedbackImg[fb].className = "img-responsive center-block";
+            this.feedbackImg[fb].style.border = "5px solid " + borderColor;
+            this.feedbackImg[fb].style.position = "relative";
+            this.feedbackImg[fb].style.top = "0px";
         }
 
         // Training stims
