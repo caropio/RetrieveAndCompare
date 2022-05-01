@@ -1,6 +1,7 @@
 import { sendToDB } from "./request.js"
 import { randint, shuffle, range } from "./utils.js";
 import { GUI } from "./gui.js";
+import { RandomSelector } from "./random_selector.js";
 
 
 export class ChoiceManager {
@@ -321,13 +322,25 @@ export class ChoiceManager {
                 event.obj.run();
             }, 500, { obj: this });
         } else {
+            let rd = new RandomSelector({
+                exp: this.exp,
+                trialObj: this.trialObj,
+                imgObj:this.imgObj,
+                sessionNum: this.sessionNum,
+                phaseNum: this.phaseNum,
+                feedbackDuration: 2000,
+                beforeFeedbackDuration: 4000,
+                feedbackObj: this.feedbackObj
+            });
+            rd.run()
+
             GUI.hideSkipButton();
-            $('#stim-box').fadeOut(500);
             setTimeout(function (event) {
+                $('#stim-box').fadeOut(500);
                 $('#Stage').empty();
                 GUI.panelShow();
                 event.obj.nextFunc(event.obj.nextParams);
-            }, 500, { obj: this });
+            }, 6000, { obj: this });
         }
     };
 }

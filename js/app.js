@@ -33,7 +33,7 @@ function main() {
 
     let sessionNum = -1;
     let phaseNum = 1;
-    let instructionNum = 1;
+    let instructionNum = 'end';
     let questNum = 'end';
 
     // instantiate experiment parameters
@@ -336,17 +336,6 @@ function stateMachine({ instructionNum, sessionNum, phaseNum, questNum, exp } = 
                 }
             );
             choice.run();
-            let rd = new RandomSelector({
-                exp: exp,
-                trialObj: trialObj,
-                imgObj:imgObj,
-                sessionNum: sessionNum,
-                phaseNum: phaseNum,
-                feedbackDuration: 2000,
-                beforeFeedbackDuration: 3000,
-                feedbackObj: feedbackObj
-            });
-            rd.run()
             return;
 
         case 2:

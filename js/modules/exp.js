@@ -940,13 +940,13 @@ export class ExperimentParameters {
             this.trainingImg[idx].style.top = "0px";
         }
         this.images["?"] = new Image();
-        this.images["?"].src = imgPath + "stim/question.jpg";
+        this.images["?"].src = imgPath + "stim/question2.jpg";
         this.images["?"].className = "img-responsive center-block";
         this.images["?"].style.border = "5px solid " + borderColor;
         this.images["?"].style.position = "relative";
         this.images["?"].style.top = "0px";
         this.trainingImg["?"] = new Image();
-        this.trainingImg["?"].src = imgPath + "stim/question.jpg";
+        this.trainingImg["?"].src = imgPath + "stim/question2.jpg";
         this.trainingImg["?"].className = "img-responsive center-block ";
         this.trainingImg["?"].style.border = "5px solid " + borderColor;
         this.trainingImg["?"].style.position = "relative";

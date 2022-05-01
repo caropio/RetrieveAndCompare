@@ -232,13 +232,17 @@ export class GUI {
     }
 
 
-    static displayOneOption(id, imgObj, initValue, slider, title) {
+    static displayOneOption(id, imgObj, feedbackObj, initValue, slider, title) {
 
         GUI.showElement('stim-box');
         let option = imgObj[id];
         option.id = "option1";
         option = option.outerHTML;
-
+        
+        let feedback = feedbackObj["empty"]
+        feedback.id = "feedback1";
+        feedback = feedback.outerHTML;
+        
         let canvas1 = '<canvas id="canvas1" height="620"' +
             ' width="620" class="img-responsive center-block"' +
             ' style="border: 5px solid transparent; position: relative; top: 0px;">';
@@ -246,22 +250,31 @@ export class GUI {
         // let canvas2 = '<canvas id="canvas2" height="620"' +
         //     ' width="620" class="img-responsive center-block"' +
         //     ' style="border: 5px solid transparent; position: relative; top: 0px;">';
+        //     
+        let Feedback = '<div id = "fbrow" class="row" style= "transform: translate(0%, 0%);position:relative"> ' +
+            '<div class="col-xs-1 col-md-1"></div>  <div class="col-xs-3 col-md-3">'
+            + '</div><div id = "Middle" class="col-xs-4 col-md-4">' + feedback + '</div></div>';
+
+        // let myCanvas = '<div id = "cvrow" class="row" style= "transform: translate(0%, -200%);position:relative">' +
+        //     '    <div class="col-xs-1 col-md-1"></div>  <div class="col-xs-3 col-md-3">'
+        //     + canvas1 + '</div><div id = "Middle" class="col-xs-4 col-md-4"></div><div class="col-xs-3 col-md-3">'
+        //     + '</div><div class="col-xs-1 col-md-1"></div></div>';
 
         let myCanvas = '<div id = "cvrow" class="row" style= "transform: translate(0%, -200%);position:relative">' +
-            '    <div class="col-xs-1 col-md-1"></div>  <div class="col-xs-3 col-md-3">'
-            + canvas1 + '</div><div id = "Middle" class="col-xs-4 col-md-4"></div><div class="col-xs-3 col-md-3">'
-            + '</div><div class="col-xs-1 col-md-1"></div></div>';
+            '<div class="col-xs-1 col-md-1"></div>  <div class="col-xs-3 col-md-3">'
+            + '</div><div id = "Middle" class="col-xs-4 col-md-4">' + canvas1 + '</div></div>';
 
         let Title = '<h3 align = "center" style="margin-bottom: 2%;">' + title + '</h3>';
-        let Images = '<div id = "stimrow" style="transform: translate(0%, -100%);position:relative;"> ' +
+        let Images = '<div id = "stimrow" class="row" style="transform: translate(0%, -100%);position:relative;"> ' +
             '<div class="col-xs-1 col-md-1"></div>  <div class="col-xs-3 col-md-3">'
             + '</div><div id = "Middle" class="col-xs-4 col-md-4">' + option + '</div></div>';
 
+        let str;
         if (slider) {
             let Slider = GUI.generateSlider({ min: 0, max: 100, step: 5, initValue: initValue });
-            let str = Title + Images + myCanvas + Slider;
+            str = Title + Images + myCanvas + Slider;
         } else {
-            let str = Title + Images + myCanvas;
+            str = Title + Feedback +  Images + myCanvas;
         }
         $('#stim-box').html(str);
         return document.getElementById('slider_1');
@@ -309,8 +322,12 @@ export class GUI {
         let pic1 = document.getElementById("option1");
 
         let cv1 = document.getElementById("canvas1");
-
+        
         let fb1 = document.getElementById("feedback1");
+
+        // let feedback1 = feedbackImg["empty"];
+        // feedback1.id = "feedback1";
+        // feedback1 = feedback1.outerHTML;
 
         fb1.src = feedbackObj[reward1 + ''].src;
 
@@ -564,8 +581,6 @@ export class GUI {
         feedback2.id = "feedback2";
         feedback2 = feedback2.outerHTML;
         
-        
-
         return [option1, option2, feedback1, feedback2]
     }
 

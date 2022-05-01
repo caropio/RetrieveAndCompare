@@ -50,13 +50,18 @@ export class RandomSelector {
 
         GUI.initGameStageDiv();
 
+        let slider = GUI.displayOneOption(
+            "?",
+            this.imgObj,
+            this.feedbackObj,
+            undefined,
+            false,
+            "Please wait while we randomly select one of the reward you've earned...");
 
-        let slider = GUI.displayOneOption('0',
-         this.imgObj, undefined, false, "Please wait while we randomly select one of the reward you've earned...");
-        GUI.showSingleFeedback({feedbackDuration: this.feedbackDuration, beforeFeedbackDuration: this.beforeFeedbackDuration, reward1: -1, feedbackObj: this.feedbackObj})
-        sleep(5000);
-        next();
-
+        GUI.showSingleFeedback(
+            {feedbackDuration: this.feedbackDuration,
+            beforeFeedbackDuration: this.beforeFeedbackDuration,
+             reward1: -1, feedbackObj: this.feedbackObj})
     };
 
 
