@@ -255,10 +255,10 @@ export class GUI {
             '<div class="col-xs-1 col-md-1"></div>  <div class="col-xs-3 col-md-3">'
             + '</div><div id = "Middle" class="col-xs-4 col-md-4">' + feedback + '</div></div>';
 
-        // let myCanvas = '<div id = "cvrow" class="row" style= "transform: translate(0%, -200%);position:relative">' +
-        //     '    <div class="col-xs-1 col-md-1"></div>  <div class="col-xs-3 col-md-3">'
-        //     + canvas1 + '</div><div id = "Middle" class="col-xs-4 col-md-4"></div><div class="col-xs-3 col-md-3">'
-        //     + '</div><div class="col-xs-1 col-md-1"></div></div>';
+        let myCanvas2 = '<div id = "cvrow" class="row" style= "transform: translate(0%, -200%);position:relative">' +
+            '    <div class="col-xs-1 col-md-1"></div>  <div class="col-xs-3 col-md-3">'
+            + canvas1 + '</div><div id = "Middle" class="col-xs-4 col-md-4"></div><div class="col-xs-3 col-md-3">'
+            + '</div><div class="col-xs-1 col-md-1"></div></div>';
 
         let myCanvas = '<div id = "cvrow" class="row" style= "transform: translate(0%, -200%);position:relative">' +
             '<div class="col-xs-1 col-md-1"></div>  <div class="col-xs-3 col-md-3">'
@@ -268,11 +268,14 @@ export class GUI {
         let Images = '<div id = "stimrow" class="row" style="transform: translate(0%, -100%);position:relative;"> ' +
             '<div class="col-xs-1 col-md-1"></div>  <div class="col-xs-3 col-md-3">'
             + '</div><div id = "Middle" class="col-xs-4 col-md-4">' + option + '</div></div>';
+        let Images2 = '<div id = "stimrow" style="transform: translate(0%, -100%);position:relative;"> ' +
+            '<div class="col-xs-1 col-md-1"></div>  <div class="col-xs-3 col-md-3">'
+            + '</div><div id = "Middle" class="col-xs-4 col-md-4">' + option + '</div></div>';
 
         let str;
         if (slider) {
             let Slider = GUI.generateSlider({ min: 0, max: 100, step: 5, initValue: initValue });
-            str = Title + Images + myCanvas + Slider;
+            str = Title + Images2 + myCanvas2 + Slider;
         } else {
             str = Title + Feedback +  Images + myCanvas;
         }

@@ -17,6 +17,7 @@ export class RandomSelector {
         beforeFeedbackDuration,
         feedbackDuration,
         feedbackObj,
+        reward,
         nextFunc,
         nextParams,
     } = {}) {
@@ -38,6 +39,8 @@ export class RandomSelector {
             GUI.setActiveCurrentStep('training');
         }
         this.phaseNum = phaseNum;
+        
+        this.reward = reward;
 
         this.nextFunc = nextFunc;
         this.nextParams = nextParams;
@@ -57,25 +60,16 @@ export class RandomSelector {
             undefined,
             false,
             "Please wait while we randomly select one of the reward you've earned...");
+        if (this.reward===undefined) {
+            alert("Reward is undefined! Setting reward to +1");
+            this.reward = 1;
+            this.exp.selectedOutcome[this.sessionNum][this.phaseNum] = 1;
+        }
 
         GUI.showSingleFeedback(
             {feedbackDuration: this.feedbackDuration,
             beforeFeedbackDuration: this.beforeFeedbackDuration,
-             reward1: -1, feedbackObj: this.feedbackObj})
+             reward1: this.reward, feedbackObj: this.feedbackObj})
     };
 
-
-    /* =================== private methods ================== */
-
-    next() {
-        $('#stim-box').fadeOut(500);
-        setTimeout(
-            function (event) {
-                    $('#Stage').empty();
-                    $('#Bottom').empty();
-                    event.obj.nextFunc(event.obj.nextParams);
-                }, 500, { obj: this }
-            );
-    }
-    
 }

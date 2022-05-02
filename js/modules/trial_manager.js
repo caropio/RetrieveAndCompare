@@ -271,7 +271,6 @@ export class ChoiceManager {
 
         correctChoice = [+(ev2 >= ev1), +(ev1 >= ev2)][+(choice === 1)];
 
-        this.exp.sumReward[this.phaseNum] += thisReward;
 
         // if session is not training add to total reward
         this.exp.totalReward += thisReward * !([-1, -2].includes(this.sessionNum));
@@ -281,6 +280,7 @@ export class ChoiceManager {
                 this.exp.outcomeList[this.sessionNum][this.phaseNum][
                     randint(0, this.exp.outcomeList[this.sessionNum][this.phaseNum].length-1)];
             console.log(this.exp.selectedOutcome);
+            this.exp.sumReward[this.phaseNum] = this.exp.selectedOutcome[this.sessionNum][this.phaseNum];
         }
 
         return [reward1, reward2, ev1, ev2, thisReward, otherReward, correctChoice];
@@ -322,12 +322,14 @@ export class ChoiceManager {
                 event.obj.run();
             }, 500, { obj: this });
         } else {
+
             let rd = new RandomSelector({
                 exp: this.exp,
                 trialObj: this.trialObj,
                 imgObj:this.imgObj,
                 sessionNum: this.sessionNum,
                 phaseNum: this.phaseNum,
+                reward: this.exp.selectedOutcome[this.sessionNum][this.phaseNum],
                 feedbackDuration: 2000,
                 beforeFeedbackDuration: 4000,
                 feedbackObj: this.feedbackObj
@@ -352,6 +354,7 @@ export class SliderManager {
         exp,
         trialObj,
         imgObj,
+        feedbackObj,
         sessionNum,
         phaseNum,
         feedbackDuration,
@@ -363,6 +366,7 @@ export class SliderManager {
         this.exp = exp;
         this.trialObj = trialObj;
         this.nTrial = trialObj.length;
+        this.feedbackObj = feedbackObj;
 
         this.sessionNum = sessionNum;
         if (sessionNum >= 0) {
@@ -429,7 +433,7 @@ export class SliderManager {
         let initValue = range(25, 75, 5)[Math.floor(Math.random() * 10)];
         let clickEnabled = true;
 
-        let slider = GUI.displayOneOption(params['stimIdx'], this.imgObj, initValue, true, 'What are the odds this symbol gives a +1?');
+        let slider = GUI.displayOneOption(params['stimIdx'], this.imgObj, this.feedbackObj, initValue, true, 'What are the odds this symbol gives a +1?');
 
         GUI.listenOnSlider({ obj: this, slider: slider }, function (event) {
             if (clickEnabled) {

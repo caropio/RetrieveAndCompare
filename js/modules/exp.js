@@ -112,7 +112,7 @@ export class ExperimentParameters {
 
         // define compensation functions
         // ===================================================================== //
-        self.pointPoundValue = .62;
+        this.pointPoundValue = .62;
         this.conversionRate = (maxCompensation / this.maxPoints).toFixed(2);
         this.pointsToPence = (points) => points * this.conversionRate;
         this.penceToPounds = (pence) => pence / 100;

@@ -127,7 +127,7 @@ export class Instructions {
 
         GUI.panelSetParagraph(`
             • This the end of the first part of the experiment\n\n
-            • You will now pass 3 tests that are identical to the ones during the training phase.
+            • You will now pass 3 tests that are identical to the ones during the training phase.\n\n
             • Please note that previous symbols are now replaced by new ones. 
         `)
 
@@ -244,8 +244,8 @@ export class Instructions {
                 + GUI.panelGenerateImg({ src: 'images/instructions/2.png', width: '40%' }),
             // 2: ' • You '
             2: ' • The different symbols are not equal in terms of outcome (and more precisely, in terms of odds of winning of losing/winning): in a given pair, one is in average more advantageous compared to the other. \n'
-                + ' •  At the end of each test you will be shown with the final payoff.\n\n'
-                + ' •  <b>In order to compute your payoff, among all the outcomes you obtained, only one of them will be selected (randomly). </b> Thus, after each test, you can win/lose the following amount:'
+                + ' •  At the end of each test you will be shown with the payoff.\n\n'
+                + ' •  <b>In order to compute your payoff, among all the outcomes you obtained, only one of them will be selected (randomly). </b> Thus, after each test, you can win/lose the following amount:\n'
                 + '+ 1 point=' + this.exp.pointPoundValue + ' pounds\n'
                 + '- 1 point=' + -1*this.exp.pointPoundValue + ' pounds\n'
                 + 'Ready?'
@@ -305,11 +305,13 @@ export class Instructions {
         let phaseNum = funcParams['phaseNum']
         let isTraining = funcParams['isTraining']
         let sessionNum = funcParams['sessionNum'] + 1
-        let points = this.exp.sumReward[phaseNum - 1]
-        let pence = this.exp.pointsToPence(points).toFixed(2)
-        let pounds = this.exp.pointsToPounds(points).toFixed(2)
+        let points = this.exp.selectedOutcome[sessionNum-1][phaseNum-1];
+        // let pence = this.exp.pointsToPence(points).toFixed(2)
+        let pounds = this.exp.pointsToPounds(points);
         let nPages = 3
+        let win_lose = ['lose', 'won'][+(points>0)]
 
+        
         GUI.panelFlush()
         GUI.panelShow()
         GUI.setActiveCurrentStep('training')
@@ -319,53 +321,32 @@ export class Instructions {
         }
 
         GUI.panelSetTitle('Instructions for the second test')
-
+        
         let text
-        if (isTraining) {
-            text = {
-                1:  " You have earned "  + this.exp.selectedOutcome[sessionNum-1][phaseNum] + " pounds!\n"
-                    + ' • In each round you have to choose between one of two items displayed on either side of the screen. \n'
-                    + ' • You can select one of the two symbols by left-clicking on it.\n'
-                    + ' • Please note that in this test, <b>no outcome will be displayed</b>, such that after a choice, the next pair of options will be shown without intermediate step.\n'
-                    + ' • At the end of the test you will be shown with the final payoff in terms of cumulated points and monetary bonus.',
-                2: ' • In the second test  there will be two kind of options. \n'
-                    + ' • The first kind of options is represented by the symbols you already met during the previous test.\n'
-                    + GUI.panelGenerateImg({ src: 'images/cards_gif/stim/A.jpg', width: '15%' })
-                    + 'Note: the symbols keep the same odds of winning / losing a point as in the first test.\n\n'
-                    + ' • The second kind of options is represented by pie-charts explicitly describing the odds of winning / losing a point.\n'
-                    + GUI.panelGenerateImg({ src: 'images/cards_gif/lotteries/0.png', width: '15%' })
-                    + 'Specifically, the green area indicates the chance of winning +1 (+' + this.exp.pointsToPence(1).toFixed(2) + 'p) ; the red area indicates the chance of losing -1 (-'
-                    + this.exp.pointsToPence(1).toFixed(2) + 'p).\n'
-                    + 'Pie-charts go from 100% chance of winning a point to 100% chance of losing a point.\n\n'
-                    // + ' • Sometimes the pie-chart will be hidden an represented by a question mark, in such a way that the odds of winning / losing are unknown.\n\n'
-                    // + GUI.panelGenerateImg({src: 'images/cards_gif/stim/question.jpg', width: '15%'})
-                    // + 'As for regular pie-charts, hidden pie-charts go from 70% chance of winning a point to 70% chance of losing a point.\n\n'
-                    + ' • Sometimes you will be asked to choose between two symbols, a pie-chart and a symbol, and sometimes between two pie-charts.\n',
-                3: ' • (Note : points won during the training do not count for the final payoff!) \n\n'
-                    + ' • Let\'s begin with the second training test! \n\n'
-            }
-        } else {
-            text = {
-                1: ' • In each round you have to choose between one of two items displayed on either side of the screen. \n'
-                    + 'You can select one of the two symbols by left-clicking on it.\n\n'
-                    + ' • Please note that in this test, <b>no outcome will be displayed</b>, such that after a choice, the next pair of options will be shown without intermediate step.\n'
-                    + ' • At the end of the test you will be shown with the final payoff in terms of cumulated points and monetary bonus.',
-                2: ' • In the second test  there will be two kind of options. \n'
-                    + ' • The first kind of options is represented by the symbols you already met during the previous test.\n'
-                    + GUI.panelGenerateImg({ src: 'images/cards_gif/stim_old/2.gif', width: '15%' })
-                    + 'Note: the symbols keep the same odds of winning / losing a point as in the first test. \n\n'
-                    + ' • The second kind of options is represented by pie-charts explicitly describing the odds of winning / losing a point.\n'
-                    + GUI.panelGenerateImg({ src: 'images/cards_gif/lotteries/0.png', width: '15%' })
-                    + 'Specifically, the green area indicates the chance of winning +1 (+' + this.exp.pointsToPence(1).toFixed(2) + 'p) ; the red area indicates the chance of losing -1 (-'
-                    + this.exp.pointsToPence(1).toFixed(2) + 'p).\n'
-                    + 'Pie-charts go from 100% chance of winning a point to 100% chance of losing a point.\n\n'
-                    // + ' • Sometimes the pie-chart will be hidden an represented by a question mark, in such a way that the odds of winning / losing are unknown.\n'
-                    // + GUI.panelGenerateImg({src: 'images/cards_gif/stim/question.jpg', width: '15%'})
-                    // + 'As for regular pie-charts, hidden pie-charts go from 70% chance of winning a point to 70% chance of losing a point.\n\n'
-                    + ' • Sometimes you will be asked to choose between two symbols, a pie-chart and a symbol, and sometimes between two pie-charts.\n',
-                3: '• Note: This test is like the second test of the training.\n'
-                    + 'This is the actual game, every point will be included in the final payoff. \n\n Ready?',
-            }
+        // if (isTraining) {
+        text = {
+            1:  " • In this test, you have " + win_lose + " "  + points + " points = " + pounds + " pounds!\n"
+                + ["", " • Please note that as it is a training test, this won't be included in your final payoff.\n"][+(isTraining)]
+                + "Now, let's start with the second test!\n\n"
+                + ' • In each round you have to choose between one of two items displayed on either side of the screen. \n'
+                + ' • You can select one of the two symbols by left-clicking on it.\n'
+                + ' • Please note that in this test, <b>no outcome will be displayed</b>, such that after a choice, the next pair of options will be shown without intermediate step.\n',
+            2: ' • In the second test  there will be two kind of options. \n'
+                + ' • The first kind of options is represented by the symbols you already met during the previous test.\n'
+                + GUI.panelGenerateImg({ src: 'images/cards_gif/stim/A.jpg', width: '15%' })
+                + 'Note: the symbols keep the same odds of winning / losing a point as in the first test.\n\n'
+                + ' • The second kind of options is represented by pie-charts explicitly describing the odds of winning / losing a point.\n'
+                + GUI.panelGenerateImg({ src: 'images/cards_gif/lotteries/0.png', width: '15%' })
+                + 'Specifically, the green area indicates the chance of winning +1 ; the red area indicates the chance of losing -1.\n'
+                + ['Pie-charts go from 70% chance of winning a point to 70% chance of losing a point.\n\n', 'Pie-charts go from 100% chance of winning a point to 100% chance of losing a point.\n\n'][+(sessionNum <= 1)]
+                // + ' • Sometimes the pie-chart will be hidden an represented by a question mark, in such a way that the odds of winning / losing are unknown.\n\n'
+                // + GUI.panelGenerateImg({src: 'images/cards_gif/stim/question.jpg', width: '15%'})
+                // + 'As for regular pie-charts, hidden pie-charts go from 70% chance of winning a point to 70% chance of losing a point.\n\n'
+                + ' • Sometimes you will be asked to choose between two symbols, a pie-chart and a symbol, and sometimes between two pie-charts.\n',
+            3:  ' • The payoff will be computed in the same way as in the first test, that is by randomly selecting an outcome among all the outcomes you obtained during the test.\n'
+                + ['', ' • (Note : points won during the training do not count for the final payoff!) \n\n'][+(isTraining)]
+                + ' • Let\'s begin with the second test! \n\n'
+                + 'Ready?'
         }
 
         GUI.panelSetParagraph(text[pageNum])
@@ -420,7 +401,10 @@ export class Instructions {
         let phaseNum = funcParams['phaseNum']
         let isTraining = funcParams['isTraining']
         let sessionNum = funcParams['sessionNum'] + 1
-        let points = this.exp.sumReward[phaseNum - 1]
+        let points = this.exp.selectedOutcome[sessionNum-1][phaseNum-1];
+        // let pence = this.exp.pointsToPence(points).toFixed(2)
+        let pounds = this.exp.pointsToPounds(points);
+        let win_lose = ['lose', 'won'][+(points>0)]
         // let pence = this.exp.pointsToPence(points).toFixed(2)
         // let pounds = this.exp.pointsToPounds(points).toFixed(2)
         let nPages = 2
@@ -434,19 +418,14 @@ export class Instructions {
         GUI.panelSetTitle('Instructions for the third test')
 
         let text = {
-            1: ` • In each round of the third test you will be presented with the symbols and pie-charts you met in the first and the second test. This is the occasion to test your knowledge of each symbol average outcome. \n
-                     • You will be asked to indicate (in percentages), what are the odds that a given symbol or pie-chart makes you win a point (+1=+${this.exp.pointsToPence(1).toFixed(2)}p).\n\n
+            1: `     • In this test, you have ${win_lose} ${points} points = ${pounds} pounds!\n
+                     • In each round of the third test you will be presented with the symbols and pie-charts you met in the first and the second test. This is the occasion to test your knowledge of each symbol average outcome. \n
+                     • You will be asked to indicate (in percentages), what are the odds that a given symbol or pie-chart makes you win a point.\n\n
                      • You will be able to do this through moving a slider on the screen and then confirm your final answer by clicking on the confirmation button.\n\n
                      • 100%  = the symbol (or pie-chart) always gives +1pt.\n
                      • 50%  = the symbol (or pie-chart) always gives +1pt or -1pt with equal chances.\n
-                     • 0% = the symbol (or pie-chart) always gives -1pt.\n`
-        }
-        if (isTraining) {
-            text[2] = ' • Let\'s begin with the third training test!\n\n'
-                + ' • Note : points won during the training do not count for the final payoff !)';
-        } else {
-            text[2] = ' • Let\'s begin with the third training test!\n\n'
-                + ' • Note: This test is like the third test of the training.\n\n '
+                     • 0% = the symbol (or pie-chart) always gives -1pt.\n`,
+            2: "Let's begin with the third test!\n Ready?"
         }
 
         GUI.panelSetParagraph(text[pageNum])
@@ -531,7 +510,7 @@ export class Instructions {
         let maxTrainingNum = funcParams['maxTrainingNum'];
 
         totalPoints = this.exp.sumReward[1] + this.exp.sumReward[2] + this.exp.sumReward[3]
-        pence = this.exp.pointsToPence(totalPoints).toFixed(2)
+        // pence = this.exp.pointsToPence(totalPoints).toFixed(2)
         pounds = this.exp.pointsToPounds(totalPoints).toFixed(2)
 
         wonlost = ['won', 'lost'][+(totalPoints < 0)]
@@ -543,12 +522,11 @@ export class Instructions {
         GUI.panelSetTitle('End of training')
 
         GUI.panelSetParagraph(`• The training is over!\n\n
-         • Overall, in this training, you ${wonlost} ${totalPoints.toFixed(2)} points = ${pence} pence = ${pounds} pounds!\n\n
+         • Overall, in this training, you ${wonlost} ${totalPoints.toFixed(2)} points = ${pounds} pounds!\n\n
          Test 1: ${this.exp.sumReward[1].toFixed(2)}\n
          Test 2: ${this.exp.sumReward[2].toFixed(2)}\n
-         Test 3: ${this.exp.sumReward[3].toFixed(2)}\n\n
          • Now, you are about to start the first phase of the experiment. Note that from now on the points will be counted in your final payoff.\n
-           Also note that the experiment includes much more trials and more points are at stake, compared to the training.\n
+           Also note that the experiment includes much more trials, compared to the training.\n
            Finally note that the real test will involve different symbols (i.e., not encountered in the training).\n\n
          • If you want you can do the training a second time.
         `)
