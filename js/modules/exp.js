@@ -828,7 +828,7 @@ export class ExperimentParameters {
                 this.feedbackImg[fb1].style.border = "5px solid " + borderColor;
                 this.feedbackImg[fb1].style.position = "relative";
                 this.feedbackImg[fb1].style.top = "0px";
-                let fb2 = fb + '_2';
+                let fb2 = fb + '_0';
                 imgExt = 'png';
                 this.feedbackImg[fb2] = new Image();
                 this.feedbackImg[fb2].src = imgPath + "lotteries/" + fb + "_white." + imgExt;

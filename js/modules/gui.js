@@ -232,7 +232,7 @@ export class GUI {
     }
 
 
-    static displayOptionSlider(id, imgObj, initValue) {
+    static displayOptionSlider(id, imgObj, initValue, min, max, step, percent, question) {
 
         GUI.showElement('stim-box');
         let option = imgObj[id];
@@ -252,12 +252,12 @@ export class GUI {
             + canvas1 + '</div><div id = "Middle" class="col-xs-4 col-md-4"></div><div class="col-xs-3 col-md-3">'
             + '</div><div class="col-xs-1 col-md-1"></div></div>';
 
-        let Title = '<h3 align = "center" style="margin-bottom: 2%;">What are the odds this symbol gives a +1?</h3>';
+        let Title = '<h3 align = "center" style="margin-bottom: 2%;">' + question + '</h3>';
         let Images = '<div id = "stimrow" style="transform: translate(0%, -100%);position:relative;"> ' +
             '<div class="col-xs-1 col-md-1"></div>  <div class="col-xs-3 col-md-3">'
             + '</div><div id = "Middle" class="col-xs-4 col-md-4">' + option + '</div></div>';
 
-        let Slider = GUI.generateSlider({ min: 0, max: 100, step: 5, initValue: initValue });
+        let Slider = GUI.generateSlider({ min: min, max: max, step:step, initValue: initValue, percent: percent });
 
         let str = Title + Images + myCanvas + Slider;
         $('#stim-box').html(str);

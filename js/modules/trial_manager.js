@@ -179,7 +179,7 @@ export class ChoiceManager {
         if (this.exp.isTesting)
             GUI.setOutcomes(thisReward, otherReward);
 
-        if (this.outcomeType) {
+        if ([0, 1].includes(this.outcomeType)) {
             this._showReward(
                 ev1 + '_' + this.outcomeType,
                 ev2 + '_' + this.outcomeType,
@@ -253,15 +253,33 @@ export class ChoiceManager {
         let otherReward;
         let correctChoice;
 
-        if ([0, 2].includes(this.outcomeType)) {
+        if ([0].includes(this.outcomeType)) {
             reward1 = r1[+(Math.random()<p1[1])];
             reward2 = r2[+(Math.random()<p2[1])];
         } else {
             reward1 = ev1;
             reward2 = ev2;
         }
-        console.log(reward1);
-        console.log(reward2);
+        
+        if ((!this.showFeedback) && (this.sessionNum==1)) {
+            if (params["option1Type"]==0) {
+                reward1 = r1[+(Math.random()<p1[1])];
+            }
+            if (params["option1Type"]==1) {
+                reward1 = ev1;
+            }
+            if (params["option2Type"]==0) {
+                reward2 = r2[+(Math.random()<p2[1])];
+            }
+            if (params["option2Type"]==1) {
+                reward2 = ev2;
+            }
+        }
+        
+        console.log("---------------------------");
+        console.log("Reward 1 = " + reward1);
+        console.log("Reward 2 = " + reward2);
+        console.log("--------------------------" );
 
         thisReward = [reward2, reward1][+(choice === 1)];
         otherReward = [reward1, reward2][+(choice === 1)];
@@ -403,20 +421,44 @@ export class SliderManager {
             presentationTime: presentationTime
         };
 
+        let initValue;
+        let max;
+        let min;
+        let step;
+        let percent;
+        let question;
+        
+        
+        if ((this.sessionNum==1) && (params['option1Type']==1)) {
+            initValue = range(-4, 4,1)[Math.floor(Math.random() * 8)]/10;
+            max = 0.8;
+            min = -0.8;
+            step = .1;
+            percent = false;
+            question = 'What was the value of this symbol?';
+        } else {
+            initValue = range(25, 75, 5)[Math.floor(Math.random() * 10)];
+            max = 100;
+            min = 0;
+            step = 5;
+            percent = true;
+            question = 'What are the odds this symbol gives a +1?';
+        }
 
-        let initValue = range(25, 75, 5)[Math.floor(Math.random() * 10)];
         let clickEnabled = true;
 
-        let slider = GUI.displayOptionSlider(params['stimIdx'], this.imgObj, initValue);
+        let slider = GUI.displayOptionSlider(params['stimIdx'], this.imgObj, initValue, min, max, step, percent, question);
 
-        GUI.listenOnSlider({ obj: this, slider: slider }, function (event) {
+        GUI.listenOnSlider({ obj: this, slider: slider, percent:percent },
+         (event) => {
             if (clickEnabled) {
                 clickEnabled = false;
                 event.data.obj.skipEnabled = false;
                 let choice = slider.value;
                 event.data.obj._clickEvent(choice, params);
             }
-        });
+        },
+        percent);
 
     };
 

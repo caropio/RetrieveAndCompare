@@ -30,9 +30,9 @@ function main() {
     // let questNum = 0;
     let stateEnabled = 1;
 
-    let sessionNum = -1;
-    let phaseNum = 1;
-    let instructionNum = 1;
+    let sessionNum = 1;
+    let phaseNum = 3;
+    let instructionNum = 'end';
     let questNum = 'end';
 
     // instantiate experiment parameters
@@ -316,7 +316,7 @@ function stateMachine({ instructionNum, sessionNum, phaseNum, questNum, exp } = 
                     beforeFeedbackDuration: exp.beforeFeedbackDuration,
                     completeFeedback: exp.completeFeedback,
                     feedbackObj: exp.feedbackImg,
-                    outcomeType: [1, 2][+([-1, 0].includes(sessionNum))],
+                    outcomeType: [1, 0][+([-1, 0].includes(sessionNum))],
                     imgObj: imgObj,
                     sessionNum: sessionNum,
                     phaseNum: phaseNum,
@@ -346,7 +346,7 @@ function stateMachine({ instructionNum, sessionNum, phaseNum, questNum, exp } = 
                     beforeFeedbackDuration: exp.beforeFeedbackDuration,
                     completeFeedback: exp.completeFeedback,
                     feedbackObj: exp.feedbackImg,
-                    outcomeType: [1, 2][+([-1, 0].includes(sessionNum))],
+                    outcomeType: [1, 0][+([-1, 0].includes(sessionNum))],
                     imgObj: imgObj,
                     sessionNum: sessionNum,
                     phaseNum: phaseNum,

@@ -4,7 +4,7 @@
 
 * More coherent variable names
 
-* Use modern php code for DB insertion
+* Use modern php code for DB insertion [WIP]
 
 * Improve smartphone layout (not centered)
 
@@ -17,9 +17,14 @@ let str = `this a  multine string,
  ```
         
 * design a simpler css code layout for option presentation
-* Refactor quest.js
+
+* Refactor inst.js
+
 * Encapsulate Gui
+
 * Remove what is hardcoded as much as possible (create an experiment parameters config file?)
+
+* Do something for importing stimuli in a proper/better way
 
 
 ## Screenshots
