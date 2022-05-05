@@ -1,4 +1,59 @@
 /**
+ * Random selector
+ */
+ #app {
+    height: 50%;
+  
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+  }
+  
+  .doors {
+    display: flex;
+    margin-left: 15px;
+  
+  }
+  
+  .door {
+    background: #fafafa;
+    box-shadow: 0 0 3px 2px rgba(0, 0, 0, 0.4) inset;
+  
+    width: 35px;
+    height: 50px;
+    overflow: hidden;
+  
+    border-radius: 1ex;
+   /* margin: 1ch;*/
+  }
+  
+  .boxes {
+    /* transform: translateY(0); */
+    transition: transform 1s ease-in-out;
+  }
+  .box-rd {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  
+    font-size: 2rem;
+  }
+ 
+  .info {
+    position: fixed;
+    bottom: 0;
+    width: 100%;
+    text-align: center;
+  }
+  
+  .p-rd {
+    line-height: 0;
+    font-size: 2rem;
+    margin-left:0 !important;
+  }
+ 
+/**
  * Wrapper
  */
 

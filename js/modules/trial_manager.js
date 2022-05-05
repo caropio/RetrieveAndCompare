@@ -74,6 +74,18 @@ export class ChoiceManager {
         this.skip = undefined;
         this.skipEnabled = true;
 
+        this.rd = new RandomSelector({
+            exp: this.exp,
+            trialObj: this.trialObj,
+            imgObj: this.imgObj,
+            sessionNum: this.sessionNum,
+            phaseNum: this.phaseNum,
+            feedbackDuration: 2000,
+            nTrial: this.nTrial,
+            beforeFeedbackDuration: 4000,
+            feedbackObj: this.feedbackObj
+        });
+
     }
 
     /* =================== public methods ================== */
@@ -149,8 +161,8 @@ export class ChoiceManager {
 
         let option1Type = params['option1Type'];
         let option2Type = params['option2Type'];
-        
-        if (option1Type+option2Type) {
+
+        if (option1Type + option2Type) {
 
         }
 
@@ -187,7 +199,7 @@ export class ChoiceManager {
                 thisReward, choice);
         } else {
             this._showReward(
-                reward1 + '', 
+                reward1 + '',
                 reward2 + '',
                 thisReward, choice);
         }
@@ -255,17 +267,17 @@ export class ChoiceManager {
         let correctChoice;
 
         if ([0, 2].includes(this.outcomeType)) {
-            reward1 = r1[+(Math.random()<p1[1])];
-            reward2 = r2[+(Math.random()<p2[1])];
-        } else {
+            reward1 = r1[+(Math.random() < p1[1])];
+            reward2 = r2[+(Math.random() < p2[1])];
+        } else {
             reward1 = ev1;
             reward2 = ev2;
         }
-        
+
         thisReward = [reward2, reward1][+(choice === 1)];
         otherReward = [reward1, reward2][+(choice === 1)];
-        
-        
+
+
         // debugger;
         this.exp.outcomeList[this.sessionNum][this.phaseNum].push(thisReward);
 
@@ -274,14 +286,7 @@ export class ChoiceManager {
 
         // if session is not training add to total reward
         this.exp.totalReward += thisReward * !([-1, -2].includes(this.sessionNum));
-        
-        if (this.trialNum === this.nTrial-1) {
-            this.exp.selectedOutcome[this.sessionNum][this.phaseNum] = 
-                this.exp.outcomeList[this.sessionNum][this.phaseNum][
-                    randint(0, this.exp.outcomeList[this.sessionNum][this.phaseNum].length-1)];
-            console.log(this.exp.selectedOutcome);
-            this.exp.sumReward[this.phaseNum] = this.exp.selectedOutcome[this.sessionNum][this.phaseNum];
-        }
+
 
         return [reward1, reward2, ev1, ev2, thisReward, otherReward, correctChoice];
 
@@ -323,18 +328,7 @@ export class ChoiceManager {
             }, 500, { obj: this });
         } else {
 
-            let rd = new RandomSelector({
-                exp: this.exp,
-                trialObj: this.trialObj,
-                imgObj:this.imgObj,
-                sessionNum: this.sessionNum,
-                phaseNum: this.phaseNum,
-                reward: this.exp.selectedOutcome[this.sessionNum][this.phaseNum],
-                feedbackDuration: 2000,
-                beforeFeedbackDuration: 4000,
-                feedbackObj: this.feedbackObj
-            });
-            rd.run()
+            this.rd.run()
 
             GUI.hideSkipButton();
             setTimeout(function (event) {
@@ -342,7 +336,7 @@ export class ChoiceManager {
                 $('#Stage').empty();
                 GUI.panelShow();
                 event.obj.nextFunc(event.obj.nextParams);
-            }, 6000, { obj: this });
+            }, 100000000, { obj: this });
         }
     };
 }
@@ -433,7 +427,13 @@ export class SliderManager {
         let initValue = range(25, 75, 5)[Math.floor(Math.random() * 10)];
         let clickEnabled = true;
 
-        let slider = GUI.displayOneOption(params['stimIdx'], this.imgObj, this.feedbackObj, initValue, true, 'What are the odds this symbol gives a +1?');
+        let slider = GUI.displayOneOption(
+            params['stimIdx'],
+            this.imgObj,
+            this.feedbackObj,
+            initValue,
+            true,
+            'What are the odds this symbol gives a +1?');
 
         GUI.listenOnSlider({ obj: this, slider: slider }, function (event) {
             if (clickEnabled) {

@@ -17,7 +17,7 @@ export class RandomSelector {
         beforeFeedbackDuration,
         feedbackDuration,
         feedbackObj,
-        reward,
+        nTrial,
         nextFunc,
         nextParams,
     } = {}) {
@@ -39,37 +39,135 @@ export class RandomSelector {
             GUI.setActiveCurrentStep('training');
         }
         this.phaseNum = phaseNum;
-        
-        this.reward = reward;
+
 
         this.nextFunc = nextFunc;
         this.nextParams = nextParams;
+        
+        this.nTrial = nTrial;
+        
+        // this.selectedTrial = undefined;
 
     }
 
     /* =================== public methods ================== */
 
+    selectTrial(max) {
+        return range(0, max - 1, 1)[Math.floor(Math.random() * (max - 1))];
+    }
+
     run() {
 
         GUI.initGameStageDiv();
 
-        let slider = GUI.displayOneOption(
-            "?",
-            this.imgObj,
-            this.feedbackObj,
-            undefined,
-            false,
-            "Please wait while we randomly select one of the reward you've earned...");
-        if (this.reward===undefined) {
+
+        this.selectedTrial = this.selectTrial(this.nTrial);
+        
+
+        this.exp.selectedOutcome[this.sessionNum][this.phaseNum] =
+            this.exp.outcomeList[this.sessionNum][this.phaseNum][this.selectedTrial]
+
+        this.reward = this.exp.outcomeList[this.sessionNum][this.phaseNum][this.selectedTrial]
+
+        if (this.reward === undefined) {
             alert("Reward is undefined! Setting reward to +1");
             this.reward = 1;
             this.exp.selectedOutcome[this.sessionNum][this.phaseNum] = 1;
         }
 
-        GUI.showSingleFeedback(
-            {feedbackDuration: this.feedbackDuration,
-            beforeFeedbackDuration: this.beforeFeedbackDuration,
-             reward1: this.reward, feedbackObj: this.feedbackObj})
-    };
+        GUI.generateRandomSelector()
 
+        this.setup(this.selectedTrial);
+        // let slider = GUI.displayOneOption(
+        //     "?",
+        //     this.imgObj,
+        //     this.feedbackObj,
+        //     undefined,
+        //     false,
+        //     "Please wait while we randomly select one of the reward you've earned...");
+
+        // GUI.showSingleFeedback(Math.floor(Math.random() * max-1
+        //
+    }
+
+    setup(selectedTrial) {
+
+        let str = selectedTrial.toString();
+        str = "0".repeat(3 - str.length) + str;
+        const items = str.split("");
+        //document.querySelector(".info").textContent = items.join(" ");
+
+        const doors = document.querySelectorAll(".door");
+        //document.querySelector("#reseter").addEventListener("click", init);
+
+        async function spin() {
+            init(false, 1, 1);
+            for (const door of doors) {
+                const boxes = door.querySelector(".boxes");
+                const duration = parseInt(boxes.style.transitionDuration);
+                boxes.style.transform = "translateY(0)";
+                await new Promise((resolve) => setTimeout(resolve, duration * 100));
+            }
+        }
+
+        function init(firstInit = true, groups = 1, duration = 1) {
+            let count = 0;
+            for (const door of doors) {
+                if (firstInit) {
+                    door.dataset.spinned = "0";
+                } else if (door.dataset.spinned === "1") {
+                    return;
+                }
+
+                const boxes = door.querySelector(".boxes");
+                const boxesClone = boxes.cloneNode(false);
+
+                const pool = ["❓"];
+                if (!firstInit) {
+                    pool.push(...items[count]);
+
+                    boxesClone.addEventListener(
+                        "transitionstart",
+                        function () {
+                            door.dataset.spinned = "1";
+                            this.querySelectorAll(".box-rd").forEach((box) => {
+                                box.style.filter = "blur(1px)";
+                            });
+                        },
+                        { once: true }
+                    );
+
+                    boxesClone.addEventListener(
+                        "transitionend",
+                        function () {
+                            this.querySelectorAll(".box-rd").forEach((box, index) => {
+                                box.style.filter = "blur(0)";
+                                if (index > 0) this.removeChild(box);
+                            });
+                        },
+                        { once: true }
+                    );
+                }
+                // console.log(pool);
+                for (let i = pool.length - 1; i >= 0; i--) {
+                    const box = document.createElement("div");
+                    box.classList.add("box-rd");
+                    box.style.width = door.clientWidth + "px";
+                    box.style.height = door.clientHeight + "px";
+                    box.textContent = pool[i];
+                    boxesClone.appendChild(box);
+                }
+
+                boxesClone.style.transitionDuration = `${duration}s`;
+                boxesClone.style.transform = `translateY(-${door.clientHeight * (pool.length - 1)
+                    }px)`;
+                door.replaceChild(boxesClone, boxes);
+                // console.log(door);
+                count++;
+            }
+        }
+
+        init();
+        spin();
+    }
 }

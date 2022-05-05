@@ -8,11 +8,11 @@ export class GUI {
 
     /* =================== class members ================== */
     static steps = ['introduction', 'training', 'experiment1', 'experiment2']; //, 'questionnaire'];
-    
 
- 
+
+
     /* =================== public methods ================== */
-    
+
 
     static setOutcomes(thisReward, otherReward) {
         $('#out').val(thisReward);
@@ -106,7 +106,7 @@ export class GUI {
     } = {}) {
         $('#' + div).append(
             '<input type="button" class="' + classname + '" id="' + id + '" value="' + value + '">');
-        
+
         // if (id=='next') {
         //     let prevFunc = clickFunc;
         //     clickFunc = async (clickArgs) =>  {
@@ -119,7 +119,7 @@ export class GUI {
         //         // setTimeout(() => el.style.left = -800, 2000);
         //         await sleep(300);
 
-                
+
         //         el.style.display = 'none';
         //         el.style.left = 1800;
         //         let html = el.outerHTML;
@@ -148,7 +148,7 @@ export class GUI {
         //         // setTimeout(() => el.style.left = -800, 2000);
         //         await sleep(300);
 
-                
+
         //         el.style.display = 'none';
         //         el.style.left = -1800;
         //         let html = el.outerHTML;
@@ -238,11 +238,11 @@ export class GUI {
         let option = imgObj[id];
         option.id = "option1";
         option = option.outerHTML;
-        
+
         let feedback = feedbackObj["empty"]
         feedback.id = "feedback1";
         feedback = feedback.outerHTML;
-        
+
         let canvas1 = '<canvas id="canvas1" height="620"' +
             ' width="620" class="img-responsive center-block"' +
             ' style="border: 5px solid transparent; position: relative; top: 0px;">';
@@ -277,7 +277,7 @@ export class GUI {
             let Slider = GUI.generateSlider({ min: 0, max: 100, step: 5, initValue: initValue });
             str = Title + Images2 + myCanvas2 + Slider;
         } else {
-            str = Title + Feedback +  Images + myCanvas;
+            str = Title + Feedback + Images + myCanvas;
         }
         $('#stim-box').html(str);
         return document.getElementById('slider_1');
@@ -297,7 +297,7 @@ export class GUI {
         let pic = [pic2, pic1][+(choice === 1)];
         let cv = [cv2, cv1][+(choice === 1)];
         let fb = [fb2, fb1][+(choice === 1)];
-        
+
         if (completeFeedback) {
             if (showFeedback) {
                 // debugger
@@ -320,12 +320,12 @@ export class GUI {
         }
     }
 
-    static showSingleFeedback({feedbackDuration, beforeFeedbackDuration,
-        reward1, feedbackObj}) {
+    static showSingleFeedback({ feedbackDuration, beforeFeedbackDuration,
+        reward1, feedbackObj }) {
         let pic1 = document.getElementById("option1");
 
         let cv1 = document.getElementById("canvas1");
-        
+
         let fb1 = document.getElementById("feedback1");
 
         // let feedback1 = feedbackImg["empty"];
@@ -345,7 +345,7 @@ export class GUI {
         img.width = pic.width;
         img.height = pic.height;
 
-        
+
         let speed = 5;
         let y = 0;
 
@@ -508,6 +508,48 @@ export class GUI {
 
     }
 
+    static generateRandomSelector() {
+
+        let rd = `
+            <div id="app">
+                <div class="doors">
+                    <p class="p-rd">Trial number</p>
+                    <div class="door">
+                        <div class="boxes">
+                            <!-- <div class="box">?</div> -->
+                        </div>
+                    </div>
+
+                    <div class="door">
+                        <div class="boxes">
+                        <!-- <div class="box">?</div> -->
+                        </div>
+                    </div>
+
+                    <div class="door">
+                        <div class="boxes">
+                        <!-- <div class="box">?</div> -->
+                        </div>
+                    </div>
+
+                </div>
+
+                <div class="buttons">
+                    <button id="spinner" class="btn btn-de>Spin</button>
+                </div>
+
+            <p class="info" style="display:none"></p>
+        </div>`;
+        
+        $('#stim-box').html(rd);
+
+    }
+    
+    static listenOnSpinner(clickArgs, clickFunc) {
+        let spinner = $('#spinner');
+        spinner.click(clickArgs, clickFunc);
+    }
+
     static listenOnSlider(clickArgs, clickFunc, percent = true, n = 1) {
 
         rangeInputRun();
@@ -583,7 +625,7 @@ export class GUI {
         let feedback2 = feedbackImg["empty"];
         feedback2.id = "feedback2";
         feedback2 = feedback2.outerHTML;
-        
+
         return [option1, option2, feedback1, feedback2]
     }
 
