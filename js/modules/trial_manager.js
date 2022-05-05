@@ -428,21 +428,24 @@ export class SliderManager {
         let percent;
         let question;
         
-        
         if ((this.sessionNum==1) && (params['option1Type']==1)) {
+
             initValue = range(-4, 4,1)[Math.floor(Math.random() * 8)]/10;
             max = 0.8;
             min = -0.8;
             step = .1;
             percent = false;
             question = 'What was the value of this symbol?';
+
         } else {
+
             initValue = range(25, 75, 5)[Math.floor(Math.random() * 10)];
             max = 100;
             min = 0;
             step = 5;
             percent = true;
             question = 'What are the odds this symbol gives a +1?';
+
         }
 
         let clickEnabled = true;
