@@ -285,7 +285,7 @@ export class ChoiceManager {
 
 
         // if session is not training add to total reward
-        this.exp.totalReward += thisReward * !([-1, -2].includes(this.sessionNum));
+        // this.exp.totalReward += thisReward * !([-1, -2].includes(this.sessionNum));
 
 
         return [reward1, reward2, ev1, ev2, thisReward, otherReward, correctChoice];
@@ -527,7 +527,7 @@ export class SliderManager {
 
         this.exp.sumReward[this.phaseNum] += thisReward;
 
-        this.exp.totalReward += thisReward * !([-1, -2].includes(this.sessionNum));
+        // this.exp.totalReward += thisReward * !([-1, -2].includes(this.sessionNum));
 
         return [correctChoice, thisReward, otherReward, pLottery, elicDistance]
 

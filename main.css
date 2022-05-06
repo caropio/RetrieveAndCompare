@@ -27,7 +27,7 @@
     border-radius: 1ex;
    /* margin: 1ch;*/
   }
-  
+
   .boxes {
     /* transform: translateY(0); */
     transition: transform 1s ease-in-out;
@@ -48,9 +48,9 @@
   }
   
   .p-rd {
-    line-height: 0;
+    /* line-height: 0; */
     font-size: 2rem;
-    margin-left:0 !important;
+    margin: 10px 10px 10px 10px;
   }
  
 /**

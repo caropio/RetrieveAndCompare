@@ -77,7 +77,17 @@ export class RandomSelector {
 
         GUI.generateRandomSelector()
 
-        this.setup(this.selectedTrial);
+        this.setup(this.selectedTrial, this.reward);
+        this.exp.totalReward += this.exp.reward;
+        
+        console.log(this.exp.totalReward);
+        setTimeout(() => {
+            let str1 = '<br><b>Current bonus</b>=' + this.exp.pointsToPounds(this.reward) + " pounds!";
+            let str2 = '<br><b>Total bonus</b>=' + this.exp.pointsToPounds(this.exp.totalReward) + this.exp.pointsToPounds(2.5) + " pounds!";
+            $('#total').empty();
+            $('#total').html(str1+str2);
+            $('#total').fadeIn(400);
+        }, 6000);
         // let slider = GUI.displayOneOption(
         //     "?",
         //     this.imgObj,
@@ -90,18 +100,19 @@ export class RandomSelector {
         //
     }
 
-    setup(selectedTrial) {
+    setup(selectedTrial, reward) {
 
         let str = selectedTrial.toString();
-        str = "0".repeat(3 - str.length) + str;
+        str = "0".repeat(3 - str.length) + str ;
         const items = str.split("");
+        items.push(reward.toString());
         //document.querySelector(".info").textContent = items.join(" ");
 
         const doors = document.querySelectorAll(".door");
         //document.querySelector("#reseter").addEventListener("click", init);
 
         async function spin() {
-            init(false, 1, 1);
+            init(false, 1, 3);
             for (const door of doors) {
                 const boxes = door.querySelector(".boxes");
                 const duration = parseInt(boxes.style.transitionDuration);
@@ -122,9 +133,9 @@ export class RandomSelector {
                 const boxes = door.querySelector(".boxes");
                 const boxesClone = boxes.cloneNode(false);
 
-                const pool = ["❓"];
+                const pool = ["❓", "❓", "❓", "❓",  "❓", "❓"];
                 if (!firstInit) {
-                    pool.push(...items[count]);
+                    pool.push(items[count]);
 
                     boxesClone.addEventListener(
                         "transitionstart",
@@ -159,7 +170,7 @@ export class RandomSelector {
                 }
 
                 boxesClone.style.transitionDuration = `${duration}s`;
-                boxesClone.style.transform = `translateY(-${door.clientHeight * (pool.length - 1)
+                boxesClone.style.transform = `translateY(-${door.clientHeight * (pool.length - 1) * 1
                     }px)`;
                 door.replaceChild(boxesClone, boxes);
                 // console.log(door);
@@ -168,6 +179,6 @@ export class RandomSelector {
         }
 
         init();
-        spin();
+        setTimeout(spin, 2000);
     }
 }

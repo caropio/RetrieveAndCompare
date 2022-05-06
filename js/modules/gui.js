@@ -513,7 +513,7 @@ export class GUI {
         let rd = `
             <div id="app">
                 <div class="doors">
-                    <p class="p-rd">Trial number</p>
+                    <p class="p-rd">Trial number </p>
                     <div class="door">
                         <div class="boxes">
                             <!-- <div class="box">?</div> -->
@@ -532,14 +532,20 @@ export class GUI {
                         </div>
                     </div>
 
+                    <p class="p-rd">was selected, in this trial your reward was </p>
+                    <div class="door">
+                        <div class="boxes">
+                        <!-- <div class="box">?</div> -->
+                        </div>
+                    </div>
+
+
                 </div>
 
-                <div class="buttons">
-                    <button id="spinner" class="btn btn-de>Spin</button>
-                </div>
+        <p class="p-rd" style="display:none" id="total"><br><br></p>
 
-            <p class="info" style="display:none"></p>
-        </div>`;
+        </div>
+        `;
         
         $('#stim-box').html(rd);
 
