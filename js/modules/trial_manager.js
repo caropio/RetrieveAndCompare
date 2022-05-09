@@ -80,10 +80,10 @@ export class ChoiceManager {
             imgObj: this.imgObj,
             sessionNum: this.sessionNum,
             phaseNum: this.phaseNum,
-            feedbackDuration: 2000,
             nTrial: this.nTrial,
-            beforeFeedbackDuration: 4000,
-            feedbackObj: this.feedbackObj
+            feedbackObj: this.feedbackObj,
+            nextFunc: nextFunc,
+            nextParams: nextParams,
         });
 
     }
@@ -329,14 +329,6 @@ export class ChoiceManager {
         } else {
 
             this.rd.run()
-
-            GUI.hideSkipButton();
-            setTimeout(function (event) {
-                $('#stim-box').fadeOut(500);
-                $('#Stage').empty();
-                GUI.panelShow();
-                event.obj.nextFunc(event.obj.nextParams);
-            }, 100000000, { obj: this });
         }
     };
 }

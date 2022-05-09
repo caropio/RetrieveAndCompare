@@ -542,9 +542,15 @@ export class GUI {
 
                 </div>
 
-        <p class="p-rd" style="display:none" id="total"><br><br></p>
 
         </div>
+
+        <div class="box" id="total-box" style="width: 35%; border-radius:4%; text-align: center; display:none; padding: 5px 5px 5px 5px">
+        <span style="font-size: 30px" class="fa fa-info-circle"></span>
+        <p class="p-rd" id="total"><br></p>
+        <div>
+            
+        <input value="Next" id="next" type="button" class="btn btn-default card-button">
         `;
         
         $('#stim-box').html(rd);

@@ -78,26 +78,23 @@ export class RandomSelector {
         GUI.generateRandomSelector()
 
         this.setup(this.selectedTrial, this.reward);
-        this.exp.totalReward += this.exp.reward;
-        
         console.log(this.exp.totalReward);
+        this.exp.totalReward += this.reward;
+        
         setTimeout(() => {
-            let str1 = '<br><b>Current bonus</b>=' + this.exp.pointsToPounds(this.reward) + " pounds!";
-            let str2 = '<br><b>Total bonus</b>=' + this.exp.pointsToPounds(this.exp.totalReward) + this.exp.pointsToPounds(2.5) + " pounds!";
+            let str1 = '<b>Bonus for this test</b> = ' + this.reward + ' pts = ' + this.exp.pointsToPounds(this.reward) + " pounds!";
+            let str2 = '<br><b>Total bonus</b> =' + (this.exp.pointsToPounds(this.exp.totalReward) + 2.5) + " pounds!";
             $('#total').empty();
             $('#total').html(str1+str2);
-            $('#total').fadeIn(400);
+            $('#total-box').fadeIn(400);
+            $('#next').click(() => {
+                    GUI.hideSkipButton();
+                    $('#stim-box').fadeOut(300);
+                    $('#Stage').empty();
+                    GUI.panelShow();
+                    this.nextFunc(this.nextParams);
+            });
         }, 6000);
-        // let slider = GUI.displayOneOption(
-        //     "?",
-        //     this.imgObj,
-        //     this.feedbackObj,
-        //     undefined,
-        //     false,
-        //     "Please wait while we randomly select one of the reward you've earned...");
-
-        // GUI.showSingleFeedback(Math.floor(Math.random() * max-1
-        //
     }
 
     setup(selectedTrial, reward) {
