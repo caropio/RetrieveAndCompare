@@ -545,7 +545,7 @@ export class GUI {
 
         </div>
 
-        <div class="box" id="total-box" style="width: 35%; border-radius:4%; text-align: center; display:none; padding: 5px 5px 5px 5px">
+        <div class="box" id="total-box" style="width: 32%; border-radius:4%; text-align: center; display:none; padding: 5px 5px 5px 5px">
         <span style="font-size: 30px" class="fa fa-info-circle"></span>
         <p class="p-rd" id="total"><br></p>
         <div>
