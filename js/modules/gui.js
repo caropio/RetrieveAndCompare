@@ -532,7 +532,15 @@ export class GUI {
                         </div>
                     </div>
 
-                    <p class="p-rd">was selected, in this trial your reward was </p>
+
+                    <p class="p-rd">was selected, in this trial you chose </p>
+                    <div class="door" style="width: 45px !important">
+                        <div class="boxes">
+                        <!-- <div class="box">?</div> -->
+                        </div>
+                    </div>
+
+                    <p class="p-rd">and your reward was </p>
                     <div class="door">
                         <div class="boxes">
                         <!-- <div class="box">?</div> -->

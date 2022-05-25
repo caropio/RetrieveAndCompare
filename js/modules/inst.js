@@ -325,8 +325,7 @@ export class Instructions {
         let text
         // if (isTraining) {
         text = {
-            1:  " • In this test, you have " + win_lose + " "  + points + " points = " + pounds + " pounds!\n"
-                + ["", " • Please note that as it is a training test, this won't be included in your final payoff.\n"][+(isTraining)]
+            1:   
                 + "Now, let's start with the second test!\n\n"
                 + ' • In each round you have to choose between one of two items displayed on either side of the screen. \n'
                 + ' • You can select one of the two symbols by left-clicking on it.\n'
@@ -418,7 +417,7 @@ export class Instructions {
         GUI.panelSetTitle('Instructions for the third test')
 
         let text = {
-            1: `     • In this test, you have ${win_lose} ${points} points = ${pounds} pounds!\n
+            1: `     
                      • In each round of the third test you will be presented with the symbols and pie-charts you met in the first and the second test. This is the occasion to test your knowledge of each symbol average outcome. \n
                      • You will be asked to indicate (in percentages), what are the odds that a given symbol or pie-chart makes you win a point.\n\n
                      • You will be able to do this through moving a slider on the screen and then confirm your final answer by clicking on the confirmation button.\n\n
@@ -522,9 +521,9 @@ export class Instructions {
         GUI.panelSetTitle('End of training')
 
         GUI.panelSetParagraph(`• The training is over!\n\n
-         • Overall, in this training, you ${wonlost} ${totalPoints.toFixed(2)} points = ${pounds} pounds!\n\n
-         Test 1: ${this.exp.sumReward[1].toFixed(2)}\n
-         Test 2: ${this.exp.sumReward[2].toFixed(2)}\n
+         • Overall, in this training, you ${wonlost} ${totalPoints} points = ${pounds} pounds!\n\n
+         Test 1: ${this.exp.sumReward[1]} pt\n
+         Test 2: ${this.exp.sumReward[2]} pt \n
          • Now, you are about to start the first phase of the experiment. Note that from now on the points will be counted in your final payoff.\n
            Also note that the experiment includes much more trials, compared to the training.\n
            Finally note that the real test will involve different symbols (i.e., not encountered in the training).\n\n
@@ -540,6 +539,7 @@ export class Instructions {
                 div: 'buttonBox', classname: 'btn btn-default card-button',
                 clickFunc: function (event) {
                     event.data.obj.exp.sumReward.fill(0)
+                    event.data.obj.exp.totalReward = 0;
                     nextParams['phaseNum'] = 1
                     nextParams['sessionNum'] = -2
                     nextParams['instructionNum'] = 4
@@ -554,6 +554,7 @@ export class Instructions {
             div: 'buttonBox', classname: 'btn btn-default card-button',
             clickFunc: function (event) {
                 event.data.obj.exp.sumReward.fill(0)
+                event.data.obj.exp.totalReward = 0;
 
                 GUI.setActiveCurrentStep('experiment' + (sessionNum + 1))
                 setTimeout(

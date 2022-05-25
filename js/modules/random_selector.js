@@ -39,14 +39,11 @@ export class RandomSelector {
             GUI.setActiveCurrentStep('training');
         }
         this.phaseNum = phaseNum;
-
-
+        
         this.nextFunc = nextFunc;
         this.nextParams = nextParams;
-        
+
         this.nTrial = nTrial;
-        
-        // this.selectedTrial = undefined;
 
     }
 
@@ -62,46 +59,54 @@ export class RandomSelector {
 
 
         this.selectedTrial = this.selectTrial(this.nTrial);
-        
 
+
+        this.selectedOpt = this.trialObj
         this.exp.selectedOutcome[this.sessionNum][this.phaseNum] =
             this.exp.outcomeList[this.sessionNum][this.phaseNum][this.selectedTrial]
 
+        this.exp.selectedOpt[this.sessionNum][this.phaseNum] =
+            this.exp.optList[this.sessionNum][this.phaseNum][this.selectedTrial]
+
         this.reward = this.exp.outcomeList[this.sessionNum][this.phaseNum][this.selectedTrial]
+        this.opt = this.exp.selectedOpt[this.sessionNum][this.phaseNum]
 
         if (this.reward === undefined) {
-            alert("Reward is undefined! Setting reward to +1");
+            alert("As you've not played, a random symbol and reward will be selected among existing ones");
             this.reward = 1;
+            this.opt = '2';
+            this.exp.selectedOpt[this.sessionNum][this.phaseNum] = this.opt;
             this.exp.selectedOutcome[this.sessionNum][this.phaseNum] = 1;
         }
 
         GUI.generateRandomSelector()
 
-        this.setup(this.selectedTrial, this.reward);
-        console.log(this.exp.totalReward);
+        this.setup(this.selectedTrial, this.reward, this.opt);
         this.exp.totalReward += this.reward;
-        
+        this.exp.sumReward[this.phaseNum] = this.reward;
+
         setTimeout(() => {
             let str1 = '<b>Bonus for this test</b> = ' + this.reward + ' pts = ' + this.exp.pointsToPounds(this.reward) + " pounds!";
-            let str2 = '<br><b>Total bonus</b> =' + (this.exp.pointsToPounds(this.exp.totalReward) + 2.5) + " pounds!";
+            let str2 = '<br><b>Total bonus</b> =' + (this.exp.pointsToPounds(this.exp.totalReward) + 2.5).toFixed(2) + " pounds!";
             $('#total').empty();
-            $('#total').html(str1+str2);
+            $('#total').html(str1 + str2);
             $('#total-box').fadeIn(400);
             $('#next').click(() => {
-                    GUI.hideSkipButton();
-                    $('#stim-box').fadeOut(300);
-                    $('#Stage').empty();
-                    GUI.panelShow();
-                    this.nextFunc(this.nextParams);
+                GUI.hideSkipButton();
+                $('#stim-box').fadeOut(300);
+                $('#Stage').empty();
+                GUI.panelShow();
+                this.nextFunc(this.nextParams);
             });
         }, 6000);
     }
 
-    setup(selectedTrial, reward) {
+    setup(selectedTrial, reward, opt) {
 
-        let str = selectedTrial.toString();
-        str = "0".repeat(3 - str.length) + str ;
+        let str = (selectedTrial + 1).toString();
+        str = "0".repeat(3 - str.length) + str;
         const items = str.split("");
+        items.push(`<label style="width: 70%;content: url('images/cards_gif/all_stim/${opt}.png')"></label>`)
         items.push(reward.toString());
         //document.querySelector(".info").textContent = items.join(" ");
 
@@ -130,7 +135,7 @@ export class RandomSelector {
                 const boxes = door.querySelector(".boxes");
                 const boxesClone = boxes.cloneNode(false);
 
-                const pool = ["❓", "❓", "❓", "❓",  "❓", "❓"];
+                const pool = ["❓", "❓", "❓", "❓", "❓", "❓"];
                 if (!firstInit) {
                     pool.push(items[count]);
 
@@ -162,7 +167,7 @@ export class RandomSelector {
                     box.classList.add("box-rd");
                     box.style.width = door.clientWidth + "px";
                     box.style.height = door.clientHeight + "px";
-                    box.textContent = pool[i];
+                    box.innerHTML = pool[i];
                     boxesClone.appendChild(box);
                 }
 
@@ -176,6 +181,6 @@ export class RandomSelector {
         }
 
         init();
-        setTimeout(spin, 2000);
+        setTimeout(spin, 1000);
     }
 }

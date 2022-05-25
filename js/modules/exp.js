@@ -72,8 +72,21 @@ export class ExperimentParameters {
                1: {1:[], 2:[], 3:[]},
                0: {1:[], 2:[], 3:[]},
             };
+
+            this.optList = {
+               "-2": {1:[], 2:[], 3:[]},
+               "-1": {1:[], 2:[], 3:[]},
+               1: {1:[], 2:[], 3:[]},
+               0: {1:[], 2:[], 3:[]},
+            };
             
             this.selectedOutcome = {
+               "-2": {1:undefined, 2:undefined,3:undefined},
+               "-1": {1:undefined, 2:undefined,3:undefined},
+               0: {1:undefined, 2:undefined,3:undefined},
+               1: {1:undefined, 2:undefined,3:undefined},
+            };
+            this.selectedOpt = {
                "-2": {1:undefined, 2:undefined,3:undefined},
                "-1": {1:undefined, 2:undefined,3:undefined},
                0: {1:undefined, 2:undefined,3:undefined},
@@ -102,6 +115,9 @@ export class ExperimentParameters {
             this.trialNum = obj.trialNum;
             this.outcomeList = obj.outcomeList;
             this.selectedOutcome = obj.selectedOutcome;
+            this.optList = obj.optList;
+            this.selectedOpt= obj.selectedOpt;
+
         }
 
         if (maxPoints) {

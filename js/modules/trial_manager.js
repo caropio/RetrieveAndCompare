@@ -162,10 +162,6 @@ export class ChoiceManager {
         let option1Type = params['option1Type'];
         let option2Type = params['option2Type'];
 
-        if (option1Type + option2Type) {
-
-        }
-
         let isCatchTrial = +(params['isCatchTrial']);
 
         let condition = params['condition'];
@@ -280,6 +276,23 @@ export class ChoiceManager {
 
         // debugger;
         this.exp.outcomeList[this.sessionNum][this.phaseNum].push(thisReward);
+
+        let invertedPosition = this.invertedPosition[this.trialNum];
+        let leftRight =
+            +((invertedPosition && (choice === 1)) || (!invertedPosition && (choice === 2)));
+
+        let symL;
+        let symR;
+
+        if (!invertedPosition) {
+            symL = params['file1'];
+            symR = params['file2'];
+        } else {
+            symL = params['file2'];
+            symR = params['file1'];
+        }
+
+        this.exp.optList[this.sessionNum][this.phaseNum].push([symL, symR][+(leftRight)]);
 
         correctChoice = [+(ev2 >= ev1), +(ev1 >= ev2)][+(choice === 1)];
 
