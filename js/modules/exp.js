@@ -303,7 +303,7 @@ export class ExperimentParameters {
         this.learningCont[0] = this.probs[0].flat();
 
         // ===================================================================== //
-        // SESSION 1 
+        // SESSION 2
         // ===================================================================== //
         this.rewards[1][0] = [this.rew, this.rew];
         this.probs[1][0] = [9, 1];
