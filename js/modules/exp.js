@@ -300,7 +300,7 @@ export class ExperimentParameters {
         this.rewards[0][3] = [this.rew, this.rew];
         this.probs[0][3] = [17, 12];
 
-        this.learningCont[0] = this.probs[1].flat();
+        this.learningCont[0] = this.probs[0].flat();
 
 
 
@@ -319,7 +319,7 @@ export class ExperimentParameters {
         this.rewards[1][3] = [this.rew, this.rew];
         this.probs[1][3] = [6, 4];
 
-        this.learningCont[1] = this.probs[0].flat();
+        this.learningCont[1] = this.probs[1].flat();
 
 
     }
