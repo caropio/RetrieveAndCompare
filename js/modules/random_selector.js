@@ -70,7 +70,7 @@ export class RandomSelector {
 
        }
         
-        this.reward = this.exp.outcomeList[this.sessionNum][this.phaseNum][this.selectedTrial]
+        this.reward = this.exp.selectedOutcome[this.sessionNum][this.phaseNum]
         this.opt = this.exp.selectedOpt[this.sessionNum][this.phaseNum]
 
         if (this.reward === undefined) {
