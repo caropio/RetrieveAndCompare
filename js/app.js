@@ -41,7 +41,7 @@ function main() {
         {
             online: true,   // send network requests
             isTesting: true, // isTesting==in development vs in production
-            expName: 'incentivize', // experience name
+            expName: 'incentivize2', // experience name
             completeFeedback: true, // display feedback of both options
             maxPoints: undefined, // max points cumulated all along the experiment
             // if undefined or 0, will be computed automatically
