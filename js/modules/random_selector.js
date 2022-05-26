@@ -1,5 +1,5 @@
 import { sendToDB } from "./request.js"
-import { randint, shuffle, range, sleep } from "./utils.js";
+import { randint, shuffle, range, sleep, saveState } from "./utils.js";
 import { GUI } from "./gui.js";
 
 
@@ -44,6 +44,7 @@ export class RandomSelector {
         this.nextParams = nextParams;
 
         this.nTrial = nTrial;
+    
 
     }
 
@@ -58,17 +59,19 @@ export class RandomSelector {
         GUI.initGameStageDiv();
 
 
-        this.selectedTrial = this.selectTrial(this.nTrial);
+        if (this.exp.selectedTrial === undefined) {
+            this.exp.selectedTrial = this.selectTrial(this.nTrial);
+            saveState({sessionNum: this.sessionNum, phaseNum: this.phaseNum, exp: this.exp})
+        }
 
-        if (this.exp.selectedOutcome[this.sessionNum][this.phaseNum] === undefined) {
+        this.selectedTrial = this.exp.selectedTrial;
 
-            this.exp.selectedOutcome[this.sessionNum][this.phaseNum] =
-                this.exp.outcomeList[this.sessionNum][this.phaseNum][this.selectedTrial]
 
-            this.exp.selectedOpt[this.sessionNum][this.phaseNum] =
-                this.exp.optList[this.sessionNum][this.phaseNum][this.selectedTrial]
+        this.exp.selectedOutcome[this.sessionNum][this.phaseNum] =
+            this.exp.outcomeList[this.sessionNum][this.phaseNum][this.selectedTrial]
 
-       }
+        this.exp.selectedOpt[this.sessionNum][this.phaseNum] =
+            this.exp.optList[this.sessionNum][this.phaseNum][this.selectedTrial]
         
         this.reward = this.exp.selectedOutcome[this.sessionNum][this.phaseNum]
         this.opt = this.exp.selectedOpt[this.sessionNum][this.phaseNum]
@@ -98,6 +101,7 @@ export class RandomSelector {
             $('#total').html(str1 + str2);
             $('#total-box').fadeIn(400);
             $('#next').click(() => {
+                this.exp.selectedTrial = undefined;
                 GUI.hideSkipButton();
                 $('#stim-box').fadeOut(300);
                 $('#Stage').empty();
@@ -154,10 +158,7 @@ export class RandomSelector {
                             });
                         },
                         { once: true }
-                    );
-
-                    boxesClone.addEventListener(
-                        "transitionend",
+                    );>
                         function () {
                             this.querySelectorAll(".box-rd").forEach((box, index) => {
                                 box.style.filter = "blur(0)";
