@@ -337,7 +337,7 @@ export class Instructions {
                 + ' • The second kind of options is represented by pie-charts explicitly describing the odds of winning / losing a point.\n'
                 + GUI.panelGenerateImg({ src: 'images/cards_gif/lotteries/0.png', width: '15%' })
                 + 'Specifically, the green area indicates the chance of winning +1 ; the red area indicates the chance of losing -1.\n'
-                + ['Pie-charts go from 70% chance of winning a point to 70% chance of losing a point.\n\n', 'Pie-charts go from 100% chance of winning a point to 100% chance of losing a point.\n\n'][+(sessionNum <= 1)]
+                + ['Pie-charts go from 70% chance of winning a point to 70% chance of losing a point.\n\n', 'Pie-charts go from 100% chance of winning a point to 100% chance of losing a point.\n\n'][+(sessionNum > 0)]
                 // + ' • Sometimes the pie-chart will be hidden an represented by a question mark, in such a way that the odds of winning / losing are unknown.\n\n'
                 // + GUI.panelGenerateImg({src: 'images/cards_gif/stim/question.jpg', width: '15%'})
                 // + 'As for regular pie-charts, hidden pie-charts go from 70% chance of winning a point to 70% chance of losing a point.\n\n'
