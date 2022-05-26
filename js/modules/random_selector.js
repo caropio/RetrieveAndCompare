@@ -61,7 +61,7 @@ export class RandomSelector {
 
         if (this.exp.selectedTrial === undefined) {
             this.exp.selectedTrial = this.selectTrial(this.nTrial);
-            saveState({sessionNum: this.sessionNum, phaseNum: this.phaseNum, exp: this.exp})
+            saveState({sessionNum: this.sessionNum, phaseNum: this.phaseNum, exp: this.exp});
         }
 
         this.selectedTrial = this.exp.selectedTrial;
@@ -158,7 +158,10 @@ export class RandomSelector {
                             });
                         },
                         { once: true }
-                    );>
+                    );
+
+                    boxesClone.addEventListener(
+                        "transitionend",
                         function () {
                             this.querySelectorAll(".box-rd").forEach((box, index) => {
                                 box.style.filter = "blur(0)";
