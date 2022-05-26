@@ -60,14 +60,16 @@ export class RandomSelector {
 
         this.selectedTrial = this.selectTrial(this.nTrial);
 
+        if (this.exp.selectedOutcome[this.sessionNum][this.phaseNum] === undefined) {
 
-        this.selectedOpt = this.trialObj
-        this.exp.selectedOutcome[this.sessionNum][this.phaseNum] =
-            this.exp.outcomeList[this.sessionNum][this.phaseNum][this.selectedTrial]
+            this.exp.selectedOutcome[this.sessionNum][this.phaseNum] =
+                this.exp.outcomeList[this.sessionNum][this.phaseNum][this.selectedTrial]
 
-        this.exp.selectedOpt[this.sessionNum][this.phaseNum] =
-            this.exp.optList[this.sessionNum][this.phaseNum][this.selectedTrial]
+            this.exp.selectedOpt[this.sessionNum][this.phaseNum] =
+                this.exp.optList[this.sessionNum][this.phaseNum][this.selectedTrial]
 
+       }
+        
         this.reward = this.exp.outcomeList[this.sessionNum][this.phaseNum][this.selectedTrial]
         this.opt = this.exp.selectedOpt[this.sessionNum][this.phaseNum]
 
