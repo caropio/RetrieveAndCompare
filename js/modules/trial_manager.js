@@ -293,6 +293,7 @@ export class ChoiceManager {
         }
 
         this.exp.optList[this.sessionNum][this.phaseNum].push([symL, symR][+(leftRight)]);
+        
 
         correctChoice = [+(ev2 >= ev1), +(ev1 >= ev2)][+(choice === 1)];
 

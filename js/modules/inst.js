@@ -326,7 +326,7 @@ export class Instructions {
         // if (isTraining) {
         text = {
             1:   
-                + "Now, let's start with the second test!\n\n"
+                 "Now, let's start with the second test!\n\n"
                 + ' • In each round you have to choose between one of two items displayed on either side of the screen. \n'
                 + ' • You can select one of the two symbols by left-clicking on it.\n'
                 + ' • Please note that in this test, <b>no outcome will be displayed</b>, such that after a choice, the next pair of options will be shown without intermediate step.\n',
@@ -576,11 +576,8 @@ export class Instructions {
         let wonlost = [' won ', ' lost '][+(points < 0)]
 
         let Title = '<h3 align = "center">The game is over!<br>' +
-            'You ' + wonlost + points + ' points in total, which is ' + pence + ' pence = ' + pounds + ' pounds!<br><br>'
-            + 'Test 1: ' + this.exp.sumReward[1] + ' = ' + this.exp.pointsToPounds(this.exp.sumReward[1]).toFixed(2) + ' pounds' + '<br>'
-            + 'Test 2: ' + this.exp.sumReward[2] + ' = ' + this.exp.pointsToPounds(this.exp.sumReward[2]).toFixed(2) + ' pounds' + '<br>'
-            + 'Test 3: ' + this.exp.sumReward[3] + ' = ' + this.exp.pointsToPounds(this.exp.sumReward[3]).toFixed(2) + ' pounds' + '<br>'
-            + 'With your initial endowment, you won a total bonus of ' + (parseFloat(pence) + 250) + ' pence = ' + (parseFloat(pounds) + 2.5) + ' pounds!<br><br>' +
+            'You ' + wonlost + points + ' points in total, which is ' + pounds + ' pounds!<br><br>'
+            + 'With your initial endowment, you won a total bonus of ' + (parseFloat(pounds) + 2.5) + ' pounds!<br><br>' +
             'Thank you for playing!<br><br><a href="' + decode(this.exp.compLink) + '">Please click the link to complete this study</a><br></h3><br>'
 
         $('#stim-box').html(Title)

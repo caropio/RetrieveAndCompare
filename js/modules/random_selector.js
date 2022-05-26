@@ -39,7 +39,7 @@ export class RandomSelector {
             GUI.setActiveCurrentStep('training');
         }
         this.phaseNum = phaseNum;
-        
+
         this.nextFunc = nextFunc;
         this.nextParams = nextParams;
 
@@ -81,13 +81,17 @@ export class RandomSelector {
 
         GUI.generateRandomSelector()
 
-        this.setup(this.selectedTrial, this.reward, this.opt);
         this.exp.totalReward += this.reward;
         this.exp.sumReward[this.phaseNum] = this.reward;
+        
+        this.sendData();
 
+
+        this.setup(this.selectedTrial, this.reward, this.opt);
+        
         setTimeout(() => {
-            let str1 = '<b>Bonus for this test</b> = ' + this.reward + ' pts = ' + this.exp.pointsToPounds(this.reward) + " pounds!";
-            let str2 = '<br><b>Total bonus</b> =' + (this.exp.pointsToPounds(this.exp.totalReward) + 2.5).toFixed(2) + " pounds!";
+            let str1 = '<b>Bonus for this test</b> = ' + this.reward + ' pt = ' + this.exp.pointsToPounds(this.reward) + " pounds!";
+            let str2 = '<br><b>Total bonus</b> = ' + (this.exp.pointsToPounds(this.exp.totalReward) + 2.5).toFixed(2) + " pounds!";
             $('#total').empty();
             $('#total').html(str1 + str2);
             $('#total-box').fadeIn(400);
@@ -183,4 +187,28 @@ export class RandomSelector {
         init();
         setTimeout(spin, 1000);
     }
+
+
+    sendData() {
+        if (this.exp.online) {
+            sendToDB(0,
+                {
+                    exp: this.exp.expName,
+                    expID: this.exp.expID,
+                    id: this.exp.subID,
+                    test: +(this.exp.isTesting),
+                    choice: this.opt,
+                    outcome: this.reward,
+                    session: this.sessionNum,
+                    phase: this.phaseNum,
+                    trial: this.selectedTrial,
+                    sum: this.exp.totalReward
+                },
+                'php/InsertBonus.php'
+            );
+        }
+    }
+
+
+
 }
