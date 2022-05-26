@@ -190,7 +190,7 @@ export class ExperimentParameters {
                         nRepeat: 1,
                         option1Type: 0,
                         maxLen: 30,
-                        options: [range(0, 10, 1), range(0, 10, 1)],
+                        options: [range(0, this.lotteryCont[0].length-1, 1), range(0, this.lotteryCont[1].length-1, 1)],
                     }).flat();
                     this.trialObj[step][0].push(...lot);
                     this.trialObj[step][1].push(...lot);
@@ -465,8 +465,12 @@ export class ExperimentParameters {
                         contIdx1 = this.learningCont[sessionNum][optionNum];
                         file1 = options[sessionNum][optionNum];
                     } else {
+                        try {
                         contIdx1 = this.lotteryCont[sessionNum][optionNum];
                         file1 = this.ev[contIdx1].toString();
+                        } catch {
+                            debugger;
+                        }
                     }
 
                     let ev1 = this.ev[contIdx1];
