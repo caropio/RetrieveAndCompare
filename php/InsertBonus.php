@@ -20,11 +20,11 @@ if ($conn->connect_error) {
 # '$variable' if string, otherwise $variable
 $sql = "INSERT INTO r_and_c_bonus_data (exp, expID, id, test, choice, outcome, session, phase, trial, sum) VALUES ('$exp', $expID, '$id', $test, $choice, $outcome, $session, $phase, $trial, $sum)";
 
-if ($conn->query($sql) === TRUE) {
+if ($db->query($sql) === TRUE) {
   echo "New record created successfully";
 } else {
-  echo "Error: " . $sql . "<br>" . $conn->error;
+  echo "Error: " . $sql . "<br>" . $db->error;
 }
 
-$conn->close();
+$db->close();
  ?>
