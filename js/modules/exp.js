@@ -92,6 +92,8 @@ export class ExperimentParameters {
                0: {1:undefined, 2:undefined,3:undefined},
                1: {1:undefined, 2:undefined,3:undefined},
             };
+            
+            this.selectedTrial = undefined;
 
             this._initConditionArrays(
                 nTrialPerCondition,
@@ -117,6 +119,7 @@ export class ExperimentParameters {
             this.selectedOutcome = obj.selectedOutcome;
             this.optList = obj.optList;
             this.selectedOpt= obj.selectedOpt;
+            this.selectedTrial = obj.selectedTrial;
 
         }
 
