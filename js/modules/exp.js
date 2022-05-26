@@ -577,14 +577,15 @@ export class ExperimentParameters {
         // ===================================================================== //
         let arrToFill = new Array(nSession).fill().map((x) => []);
         let nOption = options[0].length;
-        let optionNums = shuffle(range(0, nOption-1));
 
         for (let sessionNum = 0; sessionNum < nSession; sessionNum++) {
+            let optionNums = shuffle(range(0, nOption-1));
 
-            let lotteryNums = shuffle(range(0, this.lotteryCont[sessionNum].length-1));
 
             LOOP1: for (let count1 = 0; count1 < nOption; count1++) {
 
+                let lotteryNums = shuffle(range(0, this.lotteryCont[sessionNum].length-1));
+                let intraOptionNums = shuffle(range(0, nOption-1));
                 let optionNum1 = optionNums[count1];
                 let tempArray = [];
 
@@ -638,7 +639,7 @@ export class ExperimentParameters {
 
                 for (let count2 = 0; count2 < nOption; count2++) {
 
-                    let optionNum2 = optionNums[count2];
+                    let optionNum2 = intraOptionNums[count2];
                     if (options[sessionNum][optionNum2] == options[sessionNum][optionNum1]) {
                         continue;
                     }
