@@ -261,7 +261,7 @@ export class ExperimentParameters {
         // ===================================================================== //
 
         this.lotteryCont = [[], []];
-        this.selectedCont = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10];
+        this.selectedCont = [3, 13, 4, 14, 15, 6, 16, 7];
         let i = 0;
         for (let cont in this.cont) {
             if (this.selectedCont.includes(i)) {
@@ -273,7 +273,7 @@ export class ExperimentParameters {
         // SESSION 2
         // ===================================================================== //
 
-        this.selectedCont = [3, 13, 4, 14, 15, 6, 16, 7];
+        this.selectedCont = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10];
         i = 0;
         for (let cont in this.cont) {
             if (this.selectedCont.includes(i)) {
