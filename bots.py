@@ -212,7 +212,7 @@ class QLearningAgent(Bot):
 def run(idx, url, q, alpha, beta, q0):
 
     b = QLearningAgent(
-        url=url+f"?prolific_id=Bob{idx}", idx=idx, alpha=alpha, beta=beta, q0=q0)
+        url=url+f"?prolific_id=Bob{idx}_{np.random.randint(10**8)}", idx=idx, alpha=alpha, beta=beta, q0=q0)
 
     print(f'Bot {b.idx} is running')
     b.run(q)
