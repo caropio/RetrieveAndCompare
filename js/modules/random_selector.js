@@ -72,7 +72,7 @@ export class RandomSelector {
         this.opt = this.exp.selectedOpt[this.sessionNum][this.phaseNum]
 
         if (this.reward === undefined) {
-            alert("As you've not played, a random symbol and reward will be selected among existing ones");
+            alert("error! setting a default value");
             this.reward = 1;
             this.opt = '2';
             this.exp.selectedOpt[this.sessionNum][this.phaseNum] = this.opt;
