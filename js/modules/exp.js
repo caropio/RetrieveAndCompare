@@ -292,15 +292,17 @@ export class ExperimentParameters {
         this.probs[0][0] = [9, 1];
 
         this.rewards[0][1] = [this.rew, this.rew];
-        this.probs[0][1] = [8, 2];
+        this.probs[0][1] = [18, 11];
 
         this.rewards[0][2] = [this.rew, this.rew];
-        this.probs[0][2] = [7, 3];
+        this.probs[0][2] = [8, 2];
         //
         this.rewards[0][3] = [this.rew, this.rew];
-        this.probs[0][3] = [6, 4];
+        this.probs[0][3] = [17, 12];
 
-        this.learningCont[0] = this.probs[0].flat();
+        this.learningCont[0] = this.probs[1].flat();
+
+
 
         // ===================================================================== //
         // SESSION 2
@@ -309,15 +311,16 @@ export class ExperimentParameters {
         this.probs[1][0] = [9, 1];
 
         this.rewards[1][1] = [this.rew, this.rew];
-        this.probs[1][1] = [18, 11];
+        this.probs[1][1] = [8, 2];
 
         this.rewards[1][2] = [this.rew, this.rew];
-        this.probs[1][2] = [8, 2];
+        this.probs[1][2] = [7, 3];
         //
         this.rewards[1][3] = [this.rew, this.rew];
-        this.probs[1][3] = [17, 12];
+        this.probs[1][3] = [6, 4];
 
-        this.learningCont[1] = this.probs[1].flat();
+        this.learningCont[1] = this.probs[0].flat();
+
 
     }
 
