@@ -186,14 +186,14 @@ export class ExperimentParameters {
                         options: this._getOptionsPerSession(this.contexts),
                     });
                     let lot = this._generatePM({
-                        nSession: 1,
+                        nSession: nSession,
                         nRepeat: 1,
                         option1Type: 0,
                         maxLen: 30,
                         options: [range(0, this.lotteryCont[0].length-1, 1), range(0, this.lotteryCont[1].length-1, 1)],
-                    }).flat();
-                    this.trialObj[step][0].push(...lot);
-                    this.trialObj[step][1].push(...lot);
+                    });
+                    this.trialObj[step][0].push(...lot[0]);
+                    this.trialObj[step][1].push(...lot[1]);
 
                     this.trialObj[step][0] = shuffle(this.trialObj[step][0]);
                     this.trialObj[step][1] = shuffle(this.trialObj[step][1]);
@@ -212,7 +212,7 @@ export class ExperimentParameters {
             }
         }
 
-        this._insertCatchTrials()
+        // this._insertCatchTrials()
 
     }
 
@@ -322,6 +322,8 @@ export class ExperimentParameters {
         this.learningCont[1] = this.probs[1].flat();
 
 
+
+       
     }
 
     _initConditionArrays(
@@ -344,14 +346,16 @@ export class ExperimentParameters {
         this.trainingOptions = shuffle(this.trainingOptions);
         this.trainingContexts = new Array(nSession).fill().map((x) => []);
 
-        // range cond for each session
-        let cond = shuffle(range(0, nCond - 1));
-
         // Create condition arrays
         // ===================================================================== //
         let learningOptionIdx = 0;
         let trainingOptionIdx = 0;
         for (let sessionNum = 0; sessionNum < nSession; sessionNum++) {
+
+            // range cond for each session
+            let cond = shuffle(range(0, nCond - 1));
+
+
             // learning condition (0, 1, 2, 3)
             for (let i = 0; i < cond.length; i++) {
                 this.conditions[sessionNum].push(
@@ -465,12 +469,8 @@ export class ExperimentParameters {
                         contIdx1 = this.learningCont[sessionNum][optionNum];
                         file1 = options[sessionNum][optionNum];
                     } else {
-                        try {
                         contIdx1 = this.lotteryCont[sessionNum][optionNum];
                         file1 = this.ev[contIdx1].toString();
-                        } catch {
-                            debugger;
-                        }
                     }
 
                     let ev1 = this.ev[contIdx1];
@@ -479,7 +479,7 @@ export class ExperimentParameters {
 
                     let r1 = this.rew;
 
-                    let isCatchTrial = false;
+                    let isCatchTrial = option1Type !== 1;
 
                     arrToFill[sessionNum].push({
                         file1: file1,
@@ -579,13 +579,13 @@ export class ExperimentParameters {
         let nOption = options[0].length;
 
         for (let sessionNum = 0; sessionNum < nSession; sessionNum++) {
-            let optionNums = shuffle(range(0, nOption-1));
 
+            let optionNums = shuffle(range(0, nOption-1));
+            let lotteryNums = shuffle(range(0, this.lotteryCont[sessionNum].length-1));
+            let catchTrials = shuffle(this._generateCatchTrialsTwoOptions());
 
             LOOP1: for (let count1 = 0; count1 < nOption; count1++) {
 
-                let lotteryNums = shuffle(range(0, this.lotteryCont[sessionNum].length-1));
-                let intraOptionNums = shuffle(range(0, nOption-1));
                 let optionNum1 = optionNums[count1];
                 let tempArray = [];
 
@@ -639,7 +639,7 @@ export class ExperimentParameters {
 
                 for (let count2 = 0; count2 < nOption; count2++) {
 
-                    let optionNum2 = intraOptionNums[count2];
+                    let optionNum2 = optionNums[count2];
                     if (options[sessionNum][optionNum2] == options[sessionNum][optionNum1]) {
                         continue;
                     }
@@ -687,7 +687,7 @@ export class ExperimentParameters {
                 }
 
                 arrToFill[sessionNum].push(shuffle(tempArray));
-
+                arrToFill[sessionNum].push(catchTrials[optionNum1]);
                 // if (arrToFill[sessionNum].flat().length > maxLen) {
                 // break LOOP1;
                 // }
@@ -980,3 +980,5 @@ export class ExperimentParameters {
         this.trainingImg["?"].style.top = "0px";
     }
 }
+
+
