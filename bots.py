@@ -209,10 +209,10 @@ class QLearningAgent(Bot):
             time.sleep(3)
 
 
-def run(idx, url, q, alpha, beta, q0):
+def run(idx, rnd, url, q, alpha, beta, q0):
 
     b = QLearningAgent(
-        url=url+f"?prolific_id=Bob{idx}", idx=idx, alpha=alpha, beta=beta, q0=q0)
+        url=url+f"?prolific_id=Bob{idx}_{rnd}", idx=idx, alpha=alpha, beta=beta, q0=q0)
 
     print(f'Bot {b.idx} is running')
     b.run(q)
@@ -234,8 +234,6 @@ if __name__ == '__main__':
     # q.get() is used to get the information from another thread
     q = queue.LifoQueue()
 
-    np.random.seed(1)
-
     # alphas = np.random.beta(1.1, 1.1, size=n_bot)
     # betas = np.random.gamma(1.2, 5, size=n_bot)
     alphas = np.ones(n_bot) * .2
@@ -245,8 +243,9 @@ if __name__ == '__main__':
 
     # run one thread per bot
     for i in range(n_bot):
+        rnd = np.random.randint(10**8)
         t = threading.Thread(target=run, args=(
-            i, args.url, q, alphas[i], betas[i], q0))
+            i, rnd, args.url, q, alphas[i], betas[i], q0))
         t.start()
 
     # -----------------------------------------------------------------------------#
