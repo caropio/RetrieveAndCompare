@@ -171,6 +171,9 @@ export class ChoiceManager {
 
         let p1 = params['p1'];
         let p2 = params['p2'];
+        console.log('Trial: ' + this.trialNum);
+        console.log(p1);
+        console.log(p2);
 
         let symL;
         let symR;
@@ -468,6 +471,11 @@ export class SliderManager {
         let stimIdx = params['stimIdx'];
         let isCatchTrial = +(params["isCatchTrial"]);
         let option1Type = params['option1Type'];
+
+        console.log('Trial: ' + this.trialNum);
+        console.log(p1);
+
+
 
         let [correctChoice, thisReward,
             otherReward, pLottery, elicDistance] = this._getReward(choice, params);
