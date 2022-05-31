@@ -5,13 +5,13 @@ include 'connectDB.php';
 $exp                   = stripslashes(htmlspecialchars($_POST['exp']));
 $expID                 = stripslashes(htmlspecialchars($_POST['expID']));
 $id                    = stripslashes(htmlspecialchars($_POST['id']));
-$test               = stripslashes(htmlspecialchars($_POST['test']));
-$choice = stripslashes(htmlspecialchars($_POST['choice']));
-$outcome = stripslashes(htmlspecialchars($_POST['outcome']));
+$test                  = stripslashes(htmlspecialchars($_POST['test']));
+$choice                = stripslashes(htmlspecialchars($_POST['choice']));
+$outcome               = stripslashes(htmlspecialchars($_POST['outcome']));
 $session               = stripslashes(htmlspecialchars($_POST['session']));
-$phase = stripslashes(htmlspecialchars($_POST['phase']));
-$trial = stripslashes(htmlspecialchars($_POST['trial']));
-$sum = stripslashes(htmlspecialchars($_POST['sum']));
+$phase                 = stripslashes(htmlspecialchars($_POST['phase']));
+$trial                 = stripslashes(htmlspecialchars($_POST['trial']));
+$sum                   = stripslashes(htmlspecialchars($_POST['sum']));
 
 
 if ($conn->connect_error) {
@@ -27,4 +27,4 @@ if ($db->query($sql) === TRUE) {
 }
 
 $db->close();
- ?>
+?>
