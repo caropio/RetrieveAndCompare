@@ -479,7 +479,7 @@ export class ExperimentParameters {
 
                     let r1 = this.rew;
 
-                    let isCatchTrial = false;
+                    let isCatchTrial = true;
 
                     arrToFill[sessionNum].push({
                         file1: file1,
