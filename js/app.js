@@ -32,7 +32,7 @@ function main() {
 
     let sessionNum = -1;
     let phaseNum = 1;
-    let instructionNum = 'end';
+    let instructionNum = 1;
     let questNum = 'end';
 
     // instantiate experiment parameters
