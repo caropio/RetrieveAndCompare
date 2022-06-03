@@ -267,7 +267,7 @@ export class Instructions {
                     + '1 point = +' + this.exp.pointsToPence(1).toFixed(2) + ' pence\n'
                     + '-1 points = -' + this.exp.pointsToPence(1).toFixed(2) + ' pence\n\n'
                         + ' • Please note that only the outcome of your choice will be taken into account in the final payoff.\n'
-                        + GUI.panelGenerateImg({ src: 'images/instructions/6.png', width: '40%' }),
+                        + GUI.panelGenerateImg({ src: 'images/instructions/2.png', width: '40%' }),
                     2: ' • The different symbols are not equal in terms of outcome (and more precisely, in terms of odds of winning of losing/winning): in a given pair, one is in average more advantageous compared to the other. \n'
                         + 'At the end of the test you will be shown with the final payoff in terms of cumulated points and monetary bonus.\n\n'
                         + 'This is the actual game, every point will be included in the final payoff. \n\n Ready?'
