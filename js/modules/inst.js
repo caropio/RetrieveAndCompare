@@ -234,7 +234,7 @@ export class Instructions {
         GUI.panelSetTitle('Instructions for the first test')
 
         let text;
-        if ([0, 1].includes(sessionNum)) {
+        if ([2].includes(sessionNum)) {
             text = {
                 1: ' • In each round you have to choose between one of two symbols displayed on either side of the screen. \n'
                     + ' • In a first step, you will have to select one of the two symbols by left-clicking on it.\n\n'
@@ -254,9 +254,9 @@ export class Instructions {
                 3: ' • The different symbols are not equal in terms of outcome (and more precisely, in terms of odds of winning of losing/winning): in a given pair, one is in average more advantageous compared to the other. \n'
                     + 'At the end of the test you will be shown with the final payoff in terms of cumulated points and monetary bonus.\n\n'
                     + ['• Note: This test is like the first test of the training.\n'
-                        + 'This is the actual game, every point will be included in the final payoff. \n\n Ready?',
+                        + 'This is the actual game, every point will be included in the final payoff. \n\n Ready?',
                     ' • Let\'s begin with the first training test! \n\n'
-                    + '(Note : points won during the training do not count for the final payoff!)'][+(isTraining)]
+                    + '(Note : points won during the training do not count for the final payoff!)'][+(isTraining)]
             }
             } else {
                 text = {
@@ -264,19 +264,13 @@ export class Instructions {
                         + ' • In a first step, you will have to select one of the two symbols by left-clicking on it.\n\n'
                         + GUI.panelGenerateImg({ src: 'images/instructions/1.png', width: '40%' })
                         + '• After a choice, you can win/lose the following outcomes:\n\n'
-                        + '0.8 point = +' + this.exp.pointsToPence(.8).toFixed(2) + ' pence\n'
-                        + '0.6 point = +' + this.exp.pointsToPence(.6).toFixed(2) + ' pence\n'
-                        + '0.4 point = +' + this.exp.pointsToPence(.4).toFixed(2) + ' pence\n'
-                        + '0.2 point = +' + this.exp.pointsToPence(.2).toFixed(2) + ' pence\n\n'
-                        + '-0.8 point = ' + this.exp.pointsToPence(-.8).toFixed(2) + ' pence\n'
-                        + '-0.6 point = ' + this.exp.pointsToPence(-.6).toFixed(2) + ' pence\n'
-                        + '-0.4 point = ' + this.exp.pointsToPence(-.4).toFixed(2) + ' pence\n'
-                        + '-0.2 point = ' + this.exp.pointsToPence(-.2).toFixed(2) + ' pence\n'
+                    + '1 point = +' + this.exp.pointsToPence(1).toFixed(2) + ' pence\n'
+                    + '-1 points = -' + this.exp.pointsToPence(1).toFixed(2) + ' pence\n\n'
                         + ' • Please note that only the outcome of your choice will be taken into account in the final payoff.\n'
-                        + GUI.panelGenerateImg({ src: 'images/instructions/6.png', width: '40%' }),
+                        + GUI.panelGenerateImg({ src: 'images/instructions/4.png', width: '40%' }),
                     2: ' • The different symbols are not equal in terms of outcome (and more precisely, in terms of odds of winning of losing/winning): in a given pair, one is in average more advantageous compared to the other. \n'
                         + 'At the end of the test you will be shown with the final payoff in terms of cumulated points and monetary bonus.\n\n'
-                        + 'This is the actual game, every point will be included in the final payoff. \n\n Ready?'
+                        + 'This is the actual game, every point will be included in the final payoff. \n\n Ready?'
                 }
             }
 
@@ -362,14 +356,14 @@ export class Instructions {
                         + 'Note: the symbols keep the same odds of winning / losing a point as in the first test.\n\n'
                         + ' • The second kind of options is represented by pie-charts explicitly describing the odds of winning / losing a point.\n'
                         + GUI.panelGenerateImg({ src: 'images/cards_gif/lotteries/0.png', width: '15%' })
-                        + 'Specifically, the green area indicates the chance of winning +1 (+' + this.exp.pointsToPence(1).toFixed(2) + 'p) ; the red area indicates the chance of losing -1 (-'
+                        + 'Specifically, the green area indicates the chance of winning +1 (+' + this.exp.pointsToPence(1).toFixed(2) + 'p) ; the red area indicates the chance of losing -1 (-'
                         + this.exp.pointsToPence(1).toFixed(2) + 'p).\n'
                         + 'Pie-charts go from 100% chance of winning a point to 100% chance of losing a point.\n\n'
                         // + ' • Sometimes the pie-chart will be hidden an represented by a question mark, in such a way that the odds of winning / losing are unknown.\n\n'
                         // + GUI.panelGenerateImg({src: 'images/cards_gif/stim/question.jpg', width: '15%'})
                         // + 'As for regular pie-charts, hidden pie-charts go from 70% chance of winning a point to 70% chance of losing a point.\n\n'
                         + ' • Sometimes you will be asked to choose between two symbols, a pie-chart and a symbol, and sometimes between two pie-charts.\n',
-                    3: ' • (Note : points won during the training do not count for the final payoff!) \n\n'
+                    3: ' • (Note : points won during the training do not count for the final payoff!) \n\n'
                         + ' • Let\'s begin with the second training test! \n\n'
                 }
             } else {
@@ -384,7 +378,7 @@ export class Instructions {
                         + 'Note: the symbols keep the same odds of winning / losing a point as in the first test. \n\n'
                         + ' • The second kind of options is represented by pie-charts explicitly describing the odds of winning / losing a point.\n'
                         + GUI.panelGenerateImg({ src: 'images/cards_gif/lotteries/0.png', width: '15%' })
-                        + 'Specifically, the green area indicates the chance of winning +1 (+' + this.exp.pointsToPence(1).toFixed(2) + 'p) ; the red area indicates the chance of losing -1 (-'
+                        + 'Specifically, the green area indicates the chance of winning +1 (+' + this.exp.pointsToPence(1).toFixed(2) + 'p) ; the red area indicates the chance of losing -1 (-'
                         + this.exp.pointsToPence(1).toFixed(2) + 'p).\n'
                         + 'Pie-charts go from 100% chance of winning a point to 100% chance of losing a point.\n\n'
                         // + ' • Sometimes the pie-chart will be hidden an represented by a question mark, in such a way that the odds of winning / losing are unknown.\n'
@@ -392,7 +386,7 @@ export class Instructions {
                         // + 'As for regular pie-charts, hidden pie-charts go from 70% chance of winning a point to 70% chance of losing a point.\n\n'
                         + ' • Sometimes you will be asked to choose between two symbols, a pie-chart and a symbol, and sometimes between two pie-charts.\n',
                     3: '• Note: This test is like the second test of the training.\n'
-                        + 'This is the actual game, every point will be included in the final payoff. \n\n Ready?',
+                        + 'This is the actual game, every point will be included in the final payoff. \n\n Ready?',
                 }
             }
 
@@ -471,7 +465,7 @@ export class Instructions {
             }
             if (isTraining) {
                 text[2] = ' • Let\'s begin with the third training test!\n\n'
-                    + ' • Note : points won during the training do not count for the final payoff !)';
+                    + ' • Note : points won during the training do not count for the final payoff !)';
             } else {
                 text[2] = ' • Let\'s begin with the third training test!\n\n'
                     + ' • Note: This test is like the third test of the training.\n\n '

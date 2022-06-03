@@ -172,7 +172,7 @@ export class ExperimentParameters {
             }
         }
 
-        this._insertCatchTrials()
+        // this._insertCatchTrials()
 
     }
 
@@ -496,6 +496,7 @@ export class ExperimentParameters {
         let nOption = options[0].length;
         let optionNums = shuffle(range(0, nOption-1));
         let lotteryNums = shuffle(range(0, this.lotteryCont.length-1));
+        let catchTrials = shuffle(this._generateCatchTrialsTwoOptions());
 
         for (let sessionNum = 0; sessionNum < nSession; sessionNum++) {
             LOOP1: for (let count1 = 0; count1 < nOption; count1++) {
@@ -589,6 +590,7 @@ export class ExperimentParameters {
 
                 arrToFill[sessionNum].push(shuffle(tempArray));
 
+                arrToFill[sessionNum].push(catchTrials[count1]);
                 // if (arrToFill[sessionNum].flat().length > maxLen) {
                 // break LOOP1;
                 // }
