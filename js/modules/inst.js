@@ -568,7 +568,6 @@ export class Instructions {
          • Overall, in this training, you ${wonlost} ${totalPoints.toFixed(2)} points = ${pence} pence = ${pounds} pounds!\n\n
          Test 1: ${this.exp.sumReward[1].toFixed(2)}\n
          Test 2: ${this.exp.sumReward[2].toFixed(2)}\n
-         Test 3: ${this.exp.sumReward[3].toFixed(2)}\n\n
          • Now, you are about to start the first phase of the experiment. Note that from now on the points will be counted in your final payoff.\n
            Also note that the experiment includes much more trials and more points are at stake, compared to the training.\n
            Finally note that the real test will involve different symbols (i.e., not encountered in the training).\n\n
@@ -620,9 +619,6 @@ export class Instructions {
 
             let Title = '<h3 align = "center">The game is over!<br>' +
                 'You ' + wonlost + points + ' points in total, which is ' + pence + ' pence = ' + pounds + ' pounds!<br><br>'
-                + 'Test 1: ' + this.exp.sumReward[1] + ' = ' + this.exp.pointsToPounds(this.exp.sumReward[1]).toFixed(2) + ' pounds' + '<br>'
-                + 'Test 2: ' + this.exp.sumReward[2] + ' = ' + this.exp.pointsToPounds(this.exp.sumReward[2]).toFixed(2) + ' pounds' + '<br>'
-                + 'Test 3: ' + this.exp.sumReward[3] + ' = ' + this.exp.pointsToPounds(this.exp.sumReward[3]).toFixed(2) + ' pounds' + '<br>'
                 + 'With your initial endowment, you won a total bonus of ' + (parseFloat(pence) + 250) + ' pence = ' + (parseFloat(pounds) + 2.5) + ' pounds!<br><br>' +
                 'Thank you for playing!<br><br><a href="' + decode(this.exp.compLink) + '">Please click the link to complete this study</a><br></h3><br>'
 

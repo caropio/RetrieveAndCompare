@@ -265,14 +265,15 @@ export class ExperimentParameters {
         this.trainingOptions = shuffle(this.trainingOptions);
         this.trainingContexts = new Array(nSession).fill().map((x) => []);
 
-        // range cond for each session
-        let cond = shuffle(range(0, nCond - 1));
-
         // Create condition arrays
         // ===================================================================== //
         let learningOptionIdx = 0;
         let trainingOptionIdx = 0;
         for (let sessionNum = 0; sessionNum < nSession; sessionNum++) {
+            // range cond for each session
+            let cond = shuffle(range(0, nCond - 1));
+
+
             // learning condition (0, 1, 2, 3)
             for (let i = 0; i < cond.length; i++) {
                 this.conditions[sessionNum].push(
@@ -396,7 +397,7 @@ export class ExperimentParameters {
 
                     let r1 = this.rew;
 
-                    let isCatchTrial = false;
+                    let isCatchTrial = true;
 
                     arrToFill[sessionNum].push({
                         file1: file1,
