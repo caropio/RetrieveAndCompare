@@ -40,7 +40,7 @@ function main() {
         {
             online: false,   // send network requests
             isTesting: true, // isTesting==in development vs in production
-            expName: 'EvOutcome', // experience name
+            expName: 'EvOutcome2', // experience name
             completeFeedback: true, // display feedback of both options
             maxPoints: undefined, // max points cumulated all along the experiment
             // if undefined or 0, will be computed automatically
@@ -316,7 +316,7 @@ function stateMachine({ instructionNum, sessionNum, phaseNum, questNum, exp } = 
                     beforeFeedbackDuration: exp.beforeFeedbackDuration,
                     completeFeedback: exp.completeFeedback,
                     feedbackObj: exp.feedbackImg,
-                    outcomeType: [0, ''][+([-1, 0].includes(sessionNum))],
+                    outcomeType: [0, ''][+([1].includes(sessionNum))],
                     imgObj: imgObj,
                     sessionNum: sessionNum,
                     phaseNum: phaseNum,
@@ -346,7 +346,7 @@ function stateMachine({ instructionNum, sessionNum, phaseNum, questNum, exp } = 
                     beforeFeedbackDuration: exp.beforeFeedbackDuration,
                     completeFeedback: exp.completeFeedback,
                     feedbackObj: exp.feedbackImg,
-                    outcomeType: [1, 0][+([-1, 0].includes(sessionNum))],
+                    outcomeType: 'osef',
                     imgObj: imgObj,
                     sessionNum: sessionNum,
                     phaseNum: phaseNum,
