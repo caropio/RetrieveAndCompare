@@ -234,7 +234,7 @@ export class Instructions {
         GUI.panelSetTitle('Instructions for the first test')
 
         let text;
-        if ([0, 1].includes(sessionNum)) {
+        if ([-1, 0, 1].includes(sessionNum)) {
             text = {
                 1: ' • In each round you have to choose between one of two symbols displayed on either side of the screen. \n'
                     + ' • In a first step, you will have to select one of the two symbols by left-clicking on it.\n\n'

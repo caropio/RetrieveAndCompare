@@ -440,7 +440,7 @@ export class SliderManager {
         percent = true;
         
         
-        if ((params['option1Type']==1) && ([0, -1].includes(this.sessionNum))) {
+        if ((params['option1Type']==1) && ([0, -1, -2].includes(this.sessionNum))) {
             question = 'According to the pie-chart associated with this symbol, what are the odds this symbols gives a +1?';
         } else {
             question = 'What are the odds this symbol gives a +1?';
