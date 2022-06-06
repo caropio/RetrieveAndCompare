@@ -270,10 +270,10 @@ export class ChoiceManager {
         //    }
         // }
         
-        console.log("---------------------------");
-        console.log("Reward 1 = " + reward1);
-        console.log("Reward 2 = " + reward2);
-        console.log("--------------------------" );
+       // console.log("---------------------------");
+       // console.log("Reward 1 = " + reward1);
+       // console.log("Reward 2 = " + reward2);
+       // console.log("--------------------------" );
 
         thisReward = [reward2, reward1][+(choice === 1)];
         otherReward = [reward1, reward2][+(choice === 1)];
