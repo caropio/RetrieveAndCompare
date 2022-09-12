@@ -94,7 +94,8 @@ h1.border-bottom {
 
 .rounded {
     border-radius: .2em;
-    box-shadow: grey 0px 2px 4px 0px;
+    box-shadow: rgb(234, 235, 236) .5px 2px 4px .5px;
+
 }
 
 .main {
