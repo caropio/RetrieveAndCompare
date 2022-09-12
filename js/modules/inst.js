@@ -352,7 +352,7 @@ export class Instructions {
                         + ' • At the end of the test you will be shown with the final payoff in terms of cumulated points and monetary bonus.',
                     2: ' • In the second test  there will be two kind of options. \n'
                         + ' • The first kind of options is represented by the symbols you already met during the previous test.\n'
-                        + GUI.panelGenerateImg({ src: 'images/cards_gif/stim/A.jpg', width: '15%' })
+                        + GUI.panelGenerateImg({ src: 'images/cards_gif/stim2/A.png', width: '15%' })
                         + 'Note: the symbols keep the same odds of winning / losing a point as in the first test.\n\n'
                         + ' • The second kind of options is represented by pie-charts explicitly describing the odds of winning / losing a point.\n'
                         + GUI.panelGenerateImg({ src: 'images/cards_gif/lotteries/0.png', width: '15%' })
@@ -360,7 +360,7 @@ export class Instructions {
                         + this.exp.pointsToPence(1).toFixed(2) + 'p).\n'
                         + 'Pie-charts go from 100% chance of winning a point to 100% chance of losing a point.\n\n'
                         // + ' • Sometimes the pie-chart will be hidden an represented by a question mark, in such a way that the odds of winning / losing are unknown.\n\n'
-                        // + GUI.panelGenerateImg({src: 'images/cards_gif/stim/question.jpg', width: '15%'})
+                        // + GUI.panelGenerateImg({src: 'images/cards_gif/stim/question.png', width: '15%'})
                         // + 'As for regular pie-charts, hidden pie-charts go from 70% chance of winning a point to 70% chance of losing a point.\n\n'
                         + ' • Sometimes you will be asked to choose between two symbols, a pie-chart and a symbol, and sometimes between two pie-charts.\n',
                     3: ' • (Note : points won during the training do not count for the final payoff!) \n\n'
@@ -374,7 +374,7 @@ export class Instructions {
                         + ' • At the end of the test you will be shown with the final payoff in terms of cumulated points and monetary bonus.',
                     2: ' • In the second test  there will be two kind of options. \n'
                         + ' • The first kind of options is represented by the symbols you already met during the previous test.\n'
-                        + GUI.panelGenerateImg({ src: 'images/cards_gif/stim_old/2.gif', width: '15%' })
+                        + GUI.panelGenerateImg({ src: 'images/cards_gif/stim_old/2.png', width: '15%' })
                         + 'Note: the symbols keep the same odds of winning / losing a point as in the first test. \n\n'
                         + ' • The second kind of options is represented by pie-charts explicitly describing the odds of winning / losing a point.\n'
                         + GUI.panelGenerateImg({ src: 'images/cards_gif/lotteries/0.png', width: '15%' })
@@ -382,7 +382,7 @@ export class Instructions {
                         + this.exp.pointsToPence(1).toFixed(2) + 'p).\n'
                         + 'Pie-charts go from 100% chance of winning a point to 100% chance of losing a point.\n\n'
                         // + ' • Sometimes the pie-chart will be hidden an represented by a question mark, in such a way that the odds of winning / losing are unknown.\n'
-                        // + GUI.panelGenerateImg({src: 'images/cards_gif/stim/question.jpg', width: '15%'})
+                        // + GUI.panelGenerateImg({src: 'images/cards_gif/stim/question.png', width: '15%'})
                         // + 'As for regular pie-charts, hidden pie-charts go from 70% chance of winning a point to 70% chance of losing a point.\n\n'
                         + ' • Sometimes you will be asked to choose between two symbols, a pie-chart and a symbol, and sometimes between two pie-charts.\n',
                     3: '• Note: This test is like the second test of the training.\n'

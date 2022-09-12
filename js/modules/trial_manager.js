@@ -23,7 +23,7 @@ export class ChoiceManager {
         maxTrials,
         nextFunc,
         nextParams,
-        outcomeType
+        // outcomeType
     } = {}) {
 
         // members
@@ -32,8 +32,7 @@ export class ChoiceManager {
         this.trialObj = trialObj;
         this.feedbackObj = feedbackObj;
         this.imgObj = imgObj;
-
-        this.outcomeType = outcomeType;
+        // this.outcomeType = outcomeType;
 
         this.sessionNum = sessionNum;
         if (sessionNum >= 0) {
@@ -179,17 +178,10 @@ export class ChoiceManager {
         if (this.exp.isTesting)
             GUI.setOutcomes(thisReward, otherReward);
 
-        if ([0, 1].includes(this.outcomeType)) {
-            this._showReward(
-                ev1 + '_' + this.outcomeType,
-                ev2 + '_' + this.outcomeType,
-                thisReward, choice);
-        } else {
-            this._showReward(
+        this._showReward(
                 reward1 + '', 
                 reward2 + '',
                 thisReward, choice);
-        }
 
         if (this.exp.online) {
             sendToDB(0,

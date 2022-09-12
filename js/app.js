@@ -4,6 +4,7 @@ import { Questionnaire } from "./modules/quest.js";
 import { GUI } from "./modules/gui.js";
 import { ChoiceManager, SliderManager } from "./modules/trial_manager.js";
 import { saveState, stateStored, loadState } from './modules/utils.js';
+import { fb, stim, trainingStim, lotteries } from "./img.js";
 
 // When the page is fully loaded, the main function will be called
 $(document).ready(main);
@@ -38,9 +39,9 @@ function main() {
     // instantiate experiment parameters
     let exp = new ExperimentParameters(
         {
-            online: true,   // send network requests
-            isTesting: false, // isTesting==in development vs in production
-            expName: 'EvOutcome', // experience name
+            online: false,   // send network requests
+            isTesting: true, // isTesting==in development vs in production
+            expName: 'master', // experience name
             completeFeedback: true, // display feedback of both options
             maxPoints: undefined, // max points cumulated all along the experiment
             // if undefined or 0, will be computed automatically
@@ -51,49 +52,18 @@ function main() {
             // do not allow for new training sessions
             nTrialPerConditionTraining: 5,
             nTrialPerCondition: 30,
-            nSession: 2,
+            nSession: 1,
             nCond: 4,
-            imgPath: 'images/cards_gif/',
+            // imgPath: 'images/cards_gif/',
             compLink: 'aHR0cHM6Ly9hcHAucHJvbGlmaWMuY28vc3VibWlzc2lvbnMvY29tcGxldGU/Y2M9Uk5GUzVIUDU=',
-            fromCookie: false
+            fromCookie: false,
+            stim: stim, // stimuli files parameters imported from img.js
+            trainingStim: trainingStim, // training stimuli files parameters imported from img.js
+            fb: fb, // feedback files parameteres imported from img.js
+            lotteries: lotteries, // lotterie files parameteres imported from img.js
         }
     );
 
-    // if (exp.isTesting) {
-    //     $('#experiment2').click(() => {
-    //         ((instructionNum, sessionNum, phaseNum, questNum, exp) => {
-    //         sessionNum = 1;
-    //         phaseNum = 1;
-    //         instructionNum = 4;
-    //         stateMachine(
-    //             { instructionNum, sessionNum, phaseNum, questNum, exp }
-    //         )})(instructionNum, sessionNum, phaseNum, questNum, exp);
-    //     });
-    //     $('#experiment1').click(() => {
-    //         ((instructionNum, sessionNum, phaseNum, questNum, exp) => {
-    //         sessionNum = 0;
-    //         phaseNum = 1;
-    //         instructionNum = 4;
-    //         stateMachine(
-    //             {instructionNum, sessionNum, phaseNum, questNum, exp}
-    //         )})(instructionNum, sessionNum, phaseNum, questNum, exp);
-    //     });
-
-    //     $('#training').click(() => {
-    //         sessionNum = -1;
-    //         phaseNum = 1;
-    //         instructionNum = 4;
-    //         stateMachine({ instructionNum, sessionNum, phaseNum, questNum, exp })
-    //     });
-
-    //     $('#introduction').click(() => {
-    //         sessionNum = -1;
-    //         phaseNum = 1;
-    //         instructionNum = 1;
-    //         stateMachine({ instructionNum, sessionNum, phaseNum, questNum, exp })
-    //     });
-
-    // }
 
     // manage state
     // if user closes/reloads the tab he/she has the possibility
@@ -142,6 +112,10 @@ function stateManagement() {
             compLink: prevexp.compLink, // prolific completion link
             fromCookie: true,
             obj: prevexp,
+            stim: prevexp.stim, // stimuli files parameters imported from img.js
+            trainingStim: prevexp.trainingStim, // training stimuli files parameters imported from img.js
+            fb: prevexp.fb, // training feedback files parameters imported from img.js
+            lotteries: prevexp.lotteries // lotteries stim files parameters imported from img.js
         }
     );
     // // Run experiment!!
@@ -316,7 +290,7 @@ function stateMachine({ instructionNum, sessionNum, phaseNum, questNum, exp } = 
                     beforeFeedbackDuration: exp.beforeFeedbackDuration,
                     completeFeedback: exp.completeFeedback,
                     feedbackObj: exp.feedbackImg,
-                    outcomeType: [0, ''][+([-2, -1, 0].includes(sessionNum))],
+                    // outcomeType: [0, ''][+([-2, -1, 0].includes(sessionNum))],
                     imgObj: imgObj,
                     sessionNum: sessionNum,
                     phaseNum: phaseNum,
@@ -346,7 +320,7 @@ function stateMachine({ instructionNum, sessionNum, phaseNum, questNum, exp } = 
                     beforeFeedbackDuration: exp.beforeFeedbackDuration,
                     completeFeedback: exp.completeFeedback,
                     feedbackObj: exp.feedbackImg,
-                    outcomeType: [1, 0][+([-1, 0].includes(sessionNum))],
+                    // outcomeType: [1, 0][+([-1, 0].includes(sessionNum))],
                     imgObj: imgObj,
                     sessionNum: sessionNum,
                     phaseNum: phaseNum,

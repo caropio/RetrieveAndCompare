@@ -531,6 +531,7 @@ export class GUI {
     /* =================== private methods ================== */
 
     static _getOptions(id1, id2, img, feedbackImg) {
+        debugger;
 
         let option1 = img[id1];
 

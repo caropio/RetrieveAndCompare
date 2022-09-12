@@ -26,6 +26,10 @@ export class ExperimentParameters {
         nCond,
         nSession,
         fromCookie,
+        stim,
+        trainingStim,
+        fb,
+        lotteries,
         obj
     } = {}) {
         // Initial Experiment Parameters
@@ -46,13 +50,16 @@ export class ExperimentParameters {
         this.compLink = compLink;
         this.imgPath = imgPath;
 
-
         this.fromCookie = fromCookie;
 
         // initGameStageDiv
+        this.fb = fb
+        this.stim = stim
+        this.lotteries = lotteries
+        this.trainingStim = trainingStim
 
         this._initContingencies();
-        this._loadImg(imgPath, nCond, nSession);
+        this._loadImg(stim, trainingStim, lotteries, fb);
 
         if (!fromCookie) {
             this.sumReward = [0, 0, 0, 0, 0, 0, 0];
@@ -153,13 +160,13 @@ export class ExperimentParameters {
                         options: [range(0, 10, 1), range(0, 10, 1)],
                     }).flat();
                     this.trialObj[step][0].push(...lot);
-                    this.trialObj[step][1].push(...lot);
+                    // this.trialObj[step][1].push(...lot);
 
                     this.trialObj[step][0] = shuffle(this.trialObj[step][0]);
-                    this.trialObj[step][1] = shuffle(this.trialObj[step][1]);
+                    // this.trialObj[step][1] = shuffle(this.trialObj[step][1]);
 
                     this.trialObjTraining[step] = this._generatePM({
-                        nSession: 2,
+                        nSession: nSession,
                         nRepeat: 1,
                         option1Type: 1,
                         maxLen: 4,
@@ -780,139 +787,68 @@ export class ExperimentParameters {
         return Math.round(maxPoints);
     }
 
-    _loadImg(imgPath, nCond, nSession) {
+    _loadImg(stim, trainingStim, lotteries, fb) {
         // Get stims, feedbacks, resources
-        let nImg = nCond * 2 * nSession;
-        let nTrainingImg = nCond * 2 * nSession;
-        let imgExt = "gif";
+        let nImg = stim.filenames.length;
+        let nFeedback = fb.filenames.length;
+        let nTrainingImg = trainingStim.filenames.length;
         let borderColor = "transparent";
+        let nLotteries = lotteries.filenames.length;
 
         this.images = [];
         this.learningOptions = [];
-        for (let i = 2; i < nImg + 2; i++) {
-            this.learningOptions.push(i);
-            this.images[i] = new Image();
-            this.images[i].src = imgPath + "stim_old/" + i + "." + imgExt;
-            this.images[i].className = "img-responsive center-block";
-            this.images[i].style.border = "5px solid " + borderColor;
-            this.images[i].style.position = "relative";
-            this.images[i].style.top = "0px";
+        for (let i = 0; i < nImg; i++) {
+            let fname = stim.filenames[i];
+            this.learningOptions.push(fname);
+            this.images[fname] = new Image();
+            this.images[fname].src = stim.path + fname + "." + stim.extension;
+            this.images[fname].className = "img-responsive rounded center-block";
+            this.images[fname].style.border = "5px solid " + borderColor;
+            this.images[fname].style.position = "relative";
+            this.images[fname].style.top = "0px";
         }
 
-        let feedbackNames = ["empty", '-0.8', '-0.6', '-0.4', '-0.2', '0.2', '0.4', '0.6', '0.8', '-1', '1'];
         this.feedbackImg = [];
-        imgExt = 'png';
-        for (let i = 0; i < feedbackNames.length; i++) {
-            let fb = feedbackNames[i];
-
-            if (fb==="empty") {
-                this.feedbackImg[fb] = new Image();
-                this.feedbackImg[fb].src = imgPath + "fb/" + fb + "." + 'gif'
-                this.feedbackImg[fb].className = "img-responsive center-block";
-                this.feedbackImg[fb].style.border = "5px solid " + borderColor;
-                this.feedbackImg[fb].style.position = "relative";
-                this.feedbackImg[fb].style.top = "0px";
-            } else {
-                // let fb1 = fb + '_1';
-                let fb0 = fb;
-                imgExt = 'gif';
-                this.feedbackImg[fb0] = new Image();
-                this.feedbackImg[fb0].src = imgPath + "fb/" + fb0 + "." + imgExt;
-                this.feedbackImg[fb0].className = "img-responsive center-block";
-                this.feedbackImg[fb0].style.border = "5px solid " + borderColor;
-                this.feedbackImg[fb0].style.position = "relative";
-                this.feedbackImg[fb0].style.top = "0px";
-
-                let fb1 = fb + '_1';
-                imgExt = 'png';
-                this.feedbackImg[fb1] = new Image();
-                this.feedbackImg[fb1].src = imgPath + "fb/" + fb1 + "." + imgExt;
-                this.feedbackImg[fb1].className = "img-responsive center-block";
-                this.feedbackImg[fb1].style.border = "5px solid " + borderColor;
-                this.feedbackImg[fb1].style.position = "relative";
-                this.feedbackImg[fb1].style.top = "0px";
-                let fb2 = fb + '_0';
-                imgExt = 'png';
-                this.feedbackImg[fb2] = new Image();
-                this.feedbackImg[fb2].src = imgPath + "lotteries/" + fb + "_white." + imgExt;
-                this.feedbackImg[fb2].className = "img-responsive center-block";
-                this.feedbackImg[fb2].style.border = "5px solid " + borderColor;
-                this.feedbackImg[fb2].style.position = "relative";
-                this.feedbackImg[fb2].style.top = "0px";
-            }
-           
+        for (let i = 0; i < nFeedback; i++) {
+            let fname = fb.filenames[i];
+            this.feedbackImg[fname] = new Image();
+            this.feedbackImg[fname].src = fb.path + fname + "." + fb.extension;
+            this.feedbackImg[fname].className = "img-responsive rounded center-block";
+            this.feedbackImg[fname].style.border = "5px solid " + borderColor;
+            this.feedbackImg[fname].style.position = "relative";
+            this.feedbackImg[fname].style.top = "0px";
         }
 
         // Training stims
-        imgExt = "jpg";
         this.trainingImg = [];
         this.trainingOptions = [];
-        let letters = [
-            null,
-            "A",
-            "B",
-            "C",
-            "D",
-            "E",
-            "F",
-            "G",
-            "H",
-            "I",
-            "J",
-            "K",
-            "L",
-            "M",
-            "N",
-            "O",
-            "P",
-            "Q",
-            "R",
-            "S",
-            "T",
-            "U",
-            "V",
-            "W",
-            "X",
-            "Y",
-            "Z",
-        ];
-        for (let i = 2; i <= nTrainingImg + 1; i++) {
-            let idx = letters[i];
-            this.trainingOptions.push(idx);
-            this.trainingImg[idx] = new Image();
-            this.trainingImg[idx].src = imgPath + "stim/" + idx + "." + imgExt;
-            this.trainingImg[idx].className = "img-responsive rounded center-block ";
-            this.trainingImg[idx].style.border = "5px solid " + borderColor;
-            this.trainingImg[idx].style.position = "relative";
-            this.trainingImg[idx].style.top = "0px";
+        for (let i = 0; i < nTrainingImg; i++) {
+            let fname = trainingStim.filenames[i];
+            this.trainingOptions.push(fname);
+            this.trainingImg[fname] = new Image();
+            this.trainingImg[fname].src = trainingStim.path + fname + "." + trainingStim.extension;
+            this.trainingImg[fname].className = "img-responsive rounded center-block ";
+            this.trainingImg[fname].style.border = "5px solid " + borderColor;
+            this.trainingImg[fname].style.position = "relative";
+            this.trainingImg[fname].style.top = "0px";
         }
 
-        for (let i = 0; i < this.ev.length; i++) {
-            let idx = this.ev[i].toString();
+        // load lotteries (pie-charts)
+        for (let i = 0; i < nLotteries; i++) {
+            let idx = lotteries.filenames[i];
             this.images[idx] = new Image();
-            this.images[idx].src = imgPath + "lotteries/" + idx + ".png";
-            this.images[idx].className = "img-responsive center-block ";
+            this.images[idx].src = lotteries.path + idx + "." + lotteries.extension;
+            this.images[idx].className = "img-responsive rounded center-block ";
             this.images[idx].style.border = "5px solid " + borderColor;
             this.images[idx].style.position = "relative";
             this.images[idx].style.top = "0px";
             this.trainingImg[idx] = new Image();
-            this.trainingImg[idx].src = imgPath + "lotteries/" + idx + ".png";
-            this.trainingImg[idx].className = "img-responsive center-block ";
+            this.trainingImg[idx].src = lotteries.path + idx + "." + lotteries.extension;
+            this.trainingImg[idx].className = "img-responsive rounded center-block ";
             this.trainingImg[idx].style.border = "5px solid " + borderColor;
             this.trainingImg[idx].style.position = "relative";
             this.trainingImg[idx].style.top = "0px";
+
         }
-        this.images["?"] = new Image();
-        this.images["?"].src = imgPath + "stim/question.jpg";
-        this.images["?"].className = "img-responsive center-block";
-        this.images["?"].style.border = "5px solid " + borderColor;
-        this.images["?"].style.position = "relative";
-        this.images["?"].style.top = "0px";
-        this.trainingImg["?"] = new Image();
-        this.trainingImg["?"].src = imgPath + "stim/question.jpg";
-        this.trainingImg["?"].className = "img-responsive center-block ";
-        this.trainingImg["?"].style.border = "5px solid " + borderColor;
-        this.trainingImg["?"].style.position = "relative";
-        this.trainingImg["?"].style.top = "0px";
     }
 }

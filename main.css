@@ -93,10 +93,9 @@ h1.border-bottom {
 }
 
 .rounded {
-    /* border-radius: 8%; */
-    /* box-shadow: grey 0px 2px 4px 0px; */
+    border-radius: .2em;
+    box-shadow: grey 0px 2px 4px 0px;
 }
-
 
 .main {
     display: block;
