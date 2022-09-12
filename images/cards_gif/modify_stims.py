@@ -69,7 +69,7 @@ if __name__ == "__main__":
     # for f in files:
         # border(imgpath=f, border_size=10)
         
-    path = './stim1/'
+    path = './stim2/'
     files = [path+f for f in listdir(path) if isfile(join(path, f))]
 
     print('Treating files: ', files)

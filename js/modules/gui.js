@@ -7,7 +7,7 @@ export class GUI {
      */
 
     /* =================== class members ================== */
-    static steps = ['introduction', 'training', 'experiment1', 'experiment2']; //, 'questionnaire'];
+    static steps = ['introduction', 'training', 'experiment1']; //, 'questionnaire'];
     
 
  
