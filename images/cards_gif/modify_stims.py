@@ -56,11 +56,7 @@ def gray_to_white(imgpath):
 
     filename = imgpath.split('/')[-1]
     # image2 = image2.convert("1")
-    image2.save('/'.join(imgpath.split('/')[:-1]) + '/' + filename.replace('.png', '') + '_white.png')
-
-
-    
-
+    image2.save('/'.join(imgpath.split('/')[:-1]) + '/' + filename)
 
 
 if __name__ == "__main__":

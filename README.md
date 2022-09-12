@@ -22,9 +22,7 @@ let str = `this a  multine string,
 
 * Encapsulate Gui
 
-* Remove what is hardcoded as much as possible (create an experiment parameters config file?)
-
-* Do something for importing stimuli in a proper/better way
+* Remove what is hardcoded as much as possible (import instructions from json?)
 
 
 ## Screenshots
