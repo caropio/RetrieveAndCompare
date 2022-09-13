@@ -1,8 +1,84 @@
+.move-container-up {
+    top: -50vh !important;
+}
+
+.move-container-down {
+    top: 100vh !important;
+}
+
+/* 'forwards' makes the ending animation frame permanent */
+.fadeout {
+    -webkit-animation: fadeout .3s linear forwards !important;
+    animation: fadeout .3s linear forwards !important;
+}
+
+.fadeinn {
+    -webkit-animation: fadein .5s linear forwards !important;
+    animation: fadein .5s linear forwards !important;
+}
+
+/* Experimental fading */
+@-webkit-keyframes fadeout {
+    100% {
+        opacity: 0;
+    }
+}
+
+@keyframes fadeout {
+    100% {
+        opacity: 0;
+    }
+}
+
+@-webkit-keyframes fadein {
+    from {
+        opacity: 0;
+    }
+
+    to {
+        opacity: 1;
+    }
+}
+
+@keyframes fadein {
+    from {
+        opacity: 0;
+    }
+
+    to {
+        opacity: 1;
+    }
+}
+
+
+/* Vertically expanding text input box which allows data-text end */
+
+.fast-transition {
+    transition: top .5s;
+}
+
+/* Transition & Modifier Classes */
+
+.fade {
+    opacity: 0;
+    -webkit-transition: opacity 0.15s linear;
+    -moz-transition: opacity 0.15s linear;
+    -o-transition: opacity 0.15s linear;
+    transition: opacity 0.15s linear;
+}
+
+/*.fade.in {
+    opacity: 1;
+}*/
+
 /**
  * Wrapper
+ * 
+ * 
  */
 
 .wrapper {
+    position: relative;
     max-width: -webkit-calc(900px - (30px * 2));
     max-width: calc(900px - (30px * 2));
     margin-right: auto;

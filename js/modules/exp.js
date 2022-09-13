@@ -803,7 +803,7 @@ export class ExperimentParameters {
             this.images[fname] = new Image();
             this.images[fname].src = stim.path + fname + "." + stim.extension;
             this.images[fname].className = "img-responsive rounded center-block";
-            this.images[fname].style.border = "5px solid " + borderColor;
+            this.images[fname].style.border = "0px solid " + borderColor;
             this.images[fname].style.position = "relative";
             this.images[fname].style.top = "0px";
         }
@@ -814,7 +814,7 @@ export class ExperimentParameters {
             this.feedbackImg[fname] = new Image();
             this.feedbackImg[fname].src = fb.path + fname + "." + fb.extension;
             this.feedbackImg[fname].className = "img-responsive rounded center-block";
-            this.feedbackImg[fname].style.border = "5px solid " + borderColor;
+            this.feedbackImg[fname].style.border = "0px solid " + borderColor;
             this.feedbackImg[fname].style.position = "relative";
             this.feedbackImg[fname].style.top = "0px";
         }
@@ -828,7 +828,7 @@ export class ExperimentParameters {
             this.trainingImg[fname] = new Image();
             this.trainingImg[fname].src = trainingStim.path + fname + "." + trainingStim.extension;
             this.trainingImg[fname].className = "img-responsive rounded center-block ";
-            this.trainingImg[fname].style.border = "5px solid " + borderColor;
+            this.trainingImg[fname].style.border = "0px solid " + borderColor;
             this.trainingImg[fname].style.position = "relative";
             this.trainingImg[fname].style.top = "0px";
         }
@@ -839,13 +839,13 @@ export class ExperimentParameters {
             this.images[idx] = new Image();
             this.images[idx].src = lotteries.path + idx + "." + lotteries.extension;
             this.images[idx].className = "img-responsive rounded center-block ";
-            this.images[idx].style.border = "5px solid " + borderColor;
+            this.images[idx].style.border = "0px solid " + borderColor;
             this.images[idx].style.position = "relative";
             this.images[idx].style.top = "0px";
             this.trainingImg[idx] = new Image();
             this.trainingImg[idx].src = lotteries.path + idx + "." + lotteries.extension;
             this.trainingImg[idx].className = "img-responsive rounded center-block ";
-            this.trainingImg[idx].style.border = "5px solid " + borderColor;
+            this.trainingImg[idx].style.border = "0px solid " + borderColor;
             this.trainingImg[idx].style.position = "relative";
             this.trainingImg[idx].style.top = "0px";
 

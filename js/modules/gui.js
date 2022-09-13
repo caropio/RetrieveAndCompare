@@ -7,12 +7,45 @@ export class GUI {
      */
 
     /* =================== class members ================== */
-    static steps = ['introduction', 'training', 'experiment1']; //, 'questionnaire'];
-    
+    static steps = ['introduction', 'training', 'experiment1', 'end']; //, 'questionnaire'];
 
- 
+
+
     /* =================== public methods ================== */
-    
+
+    // panel question off screen in a given direction
+    static movePanel(first = `up`, second = `down`) {
+        return new Promise((resolve, reject) => {
+            // Assigning correct class
+            first = `move-container-` + first
+            second = `move-container-` + second
+            let parent = document.getElementById(`panel`);
+            parent.classList.add(first, `fadeout`, `fast-transition`);
+            setTimeout(() => {
+                parent.classList.remove(first, `fast-transition`)
+                parent.classList.add(`no-transition`, second)
+                resolve()
+            }, 50)
+        })
+
+    }
+
+    // Re-centers panel on page
+    static centerPanel() {
+        return new Promise((resolve, reject) => {
+            setTimeout(() => {
+                let parent = document.getElementById(`panel`);
+                parent.classList.remove(`no-transition`, `fadeout`);
+                parent.classList.add(`fast-transition`, `fadein`)
+                parent.style.top = `0`
+                parent.classList.remove(`move-container-down`, `move-container-up`)
+                setTimeout(() => {
+                    parent.classList.remove(`fadein`)
+                    resolve()
+                }, 50)
+            }, 50)
+        })
+    }
 
     static setOutcomes(thisReward, otherReward) {
         $('#out').val(thisReward);
@@ -106,11 +139,23 @@ export class GUI {
     } = {}) {
         $('#' + div).append(
             '<input type="button" class="' + classname + '" id="' + id + '" value="' + value + '">');
-        
-        // if (id=='next') {
-        //     let prevFunc = clickFunc;
-        //     clickFunc = async (clickArgs) =>  {
-        //         let el = document.getElementById('panel');
+
+        // manage transitions between panels
+       if (id == 'next') {
+           let prevFunc = clickFunc.bind({});
+           clickFunc = async (clickArgs) => {
+               await GUI.movePanel('up', 'down')
+               await GUI.centerPanel()
+               prevFunc(clickArgs)
+           }
+       } else if (id == 'back') {
+           let prevFunc = clickFunc.bind({});
+           clickFunc = async (clickArgs) => {
+               await GUI.movePanel('down', 'up')
+               await GUI.centerPanel()
+               prevFunc(clickArgs)
+           }
+       }
         //         el.style.left=0;
 
         //         await sleep(50);
@@ -119,7 +164,7 @@ export class GUI {
         //         // setTimeout(() => el.style.left = -800, 2000);
         //         await sleep(300);
 
-                
+
         //         el.style.display = 'none';
         //         el.style.left = 1800;
         //         let html = el.outerHTML;
@@ -148,7 +193,7 @@ export class GUI {
         //         // setTimeout(() => el.style.left = -800, 2000);
         //         await sleep(300);
 
-                
+
         //         el.style.display = 'none';
         //         el.style.left = -1800;
         //         let html = el.outerHTML;
@@ -209,7 +254,7 @@ export class GUI {
     }
 
     static panelHide() {
-        $('#panel').hide(500);
+        $('#panel').fadeOut(200);
     }
 
     static hideOptions() {
@@ -257,7 +302,7 @@ export class GUI {
             '<div class="col-xs-1 col-md-1"></div>  <div class="col-xs-3 col-md-3">'
             + '</div><div id = "Middle" class="col-xs-4 col-md-4">' + option + '</div></div>';
 
-        let Slider = GUI.generateSlider({ min: min, max: max, step:step, initValue: initValue, percent: percent });
+        let Slider = GUI.generateSlider({ min: min, max: max, step: step, initValue: initValue, percent: percent });
 
         let str = Title + Images + myCanvas + Slider;
         $('#stim-box').html(str);
@@ -280,7 +325,7 @@ export class GUI {
         let pic = [pic2, pic1][+(choice === 1)];
         let cv = [cv2, cv1][+(choice === 1)];
         let fb = [fb2, fb1][+(choice === 1)];
-        
+
         if (completeFeedback) {
             if (showFeedback) {
                 // debugger
@@ -311,7 +356,7 @@ export class GUI {
         img.width = pic.width;
         img.height = pic.height;
 
-        
+
         let speed = 5;
         let y = 0;
 
@@ -550,8 +595,8 @@ export class GUI {
         let feedback2 = feedbackImg["empty"];
         feedback2.id = "feedback2";
         feedback2 = feedback2.outerHTML;
-        
-        
+
+
 
         return [option1, option2, feedback1, feedback2]
     }

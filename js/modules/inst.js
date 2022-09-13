@@ -374,7 +374,7 @@ export class Instructions {
                         + ' • At the end of the test you will be shown with the final payoff in terms of cumulated points and monetary bonus.',
                     2: ' • In the second test  there will be two kind of options. \n'
                         + ' • The first kind of options is represented by the symbols you already met during the previous test.\n'
-                        + GUI.panelGenerateImg({ src: 'images/cards_gif/stim_old/2.png', width: '15%' })
+                        + GUI.panelGenerateImg({ src: 'images/cards_gif/stim1/2.png', width: '15%' })
                         + 'Note: the symbols keep the same odds of winning / losing a point as in the first test. \n\n'
                         + ' • The second kind of options is represented by pie-charts explicitly describing the odds of winning / losing a point.\n'
                         + GUI.panelGenerateImg({ src: 'images/cards_gif/lotteries/0.png', width: '15%' })
@@ -610,6 +610,7 @@ export class Instructions {
         endExperiment() {
 
             GUI.initGameStageDiv()
+            GUI.setActiveCurrentStep('end')
 
             let points = this.exp.totalReward
             let pence = this.exp.pointsToPence(points).toFixed(2)
