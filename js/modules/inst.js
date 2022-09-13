@@ -193,14 +193,15 @@ export class Instructions {
         GUI.panelInsertButton({
             id: 'next', value: 'Next', clickArgs: { obj: this },
             div: 'buttonBox', classname: 'btn btn-default card-button',
-            clickFunc: function (event) {
+            clickFunc: async function (event) {
 
                 GUI.showElement('back')
                 if (pageNum < nPages) {
-                    pageNum++
-                    GUI.panelSetParagraph(text[pageNum])
+                        pageNum++
+                        GUI.panelSetParagraph(text[pageNum])
                 } else {
                     if (event.data.obj.exp.online) {
+
                         // sendToDB(0,
                         //     {
                         //         expID: event.data.obj.exp.expID,
@@ -284,7 +285,7 @@ export class Instructions {
             GUI.panelInsertButton({
                 id: 'back', value: 'Back',
                 div: 'buttonBox', classname: 'btn btn-default card-button',
-                clickFunc: function () {
+                clickFunc: async function () {
                     if (pageNum > 1) {
                         pageNum--
                         GUI.panelSetParagraph(text[pageNum])
@@ -303,12 +304,16 @@ export class Instructions {
             GUI.panelInsertButton({
                 id: 'next', value: 'Next', clickArgs: { obj: this },
                 div: 'buttonBox', classname: 'btn btn-default card-button',
-                clickFunc: function (event) {
+                clickFunc: async function (event) {
 
                     GUI.showElement('back')
                     if (pageNum < nPages) {
                         pageNum++
+                        // await GUI.movePanel('up', 'down')
+                        // GUI.panelHide()
                         GUI.panelSetParagraph(text[pageNum])
+                        // GUI.panelShow()
+                        // await GUI.centerPanel()
                     } else {
                         GUI.panelFlush()
                         GUI.panelHide()

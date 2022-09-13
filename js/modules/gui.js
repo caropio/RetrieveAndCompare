@@ -14,7 +14,7 @@ export class GUI {
     /* =================== public methods ================== */
 
     // panel question off screen in a given direction
-    static movePanel(first = `up`, second = `down`) {
+    static movePanel(first = `up`, second = `down`, duration = 500) {
         return new Promise((resolve, reject) => {
             // Assigning correct class
             first = `move-container-` + first
@@ -25,13 +25,13 @@ export class GUI {
                 parent.classList.remove(first, `fast-transition`)
                 parent.classList.add(`no-transition`, second)
                 resolve()
-            }, 50)
+            }, duration)
         })
 
     }
 
     // Re-centers panel on page
-    static centerPanel() {
+    static centerPanel(duration=500) {
         return new Promise((resolve, reject) => {
             setTimeout(() => {
                 let parent = document.getElementById(`panel`);
@@ -42,7 +42,7 @@ export class GUI {
                 setTimeout(() => {
                     parent.classList.remove(`fadein`)
                     resolve()
-                }, 50)
+                }, duration)
             }, 50)
         })
     }
@@ -141,21 +141,21 @@ export class GUI {
             '<input type="button" class="' + classname + '" id="' + id + '" value="' + value + '">');
 
         // manage transitions between panels
-       if (id == 'next') {
-           let prevFunc = clickFunc.bind({});
-           clickFunc = async (clickArgs) => {
-               await GUI.movePanel('up', 'down')
-               await GUI.centerPanel()
-               prevFunc(clickArgs)
-           }
-       } else if (id == 'back') {
-           let prevFunc = clickFunc.bind({});
-           clickFunc = async (clickArgs) => {
-               await GUI.movePanel('down', 'up')
-               await GUI.centerPanel()
-               prevFunc(clickArgs)
-           }
-       }
+      // if (id == 'next') {
+      //     let prevFunc = clickFunc.bind({});
+      //     clickFunc = async (clickArgs) => {
+      //         await GUI.movePanel('up', 'down')
+      //         await GUI.centerPanel()
+      //         prevFunc(clickArgs)
+      //     }
+      // } else if (id == 'back') {
+      //     let prevFunc = clickFunc.bind({});
+      //     clickFunc = async (clickArgs) => {
+      //         await GUI.movePanel('down', 'up')
+      //         await GUI.centerPanel()
+      //         prevFunc(clickArgs)
+      //     }
+      // }
         //         el.style.left=0;
 
         //         await sleep(50);
