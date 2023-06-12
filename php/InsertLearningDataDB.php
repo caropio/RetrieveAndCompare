@@ -52,11 +52,18 @@ if ($db->connect_error) {
 
 # insert all data into turing table
 # variables are named as column names in the database
+// $sql2 = <<<EOD
+//   INSERT INTO r_and_c_test 
+//   (EXP, EXPID, ID, ELIC, P1, P2, RTIME, OUT, CF_OUT, CHOICE, CORRECT_CHOICE, TEST, TRIAL, COND, CONT1, CONT2, SYML, SYMR, LR, REW, SESSION, OP1, OP2, EV1, EV2, CATCH, INV, CTIME)
+//   VALUES ('$EXP', '$EXPID', '$ID', $ELIC, $P1, $P2, $RTIME, $OUT, $CF_OUT, $CHOICE, $CORRECT_CHOICE, $TEST, $TRIAL, $COND,
+//   $CONT1, $CONT2, '$SYML', '$SYMR', $LR, $REW, $SESSION, $OP1, $OP2, $EV1, $EV2, $CATCH, $INV, $CTIME)
+// EOD;
+
 $sql = <<<EOD
-  INSERT INTO r_and_c_test 
-  (EXP, EXPID, ID, ELIC, P1, P2, RTIME, OUT, CF_OUT, CHOICE, CORRECT_CHOICE, TEST, TRIAL, COND, CONT1, CONT2, SYML, SYMR, LR, REW, SESSION, OP1, OP2, EV1, EV2, CATCH, INV, CTIME)
-  VALUES ('$EXP', '$EXPID', '$ID', $ELIC, $P1, $P2, $RTIME, $OUT, $CF_OUT, $CHOICE, $CORRECT_CHOICE, $TEST, $TRIAL, $COND,
-  $CONT1, $CONT2, '$SYML', '$SYMR', $LR, $REW, $SESSION, $OP1, $OP2, $EV1, $EV2, $CATCH, $INV, $CTIME)
+INSERT INTO r_and_c_test 
+(`EXP`, `EXPID`, `ID`, `ELIC`, `P1`, `P2`, `RTIME`, `OUT`, `CF_OUT`, `CHOICE`, `CORRECT_CHOICE`, `TEST`, `TRIAL`, `COND`, `CONT1`, `CONT2`, `SYML`, `SYMR`, `LR`, `REW`, `SESSION`, `OP1`, `OP2`, `EV1`, `EV2`, `CATCH`, `INV`, `CTIME`)
+VALUES ('$EXP', '$EXPID', '$ID', $ELIC, $P1, $P2, $RTIME, $OUT, $CF_OUT, $CHOICE, $CORRECT_CHOICE, $TEST, $TRIAL, $COND,
+$CONT1, $CONT2, '$SYML', '$SYMR', $LR, $REW, $SESSION, $OP1, $OP2, $EV1, $EV2, $CATCH, $INV, $CTIME)
 EOD;
 
 if ($db->query($sql) === TRUE) {
