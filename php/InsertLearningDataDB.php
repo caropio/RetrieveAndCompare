@@ -48,6 +48,7 @@ if ($db->connect_error) {
 }
 
 # echo all data
+echo "Data received: <br>";
 var_dump($_POST);
 
 $sql = <<<EOD
@@ -58,7 +59,7 @@ $CONT1, $CONT2, '$SYML', '$SYMR', $LR, $REW, $SESSION, $OP1, $OP2, $EV1, $EV2, $
 EOD;
 
 if ($db->query($sql) === TRUE) {
-    echo "New record created successfully";
+    echo "<br> New record created successfully";
 } else {
     echo "Error: " . $sql . "<br>" . $db->error;
     header('HTTP/1.1 500 Internal Server');
