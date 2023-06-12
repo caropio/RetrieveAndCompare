@@ -51,6 +51,7 @@ export class GUI {
         $('#out').val(thisReward);
         $('#cfout').val(otherReward);
     }
+
     static initGameStageDiv() {
         GUI.panelFlush();
         GUI.panelHide();
@@ -438,7 +439,7 @@ export class GUI {
                 </div>
             </div>`;
 
-        let modalWin = $('#Modal');
+        let modalWin = $('#modal');
         let myModal = $('#myModal');
 
         if (!modalWin.html().includes('myModal')) {
@@ -481,7 +482,7 @@ export class GUI {
                 </div>
             </div>`;
 
-        let modalWin = $('#Modal');
+        let modalWin = $('#modal');
         let myModal = $('#myModal');
 
         if (!modalWin.html().includes('myModal')) {
@@ -576,7 +577,6 @@ export class GUI {
     /* =================== private methods ================== */
 
     static _getOptions(id1, id2, img, feedbackImg) {
-        debugger;
 
         let option1 = img[id1];
 

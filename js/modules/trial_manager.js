@@ -247,25 +247,6 @@ export class ChoiceManager {
 
         reward1 = r1[+(Math.random()<p1[1])];
         reward2 = r2[+(Math.random()<p2[1])];
-        //if ((!this.showFeedback) && (this.sessionNum==1)) {
-        //    if (params["option1Type"]==0) {
-        //        reward1 = r1[+(Math.random()<p1[1])];
-        //    }
-        //    if (params["option1Type"]==1) {
-        //        reward1 = ev1;
-        //    }
-        //    if (params["option2Type"]==0) {
-        //        reward2 = r2[+(Math.random()<p2[1])];
-        //    }
-        //    if (params["option2Type"]==1) {
-        //        reward2 = ev2;
-        //    }
-        // }
-        
-       // console.log("---------------------------");
-       // console.log("Reward 1 = " + reward1);
-       // console.log("Reward 2 = " + reward2);
-       // console.log("--------------------------" );
 
         thisReward = [reward2, reward1][+(choice === 1)];
         otherReward = [reward1, reward2][+(choice === 1)];

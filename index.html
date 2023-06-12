@@ -23,12 +23,17 @@
     <script src="lib/js/jquery-3.4.1.min.js"></script>
     <script src="lib/js/popper.js"></script>
     <script src="lib/js/bootstrap.min.js"></script>
+    <script src="lib/js/axios.min.js"></script>
 
     <!-- JS our scripts -->
     <script src="js/app.js" type="module" crossorigin="anonymous"></script>
 
     <!-- CSS our scripts -->
-    <link rel='stylesheet' type='text/css' href='main.css' media="screen" />
+    <link rel='stylesheet' type='text/css' href='css/main.css' media="screen" />
+    <link rel='stylesheet' type='text/css' href='css/slider.css' media="screen" />
+    <link rel='stylesheet' type='text/css' href='css/timeline.css' media="screen" />
+    <link rel='stylesheet' type='text/css' href='css/animate.css' media="screen" />
+    
 </head>
 
 <body>
@@ -49,7 +54,7 @@
         </div>
         <div class="md-step" id="experiment1">
             <div class="md-step-circle"></div>
-            <div class="md-step-title">Experiment phase 1</div>
+            <div class="md-step-title">Experiment</div>
             <div class="md-step-bar-left"></div>
             <div class="md-step-bar-right"></div>
         </div>
@@ -59,46 +64,25 @@
             <div class="md-step-bar-left"></div>
             <div class="md-step-bar-right"></div>
         </div>
-
-
-
-        <!--<div class="md-step" id="experiment2">
-            <div class="md-step-circle"></div>
-            <div class="md-step-title">Experiment phase 2</div>
-            <div class="md-step-bar-left"></div>
-            <div class="md-step-bar-right"></div>
-        </div>-->
-
-        <!-- <div class="md-step" id="questionnaire">
-            <div class="md-step-circle"></div>
-            <div class="md-step-title">Questionnaire</div>
-            <div class="md-step-bar-left"></div>
-            <div class="md-step-bar-right"></div>
-        </div> -->
     </div>
     <!-------------------------------------------------->
 
     <!--- Text Panel ------------ ---------------------->
     <div class="wrapper box" id="panel">
         <h1 class="border-bottom" id="panel-title"></h1>
-        <!-- <div class="card-header" id="panel-title"></div> -->
         <div id="card-content" class="card-content">
         </div>
-        <!--<div class="card-wrapper">
-    <div id="card-content" class="card-content">
-        </div>
-    </div>-->
+    </div>
     </div>
     <!-------------------------------------------------->
 
     <!--- Game container ------------------------------->
     <div id='game' style="display: none">
-        <!--<div id="Stage"></div>-->
     </div>
     <!-------------------------------------------------->
 
     <!--- Modal Window --------------------------------->
-    <div id='Modal' style="display: none;"></div>
+    <div id='modal' style="display: none;"></div>
     <!-------------------------------------------------->
 
     <input style="display: none;" id="out">

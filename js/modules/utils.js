@@ -1,5 +1,5 @@
 
-function saveState({ sessionNum, instructionNum, phaseNum, questNum, exp} = {}) {
+function saveState({ sessionNum, instructionNum, phaseNum, questNum, exp } = {}) {
     save('sessionNum', sessionNum);
     save('instructionNum', instructionNum);
     save('phaseNum', phaseNum);
@@ -13,7 +13,7 @@ function getfromURL(param) {
     return urlParams.get(param);
 }
 
-function loadState(){
+function loadState() {
     let sessionNum = parser(load('sessionNum'));
     let instructionNum = parser(load('instructionNum'));
     let phaseNum = parser(load('phaseNum'));
@@ -30,7 +30,7 @@ function parser(v) {
     return v;
 }
 
-function stateStored(){
+function stateStored() {
     return 'sessionNum' in localStorage
 }
 
@@ -42,23 +42,20 @@ function load(k) {
     return localStorage[k]
 }
 
-function clearListCookies()
-{   
+function clearListCookies() {
     var cookies = document.cookie.split(";");
-    for (var i = 0; i < cookies.length; i++)
-    {   
-        var spcook =  cookies[i].split("=");
+    for (var i = 0; i < cookies.length; i++) {
+        var spcook = cookies[i].split("=");
         deleteCookie(spcook[0]);
     }
-    function deleteCookie(cookiename)
-    {
+    function deleteCookie(cookiename) {
         var d = new Date();
         d.setDate(d.getDate() - 1);
-        var expires = ";expires="+d;
-        var name=cookiename;
+        var expires = ";expires=" + d;
+        var name = cookiename;
         //alert(name);
-        var value="";
-        document.cookie = name + "=" + value + expires + "; path=/acc/html";                    
+        var value = "";
+        document.cookie = name + "=" + value + expires + "; path=/acc/html";
     }
     window.location = ""; // TO REFRESH THE PAGE
 }
@@ -70,19 +67,19 @@ function setCookie(cname, cvalue, exdays) {
 }
 
 function getCookie(cname) {
-  let name = cname + "=";
-  let decodedCookie = decodeURIComponent(document.cookie);
-  let ca = decodedCookie.split(';');
-  for(let i = 0; i <ca.length; i++) {
-    let c = ca[i];
-    while (c.charAt(0) == ' ') {
-      c = c.substring(1);
+    let name = cname + "=";
+    let decodedCookie = decodeURIComponent(document.cookie);
+    let ca = decodedCookie.split(';');
+    for (let i = 0; i < ca.length; i++) {
+        let c = ca[i];
+        while (c.charAt(0) == ' ') {
+            c = c.substring(1);
+        }
+        if (c.indexOf(name) == 0) {
+            return c.substring(name.length, c.length);
+        }
     }
-    if (c.indexOf(name) == 0) {
-      return c.substring(name.length, c.length);
-    }
-  }
-  return "";
+    return "";
 }
 
 function getKeyCode(event) {
@@ -91,7 +88,7 @@ function getKeyCode(event) {
 
 
 function decode(str) {
-  return decodeURIComponent(escape(window.atob(str)));
+    return decodeURIComponent(escape(window.atob(str)));
 }
 
 
@@ -276,6 +273,6 @@ export {
     sum, assert, range, shuffle,
     getBrowser, getColor, getKeyCode,
     getOS, isFloat, createDiv, isString, randint, createCode,
-     stateStored, loadState, saveState, clearListCookies, getfromURL, decode, sleep
+    stateStored, loadState, saveState, clearListCookies, getfromURL, decode, sleep
 };
 
