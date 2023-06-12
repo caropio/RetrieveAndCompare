@@ -51,6 +51,7 @@ if ($db->connect_error) {
     die("Connection failed: " . $db->connect_error);
 }
 
+
 # insert all data into turing table
 # variables are named as column names in the database
 // $sql2 = <<<EOD
@@ -59,6 +60,14 @@ if ($db->connect_error) {
 //   VALUES ('$EXP', '$EXPID', '$ID', $ELIC, $P1, $P2, $RTIME, $OUT, $CF_OUT, $CHOICE, $CORRECT_CHOICE, $TEST, $TRIAL, $COND,
 //   $CONT1, $CONT2, '$SYML', '$SYMR', $LR, $REW, $SESSION, $OP1, $OP2, $EV1, $EV2, $CATCH, $INV, $CTIME)
 // EOD;
+
+# echo all data
+echo "EXP: " . $EXP . "<br>";
+echo "EXPID: " . $EXPID . "<br>";
+echo "ID: " . $ID . "<br>";
+echo "ELIC: " . $ELIC . "<br>";
+echo "P1: " . $P1 . "<br>";
+
 
 $sql = <<<EOD
 INSERT INTO r_and_c_test 
