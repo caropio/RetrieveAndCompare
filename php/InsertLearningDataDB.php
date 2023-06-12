@@ -43,6 +43,6 @@ $data = array(
       'error' => $err,
     );
 $stmt->close();
- $db->close();
+$db->close();
 echo json_encode($data);
  ?>
