@@ -53,13 +53,13 @@ var_dump($_POST);
 
 $sql = <<<EOD
 INSERT INTO r_and_c_test 
-(`EXP`, `EXPID`, `ID`, `ELIC`, `P1`, `P2`, `RTIME`, `OUT`, `CF_OUT`, `CHOICE`, `CORRECT_CHOICE`, `TEST`, `TRIAL`, `COND`, `CONT1`, `CONT2`, `SYML`, `SYMR`, `LR`, `REW`, `SESSION`, `OP1`, `OP2`, `EV1`, `EV2`, `CATCH`, `INV`, `CTIME`)
+(`EXP`, `EXPID`, `ID`, `ELIC`, `P1`, `P2`, `RTIME`, `OUT`, `CF_OUT`, `CHOICE`, `CORRECT_CHOICE`, `TEST`, `TRIAL`, `COND`, `CONT1`, `CONT2`, `SYML`, `SYMR`, `LR`, `REW`, `SESSION`, `OP1`, `OP2`, `EV1`, `EV2`, `CATCH`, `INV`, `CTIME` `DBTIME`)
 VALUES ('$EXP', '$EXPID', '$ID', $ELIC, $P1, $P2, $RTIME, $OUT, $CF_OUT, $CHOICE, $CORRECT_CHOICE, $TEST, $TRIAL, $COND,
-$CONT1, $CONT2, '$SYML', '$SYMR', $LR, $REW, $SESSION, $OP1, $OP2, $EV1, $EV2, $CATCH, $INV, $CTIME)
+$CONT1, $CONT2, '$SYML', '$SYMR', $LR, $REW, $SESSION, $OP1, $OP2, $EV1, $EV2, $CATCH, $INV, $CTIME, NOW())
 EOD;
 
 if ($db->query($sql) === TRUE) {
-    echo "<br> New record created successfully";
+    echo "<br><br> New record created successfully!";
 } else {
     echo "Error: " . $sql . "<br>" . $db->error;
     header('HTTP/1.1 500 Internal Server');
