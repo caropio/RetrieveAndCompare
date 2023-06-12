@@ -35,16 +35,17 @@ $CATCH      = stripslashes(htmlspecialchars($_POST['iscatch']));
 $INV         = stripslashes(htmlspecialchars($_POST['inverted']));
 $CTIME         = stripslashes(htmlspecialchars($_POST['choice_time']));
 
-try {
-    mysqli_set_charset($db, 'utf8');
-    $EXP = mysqli_real_escape_string($db, $EXP);
-    $EXPID = mysqli_real_escape_string($db, $EXPID);
-    $ID = mysqli_real_escape_string($db, $ID);
-    $SYML = mysqli_real_escape_string($db, $SYML);
-    $SYMR = mysqli_real_escape_string($db, $SYMR);
-} catch (Exception $e) {
-    echo "Error when cleaning strings: " . $e->getMessage();
-}
+// try {
+
+    // mysqli_set_charset($db, 'utf8');
+    // $EXP = mysqli_real_escape_string($db, $EXP);
+    // $EXPID = mysqli_real_escape_string($db, $EXPID);
+    // $ID = mysqli_real_escape_string($db, $ID);
+    // $SYML = mysqli_real_escape_string($db, $SYML);
+    // $SYMR = mysqli_real_escape_string($db, $SYMR);
+// } catch (Exception $e) {
+    // echo "Error when cleaning strings: " . $e->getMessage();
+// }
 
 if ($db->connect_error) {
     die("Connection failed: " . $db->connect_error);
