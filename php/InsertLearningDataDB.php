@@ -33,22 +33,44 @@ $CTIME 		= stripslashes(htmlspecialchars($_POST['choice_time']));
 $DIST 		= stripslashes(htmlspecialchars($_POST['elic_distance']));
 $PLOT 		= stripslashes(htmlspecialchars($_POST['p_lottery']));
 
-$query = <<<EOL
-INSERT INTO r_and_c_learning_data 
-    (EXP, EXPID, ID, ELIC, P1, P2, RTIME, OUT, CF_OUT, CHOICE, CORRECT_CHOICE, TEST, TRIAL, COND, CONT1, CONT2, SYML, SYMR, LR, REW, SESSION, OP1, OP2, EV1) 
-VALUES 
-    ('$EXP', '$EXPID', '$ID', $ELIC, $P1, $P2, $RTIME, $OUT, $CF_OUT, $CHOICE, $CORRECT_CHOICE, $TEST, $TRIAL, $COND, $CONT1, $CONT2, '$SYML', '$SYMR', $LR, $REW, $SESSION, $OP1, $OP2, $EV1)
-EOL;
+$query = "INSERT INTO r_and_c_learning_data (EXP, EXPID, ID, ELIC, P1, P2, RTIME, OUT, CF_OUT, CHOICE, CORRECT_CHOICE, TEST, TRIAL, COND, CONT1, CONT2, SYML, SYMR, LR, REW, SESSION, OP1, OP2, EV1, EV2, CATCH, INV, CTIME, DIST, PLOT, DBTIME)
+          VALUES (:EXP, :EXPID, :ID, :ELIC, :P1, :P2, :RTIME, :OUT, :CF_OUT, :CHOICE, :CORRECT_CHOICE, :TEST, :TRIAL, :COND, :CONT1, :CONT2, :SYML, :SYMR, :LR, :REW, :SESSION, :OP1, :OP2, :EV1, :EV2, :CATCH, :INV, NOW(), :DIST, :PLOT, NOW())";
 
 $stmt = $db->prepare($query);
-$stmt = $db->prepare($query);
-if ($stmt) {
-    $stmt->execute();
-} else {
-    $errorInfo = $db->errorInfo();
-    echo "Error: " . $errorInfo[2];
-}
 
+$params = [
+    'EXP' => $EXP,
+    'EXPID' => $EXPID,
+    'ID' => $ID,
+    'ELIC' => $ELIC,
+    'P1' => $P1,
+    'P2' => $P2,
+    'RTIME' => $RTIME,
+    'OUT' => $OUT,
+    'CF_OUT' => $CF_OUT,
+    'CHOICE' => $CHOICE,
+    'CORRECT_CHOICE' => $CORRECT_CHOICE,
+    'TEST' => $TEST,
+    'TRIAL' => $TRIAL,
+    'COND' => $COND,
+    'CONT1' => $CONT1,
+    'CONT2' => $CONT2,
+    'SYML' => $SYML,
+    'SYMR' => $SYMR,
+    'LR' => $LR,
+    'REW' => $REW,
+    'SESSION' => $SESSION,
+    'OP1' => $OP1,
+    'OP2' => $OP2,
+    'EV1' => $EV1,
+    'EV2' => $EV2,
+    'CATCH' => $CATCH,
+    'INV' => $INV,
+    'DIST' => $DIST,
+    'PLOT' => $PLOT
+];
+
+$stmt->execute($params);
 $err = $stmt->errno ;
 $data = array(
       'error' => $err,
