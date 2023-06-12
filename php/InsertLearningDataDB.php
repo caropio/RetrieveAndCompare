@@ -62,11 +62,7 @@ if ($db->connect_error) {
 // EOD;
 
 # echo all data
-echo "EXP: " . $EXP . "<br>";
-echo "EXPID: " . $EXPID . "<br>";
-echo "ID: " . $ID . "<br>";
-echo "ELIC: " . $ELIC . "<br>";
-echo "P1: " . $P1 . "<br>";
+echo "EXP: " . $_POST . "<br>";
 
 
 $sql = <<<EOD
