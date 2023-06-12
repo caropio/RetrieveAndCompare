@@ -62,7 +62,8 @@ if ($db->connect_error) {
 // EOD;
 
 # echo all data
-echo "EXP: " . $_POST . "<br>";
+var_dump($_POST);
+
 
 
 $sql = <<<EOD
