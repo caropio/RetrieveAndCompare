@@ -2,6 +2,10 @@
 
 include 'connectDB.php';
 
+ini_set('display_errors', 1);
+ini_set('display_startup_errors', 1);
+error_reporting(E_ALL);
+
 $EXP 		= stripslashes(htmlspecialchars($_POST['exp']));
 $EXPID 		= stripslashes(htmlspecialchars($_POST['expID']));
 $ID 		= stripslashes(htmlspecialchars($_POST['id']));
