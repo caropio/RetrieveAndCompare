@@ -35,19 +35,41 @@ $CATCH      = stripslashes(htmlspecialchars($_POST['iscatch']));
 $INV 		= stripslashes(htmlspecialchars($_POST['inverted']));
 $CTIME 		= stripslashes(htmlspecialchars($_POST['choice_time']));
 
-
-$stmt = $db->prepare("INSERT INTO r_and_c_test VALUE(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, NOW())");
-$stmt->bind_param("sssiddidiiiiiiiissidiiiddiii",
-    $EXP,$EXPID,$ID, $ELIC, $P1,$P2, $RTIME, $OUT, $CF_OUT, $CHOICE, $CORRECT_CHOICE, $TEST,$TRIAL,$COND, $CONT1, $CONT2, $SYML,$SYMR,$LR,$REW,$SESSION,$OP1,$OP2, $EV1, $EV2, $CATCH, $INV,$CTIME
-);
-
-$stmt->execute();
-$err = $stmt->errno ;
-$data = array(
-      'error' => $err,
-    );
-$stmt->close();
- $db->close();
-echo json_encode($data);
+try {
+    mysqli_set_charset($db, 'utf8');
+    $EXP = mysqli_real_escape_string($db, $EXP);
+    $EXPID = mysqli_real_escape_string($db, $EXPID);
+    $ID = mysqli_real_escape_string($db, $ID);
+    $SYML= mysqli_real_escape_string($db, $SYML);
+    $SYMR= mysqli_real_escape_string($db, $SYMR);
+  
+  } catch (Exception $e) {
+    echo "Error when cleaning strings: " . $e->getMessage();
+  }
+  
+  if ($db->connect_error) {
+    die("Connection failed: " . $db->connect_error);
+  }
+  
+  # insert all data into turing table
+  # variables are named as column names in the database
+  $sql = <<<EOD
+  INSERT INTO r_and_c_test 
+  (EXP, EXPID, ID, ELIC, P1, P2, RTIME, OUT, CF_OUT, CHOICE, CORRECT_CHOICE, TEST, TRIAL, COND, CONT1, CONT2, SYML, SYMR, LR, REW, SESSION, OP1, OP2, EV1, EV2, CATCH, INV, CTIME)
+  VALUES ('$EXP', '$EXPID', '$ID', '$ELIC', '$P1', '$P2', '$RTIME', '$OUT', '$CF_OUT', '$CHOICE', '$CORRECT_CHOICE', '$TEST', '$TRIAL', '$COND',
+   '$CONT1', '$CONT2', '$SYML', '$SYMR', '$LR', '$REW', '$SESSION', '$OP1', '$OP2', '$EV1', '$EV2', '$CATCH', '$INV', '$CTIME')
+  EOD;
+  
+  if ($db->query($sql) === TRUE) {
+    echo "New record created successfully";
+  
+  } else {
+    echo "Error: " . $sql . "<br>" . $db->error;
+    header('HTTP/1.1 500 Internal Server');
+    header('Content-Type: application/json; charset=UTF-8');
+    die(json_encode(array('message' => 'ERROR', 'code' => 1337)));
+  }
+  
+  $db->close();
 ?>
 
