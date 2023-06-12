@@ -34,12 +34,10 @@ $EV2 		= stripslashes(htmlspecialchars($_POST['ev2']));
 $CATCH      = stripslashes(htmlspecialchars($_POST['iscatch']));
 $INV 		= stripslashes(htmlspecialchars($_POST['inverted']));
 $CTIME 		= stripslashes(htmlspecialchars($_POST['choice_time']));
-$DIST 		= stripslashes(htmlspecialchars($_POST['elic_distance']));
-$PLOT 		= stripslashes(htmlspecialchars($_POST['p_lottery']));
 
-$stmt = $db->prepare("INSERT INTO r_and_c_test VALUE(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, NOW())");
-$stmt->bind_param("sssiddidiiiiiiiissidiiiddiiiid",
-    $EXP,$EXPID,$ID, $ELIC, $P1,$P2, $RTIME, $OUT, $CF_OUT, $CHOICE, $CORRECT_CHOICE, $TEST,$TRIAL,$COND, $CONT1, $CONT2, $SYML,$SYMR,$LR,$REW,$SESSION,$OP1,$OP2, $EV1, $EV2, $CATCH, $INV,$CTIME, $DIST, $PLOT
+$stmt = $db->prepare("INSERT INTO r_and_c_test VALUE(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?,  NOW())");
+$stmt->bind_param("sssiddidiiiiiiiissidiiiddiii",
+    $EXP,$EXPID,$ID, $ELIC, $P1,$P2, $RTIME, $OUT, $CF_OUT, $CHOICE, $CORRECT_CHOICE, $TEST,$TRIAL,$COND, $CONT1, $CONT2, $SYML,$SYMR,$LR,$REW,$SESSION,$OP1,$OP2, $EV1, $EV2, $CATCH, $INV,$CTIME, 
 );
 $stmt->execute();
 $err = $stmt->errno ;
