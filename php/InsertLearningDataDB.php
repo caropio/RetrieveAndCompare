@@ -41,12 +41,19 @@ VALUES
 EOL;
 
 $stmt = $db->prepare($query);
-$stmt->execute();
+$stmt = $db->prepare($query);
+if ($stmt) {
+    $stmt->execute();
+} else {
+    $errorInfo = $db->errorInfo();
+    echo "Error: " . $errorInfo[2];
+}
+
 $err = $stmt->errno ;
 $data = array(
       'error' => $err,
     );
 $stmt->close();
- $db->close();
+$db->close();
 echo json_encode($data);
- ?>
+?>
