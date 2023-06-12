@@ -33,10 +33,14 @@ $CTIME 		= stripslashes(htmlspecialchars($_POST['choice_time']));
 $DIST 		= stripslashes(htmlspecialchars($_POST['elic_distance']));
 $PLOT 		= stripslashes(htmlspecialchars($_POST['p_lottery']));
 
-$stmt = $db->prepare("INSERT INTO r_and_c_learning_data VALUE(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, NOW())");
-$stmt->bind_param("sssiddidiiiiiiiissidiiiddiiiid",
-    $EXP,$EXPID,$ID, $ELIC, $P1,$P2, $RTIME, $OUT, $CF_OUT, $CHOICE, $CORRECT_CHOICE, $TEST,$TRIAL,$COND, $CONT1, $CONT2, $SYML,$SYMR,$LR,$REW,$SESSION,$OP1,$OP2, $EV1, $EV2, $CATCH, $INV,$CTIME, $DIST, $PLOT
-);
+$query = <<<EOL
+INSERT INTO r_and_c_learning_data 
+    (EXP, EXPID, ID, ELIC, P1, P2, RTIME, OUT, CF_OUT, CHOICE, CORRECT_CHOICE, TEST, TRIAL, COND, CONT1, CONT2, SYML, SYMR, LR, REW, SESSION, OP1, OP2, EV1) 
+VALUES 
+    ('$EXP', '$EXPID', '$ID', $ELIC, $P1, $P2, $RTIME, $OUT, $CF_OUT, $CHOICE, $CORRECT_CHOICE, $TEST, $TRIAL, $COND, $CONT1, $CONT2, '$SYML', '$SYMR', $LR, $REW, $SESSION, $OP1, $OP2, $EV1)
+EOL;
+
+$stmt = $db->prepare($query);
 $stmt->execute();
 $err = $stmt->errno ;
 $data = array(
