@@ -38,12 +38,17 @@ try {
     $ID = mysqli_real_escape_string($db, $ID);
     $SYML = mysqli_real_escape_string($db, $SYML);
     $SYMR = mysqli_real_escape_string($db, $SYMR);
+
 } catch (Exception $e) {
+
     echo "Error when cleaning strings: " . $e->getMessage();
+
 }
 
 if ($db->connect_error) {
+
     die("Connection failed: " . $db->connect_error);
+
 }
 
 # echo all data
