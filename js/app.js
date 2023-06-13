@@ -295,7 +295,7 @@ function stateMachine({ instructionNum, sessionNum, phaseNum, questNum, exp } = 
                     sessionNum: sessionNum,
                     phaseNum: phaseNum,
                     exp: exp,
-                    elicitationType: -1,
+                    elicitationType: 'LE',
                     showFeedback: true,
                     maxTrials: undefined,
                     // what will be executed next
@@ -325,7 +325,7 @@ function stateMachine({ instructionNum, sessionNum, phaseNum, questNum, exp } = 
                     sessionNum: sessionNum,
                     phaseNum: phaseNum,
                     exp: exp,
-                    elicitationType: 0,
+                    elicitationType: 'ES_EE',
                     showFeedback: false,
                     maxTrials: undefined,
                     // what will be executed next
@@ -353,7 +353,7 @@ function stateMachine({ instructionNum, sessionNum, phaseNum, questNum, exp } = 
                     sessionNum: sessionNum,
                     phaseNum: phaseNum,
                     exp: exp,
-                    elicitationType: 2,
+                    elicitationType: 'SP',
                     showFeedback: exp.showFeedback,
                     // what will be executed next
                     nextFunc: stateMachine,

@@ -35,6 +35,7 @@ try {
     mysqli_set_charset($db, 'utf8');
     $EXP = mysqli_real_escape_string($db, $EXP);
     $EXPID = mysqli_real_escape_string($db, $EXPID);
+    $ELIC = mysqli_real_escape_string($db, $ELIC);
     $ID = mysqli_real_escape_string($db, $ID);
     $SYML = mysqli_real_escape_string($db, $SYML);
     $SYMR = mysqli_real_escape_string($db, $SYMR);
@@ -59,7 +60,7 @@ $sql = <<<EOD
 INSERT INTO r_and_c_test 
 (`EXP`, `EXPID`, `ID`, `ELIC`, `P1`, `P2`, `RTIME`, `OUT`, `CF_OUT`, `CHOICE`, `CORRECT_CHOICE`, `TEST`, `TRIAL`,
 `COND`, `CONT1`, `CONT2`, `SYML`, `SYMR`, `LR`, `REW`, `SESSION`, `OP1`, `OP2`, `EV1`, `EV2`, `CATCH`, `INV`, `CTIME`, `DBTIME`)
-VALUES ('$EXP', '$EXPID', '$ID', $ELIC, $P1, $P2, $RTIME, $OUT, $CF_OUT, $CHOICE, $CORRECT_CHOICE, $TEST, $TRIAL, $COND,
+VALUES ('$EXP', '$EXPID', '$ID', '$ELIC', $P1, $P2, $RTIME, $OUT, $CF_OUT, $CHOICE, $CORRECT_CHOICE, $TEST, $TRIAL, $COND,
 $CONT1, $CONT2, '$SYML', '$SYMR', $LR, $REW, $SESSION, $OP1, $OP2, $EV1, $EV2, $CATCH, $INV, $CTIME, NOW())
 EOD;
 
