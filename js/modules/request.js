@@ -31,7 +31,8 @@ export function sendToDB(call, data, url) {
     });
 }
 
-
+// TODO: USE AXIOS INSTEAD OF JQUERY
+// the latter code is not working (inserts 0 values in the database)
 //export function sendToDB(call, data, url) {
 //    axios.post(url, data)
 //        .then(response => {
@@ -50,4 +51,4 @@ export function sendToDB(call, data, url) {
 //            }
 //        });
 //}
-
+// proper way to use axios:
