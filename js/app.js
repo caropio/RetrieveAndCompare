@@ -40,7 +40,7 @@ function main() {
         {
             online: false,   // send network requests
             isTesting: true, // isTesting==in development vs in production
-            expName: 'EvOutcome2', // experience name
+            expName: 'EvOutcomeNoFixed', // experience name
             completeFeedback: true, // display feedback of both options
             maxPoints: undefined, // max points cumulated all along the experiment
             // if undefined or 0, will be computed automatically
