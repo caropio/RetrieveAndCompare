@@ -1,2 +1,2 @@
-python2 -m SimpleHTTPServer &
-firefox http://localhost:8000
+python -m http.server &
+open http://localhost:8000
