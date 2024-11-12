@@ -38,8 +38,8 @@ function main() {
     // instantiate experiment parameters
     let exp = new ExperimentParameters(
         {
-            online: false,   // send network requests
-            isTesting: true, // isTesting==in development vs in production
+            online: true,   // send network requests
+            isTesting: false, // isTesting==in development vs in production
             expName: 'EvOutcome2', // experience name
             completeFeedback: true, // display feedback of both options
             maxPoints: undefined, // max points cumulated all along the experiment
