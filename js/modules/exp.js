@@ -456,7 +456,7 @@ export class ExperimentParameters {
                         let option2Type = 1;
 
                         let isCatchTrial = false;
-                        debugger;
+                        // debugger;
                         tempArray.push({
                             file1: file1,
                             file2: file2,
@@ -497,7 +497,7 @@ export class ExperimentParameters {
         let optionNums = shuffle(range(0, nOption-1));
         let lotteryNums = shuffle(range(0, this.lotteryCont.length-1));
         let catchTrials = shuffle(this._generateCatchTrialsTwoOptions());
-
+        debugger;
         for (let sessionNum = 0; sessionNum < nSession; sessionNum++) {
             LOOP1: for (let count1 = 0; count1 < nOption; count1++) {
                 let optionNum1 = optionNums[count1];
