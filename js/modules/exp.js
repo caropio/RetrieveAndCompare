@@ -467,7 +467,7 @@ export class ExperimentParameters {
                         let option2Type = 1;
 
                         let isCatchTrial = false;
-                        // debugger;
+                        debugger;
                         tempArray.push({
                             file1: file1,
                             file2: file2,
