@@ -92,7 +92,7 @@ export class Instructions {
 
         GUI.panelInsertParagraphTitle('Contact And Additional Information')
         GUI.panelInsertParagraph('Email: humanreinforcementlearning@gmail.com\n' +
-            'This research has received a favorable opinion from the Inserm Ethical Review Committee / IRB0888 on November 13th, 2018.' +
+            'This research has received a favorable opinion from the Inserm Ethical Review Committee / IRB00003888 on February 6th, 2024.' +
             'Your participation in this research confirms that you have read this information and wish to participate in the research study.')
 
         GUI.panelInsertCheckBox({ text: 'I am 18 years old or more', id: 'c1' })
@@ -566,8 +566,6 @@ export class Instructions {
 
             GUI.panelSetParagraph(`• The training is over!\n\n
          • Overall, in this training, you ${wonlost} ${totalPoints.toFixed(2)} points = ${pence} pence = ${pounds} pounds!\n\n
-         Test 1: ${this.exp.sumReward[1].toFixed(2)}\n
-         Test 2: ${this.exp.sumReward[2].toFixed(2)}\n
          • Now, you are about to start the first phase of the experiment. Note that from now on the points will be counted in your final payoff.\n
            Also note that the experiment includes much more trials and more points are at stake, compared to the training.\n
            Finally note that the real test will involve different symbols (i.e., not encountered in the training).\n\n
