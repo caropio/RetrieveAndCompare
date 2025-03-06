@@ -482,7 +482,7 @@ export class SliderManager {
 
         let [correctChoice, thisReward,
             otherReward, pLottery, elicDistance] = this._getReward(choice, params);
-
+        // console.log('before send to db');
         if (this.exp.online) {
             sendToDB(0,
                 {

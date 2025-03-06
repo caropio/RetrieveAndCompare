@@ -497,7 +497,7 @@ export class ExperimentParameters {
         let optionNums = shuffle(range(0, nOption-1));
         let lotteryNums = shuffle(range(0, this.lotteryCont.length-1));
         let catchTrials = shuffle(this._generateCatchTrialsTwoOptions());
-        debugger;
+        // debugger;
         for (let sessionNum = 0; sessionNum < nSession; sessionNum++) {
             LOOP1: for (let count1 = 0; count1 < nOption; count1++) {
                 let optionNum1 = optionNums[count1];
@@ -771,7 +771,7 @@ export class ExperimentParameters {
                 ev = Math.max(trialObj[i]['ev1'], trialObj[i]['ev2'])
             }
             if (ev == NaN || ev == undefined) {
-                debugger;
+                // debugger;
             }
             maxPoints += ev;
         }

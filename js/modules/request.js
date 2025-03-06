@@ -4,6 +4,7 @@ const MAX_REQUESTS = 3;
 
 
 export function sendToDB(call, data, url) {
+    // console.log('in send to db');
     $.ajax({
         type: 'POST',
         data: data,
