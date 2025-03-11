@@ -616,6 +616,18 @@ export class Instructions {
 
             let wonlost = [' won ', ' lost '][+(points < 0)]
 
+            sendToDB(0,
+                {
+                    exp: this.exp.expName,
+                    expID: this.exp.expID,
+                    id: this.exp.subID,
+                    points: points,
+                    pence: pence,
+                    pounds: pounds
+                },
+                'php/InsertParticipantDataDB.php'
+            );
+
             let Title = '<h3 align = "center">The game is over!<br>' +
                 'You ' + wonlost + points + ' points in total, which is ' + pence + ' pence = ' + pounds + ' pounds!<br><br>'
                 + 'With your initial endowment, you won a total bonus of ' + (parseFloat(pence) + 250) + ' pence = ' + (parseFloat(pounds) + 2.5) + ' pounds!<br><br>' +
