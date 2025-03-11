@@ -236,41 +236,43 @@ export class Instructions {
         let text;
         if ([-1, 0, 1].includes(sessionNum)) {
             text = {
-                1: ' • In each round you have to choose between one of two symbols displayed on either side of the screen. \n'
+                1:' • In each round you have to choose between one of two symbols displayed on either side of the screen. \n'
                     + ' • In a first step, you will have to select one of the two symbols by left-clicking on it.\n\n'
-                    + '<center><b>Options</b></center>\n'
-                    + [GUI.panelGenerateImg({ src: 'images/instructions/1.png', width: '40%' }),
+                    + [GUI.panelGenerateImg({ src: 'images/instructions/1.png', width: '40%' }), 
                     GUI.panelGenerateImg({ src: 'images/instructions/3.png', width: '40%' })][+(isTraining)]
                     + '• After a choice, you can win/lose the following outcomes:\n\n'
                     + '1 point = +' + this.exp.pointsToPence(1).toFixed(2) + ' pence\n'
-                    + '-1 points = -' + this.exp.pointsToPence(1).toFixed(2) + ' pence\n\n',
-                2: ' • However, please note that this numerical outcome will not be directly displayed. Instead, in a second step, you will see the odds of losing/winning a point'
-                    + ' associated to the two symbols previously displayed. Odds are represented by a pie-chart. Specifically, the green area indicates the chance of winning +1 (+1.32p) ; the red area indicates the chance of losing -1 (-1.32p).'
-                    + ' Pie-charts go from 100% chance of winning a point to 100% chance of losing a point. \n\n'
-                    + '<center><b>Outcomes</b></center>\n'
-                    + GUI.panelGenerateImg({ src: 'images/instructions/4.png', width: '40%' })
-                    + 'In the above example, the option on the left has been selected (its border is highlighted in black), and the outcome (the pie-chart) is shown. It will yield either +1, either -1, according to the odds displayed by the pie-chart.\n\n'
-                    + ' • Please note that only the outcome of your choice will be taken into account in the final payoff.\n',
-                3: ' • The different symbols are not equal in terms of outcome (and more precisely, in terms of odds of winning of losing/winning): in a given pair, one is in average more advantageous compared to the other. \n'
-                    + 'At the end of the test you will be shown with the final payoff in terms of cumulated points and monetary bonus.\n\n'
+                    + '-1 points = -' + this.exp.pointsToPence(1).toFixed(2) + ' pence\n\n'
+                    + ' • Please note that only the outcome of your choice will be taken into account in the final payoff.\n'
+                    + GUI.panelGenerateImg({ src: 'images/instructions/2.png', width: '40%' }),
+                2: ' • The different symbols are not equal in terms of outcome (and more precisely, in terms of odds of winning of losing/winning): in a given pair, one is in average more advantageous compared to the other. \n'
+                    + 'At the end of the experiment you will be shown with the final payoff in terms of cumulated points and monetary bonus.\n\n'
                     + ['• Note: This test is like the first test of the training.\n'
                         + 'This is the actual game, every point will be included in the final payoff. \n\n Ready?',
                     ' • Let\'s begin with the first training test! \n\n'
                     + '(Note : points won during the training do not count for the final payoff!)'][+(isTraining)]
+
             }
             } else {
                 text = {
                     1: ' • In each round you have to choose between one of two symbols displayed on either side of the screen. \n'
                         + ' • In a first step, you will have to select one of the two symbols by left-clicking on it.\n\n'
+                        + '<center><b>Options</b></center>\n'
                         + GUI.panelGenerateImg({ src: 'images/instructions/1.png', width: '40%' })
                         + '• After a choice, you can win/lose the following outcomes:\n\n'
-                    + '1 point = +' + this.exp.pointsToPence(1).toFixed(2) + ' pence\n'
-                    + '-1 points = -' + this.exp.pointsToPence(1).toFixed(2) + ' pence\n\n'
-                        + ' • Please note that only the outcome of your choice will be taken into account in the final payoff.\n'
-                        + GUI.panelGenerateImg({ src: 'images/instructions/2.png', width: '40%' }),
-                    2: ' • The different symbols are not equal in terms of outcome (and more precisely, in terms of odds of winning of losing/winning): in a given pair, one is in average more advantageous compared to the other. \n'
-                        + 'At the end of the experiment you will be shown with the final payoff in terms of cumulated points and monetary bonus.\n\n'
+                        + '1 point = +' + this.exp.pointsToPence(1).toFixed(2) + ' pence\n'
+                        + '-1 points = -' + this.exp.pointsToPence(1).toFixed(2) + ' pence\n\n', 
+                    2:  ' • However, please note that this numerical outcome will not be directly displayed. Instead, in a second step, you will see the odds of losing/winning a point'
+                        + ' associated to the two symbols previously displayed. Odds are represented by a pie-chart. Specifically, the green area indicates the chance of winning +1 (+1.32p) ; the red area indicates the chance of losing -1 (-1.32p).'
+                        + ' Pie-charts go from 100% chance of winning a point to 100% chance of losing a point. \n\n'
+                        + '<center><b>Outcomes</b></center>\n'
+                        + GUI.panelGenerateImg({ src: 'images/instructions/4.png', width: '40%' })
+                        + 'In the above example, the option on the left has been selected (its border is highlighted in black), and the outcome (the pie-chart) is shown. It will yield either +1, either -1, according to the odds displayed by the pie-chart.\n\n'
+                        + ' • Please note that only the outcome of your choice will be taken into account in the final payoff.\n',
+                    3: ' • The different symbols are not equal in terms of outcome (and more precisely, in terms of odds of winning of losing/winning): in a given pair, one is in average more advantageous compared to the other. \n'
+                        + 'At the end of the test you will be shown with the final payoff in terms of cumulated points and monetary bonus.\n\n'
                         + 'This is the actual game, every point will be included in the final payoff. \n\n Ready?'
+                        
                 }
             }
 
