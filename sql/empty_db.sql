@@ -88,7 +88,7 @@ CREATE TABLE IF NOT EXISTS `learning_data_r_and_c` (
 
 --  -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- 
 
--- 
+/* -- 
 --  Table structure for table `questionnaire_data`
 -- 
 
@@ -103,7 +103,7 @@ CREATE TABLE IF NOT EXISTS `learning_data_r_and_c` (
  `VAL` int(11) NOT NULL,
  `RTIME` bigint(20) NOT NULL,
  `DBTIME` time NOT NULL
- ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+ ) ENGINE=InnoDB DEFAULT CHARSET=latin1; */
 -- 
 -- --  -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- 
 -- 
