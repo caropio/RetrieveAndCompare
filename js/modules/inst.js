@@ -69,11 +69,11 @@ export class Instructions {
             'This study aims to understand the learning processes in decision-making. Its fundamental purpose is to investigate the cognitive mechanisms of these ' +
             'learning and decision-making processes.' +
             'The proposed experiments have no immediate application or clinical value, but they will allow us to improve our understanding of the functioning brain. ' +
-            'We are asking you to participate in this study because you have been recruited by the RISC or Prolific platforms.')
+            'We are asking you to participate in this study because you have been recruited by the Prolific platforms.')
 
         GUI.panelInsertParagraphTitle('Procedure')
-        GUI.panelInsertParagraph('During your participation in this study, we will ask you to answer several simple ' +
-            'questionnaires and tests, which do not require any particular competence.' +
+        GUI.panelInsertParagraph('During your participation in this study, we will ask you to complete several simple ' +
+            'tests, which do not require any particular competence.' +
             'Your internet-based participation will require approximately 50 minutes.')
 
         GUI.panelInsertParagraphTitle('Voluntary Participation And Confidentiality')
@@ -160,7 +160,7 @@ export class Instructions {
             2: ' • In addition of the fixed compensation provided by Prolific, you have been endowed with an additional 2.5 pounds. \n\n'
                 + ' • Depending on your choices you can either double this endowment or lose it. \n\n'
                 + ' • Following experimental economics methodological standards, no deception is involved concerning the calculation of the final payoff.\n\n'
-                + ' • Across the three phases of the experiment, you can win a bonus up to '
+                + ' • Across the last two phases of the experiment, you can win a bonus up to '
                 + this.exp.maxPoints + ' points = ' + this.exp.pointsToPounds(this.exp.maxPoints).toFixed(2) + ' pounds!',
             3: ' • Points won during the training are not included in the final payoff.'
                 + ' • Your progression in the experiment is displayed on the timeline on top of the page'
@@ -269,7 +269,7 @@ export class Instructions {
                         + ' • Please note that only the outcome of your choice will be taken into account in the final payoff.\n'
                         + GUI.panelGenerateImg({ src: 'images/instructions/2.png', width: '40%' }),
                     2: ' • The different symbols are not equal in terms of outcome (and more precisely, in terms of odds of winning of losing/winning): in a given pair, one is in average more advantageous compared to the other. \n'
-                        + 'At the end of the test you will be shown with the final payoff in terms of cumulated points and monetary bonus.\n\n'
+                        + 'At the end of the experiment you will be shown with the final payoff in terms of cumulated points and monetary bonus.\n\n'
                         + 'This is the actual game, every point will be included in the final payoff. \n\n Ready?'
                 }
             }
@@ -371,7 +371,7 @@ export class Instructions {
                     1: ' • In each round you have to choose between one of two items displayed on either side of the screen. \n'
                         + 'You can select one of the two symbols by left-clicking on it.\n\n'
                         + ' • Please note that in this test, <b>no outcome will be displayed</b>, such that after a choice, the next pair of options will be shown without intermediate step.\n'
-                        + ' • At the end of the test you will be shown with the final payoff in terms of cumulated points and monetary bonus.',
+                        + ' • At the end of the experiment you will be shown with the final payoff in terms of cumulated points and monetary bonus.',
                     2: ' • In the second test  there will be two kind of options. \n'
                         + ' • The first kind of options is represented by the symbols you already met during the previous test.\n'
                         + GUI.panelGenerateImg({ src: 'images/cards_gif/stim_old/2.gif', width: '15%' })
@@ -565,7 +565,6 @@ export class Instructions {
             GUI.panelSetTitle('End of training')
 
             GUI.panelSetParagraph(`• The training is over!\n\n
-         • Overall, in this training, you ${wonlost} ${totalPoints.toFixed(2)} points = ${pence} pence = ${pounds} pounds!\n\n
          • Now, you are about to start the first phase of the experiment. Note that from now on the points will be counted in your final payoff.\n
            Also note that the experiment includes much more trials and more points are at stake, compared to the training.\n
            Finally note that the real test will involve different symbols (i.e., not encountered in the training).\n\n
