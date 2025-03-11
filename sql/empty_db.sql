@@ -88,6 +88,22 @@ CREATE TABLE IF NOT EXISTS `learning_data_r_and_c` (
 
 --  -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- 
 
+-- 
+--  Table structure for table `participant`
+-- 
+
+CREATE TABLE IF NOT EXISTS `participant_r_and_c` (
+`EXP` varchar(20) NOT NULL,
+`EXPID` varchar(20) NOT NULL,
+`ID` varchar(100) NOT NULL,
+`POINTS` int(11) NOT NULL,
+`PENCE` int(11) NOT NULL,
+`POUNDS` int(11) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+
+--  -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- 
+
 /* -- 
 --  Table structure for table `questionnaire_data`
 -- 
