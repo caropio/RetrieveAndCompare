@@ -611,6 +611,7 @@ export class Instructions {
             let points = this.exp.totalReward
             let pence = this.exp.pointsToPence(points).toFixed(2)
             let pounds = this.exp.pointsToPounds(points).toFixed(2)
+            let poundsfinal = parseFloat(pounds) + 2.5
 
             let wonlost = [' won ', ' lost '][+(points < 0)]
 
@@ -621,7 +622,8 @@ export class Instructions {
                     id: this.exp.subID,
                     points: points,
                     pence: pence,
-                    pounds: pounds
+                    pounds: pounds,
+                    poundsfinal: poundsfinal
                 },
                 'php/InsertParticipantDataDB.php'
             );

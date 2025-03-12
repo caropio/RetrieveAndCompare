@@ -98,7 +98,8 @@ CREATE TABLE IF NOT EXISTS `participant_r_and_c` (
 `ID` varchar(100) NOT NULL,
 `POINTS` int(11) NOT NULL,
 `PENCE` int(11) NOT NULL,
-`POUNDS` int(11) NOT NULL
+`POUNDS` int(11) NOT NULL,
+`POUNDSFINAL` double NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 
