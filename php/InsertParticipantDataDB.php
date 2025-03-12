@@ -8,10 +8,11 @@ $ID 		= stripslashes(htmlspecialchars($_POST['id']));
 $POINTS     = stripslashes(htmlspecialchars($_POST['points']));
 $PENCE      = stripslashes(htmlspecialchars($_POST['pence']));
 $POUNDS     = stripslashes(htmlspecialchars($_POST['pounds']));
+$POUNDSFINAL= stripslashes(htmlspecialchars($_POST['poundsfinal']));
 
-$stmt = $db->prepare("INSERT INTO participant_r_and_c VALUE(?, ?, ?, ?, ?, ?)");
-$stmt->bind_param("sssiii",
-    $EXP,$EXPID,$ID,$POINTS, $PENCE, $POUNDS);
+$stmt = $db->prepare("INSERT INTO participant_r_and_c VALUE(?, ?, ?, ?, ?, ?, ?)");
+$stmt->bind_param("sssdddd",
+    $EXP,$EXPID,$ID,$POINTS, $PENCE, $POUNDS, $POUNDSFINAL);
 $stmt->execute();
 $err = $stmt->errno ;
 $data = array(
