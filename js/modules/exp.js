@@ -425,10 +425,11 @@ export class ExperimentParameters {
         // Learning with no fixed conditions
         // ===================================================================== //
         let arrToFill = new Array(nSession).fill().map((x) => []);
-        let optionNums = shuffle(range(0, options[0].length-1));
+        // let optionNums = shuffle(range(0, options[0].length-1));
 
         for (let sessionNum = 0; sessionNum < nSession; sessionNum++) {
             LOOP: for (let repeatNum = 0; repeatNum < nRepeat; repeatNum++) {
+                let optionNums = shuffle(range(0, options[0].length-1)); // Inside the loop so that not the same order of blocks between sessions and between repeat
                 for (let count1 = 0; count1 < options[sessionNum].length; count1++) {
 
                     let optionNum1 = optionNums[count1];
@@ -499,6 +500,7 @@ export class ExperimentParameters {
         let catchTrials = shuffle(this._generateCatchTrialsTwoOptions());
         // debugger;
         for (let sessionNum = 0; sessionNum < nSession; sessionNum++) {
+            let optionNums = shuffle(range(0, nOption-1)); // Inside the loop so that not the same order of blocks between sessions
             LOOP1: for (let count1 = 0; count1 < nOption; count1++) {
                 let optionNum1 = optionNums[count1];
                 let tempArray = [];
