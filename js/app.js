@@ -54,7 +54,7 @@ function main() {
             nSession: 2,
             nCond: 4,
             imgPath: 'images/cards_gif/',
-            compLink: 'aHR0cHM6Ly9hcHAucHJvbGlmaWMuY28vc3VibWlzc2lvbnMvY29tcGxldGU/Y2M9Uk5GUzVIUDU=',
+            compLink: 'aHR0cHM6Ly9hcHAucHJvbGlmaWMuY29tL3N1Ym1pc3Npb25zL2NvbXBsZXRlP2NjPUNJVk0yQllX',
             fromCookie: false
         }
     );
