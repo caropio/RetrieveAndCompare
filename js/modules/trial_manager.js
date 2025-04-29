@@ -179,7 +179,7 @@ export class ChoiceManager {
         if (this.exp.isTesting)
             GUI.setOutcomes(thisReward, otherReward);
         
-        // put back this._showReward classic so only numerical anymore 
+        // put back this._showReward line as it was in original so we get numerical outcomes in LE phase 
         this._showReward(reward1, reward2, thisReward, choice);
 
         // if ([0, 1].includes(this.outcomeType)) {
