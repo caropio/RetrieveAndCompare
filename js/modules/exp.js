@@ -891,13 +891,13 @@ export class ExperimentParameters {
         for (let i = 0; i < this.ev.length; i++) {
             let idx = this.ev[i].toString();
             this.images[idx] = new Image();
-            this.images[idx].src = imgPath + "lotteries/" + idx + ".png";
+            this.images[idx].src = imgPath + "lotteries_new/" + idx + ".png";
             this.images[idx].className = "img-responsive center-block ";
             this.images[idx].style.border = "5px solid " + borderColor;
             this.images[idx].style.position = "relative";
             this.images[idx].style.top = "0px";
             this.trainingImg[idx] = new Image();
-            this.trainingImg[idx].src = imgPath + "lotteries/" + idx + ".png";
+            this.trainingImg[idx].src = imgPath + "lotteries_new/" + idx + ".png";
             this.trainingImg[idx].className = "img-responsive center-block ";
             this.trainingImg[idx].style.border = "5px solid " + borderColor;
             this.trainingImg[idx].style.position = "relative";
