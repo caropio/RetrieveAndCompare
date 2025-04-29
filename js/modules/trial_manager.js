@@ -178,18 +178,21 @@ export class ChoiceManager {
 
         if (this.exp.isTesting)
             GUI.setOutcomes(thisReward, otherReward);
+        
+        // put back this._showReward classic so only numerical anymore 
+        this._showReward(reward1, reward2, thisReward, choice);
 
-        if ([0, 1].includes(this.outcomeType)) {
-            this._showReward(
-                ev1 + '_' + this.outcomeType,
-                ev2 + '_' + this.outcomeType,
-                thisReward, choice);
-        } else {
-            this._showReward(
-                reward1 + '', 
-                reward2 + '',
-                thisReward, choice);
-        }
+        // if ([0, 1].includes(this.outcomeType)) {
+        //     this._showReward(
+        //         ev1 + '_' + this.outcomeType,
+        //         ev2 + '_' + this.outcomeType,
+        //         thisReward, choice);
+        // } else {
+        //     this._showReward(
+        //         reward1 + '', 
+        //         reward2 + '',
+        //         thisReward, choice);
+        // }
 
         if (this.exp.online) {
             sendToDB(0,

@@ -39,8 +39,8 @@ function main() {
     let exp = new ExperimentParameters(
         {
             online: true,   // send network requests
-            isTesting: false, // isTesting==in development vs in production
-            expName: 'EvOutcomeNoFixed1', // experience name
+            isTesting: true, // isTesting==in development vs in production
+            expName: 'SOptions1', // experience name
             completeFeedback: true, // display feedback of both options
             maxPoints: undefined, // max points cumulated all along the experiment
             // if undefined or 0, will be computed automatically
@@ -279,7 +279,7 @@ function stateMachine({ instructionNum, sessionNum, phaseNum, questNum, exp } = 
                     beforeFeedbackDuration: exp.beforeFeedbackDuration,
                     completeFeedback: exp.completeFeedback,
                     feedbackObj: exp.feedbackImg,
-                    outcomeType: [0, ''][+([1].includes(sessionNum))],
+                    // outcomeType: [0, ''][+([1].includes(sessionNum))], // Don't need anymore (was for lottery/numerical)
                     imgObj: imgObj,
                     sessionNum: sessionNum,
                     phaseNum: phaseNum,
@@ -309,7 +309,7 @@ function stateMachine({ instructionNum, sessionNum, phaseNum, questNum, exp } = 
                     beforeFeedbackDuration: exp.beforeFeedbackDuration,
                     completeFeedback: exp.completeFeedback,
                     feedbackObj: exp.feedbackImg,
-                    outcomeType: 'osef',
+                    // outcomeType: 'osef', // Don't need anymore (was for lottery/numerical)
                     imgObj: imgObj,
                     sessionNum: sessionNum,
                     phaseNum: phaseNum,
