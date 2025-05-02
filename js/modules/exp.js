@@ -899,7 +899,7 @@ export class ExperimentParameters {
         for (let i = 0; i < this.ev.length; i++) {
             let idx = this.ev[i].toString();
             this.images[idx] = new Image();
-            this.images[idx].src = imgPath + "lotteries_new/" + idx + ".png";
+            this.images[idx].src = imgPath + "lotteries_descriptive/" + idx + ".png";
             // if (phase === 1) {
             //     this.images[idx].src = imgPath + "lotteries_new/" + idx + ".png";
             // } else if (phase === 2) {
@@ -910,7 +910,7 @@ export class ExperimentParameters {
             this.images[idx].style.position = "relative";
             this.images[idx].style.top = "0px";
             this.trainingImg[idx] = new Image();
-            this.trainingImg[idx].src = imgPath + "lotteries_new/" + idx + ".png";
+            this.trainingImg[idx].src = imgPath + "lotteries_descriptive/" + idx + ".png";
             // if (phase === 1) {
             //     this.trainingImg[idx].src = imgPath + "lotteries_new/" + idx + ".png";
             // } else if (phase === 2) {

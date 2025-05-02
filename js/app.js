@@ -272,7 +272,7 @@ function stateMachine({ instructionNum, sessionNum, phaseNum, questNum, exp } = 
     let choice;
 
     switch (phaseNum) {
-
+        // LE ?
         case 1:
             // exp.phase = 1;
             // exp._loadImg(exp.imgPath, exp.nCond, exp.nSession, exp.phase); // Pass 1 for Case 1.
@@ -306,6 +306,7 @@ function stateMachine({ instructionNum, sessionNum, phaseNum, questNum, exp } = 
             choice.run();
             return;
 
+        // ES and EE ?
         case 2:
             // exp.phase = 2;    
             // exp._loadImg(exp.imgPath, exp.nCond, exp.nSession, exp.phase); // Pass 2 for Case 2.
@@ -338,6 +339,7 @@ function stateMachine({ instructionNum, sessionNum, phaseNum, questNum, exp } = 
             choice.run();
             return;
 
+        // SP ?
         case 3:
             // exp.phase = 2;    
             // exp._loadImg(exp.imgPath, exp.nCond, exp.nSession, exp.phase); // Pass 2 for Case 3.
