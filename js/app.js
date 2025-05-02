@@ -54,6 +54,7 @@ function main() {
             nSession: 2,
             nCond: 4,
             imgPath: 'images/cards_gif/',
+            // phase: undefined, 
             compLink: 'aHR0cHM6Ly9hcHAucHJvbGlmaWMuY29tL3N1Ym1pc3Npb25zL2NvbXBsZXRlP2NjPUMxQ1dVVU1F',
             fromCookie: false
         }
@@ -102,6 +103,7 @@ function stateManagement() {
             nSession: prevexp.nSession,
             nCond: prevexp.nCond,
             imgPath: prevexp.imgPath,
+            // phase: prevexp.phase,
             compLink: prevexp.compLink, // prolific completion link
             fromCookie: true,
             obj: prevexp,
@@ -266,11 +268,15 @@ function stateMachine({ instructionNum, sessionNum, phaseNum, questNum, exp } = 
         exp.trialObjTraining[phaseNum][Math.abs(sessionNum) - 1] : exp.trialObj[phaseNum][sessionNum];
 
     let imgObj = [exp.images, exp.trainingImg][isTraining];
+    // let imgObj;
     let choice;
 
     switch (phaseNum) {
 
         case 1:
+            // exp.phase = 1;
+            // exp._loadImg(exp.imgPath, exp.nCond, exp.nSession, exp.phase); // Pass 1 for Case 1.
+            // imgObj = [exp.images, exp.trainingImg][isTraining];
 
             choice = new ChoiceManager(
                 {
@@ -301,7 +307,9 @@ function stateMachine({ instructionNum, sessionNum, phaseNum, questNum, exp } = 
             return;
 
         case 2:
-
+            // exp.phase = 2;    
+            // exp._loadImg(exp.imgPath, exp.nCond, exp.nSession, exp.phase); // Pass 2 for Case 2.
+            // imgObj = [exp.images, exp.trainingImg][isTraining];
             choice = new ChoiceManager(
                 {
                     trialObj: trialObj,
@@ -331,6 +339,9 @@ function stateMachine({ instructionNum, sessionNum, phaseNum, questNum, exp } = 
             return;
 
         case 3:
+            // exp.phase = 2;    
+            // exp._loadImg(exp.imgPath, exp.nCond, exp.nSession, exp.phase); // Pass 2 for Case 3.
+            // imgObj = [exp.images, exp.trainingImg][isTraining];
 
             let slider = new SliderManager(
                 {

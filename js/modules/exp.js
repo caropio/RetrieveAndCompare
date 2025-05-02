@@ -20,6 +20,7 @@ export class ExperimentParameters {
         maxTrainingNum,
         compLink,
         imgPath,
+        phase, 
         maxCompensation,
         nTrialPerCondition,
         nTrialPerConditionTraining,
@@ -45,13 +46,14 @@ export class ExperimentParameters {
 
         this.compLink = compLink;
         this.imgPath = imgPath;
-
+        // this.phase = phase;
 
         this.fromCookie = fromCookie;
 
         // initGameStageDiv
 
         this._initContingencies();
+        // this._loadImg(imgPath, nCond, nSession, phase);
         this._loadImg(imgPath, nCond, nSession);
 
         if (!fromCookie) {
@@ -115,6 +117,10 @@ export class ExperimentParameters {
                         maxLen: 112,
                         nRepeat: 2
                     });
+
+                    // exp.phase = 1;    
+                    // exp._loadImg(exp.imgPath, exp.nCond, exp.nSession, exp.phase); // Pass 1 for Case 1.
+                    // imgObj = [exp.images, exp.trainingImg][isTraining];
 
                     this.trialObjTraining[step] = this._generateNoFixedLE({
                         nSession: nSession,
@@ -781,6 +787,7 @@ export class ExperimentParameters {
         return Math.round(maxPoints);
     }
 
+    // _loadImg(imgPath, nCond, nSession, phase) {
     _loadImg(imgPath, nCond, nSession) {
         // Get stims, feedbacks, resources
         let nImg = nCond * 2 * nSession;
@@ -888,16 +895,27 @@ export class ExperimentParameters {
             this.trainingImg[idx].style.top = "0px";
         }
 
+        // S-Options
         for (let i = 0; i < this.ev.length; i++) {
             let idx = this.ev[i].toString();
             this.images[idx] = new Image();
             this.images[idx].src = imgPath + "lotteries_new/" + idx + ".png";
+            // if (phase === 1) {
+            //     this.images[idx].src = imgPath + "lotteries_new/" + idx + ".png";
+            // } else if (phase === 2) {
+            //     this.images[idx].src = imgPath + "lotteries/" + idx + ".png";
+            // }
             this.images[idx].className = "img-responsive center-block ";
             this.images[idx].style.border = "5px solid " + borderColor;
             this.images[idx].style.position = "relative";
             this.images[idx].style.top = "0px";
             this.trainingImg[idx] = new Image();
             this.trainingImg[idx].src = imgPath + "lotteries_new/" + idx + ".png";
+            // if (phase === 1) {
+            //     this.trainingImg[idx].src = imgPath + "lotteries_new/" + idx + ".png";
+            // } else if (phase === 2) {
+            //     this.trainingImg[idx].src = imgPath + "lotteries/" + idx + ".png";
+            // }
             this.trainingImg[idx].className = "img-responsive center-block ";
             this.trainingImg[idx].style.border = "5px solid " + borderColor;
             this.trainingImg[idx].style.position = "relative";
