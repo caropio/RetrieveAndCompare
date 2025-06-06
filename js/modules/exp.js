@@ -787,7 +787,6 @@ export class ExperimentParameters {
         return Math.round(maxPoints);
     }
 
-    // _loadImg(imgPath, nCond, nSession, phase) {
     _loadImg(imgPath, nCond, nSession) {
         // Get stims, feedbacks, resources
         let nImg = nCond * 2 * nSession;
@@ -795,16 +794,34 @@ export class ExperimentParameters {
         let imgExt = "gif";
         let borderColor = "transparent";
 
-        this.images = [];
+        // this.images = [];
+        this.images0 = [];
+        this.images1 = [];
         this.learningOptions = [];
+
+        // Images for E-options 
         for (let i = 2; i < nImg + 2; i++) {
             this.learningOptions.push(i);
-            this.images[i] = new Image();
-            this.images[i].src = imgPath + "stim_old/" + i + "." + imgExt;
-            this.images[i].className = "img-responsive center-block";
-            this.images[i].style.border = "5px solid " + borderColor;
-            this.images[i].style.position = "relative";
-            this.images[i].style.top = "0px";
+            // this.images[i] = new Image();
+            // this.images[i].src = imgPath + "stim_old/" + i + "." + imgExt;
+            // this.images[i].className = "img-responsive center-block";
+            // this.images[i].style.border = "5px solid " + borderColor;
+            // this.images[i].style.position = "relative";
+            // this.images[i].style.top = "0px";
+
+            this.images0[i] = new Image();
+            this.images0[i].src = imgPath + "stim_old/" + i + "." + imgExt;
+            this.images0[i].className = "img-responsive center-block";
+            this.images0[i].style.border = "5px solid " + borderColor;
+            this.images0[i].style.position = "relative";
+            this.images0[i].style.top = "0px";
+
+            this.images1[i] = new Image();
+            this.images1[i].src = imgPath + "stim_old/" + i + "." + imgExt;
+            this.images1[i].className = "img-responsive center-block";
+            this.images1[i].style.border = "5px solid " + borderColor;
+            this.images1[i].style.position = "relative";
+            this.images1[i].style.top = "0px";
         }
 
         let feedbackNames = ["empty", '-0.8', '-0.6', '-0.4', '-0.2', '0.2', '0.4', '0.6', '0.8', '-1', '1'];
@@ -896,42 +913,87 @@ export class ExperimentParameters {
         }
 
         // S-Options
+        // New images (Sess 0)
         for (let i = 0; i < this.ev.length; i++) {
-            let idx = this.ev[i].toString();
-            this.images[idx] = new Image();
-            this.images[idx].src = imgPath + "lotteries_descriptive/" + idx + ".png";
-            // if (phase === 1) {
-            //     this.images[idx].src = imgPath + "lotteries_new/" + idx + ".png";
-            // } else if (phase === 2) {
-            //     this.images[idx].src = imgPath + "lotteries/" + idx + ".png";
-            // }
-            this.images[idx].className = "img-responsive center-block ";
-            this.images[idx].style.border = "5px solid " + borderColor;
-            this.images[idx].style.position = "relative";
-            this.images[idx].style.top = "0px";
+            let idx = this.ev[i].toString();           
+            // this.images[idx] = new Image();
+            // this.images[idx].src = imgPath + "lotteries_descriptive/" + idx + ".png";
+            // this.images[idx].className = "img-responsive center-block ";
+            // this.images[idx].style.border = "5px solid " + borderColor;
+            // this.images[idx].style.position = "relative";
+            // this.images[idx].style.top = "0px";
+            
+            this.images0[idx] = new Image();
+            this.images0[idx].src = imgPath + "lotteries_new/" + idx + ".png";
+            this.images0[idx].className = "img-responsive center-block ";
+            this.images0[idx].style.border = "5px solid " + borderColor;
+            this.images0[idx].style.position = "relative";
+            this.images0[idx].style.top = "0px";
+
             this.trainingImg[idx] = new Image();
-            this.trainingImg[idx].src = imgPath + "lotteries_descriptive/" + idx + ".png";
-            // if (phase === 1) {
-            //     this.trainingImg[idx].src = imgPath + "lotteries_new/" + idx + ".png";
-            // } else if (phase === 2) {
-            //     this.trainingImg[idx].src = imgPath + "lotteries/" + idx + ".png";
-            // }
+            this.trainingImg[idx].src = imgPath + "lotteries_new/" + idx + ".png";
             this.trainingImg[idx].className = "img-responsive center-block ";
             this.trainingImg[idx].style.border = "5px solid " + borderColor;
             this.trainingImg[idx].style.position = "relative";
             this.trainingImg[idx].style.top = "0px";
         }
-        this.images["?"] = new Image();
-        this.images["?"].src = imgPath + "stim/question.jpg";
-        this.images["?"].className = "img-responsive center-block";
-        this.images["?"].style.border = "5px solid " + borderColor;
-        this.images["?"].style.position = "relative";
-        this.images["?"].style.top = "0px";
+        
+        this.images0["?"] = new Image();
+        this.images0["?"].src = imgPath + "stim/question.jpg";
+        this.images0["?"].className = "img-responsive center-block";
+        this.images0["?"].style.border = "5px solid " + borderColor;
+        this.images0["?"].style.position = "relative";
+        this.images0["?"].style.top = "0px";
+
+        // this.images["?"] = new Image();
+        // this.images["?"].src = imgPath + "stim/question.jpg";
+        // this.images["?"].className = "img-responsive center-block";
+        // this.images["?"].style.border = "5px solid " + borderColor;
+        // this.images["?"].style.position = "relative";
+        // this.images["?"].style.top = "0px";
         this.trainingImg["?"] = new Image();
         this.trainingImg["?"].src = imgPath + "stim/question.jpg";
         this.trainingImg["?"].className = "img-responsive center-block ";
         this.trainingImg["?"].style.border = "5px solid " + borderColor;
         this.trainingImg["?"].style.position = "relative";
         this.trainingImg["?"].style.top = "0px";
+
+        // Descriptive images (Sess 1)
+        for (let i = 0; i < this.ev.length; i++) {
+            let idx = this.ev[i].toString();           
+            this.images1[idx] = new Image();
+            this.images1[idx].src = imgPath + "lotteries_descriptive/" + idx + ".png";
+            this.images1[idx].className = "img-responsive center-block ";
+            this.images1[idx].style.border = "5px solid " + borderColor;
+            this.images1[idx].style.position = "relative";
+            this.images1[idx].style.top = "0px";
+        }
+        
+        this.images1["?"] = new Image();
+        this.images1["?"].src = imgPath + "stim/question.jpg";
+        this.images1["?"].className = "img-responsive center-block";
+        this.images1["?"].style.border = "5px solid " + borderColor;
+        this.images1["?"].style.position = "relative";
+        this.images1["?"].style.top = "0px";
     }
+
+//     getImages(session) {
+//         let result = {};
+//         // Iterate through all the indices in this.images
+//         for (let idx in this.images) {
+//             if (this.images.hasOwnProperty(idx)) {
+//                 // For each idx, get the appropriate image based on the session
+//                 if (session === 0) {
+//                     // If session is 0, return the new images (this.images[idx][0])
+//                     result[idx] = this.images[idx][0];
+//                 } else if (session === 1) {
+//                     // If session is 1, return the descriptive images (this.images[idx][1])
+//                     result[idx] = this.images[idx][1];
+//                 }
+//             }
+//         }
+//         return result;  // Return the result object containing selected images
+//     }
+
+
 }

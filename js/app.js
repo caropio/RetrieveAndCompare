@@ -266,17 +266,14 @@ function stateMachine({ instructionNum, sessionNum, phaseNum, questNum, exp } = 
     if (phaseNum !== 'end')
         trialObj = isTraining ? 
         exp.trialObjTraining[phaseNum][Math.abs(sessionNum) - 1] : exp.trialObj[phaseNum][sessionNum];
+    console.log(trialObj)
 
-    let imgObj = [exp.images, exp.trainingImg][isTraining];
-    // let imgObj;
+    let imgObj;
+    console.log(imgObj)
     let choice;
 
     switch (phaseNum) {
-        // LE ?
-        case 1:
-            // exp.phase = 1;
-            // exp._loadImg(exp.imgPath, exp.nCond, exp.nSession, exp.phase); // Pass 1 for Case 1.
-            // imgObj = [exp.images, exp.trainingImg][isTraining];
+        case 1: // LE phase
 
             choice = new ChoiceManager(
                 {
@@ -286,7 +283,7 @@ function stateMachine({ instructionNum, sessionNum, phaseNum, questNum, exp } = 
                     completeFeedback: exp.completeFeedback,
                     feedbackObj: exp.feedbackImg,
                     // outcomeType: [0, ''][+([1].includes(sessionNum))], // Don't need anymore (was for lottery/numerical)
-                    imgObj: imgObj,
+                    imgObj: [[exp.images0, exp.images1][+([1].includes(sessionNum))], exp.trainingImg][isTraining], // Get the appropriate images according to sess
                     sessionNum: sessionNum,
                     phaseNum: phaseNum,
                     exp: exp,
@@ -306,11 +303,8 @@ function stateMachine({ instructionNum, sessionNum, phaseNum, questNum, exp } = 
             choice.run();
             return;
 
-        // ES and EE ?
-        case 2:
-            // exp.phase = 2;    
-            // exp._loadImg(exp.imgPath, exp.nCond, exp.nSession, exp.phase); // Pass 2 for Case 2.
-            // imgObj = [exp.images, exp.trainingImg][isTraining];
+        case 2: // ES and EE phase 
+
             choice = new ChoiceManager(
                 {
                     trialObj: trialObj,
@@ -319,7 +313,7 @@ function stateMachine({ instructionNum, sessionNum, phaseNum, questNum, exp } = 
                     completeFeedback: exp.completeFeedback,
                     feedbackObj: exp.feedbackImg,
                     // outcomeType: 'osef', // Don't need anymore (was for lottery/numerical)
-                    imgObj: imgObj,
+                    imgObj: [[exp.images0, exp.images1][+([1].includes(sessionNum))], exp.trainingImg][isTraining], // Get the appropriate images according to sess
                     sessionNum: sessionNum,
                     phaseNum: phaseNum,
                     exp: exp,
@@ -339,11 +333,7 @@ function stateMachine({ instructionNum, sessionNum, phaseNum, questNum, exp } = 
             choice.run();
             return;
 
-        // SP ?
-        case 3:
-            // exp.phase = 2;    
-            // exp._loadImg(exp.imgPath, exp.nCond, exp.nSession, exp.phase); // Pass 2 for Case 3.
-            // imgObj = [exp.images, exp.trainingImg][isTraining];
+        case 3: // SP phase
 
             let slider = new SliderManager(
                 {
@@ -351,7 +341,7 @@ function stateMachine({ instructionNum, sessionNum, phaseNum, questNum, exp } = 
                     feedbackDuration: exp.feedbackDuration - 1500,
                     completeFeedback: exp.completeFeedback,
                     feedbackObj: exp.feedbackImg,
-                    imgObj: imgObj,
+                    imgObj: [[exp.images0, exp.images1][+([1].includes(sessionNum))], exp.trainingImg][isTraining],
                     sessionNum: sessionNum,
                     phaseNum: phaseNum,
                     exp: exp,
