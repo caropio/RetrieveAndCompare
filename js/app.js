@@ -341,7 +341,7 @@ function stateMachine({ instructionNum, sessionNum, phaseNum, questNum, exp } = 
                     feedbackDuration: exp.feedbackDuration - 1500,
                     completeFeedback: exp.completeFeedback,
                     feedbackObj: exp.feedbackImg,
-                    imgObj: [[exp.images0, exp.images1][+([1].includes(sessionNum))], exp.trainingImg][isTraining],
+                    imgObj: [[exp.images0, exp.images1][+([1].includes(sessionNum))], exp.trainingImg][isTraining],  // Get the appropriate images according to sess
                     sessionNum: sessionNum,
                     phaseNum: phaseNum,
                     exp: exp,
