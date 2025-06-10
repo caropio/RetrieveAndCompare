@@ -40,7 +40,7 @@ function main() {
         {
             online: true,   // send network requests
             isTesting: true, // isTesting==in development vs in production
-            expName: 'SOptions1', // experience name
+            expName: 'SOptions2', // experience name
             completeFeedback: true, // display feedback of both options
             maxPoints: undefined, // max points cumulated all along the experiment
             // if undefined or 0, will be computed automatically
