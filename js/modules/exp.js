@@ -903,19 +903,19 @@ export class ExperimentParameters {
         }
 
         // S-Option images
-        // New images (Sess 0 and training)
+        // Descriptive images (Sess 0 and training)
         for (let i = 0; i < this.ev.length; i++) {
             let idx = this.ev[i].toString();           
             
             this.images0[idx] = new Image();
-            this.images0[idx].src = imgPath + "lotteries_new/" + idx + ".png";
+            this.images0[idx].src = imgPath + "lotteries_descriptive/" + idx + ".png";
             this.images0[idx].className = "img-responsive center-block ";
             this.images0[idx].style.border = "5px solid " + borderColor;
             this.images0[idx].style.position = "relative";
             this.images0[idx].style.top = "0px";
 
             this.trainingImg[idx] = new Image();
-            this.trainingImg[idx].src = imgPath + "lotteries_new/" + idx + ".png";
+            this.trainingImg[idx].src = imgPath + "lotteries_descriptive/" + idx + ".png";
             this.trainingImg[idx].className = "img-responsive center-block ";
             this.trainingImg[idx].style.border = "5px solid " + borderColor;
             this.trainingImg[idx].style.position = "relative";
@@ -936,11 +936,11 @@ export class ExperimentParameters {
         this.trainingImg["?"].style.position = "relative";
         this.trainingImg["?"].style.top = "0px";
 
-        // Descriptive images (Sess 1)
+        // New images (Sess 1)
         for (let i = 0; i < this.ev.length; i++) {
             let idx = this.ev[i].toString();           
             this.images1[idx] = new Image();
-            this.images1[idx].src = imgPath + "lotteries_descriptive/" + idx + ".png";
+            this.images1[idx].src = imgPath + "lotteries_new/" + idx + ".png";
             this.images1[idx].className = "img-responsive center-block ";
             this.images1[idx].style.border = "5px solid " + borderColor;
             this.images1[idx].style.position = "relative";

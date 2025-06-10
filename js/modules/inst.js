@@ -331,27 +331,6 @@ export class Instructions {
                         + ' • The first kind of options is represented by the symbols you already met during the previous test.\n'
                         + [GUI.panelGenerateImg({ src: 'images/cards_gif/stim_old/2.gif', width: '15%' }), GUI.panelGenerateImg({ src: 'images/cards_gif/stim/A.jpg', width: '15%' })][+(isTraining)]
                         + 'Note: the symbols keep the same odds of winning / losing a point as in the first test.\n\n'
-                        + ' • The second kind of options is represented by pie-charts describing the odds of winning / losing a point.\n'
-                        + GUI.panelGenerateImg({ src: 'images/cards_gif/lotteries_new/0.png', width: '15%' })
-                        + 'Specifically, the green area indicates the chance of winning +1 (+' + this.exp.pointsToPence(1).toFixed(2) + 'p) ; the red area indicates the chance of losing -1 (-'
-                        + this.exp.pointsToPence(1).toFixed(2) + 'p).\n'
-                        + 'Pie-charts go from 100% chance of winning a point to 100% chance of losing a point.\n\n'
-                        + ' • Sometimes you will be asked to choose between two symbols, a pie-chart and a symbol, and sometimes between two pie-charts.\n',
-                    3: ['• Note: This test is like the second test of the training.\n'
-                        + 'This is the actual game, every point will be included in the final payoff. \n\n Ready?',
-                        ' • Let\'s begin with the second training test! \n\n'
-                        + '(Note : points won during the training do not count for the final payoff!)'][+(isTraining)] 
-                }
-                } else {
-                    text = {
-                    1: ' • In each round you have to choose between one of two items displayed on either side of the screen. \n'
-                        + ' • You can select one of the two symbols by left-clicking on it.\n'
-                        + ' • Please note that in this test, <b>no outcome will be displayed</b>, such that after a choice, the next pair of options will be shown without intermediate step.\n'
-                        + ' • At the end of the test you will be shown with the final payoff in terms of cumulated points and monetary bonus.',
-                    2: ' • In the second test  there will be two kind of options. \n'
-                        + ' • The first kind of options is represented by the symbols you already met during the previous test.\n'
-                        + [GUI.panelGenerateImg({ src: 'images/cards_gif/stim_old/2.gif', width: '15%' }), GUI.panelGenerateImg({ src: 'images/cards_gif/stim/A.jpg', width: '15%' })][+(isTraining)]
-                        + 'Note: the symbols keep the same odds of winning / losing a point as in the first test.\n\n'
                         + ' • The second kind of options is represented by lotteries explicitly describing the odds of winning / losing a point.\n'
                         + GUI.panelGenerateImg({ src: 'images/cards_gif/lotteries_descriptive/0.png', width: '15%' })
                         + 'Specifically, the percentage on the first row indicates the chance of winning +1 (+' + this.exp.pointsToPence(1).toFixed(2) + 'p) ; the percentage on the second row indicates the chance of losing -1 (-'
@@ -363,6 +342,28 @@ export class Instructions {
                         ' • Let\'s begin with the second training test! \n\n'
                         + '(Note : points won during the training do not count for the final payoff!)'][+(isTraining)] 
 
+                }
+                } else {
+                
+                text = {
+                    1: ' • In each round you have to choose between one of two items displayed on either side of the screen. \n'
+                        + ' • You can select one of the two symbols by left-clicking on it.\n'
+                        + ' • Please note that in this test, <b>no outcome will be displayed</b>, such that after a choice, the next pair of options will be shown without intermediate step.\n'
+                        + ' • At the end of the test you will be shown with the final payoff in terms of cumulated points and monetary bonus.',
+                    2: ' • In the second test  there will be two kind of options. \n'
+                        + ' • The first kind of options is represented by the symbols you already met during the previous test.\n'
+                        + [GUI.panelGenerateImg({ src: 'images/cards_gif/stim_old/2.gif', width: '15%' }), GUI.panelGenerateImg({ src: 'images/cards_gif/stim/A.jpg', width: '15%' })][+(isTraining)]
+                        + 'Note: the symbols keep the same odds of winning / losing a point as in the first test.\n\n'
+                        + ' • The second kind of options is represented by pie-charts describing the odds of winning / losing a point.\n'
+                        + GUI.panelGenerateImg({ src: 'images/cards_gif/lotteries_new/0.png', width: '15%' })
+                        + 'Specifically, the green area indicates the chance of winning +1 (+' + this.exp.pointsToPence(1).toFixed(2) + 'p) ; the red area indicates the chance of losing -1 (-'
+                        + this.exp.pointsToPence(1).toFixed(2) + 'p).\n'
+                        + 'Pie-charts go from 100% chance of winning a point to 100% chance of losing a point.\n\n'
+                        + ' • Sometimes you will be asked to choose between two symbols, a pie-chart and a symbol, and sometimes between two pie-charts.\n',
+                    3: ['• Note: This test is like the second test of the training.\n'
+                        + 'This is the actual game, every point will be included in the final payoff. \n\n Ready?',
+                        ' • Let\'s begin with the second training test! \n\n'
+                        + '(Note : points won during the training do not count for the final payoff!)'][+(isTraining)] 
                 }
             }
             
@@ -433,12 +434,12 @@ export class Instructions {
             GUI.panelSetTitle('Instructions for the third test')
 
             let text = {
-                1: '• In each round of the third test you will be presented with the symbols and ' + ['lotteries', 'pie-charts'][+([-1, 0, 1].includes(sessionNum))] + ' you met in the first and the second test. This is the opportunity to test your knowledge of each symbol average outcome. \n'
-                    + '• You will be asked to indicate (in percentages), what are the odds that a given symbol or ' + ['lottery', 'pie-chart'][+([-1, 0, 1].includes(sessionNum))] + ' makes you win a point (+1=+' + this.exp.pointsToPence(1).toFixed(2) + ').\n\n'
+                1: '• In each round of the third test you will be presented with the symbols and ' + ['pie-charts', 'lotteries'][+([-1, 0, 1].includes(sessionNum))] + ' you met in the first and the second test. This is the opportunity to test your knowledge of each symbol average outcome. \n'
+                    + '• You will be asked to indicate (in percentages), what are the odds that a given symbol or ' + ['pie-chart', 'lottery'][+([-1, 0, 1].includes(sessionNum))] + ' makes you win a point (+1=+' + this.exp.pointsToPence(1).toFixed(2) + ').\n\n'
                     + '• You will be able to do this through moving a slider on the screen and then confirm your final answer by clicking on the confirmation button.\n\n'
-                    + '• 100%  = the symbol (or ' + ['lottery', 'pie-chart'][+([-1, 0, 1].includes(sessionNum))] + ') always gives +1pt.\n'
-                    + '• 50%  = the symbol (or ' + ['lottery', 'pie-chart'][+([-1, 0, 1].includes(sessionNum))] + ') always gives +1pt or -1pt with equal chances.\n'
-                    + '• 0% = the symbol (or ' + ['lottery', 'pie-chart'][+([-1, 0, 1].includes(sessionNum))] + ') always gives -1pt.\n',
+                    + '• 100%  = the symbol (or ' + ['pie-chart', 'lottery'][+([-1, 0, 1].includes(sessionNum))] + ') always gives +1pt.\n'
+                    + '• 50%  = the symbol (or ' + ['pie-chart', 'lottery'][+([-1, 0, 1].includes(sessionNum))] + ') always gives +1pt or -1pt with equal chances.\n'
+                    + '• 0% = the symbol (or ' + ['pie-chart', 'lottery'][+([-1, 0, 1].includes(sessionNum))] + ') always gives -1pt.\n',
                 2: ['• Note: This test is like the third test of the training.\n'
                     + 'This is the actual game, every point will be included in the final payoff. \n\n Ready?',
                     ' • Let\'s begin with the third training test! \n\n'
