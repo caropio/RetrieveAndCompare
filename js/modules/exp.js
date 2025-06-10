@@ -118,10 +118,6 @@ export class ExperimentParameters {
                         nRepeat: 2
                     });
 
-                    // exp.phase = 1;    
-                    // exp._loadImg(exp.imgPath, exp.nCond, exp.nSession, exp.phase); // Pass 1 for Case 1.
-                    // imgObj = [exp.images, exp.trainingImg][isTraining];
-
                     this.trialObjTraining[step] = this._generateNoFixedLE({
                         nSession: nSession,
                         options: this._getOptionsPerSession(this.trainingContexts),

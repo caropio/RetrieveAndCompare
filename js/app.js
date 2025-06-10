@@ -266,10 +266,9 @@ function stateMachine({ instructionNum, sessionNum, phaseNum, questNum, exp } = 
     if (phaseNum !== 'end')
         trialObj = isTraining ? 
         exp.trialObjTraining[phaseNum][Math.abs(sessionNum) - 1] : exp.trialObj[phaseNum][sessionNum];
-    console.log(trialObj)
 
     let imgObj;
-    console.log(imgObj)
+    // console.log(imgObj)
     let choice;
 
     switch (phaseNum) {
@@ -334,7 +333,7 @@ function stateMachine({ instructionNum, sessionNum, phaseNum, questNum, exp } = 
             return;
 
         case 3: // SP phase
-
+            console.log(trialObj)
             let slider = new SliderManager(
                 {
                     trialObj: trialObj,

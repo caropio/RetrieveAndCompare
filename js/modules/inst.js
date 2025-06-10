@@ -127,7 +127,7 @@ export class Instructions {
 
         GUI.panelSetParagraph(`
             • This the end of the first part of the experiment\n\n
-            • You will now pass 3 tests that are identical to the ones during the training phase.
+            • You will now pass 3 tests that are similar to the 3 previous ones.
             • Please note that previous symbols are now replaced by new ones. 
         `)
 
@@ -433,7 +433,7 @@ export class Instructions {
             GUI.panelSetTitle('Instructions for the third test')
 
             let text = {
-                1: '• In each round of the third test you will be presented with the symbols and ' + ['lotteries', 'pie-charts'][+([-1, 0, 1].includes(sessionNum))] + ' you met in the first and the second test. This is the occasion to test your knowledge of each symbol average outcome. \n'
+                1: '• In each round of the third test you will be presented with the symbols and ' + ['lotteries', 'pie-charts'][+([-1, 0, 1].includes(sessionNum))] + ' you met in the first and the second test. This is the opportunity to test your knowledge of each symbol average outcome. \n'
                     + '• You will be asked to indicate (in percentages), what are the odds that a given symbol or ' + ['lottery', 'pie-chart'][+([-1, 0, 1].includes(sessionNum))] + ' makes you win a point (+1=+' + this.exp.pointsToPence(1).toFixed(2) + ').\n\n'
                     + '• You will be able to do this through moving a slider on the screen and then confirm your final answer by clicking on the confirmation button.\n\n'
                     + '• 100%  = the symbol (or ' + ['lottery', 'pie-chart'][+([-1, 0, 1].includes(sessionNum))] + ') always gives +1pt.\n'
